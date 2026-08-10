@@ -63,7 +63,13 @@ def compare_native_competence_bundles(
     bootstrap_replicates: int,
     bootstrap_seed: int,
 ) -> dict[str, Any]:
-    """Compare two capture contracts on identical development examples."""
+    """Compare two capture contracts on identical development examples.
+
+    Candidate source qualification and prompt-effect identification are distinct
+    decisions. A competent candidate may be used as a prerequisite even if it
+    does not outperform the legacy placement; in that case no causal claim
+    about prompt format is permitted.
+    """
 
     _assert_paired_contract(baseline, candidate)
     heldout_ops = np.asarray(baseline.split.heldout_operation_ids, dtype=np.int64)
@@ -133,22 +139,30 @@ def compare_native_competence_bundles(
         bootstrap_replicates=bootstrap_replicates,
         bootstrap_seed=bootstrap_seed + 10_000,
     )
-    paired_pass = paired_interval.lower >= min_paired_improvement_lower95
-    candidate_pass = candidate_qualification["status"] == "pass"
-    passed = paired_pass and candidate_pass
+    prompt_effect_passed = paired_interval.lower >= min_paired_improvement_lower95
+    source_qualified = candidate_qualification["status"] == "pass"
     return {
         "schema": "frank_eq_stageq_paired_prompt_comparison_v1",
         "scope": "development-only paired capture-contract comparison",
-        "status": "pass" if passed else "fail",
+        "status": "pass" if source_qualified else "fail",
         "decision": (
-            "STAGEQ_CANDIDATE_QUALIFIED_FOR_STAGEA_REGISTRATION"
-            if passed
+            "SOURCE_CONTRACT_QUALIFIED_FOR_STAGEA_REGISTRATION"
+            if source_qualified
             else "STOP_STAGEQ_CANDIDATE"
         ),
+        "source_contract_qualified": source_qualified,
+        "prompt_effect_identified": prompt_effect_passed,
+        "prompt_effect_decision": (
+            "PROPER_CHAT_TURN_IMPROVEMENT_IDENTIFIED"
+            if prompt_effect_passed
+            else "NO_PROMPT_EFFECT_CLAIM"
+        ),
         "paired_improvement_check": {
-            "required": f"lower_95 >= {min_paired_improvement_lower95}",
+            "required_for_prompt_effect_claim_only": (
+                f"lower_95 >= {min_paired_improvement_lower95}"
+            ),
             "observed": paired_interval.lower,
-            "passed": paired_pass,
+            "passed": prompt_effect_passed,
         },
         "paired_brier_improvement_ci": paired_interval.to_dict(),
         "candidate_competence": candidate_qualification,
