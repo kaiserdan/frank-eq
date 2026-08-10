@@ -1,5 +1,5 @@
-import torch
 import pytest
+import torch
 
 from frank_eq.data.hf_backend import (
     CHAT_ACKNOWLEDGEMENT,
