@@ -115,8 +115,16 @@ def test_native_qualification_stops_anti_predictive_founders() -> None:
 
 def test_aggregate_gain_cannot_hide_one_failed_founder() -> None:
     bundle = _bundle(competent=True)
+    train_world_mask = np.isin(bundle.world_ids, bundle.split.train_world_ids)
+    operation_prior = bundle.signatures[train_world_mask].mean(axis=0)
     failed_model = bundle.model_ids == 1
-    bundle.model_signatures[failed_model] = 1.0 - bundle.signatures[failed_model]
+    failed_truth = bundle.signatures[failed_model]
+    away_from_truth = np.where(failed_truth >= 0.5, -0.05, 0.05)
+    bundle.model_signatures[failed_model] = np.clip(
+        operation_prior[None, :] + away_from_truth,
+        1e-4,
+        1.0 - 1e-4,
+    )
     result = _qualify(bundle)
     assert result["aggregate_check"]["passed"] is True
     assert result["founder_checks"]["founder-a"]["passed"] is True
