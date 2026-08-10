@@ -1,9 +1,9 @@
 """Development-only native-competence qualification for real Stage A.
 
-This module deliberately operates before quotient training and never consumes
-claim-bearing test worlds. It asks whether frozen founder checkpoints use the
-query-blind cached state to answer held-out future operations better than an
-operation-wise oracle prior estimated on training worlds.
+This module operates before quotient training and never consumes claim-bearing
+test worlds. It asks whether frozen founder checkpoints use the query-blind
+cached state to answer held-out future operations better than an operation-wise
+oracle prior estimated on training worlds.
 """
 
 from __future__ import annotations
@@ -133,9 +133,11 @@ def compute_native_competence_qualification(
     aggregate_passed = interval.lower >= min_brier_gain_lower95
     founders_passed = all(check["passed"] for check in founder_checks.values())
     passed = aggregate_passed and founders_passed
+    held_model_id = bundle.split.held_model_id
     return {
         "schema": "frank_eq_native_competence_qualification_v1",
         "scope": "development-only frozen-source competence prerequisite",
+        "protocol_mode": "frozen",
         "status": "pass" if passed else "fail",
         "decision": (
             "NATIVE_COMPETENCE_QUALIFIED_FOR_PROTOCOL_DESIGN"
@@ -160,7 +162,11 @@ def compute_native_competence_qualification(
             "test_worlds_used": 0,
             "test_labels_consumed": False,
             "founder_model_ids": founder_ids.tolist(),
+            "held_sender_rows_used": False,
+            "held_sender_cache_present": held_model_id is not None,
+            "held_sender_development_exposed": held_model_id is not None,
             "held_sender_used": False,
+            "future_held_sender_reuse_permitted": False,
         },
         "authorization": {
             "new_outcome_run_authorized": False,
@@ -179,7 +185,12 @@ def qualify_real_cache(
     bootstrap_replicates: int | None = None,
     bootstrap_seed: int | None = None,
 ) -> dict[str, Any]:
-    """Load a real cache, resolve the frozen threshold, and write qualification."""
+    """Load a real cache, resolve the frozen threshold, and write qualification.
+
+    Optional overrides are retained for exploratory development. Any override
+    makes the artifact explicitly non-promotional regardless of its numerical
+    result.
+    """
 
     source = Path(cache_dir)
     metadata_path = source / "metadata.json"
@@ -189,6 +200,10 @@ def qualify_real_cache(
     real_config = metadata.get("real_config", {})
     gate_config = real_config.get("gates", {})
     evaluation_config = real_config.get("evaluation", {})
+    override_requested = any(
+        value is not None
+        for value in (min_brier_gain_lower95, bootstrap_replicates, bootstrap_seed)
+    )
 
     threshold = (
         float(min_brier_gain_lower95)
@@ -215,6 +230,14 @@ def qualify_real_cache(
         bootstrap_replicates=replicates,
         bootstrap_seed=seed,
     )
+    if override_requested:
+        result["protocol_mode"] = "exploratory_override"
+        result["frozen_result_before_override_demotion"] = {
+            "status": result["status"],
+            "decision": result["decision"],
+        }
+        result["status"] = "exploratory"
+        result["decision"] = "NO_PROMOTION_EXPLORATORY_OVERRIDE"
     result["cache"] = {
         "path": str(source),
         "prompt_format": real_config.get("capture", {}).get("prompt_format"),
