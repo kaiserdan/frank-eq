@@ -58,7 +58,7 @@ distribution. V2 must separate those objects.
 
 ## Immediate next action
 
-Use the existing fetched cache. Do not recapture and do not touch test worlds.
+The existing-cache localization has been executed:
 
 ```bash
 frank-eq diagnose-real-cache \
@@ -66,28 +66,23 @@ frank-eq diagnose-real-cache \
   --out runs/diagnostics/frank-eq-stagea-devg-v2
 ```
 
-The diagnostic is now also available as workflow stage `diagnose`:
+Machine recommendation (non-promotional):
 
-```bash
-frank-eq run-real-stagea \
-  --config configs/stage0/real_lumi.yaml \
-  --out <run-root> \
-  --stages cache,validate,diagnose
+```text
+FIX_NATIVE_COMPETENCE_BEFORE_LATENT_REVISION
+founder native Brier gain over operation-wise prior: -0.060
+founder self-signature Brier gain (min):            +0.0008
+founder fact Brier gain (min):                      +0.0063
+founder fact balanced accuracy (min):               0.664
 ```
 
-Prefer the standalone command for the existing cache.
-
-The diagnostic uses training/validation worlds only and measures per model:
-
-- fact readability;
-- oracle-signature readability;
-- own-future-signature readability;
-- residual readability;
-- individual layer and concatenated capture;
-- renderer-transfer fact readability;
-- native branch competence against operation-wise priors.
-
-Its machine recommendation is non-promotional and authorizes no run.
+Tree branch A: the frozen models' own branches do not beat operation-wise
+priors on validation worlds, so a prompt/runtime competence prerequisite is the
+next frozen hypothesis. Probe detail (renderer transfer fails, self-future
+signatures readable) is recorded in `docs/13_STAGEA_V1_CORRECTION_LOG.md`.
+Localization output stays under `runs/diagnostics/` (ignored). The diagnostic
+authorizes no run; the next step is a user decision to freeze exactly one
+versioned Stage-A v2 hypothesis satisfying the ten prerequisites below.
 
 ## Decision tree after localization
 
@@ -164,5 +159,8 @@ not commit source archives, stale scheduler snapshots, or fetched run trees.
 ## Do not do next
 
 Do not tune the v1 test gate, rerun the same deterministic test, add a target
-hidden-state decoder, or start receiver execution. First run the existing-cache
-localization and freeze exactly one versioned v2 hypothesis.
+hidden-state decoder, or start receiver execution. The existing-cache
+localization is complete (tree branch A: native competence prerequisite);
+the next step is freezing exactly one versioned Stage-A v2 hypothesis with a
+fresh untouched test role. Any v2 capture/prompt change must still satisfy
+state-capture-before-reveal and the ten registration prerequisites above.

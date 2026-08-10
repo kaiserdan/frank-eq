@@ -55,3 +55,17 @@ made after the first real Stage-A v1 outcome. It does not rewrite
   `evidence/real_stagea_devg_v2/`.
 - **Repository hygiene:** `.agents/state/` is local operational state and is
   removed from version control and ignored.
+
+## 2026-08-10 — execute the existing-cache localization
+
+- **Command:** `frank-eq diagnose-real-cache --cache .agents/state/lumi/frank-eq-stagea-devg-v2/remote/runs/cache --out runs/diagnostics/frank-eq-stagea-devg-v2` (ridge 10.0; local-only output, `runs/` is ignored).
+- **Access audit:** train worlds 42, validation worlds 10 per model; test worlds used 0, test labels consumed false, held-out operation gate not reused. Machine flags `authorizes_test_access/new_outcome_run/receiver_execution/scientific_claim` all false.
+- **Machine recommendation:** `FIX_NATIVE_COMPETENCE_BEFORE_LATENT_REVISION` — founder native branch Brier gain over operation-wise coordinate prior is −0.060 on validation worlds. Decision-tree branch A: prompt/runtime competence is a prerequisite before attributing failure to hidden-state capture.
+- **Probe findings (all three models, validation worlds):**
+  - Native competence fails across every operation family (gains −0.197..+0.006; worst reciprocity, mutual, compare_outdegree); the frozen models' own branches track priors, not oracle outcomes.
+  - Facts are weakly readable: Brier gain over coordinate prior +0.006..+0.035, balanced accuracy 0.66..0.68 (best layer or concatenation).
+  - Oracle signatures readable: gain +0.062..+0.067, balanced accuracy 0.74..0.76.
+  - Own-future signatures readable: qwen3 +0.0115 gain / balacc 0.81; smollm +0.0008 / 1.00; held llama +0.0023.
+  - Residual coordinates: R2 0.64..0.69, but these are declared-global controls rendered in the prefix and carry no hidden-operational evidence.
+  - **Renderer transfer fails:** fact probes trained on renderer 0 and scored on renderer 1 lose to the coordinate prior (−0.18..−0.26 gain in both directions for all models), while the trained v1 code reached renderer cosine 0.99 — consistent with invariance without specificity (non-collapse rule), a new confound against v1's renderer-invariance pass.
+- **Interpretation:** the earlier "facts not linearly readable" claim is superseded by probe evidence — captures carry real, weakly positive fact signal and strong self-future signal. The primary v1 bottleneck per the frozen tree is native branch competence on raw prompts; the next frozen hypothesis must be a model/task competence prerequisite (for example a native chat template or stronger checkpoints) with capture before operation reveal and an audited exact-prefix continuity. Nothing here authorizes a fresh outcome run; a Stage-A v2 registration must still satisfy all ten prerequisites in `docs/12`.

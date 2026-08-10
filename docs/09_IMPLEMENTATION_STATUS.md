@@ -68,6 +68,29 @@ The failure is currently compatible with:
 - joint-objective interference;
 - absent semantic grounding despite readable own-future state.
 
+## Localization outcome (diagnostic executed)
+
+The existing-cache diagnostic ran on train/validation worlds only
+(`runs/diagnostics/frank-eq-stagea-devg-v2/localization.json`; full record in
+`docs/13_STAGEA_V1_CORRECTION_LOG.md`). Machine recommendation:
+
+```text
+FIX_NATIVE_COMPETENCE_BEFORE_LATENT_REVISION
+```
+
+Founder native branch Brier gain over the operation-wise prior is −0.060 on
+validation worlds (negative in every operation family), while facts
+(+0.006..+0.035 gain), oracle signatures (+0.062..+0.067), and own-future
+signatures (+0.0008..+0.0115) are all readable from the existing capture.
+Renderer-transfer fact probes lose to the coordinate prior (−0.18..−0.26),
+so the v1 renderer-cosine pass is treated as invariance without specificity.
+Residual R2 0.64..0.69 is a declared-global control (density/reciprocity tags
+are rendered in the prefix) and carries no hidden-operational evidence.
+
+Per the frozen decision tree the next hypothesis is a model/task competence
+prerequisite (e.g. native chat template or stronger checkpoints); it still
+requires a versioned Stage-A v2 registration with a fresh test role.
+
 ## New localization implementation
 
 `frank-eq diagnose-real-cache` fits fixed-ridge probes using training worlds and
@@ -94,7 +117,8 @@ is implementation readiness only; no outcome-bearing v2 config is frozen.
 ## Not authorized
 
 - reuse of the v1 test role for selection;
-- a new Stage-A outcome run before localization;
+- a new Stage-A outcome run (localization completed; a v2 registration must be
+  frozen and versioned first);
 - receiver-native execution;
 - rate-matched transcript/summary experiments;
 - confirmation or locked roles;
