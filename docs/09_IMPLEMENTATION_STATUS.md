@@ -6,44 +6,67 @@ Snapshot: 2026-08-10
 
 | Component | Status |
 |---|---|
-| Configuration schema and validation | complete |
-| Deterministic synthetic generator | complete |
+| Synthetic configuration and controlled generator | complete |
 | World-grouped and family-stratified splits | complete |
 | Model-local private charts | complete |
 | Gauge-fixed facts + residual public code | complete |
-| Frozen public operation decoder | complete |
-| Renderer/cross-model invariance objectives | complete |
-| World contrastive objective | complete |
-| Model-ID adversary | complete |
-| Held-sender frozen-decoder onboarding | complete |
-| Facts-only residual baseline | complete |
-| Raw-hidden Ridge geometry baseline | complete |
+| Synthetic parameter-free coefficient decoder | complete |
+| Founder training and held-sender onboarding | complete |
+| Facts-only, raw-hidden, leakage, retrieval, quantization, and bootstrap evaluation | complete |
 | Query-conditioned typed packet | complete |
-| Quantization and checksum round-trip | complete |
-| Grouped bootstrap and machine reducer | complete |
-| Real-cache information contracts | complete |
-| Unit and end-to-end tests | complete |
-| CI and repository validator | complete |
+| Synthetic reference evidence and machine gate | complete |
+| Real checkpoint configuration and model roster contract | complete |
+| Frozen real relational-world panel | complete |
+| Two query-blind renderer families | complete |
+| Parameter-free differentiable graph interrogator | complete |
+| Hugging Face hidden-state capture at normalized depths | complete |
+| Physical KV-reuse branch path | complete |
+| Exact-prefix replay fallback with explicit accounting | complete |
+| Canonical single-token outcome mapping per tokenizer | complete |
+| Real `FutureSignatureRecord` serialization | complete |
+| Formal oracle / source branch separation | complete |
+| Real bundle serialization and cache validation | complete |
+| Real cache/train/eval workflow manifest and status | complete |
+| Olivia content-addressed submit/status/fetch/verify | complete |
+| LUMI content-addressed submit/status/fetch/verify | complete |
+| Cluster Slurm entrypoints and agent skills | complete |
+| Focused real-panel, graph-decoder, config, HF utility, and cluster tests | complete |
 
 ## Synthetic reference
 
-The full frozen config passes every implementation gate. The evidence copy under `evidence/reference_stage0/` is intentionally small and contains no checkpoint or prediction rows.
+`configs/stage0/synthetic_full.yaml` passes every synthetic implementation gate. The adopted evidence under `evidence/reference_stage0/` authorizes only the real-model representation canary.
 
-This result authorizes only the real-model representation canary.
+## Real Stage-A readiness
 
-## Not implemented
+The implementation is ready for a sequential one-GPU canary on Olivia or LUMI. The cluster configs freeze:
 
-- Hugging Face/vLLM hidden-state capture backend;
-- real future-operation branching harness;
-- real-model source chart training;
+```text
+founders: Qwen3-0.6B, SmolLM-1.7B-Instruct
+held sender: Llama-3.2-1B-Instruct
+worlds: 64
+renderers: 2
+operations: 16 across 8 families
+capture depths: 0.35, 0.60, 0.85
+public executor: parameter-free graph interrogator
+```
+
+The first cluster action should be `cache,validate`. Training is mechanically blocked unless the cache validator passes causal ordering, complete operation coverage, split integrity, prefix/hidden/descriptor hashes, and model/world/renderer coverage.
+
+## Not implemented or not authorized
+
+- adopted real-model Stage-A evidence;
 - receiver-native packet execution;
 - rate-matched transcript and summary controls;
-- W&B telemetry;
-- Olivia multi-node real-model jobs;
-- confirmation or locked data.
+- a second task family;
+- confirmation or locked roles;
+- safety or harm-tail evaluation;
+- W&B telemetry as a convenience layer;
+- multi-node or multi-GPU data parallelism.
 
 ## Known implementation caveats
 
-- The optional workspace gate remains effectively open in the reference run; no sparse-workspace claim is made.
-- The synthetic decoder exactly matches the generator's public operation algebra. Real tasks require a separately frozen public decoder.
-- The synthetic hidden charts are generated from the public state by construction. Their purpose is contract validation, not realism.
+- KV-cache object semantics vary across Transformers releases. `branch_mode=auto` attempts cloned KV reuse and records exact-prefix replay fallback counts. A literal cached-state claim requires an all-KV rerun or a predeclared tolerated fallback fraction.
+- Raw prompts are used instead of model-specific chat templates to preserve an exact shared prefix/query token boundary. Source branch accuracy is diagnostic and may understate instruction-tuned capability.
+- Density and reciprocity residuals are externally declared graph coordinates. They are not yet evidence that a natural LLM contains an irreducible operational residual beyond grounded facts.
+- The real graph interrogator is task-specific. Passing it is evidence for an operational quotient on this family, not a universal latent language.
+- The cluster workflow is sequential by model to limit VRAM and preserve simple source isolation; multi-node scaling is unnecessary until the canary passes.

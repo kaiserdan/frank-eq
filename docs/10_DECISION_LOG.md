@@ -25,4 +25,26 @@
 
 - **Decision:** the full reference run passes and authorizes implementation of a real-model representation canary.
 - **Result:** `evidence/reference_stage0/decision.json` returns `PROMOTE_REAL_MODEL_CANARY` and `authorizes_scientific_claim=false`.
-- **Next action:** implement real state capture and future-branch records without changing the public quotient or interpreting the synthetic result as LLM evidence.
+- **Next action:** implement real state capture and future-branch records without interpreting the synthetic result as LLM evidence.
+
+## 2026-08-10 — freeze the first real Stage-A vertical slice
+
+- **Decision:** use controlled closed-world relational graphs as the first real frozen-checkpoint task family.
+- **Operation registry:** lookup, inverse, mutual relation, two-hop composition, out-degree comparison, counterfactual edge addition, graph-density class, and reciprocity class; two operation instances per family, with family-stratified holdout.
+- **Public semantics:** exact graph facts plus two declared global coordinates, executed by a parameter-free differentiable graph interrogator. No target hidden state, target logit, learned receiver, or pair-specific decoder enters the primary path.
+- **Source behavior:** record each source model's actual post-reveal A/B distribution, but keep it diagnostically separate from the formal oracle signature used to define the public quotient.
+- **Causal boundary:** capture three normalized-depth hidden states from a prefix containing no operation. Attempt physical cloned-KV branches; allow exact-prefix replay fallback only with explicit counts.
+- **Model roles:** two founder families and one final held-sender entry. Held onboarding freezes the public interrogator and all founder charts.
+- **Gate scope:** a pass authorizes design of a receiver-native execution experiment only. It does not authorize a universal-latent, communication, safety, or natural-task claim.
+
+## 2026-08-10 — make scientific failure scheduler-valid
+
+- **Decision:** `run-real-stagea` exits successfully when the workflow and artifacts are complete even if `eval/decision.json` is negative.
+- **Reason:** a preregistered scientific failure is a valid experiment and must not be conflated with an engineering or scheduler failure.
+- **Authority:** `workflow_status.json` records execution integrity; `eval/decision.json` exclusively records scientific promotion.
+
+## 2026-08-10 — adopt content-addressed Olivia/LUMI execution
+
+- **Decision:** every cluster submission packages a deterministic source tarball, hashes it, records the exact config/stages/remote root, and writes local submission/status/fetch/verify state under `.agents/state/<cluster>/<job>`.
+- **Reason:** mutable working-directory deployment and prose-only job identity are insufficient for a branch-heavy research program.
+- **First authorized launch:** `cache,validate` using `configs/stage0/real_olivia.yaml` or `configs/stage0/real_lumi.yaml`, after checkpoint-cache preflight.

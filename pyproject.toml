@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "frank-eq"
-version = "0.1.0"
+version = "0.2.0"
 description = "Future-defined operational equivalence quotients for cross-model LLM state interfaces"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -16,6 +16,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+real = [
+  "transformers>=4.56,<6",
+  "huggingface-hub>=0.34",
+  "safetensors>=0.6",
+]
 dev = [
   "pytest>=8.0",
   "ruff>=0.9",

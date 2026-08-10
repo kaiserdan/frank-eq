@@ -1,0 +1,97 @@
+run_name: frank-eq-real-stagea-smoke
+output_dir: runs/real-stagea-smoke
+
+panel:
+  n_worlds: 24
+  n_entities: 5
+  n_operations: 16
+  n_renderers: 2
+  train_fraction: 0.625
+  validation_fraction: 0.125
+  operation_holdout_fraction: 0.25
+  oracle_smoothing: 0.02
+  min_operation_positive_fraction: 0.10
+  max_operation_positive_fraction: 0.90
+  max_generation_attempts: 128
+  seed: 1729
+
+models:
+  - model_id: qwen3-0.6b
+    hf_id: Qwen/Qwen3-0.6B
+    role: founder
+  - model_id: smollm-1.7b-instruct
+    hf_id: HuggingFaceTB/SmolLM-1.7B-Instruct
+    role: founder
+  - model_id: lfm2-1.2b-held
+    hf_id: LiquidAI/LFM2-1.2B
+    role: held
+    trust_remote_code: true
+
+capture:
+  normalized_depths: [0.35, 0.60, 0.85]
+  max_length: 512
+  dtype: bfloat16
+  device: cuda
+  branch_mode: auto
+  allow_exact_replay_fallback: true
+  answer_token_pairs:
+    - [" A", " B"]
+    - ["A", "B"]
+    - [" No", " Yes"]
+  branch_seed: 1729
+  branch_batch_size: 8
+  local_files_only: false
+
+model:
+  code_dim: 24
+  chart_hidden_dim: 96
+  operation_hidden_dim: 64
+  dropout: 0.05
+  quantization_bits: 8
+  use_workspace_gate: true
+  workspace_l1: 0.0002
+  gradient_reversal_weight: 0.10
+  decoder_type: graph
+  graph_n_entities: 5
+  graph_temperature: 4.0
+
+losses:
+  signature: 1.0
+  facts: 0.5
+  residual: 0.25
+  renderer_invariance: 0.2
+  cross_model_invariance: 0.1
+  world_contrastive: 0.15
+  model_adversary: 0.05
+  code_variance_floor: 0.02
+
+training:
+  epochs: 24
+  onboarding_epochs: 16
+  worlds_per_batch: 4
+  learning_rate: 0.001
+  onboarding_learning_rate: 0.0015
+  weight_decay: 0.0001
+  gradient_clip: 1.0
+  patience: 6
+  num_threads: 4
+  device: auto
+  seed: 1729
+
+evaluation:
+  bootstrap_replicates: 200
+  bootstrap_seed: 991
+  packet_probe_count: 8
+  packet_quantization_bits: 8
+  retrieval_chunk_size: 256
+
+gates:
+  max_heldout_signature_brier: 0.24
+  min_fact_accuracy: 0.55
+  min_renderer_cosine: 0.70
+  min_cross_model_retrieval_top1: 0.10
+  min_wrong_world_margin: -0.01
+  min_residual_brier_gain: -0.02
+  min_quantization_retention: 0.70
+  min_held_model_retention: 0.25
+  max_model_leakage_over_chance: 0.40
