@@ -16,8 +16,9 @@ Snapshot: 2026-08-10
 | Train/validation-only readability diagnostic | complete |
 | Complete model-local public-head option | implemented, dormant |
 | Proper new-user-turn `chat_turn` capture | implemented |
-| Development native-competence qualification with grouped interval | implemented |
-| Paired identical-panel Stage-Q comparison | implemented |
+| Aggregate and per-founder native-competence qualification | implemented |
+| Paired identical-panel prompt/capture comparison | implemented |
+| Stage-Q cache-only workflow enforcement | implemented |
 | Stage-Q LUMI development configs | frozen, not run |
 
 ## Adopted real outcomes
@@ -70,6 +71,7 @@ See:
 ```text
 evidence/real_stagea_lumi_v2/REVIEW.md
 docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md
+docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md
 ```
 
 ## Stage-Q implementation
@@ -100,8 +102,9 @@ operation-prior Brier - frozen-source Brier
 ```
 
 Model/renderer rows are averaged within world before a 2,000-replicate grouped
-bootstrap. The held sender and test worlds are excluded. The output authorizes
-nothing beyond diagnosis.
+bootstrap. The held sender and test worlds are excluded. Both aggregate and
+every individual founder lower confidence bound must be non-negative. The
+output authorizes nothing beyond protocol design.
 
 CLI:
 
@@ -115,6 +118,10 @@ python scripts/qualify_real_cache.py --cache <cache> --out <out>
 renderers, labels, operation registry, descriptors, and split manifest are
 identical. It then bootstraps the paired candidate-minus-baseline Brier
 improvement by world.
+
+The paired result is a prompt-attribution diagnostic, not a source-qualification
+prerequisite. It reports `prompt_effect_identified` separately from
+`source_contract_qualified`.
 
 CLI:
 
@@ -132,24 +139,30 @@ configs/stageq/real_lumi_legacy_chat.yaml
 configs/stageq/real_lumi_chat_turn.yaml
 ```
 
-They share panel seed `20260811` and differ only in `prompt_format`. They are
-for `cache,validate` only; their worlds are permanently development-only.
+They share panel seed `20260811` and differ only in `prompt_format` plus run
+identity/telemetry tags. They are for `cache,validate` only; their worlds are
+permanently development-only. `src/frank_eq/workflow.py` rejects `diagnose`,
+`train`, and `eval` for Stage-Q identities.
 
 ## Current continuation gate
 
-Stage Q must pass both:
+The source contract qualifies only when:
 
 ```text
-candidate competence lower95 >= 0
-paired candidate improvement lower95 >= 0
+aggregate candidate competence lower95 >= 0
+every individual founder competence lower95 >= 0
 ```
 
-A pass permits drafting one fresh Stage-A registration. It does not authorize a
-receiver experiment or scientific claim.
+This permits drafting one fresh Stage-A registration. It does not authorize
+running that registration, a receiver experiment, or a scientific claim.
 
-If Stage Q fails, the next work is development-only checkpoint/task
+The paired candidate improvement controls only a claim that corrected turn
+placement helped. If it fails while source competence passes, the candidate may
+still be frozen as the source prerequisite without a prompt-mechanism claim.
+
+If source competence fails, the next work is development-only checkpoint/task
 qualification. Do not modify the quotient architecture until a source/task pair
-beats the operation prior with a non-negative lower confidence bound.
+passes both aggregate and per-founder gates.
 
 ## Dormant future architecture
 
@@ -165,9 +178,9 @@ A later Stage-A registration should separate:
 
 ## Not authorized
 
-- Stage-Q training or evaluation stages;
+- Stage-Q `diagnose`, training, or evaluation stages;
 - reuse of Stage-Q worlds for confirmation;
-- another Stage-A test run before Stage-Q qualification;
+- another Stage-A test run before Stage-Q source qualification;
 - shared-head oracle-quotient rescue variants;
 - receiver-native execution;
 - rate-matched communication, confirmation, safety, or harm-tail claims.
