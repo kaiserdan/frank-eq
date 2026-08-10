@@ -44,11 +44,10 @@ def compute_native_competence_qualification(
     The paired unit is a world. Model and renderer views are averaged within
     world before bootstrapping, preventing pseudo-replication. The operation
     prior is fitted only from training-world oracle labels. Test worlds remain
-    completely unused.
+    completely unused. Every founder must pass independently; an aggregate gain
+    cannot hide an incompetent sender.
     """
 
-    if bundle.model_signatures is None:
-        raise ValueError("real bundle has no model_signatures")
     heldout_ops = np.asarray(bundle.split.heldout_operation_ids, dtype=np.int64)
     if heldout_ops.size == 0:
         raise ValueError("native qualification requires held-out operations")
@@ -84,6 +83,7 @@ def compute_native_competence_qualification(
     )
 
     by_model: dict[str, Any] = {}
+    founder_checks: dict[str, Any] = {}
     for offset, model_id in enumerate(founder_ids.tolist()):
         selection = validation_mask & (bundle.model_ids == model_id)
         target = np.asarray(bundle.signatures[selection][:, heldout_ops], dtype=np.float64)
@@ -99,10 +99,17 @@ def compute_native_competence_qualification(
             replicates=bootstrap_replicates,
             seed=bootstrap_seed + 100 + offset,
         )
-        by_model[bundle.model_names[model_id]] = {
+        model_name = bundle.model_names[model_id]
+        model_passed = model_interval.lower >= min_brier_gain_lower95
+        by_model[model_name] = {
             "native_brier": float(np.mean(_brier(target, native))),
             "prior_brier": float(np.mean(_brier(target, model_prior))),
             "brier_gain_ci": model_interval.to_dict(),
+        }
+        founder_checks[model_name] = {
+            "required": f"lower_95 >= {min_brier_gain_lower95}",
+            "observed": model_interval.lower,
+            "passed": model_passed,
         }
 
     by_family: dict[str, Any] = {}
@@ -123,7 +130,9 @@ def compute_native_competence_qualification(
             "brier_gain_ci": family_interval.to_dict(),
         }
 
-    passed = interval.lower >= min_brier_gain_lower95
+    aggregate_passed = interval.lower >= min_brier_gain_lower95
+    founders_passed = all(check["passed"] for check in founder_checks.values())
+    passed = aggregate_passed and founders_passed
     return {
         "schema": "frank_eq_native_competence_qualification_v1",
         "scope": "development-only frozen-source competence prerequisite",
@@ -133,11 +142,12 @@ def compute_native_competence_qualification(
             if passed
             else "STOP_BEFORE_REPRESENTATION_TRAINING"
         ),
-        "check": {
+        "aggregate_check": {
             "required": f"lower_95 >= {min_brier_gain_lower95}",
             "observed": interval.lower,
-            "passed": passed,
+            "passed": aggregate_passed,
         },
+        "founder_checks": founder_checks,
         "native_brier": float(np.mean(native_loss)),
         "coordinate_prior_brier": float(np.mean(prior_loss)),
         "brier_gain_ci": interval.to_dict(),
