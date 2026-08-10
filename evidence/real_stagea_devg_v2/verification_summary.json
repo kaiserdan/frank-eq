@@ -1,0 +1,41 @@
+{
+  "artifacts": {
+    "cache/cache_validation.json": true,
+    "cache/dataset.npz": true,
+    "cache/metadata.json": true,
+    "eval/artifact_manifest.json": true,
+    "eval/decision.json": true,
+    "eval/metrics.json": true,
+    "train/final.pt": true,
+    "train/training_summary.json": true
+  },
+  "authorizes_scientific_claim": false,
+  "cluster": "lumi",
+  "job_name": "frank-eq-stagea-devg-v2",
+  "overall": "passed",
+  "schema": "frank_eq_adopted_verification_summary_v1",
+  "scientific_decision": {
+    "decision": "STOP_OR_REVISE_STAGE0",
+    "status": "fail"
+  },
+  "source": {
+    "adopted_from_commit": "d1eb4b91d5a00db4559f4184799efad5c03ac1ae",
+    "git_blob_sha": "b7d2309f07415c9ef5c93ddb455dbd60b663c599",
+    "path": ".agents/state/lumi/frank-eq-stagea-devg-v2/verify.json"
+  },
+  "warnings": [
+    "scientific gate failed; workflow may still be valid"
+  ],
+  "workflow": {
+    "completed_at": "2026-08-10T16:08:06.847720+00:00",
+    "completed_stages": [
+      "cache",
+      "validate",
+      "train",
+      "eval"
+    ],
+    "elapsed_seconds": 264.5454361438751,
+    "failure": null,
+    "state": "completed"
+  }
+}

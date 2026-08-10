@@ -2,103 +2,167 @@
 
 Snapshot: 2026-08-10
 
-## Current state
+## Current decision
 
-Synthetic Stage 0 is complete and its adopted reference returns `PROMOTE_REAL_MODEL_CANARY` with `authorizes_scientific_claim=false`.
+Synthetic Stage 0 passes as implementation evidence.
 
-The first real Stage-A canary has now run and produced a **valid negative decision**: `STOP_OR_REVISE_STAGE0` (`frank-eq-stagea-devg-v2` on LUMI `dev-g`, evidence under `evidence/real_stagea_devg_v2/`). Engineering integrity passed end to end (cache validation, 100% KV-reuse branches, W&B telemetry synced to project `frank-eq-stagea`). The failure is localized to capture sufficiency: per-edge graph facts are not linearly readable from the captured hidden states of the small frozen models under raw prompts, while the declared global coordinates are. The frozen config was not modified and no gates were tuned.
-
-Real Stage-A now logs fail-open W&B telemetry (project `frank-eq-stagea`) covering run identity, cache branch-mode accounting, per-epoch training losses, and evaluation metrics. Olivia additionally uses a new amd64 PyTorch container (`pytorch-2.5.1-cuda12.4-runtime-amd64.sif`), because every `accel` node is H200/x86_64 and the previous arm64 images cannot execute there.
-
-## Real Stage-A implementation
-
-Implemented:
-
-- controlled closed-world relational panel with exact facts and future operations;
-- two renderer forms per world and world-grouped train/validation/test splits;
-- two founder checkpoints plus exactly one held sender;
-- normalized-depth hidden capture before operation reveal;
-- physical KV-reuse branching where supported, exact-prefix replay fallback otherwise;
-- single-token canonical A/B outcome mapping audited per tokenizer;
-- formal oracle outcomes and source-model branch probabilities in separate arrays;
-- immutable `FutureSignatureRecord` JSONL with prefix, hidden, and operation hashes;
-- parameter-free graph interrogator over facts and two public global coordinates;
-- existing founder training, frozen-executor held-sender onboarding, evaluator, bootstrap, and reducer reused without target hidden-state reconstruction;
-- cache validator with causal-order, split, coverage, descriptor, hidden, and file-hash checks;
-- generic real workflow with manifest/status and stage-resume boundaries;
-- content-addressed source packaging and Olivia/LUMI submit/status/fetch/verify commands;
-- real smoke and cluster configs, tests, and operator skills.
-
-## Frozen canary configuration
-
-Olivia:
+Real Stage-A v1 has one adopted outcome:
 
 ```text
-configs/stage0/real_olivia.yaml
-founders: Qwen/Qwen3-0.6B, HuggingFaceTB/SmolLM-1.7B-Instruct
-held sender: meta-llama/Llama-3.2-1B-Instruct
-worlds/renderers/operations: 64 / 2 / 16
-capture depths: 0.35 / 0.60 / 0.85
-primary decoder: frozen graph interrogator
+run: frank-eq-stagea-devg-v2
+cluster/job: LUMI dev-g / 20942127
+decision: STOP_OR_REVISE_STAGE0
+workflow integrity: passed
+scientific claim authorized: false
 ```
 
-LUMI uses the same scientific configuration under `configs/stage0/real_lumi.yaml`; only run identity differs.
+The negative decision is correct for the exact v1 pipeline and remains
+immutable. The previous prose localization to “capture sufficiency” was too
+strong. The failure source is unresolved because v1 did not run independent
+readability/capacity probes.
 
-## Immediate launch sequence
+Read `docs/12_STAGEA_V1_AUDIT_AND_V2_PROTOCOL.md` and
+`evidence/real_stagea_devg_v2/AUDIT.md`.
 
-1. Confirm all three pinned checkpoints exist under the selected cluster `HF_HOME` and that gated Llama access is available.
-2. Run the dry-run command and inspect source hash, remote root, config, stages, and Slurm script.
-3. Submit `cache,validate` first if cluster/model compatibility is uncertain.
-4. Fetch and verify the cache before launching or resuming `train,eval`.
-5. Treat a negative `eval/decision.json` as a valid scientific result. Do not tune gates or layers from test outcomes.
+## What v1 indicates
 
-For Olivia, export before submitting:
+Observed failures:
 
-```bash
-export WANDB_API_KEY=<key>            # W&B telemetry for the frank-eq-stagea project
-export FRANK_EQ_ALLOW_PIP_INSTALL=1   # container lacks transformers/wandb
-export FRANK_EQ_PIP_FIND_LINKS=/cluster/projects/nn12027k/frank-eq-wheels  # offline wheels fallback
+```text
+fact accuracy:                     0.5296
+reconstructed majority baseline:  0.5278
+held-out signature Brier:          0.1729  (upper 95% 0.1978)
+cross-model retrieval top-1:       0.2083
+wrong-world margin:               -0.0575
+held-sender retention:             0.4717
+model-ID leakage over chance:      0.6528
+source branch accuracy to oracle:  0.4392
+operation-prior accuracy:          0.6354
 ```
 
-`WANDB_API_KEY` is forwarded to the job through `sbatch --export` and the Apptainer environment; it is never written to source, configs, submission state, or logs.
+Renderer cosine `0.9925`, residual gain, and quantization retention passed, but
+none is a positive quotient result:
 
-Olivia:
+- renderer stability coexists with collapse/model identity;
+- density and reciprocity targets are explicitly printed in the prefix;
+- quantization preserves an already-failing code.
+
+The v1 public compiler uses model-local charts but shared fact/residual heads.
+Held onboarding updates only the held chart, forcing it into a founder-induced
+private gauge. The capture is also limited to the final-token residual at three
+depths although literal future branching uses the full KV cache.
+
+Finally, the primary target is the formal oracle signature, while the project's
+definition of operational equivalence concerns the model's own future branch
+distribution. V2 must separate those objects.
+
+## Immediate next action
+
+Use the existing fetched cache. Do not recapture and do not touch test worlds.
 
 ```bash
-python olivia/cli.py submit \
-  --job-name frank-eq-stagea-cache-v1 \
-  --config configs/stage0/real_olivia.yaml \
-  --profile full --stages cache,validate --dry-run --json
+frank-eq diagnose-real-cache \
+  --cache .agents/state/lumi/frank-eq-stagea-devg-v2/remote/runs/cache \
+  --out runs/diagnostics/frank-eq-stagea-devg-v2
 ```
 
-LUMI:
+The diagnostic is now also available as workflow stage `diagnose`:
 
 ```bash
-python lumi/cli.py submit \
-  --job-name frank-eq-stagea-cache-lumi-v1 \
+frank-eq run-real-stagea \
   --config configs/stage0/real_lumi.yaml \
-  --profile full --stages cache,validate --dry-run --json
+  --out <run-root> \
+  --stages cache,validate,diagnose
 ```
 
-## Evidence boundary
+Prefer the standalone command for the existing cache.
 
-The real cache stores two distinct targets:
+The diagnostic uses training/validation worlds only and measures per model:
 
-- `signatures`: formal oracle operation outcomes used by the frozen public interrogator;
-- `model_signatures`: the source model's actual post-reveal A/B probabilities, used only as a behavioral diagnostic.
+- fact readability;
+- oracle-signature readability;
+- own-future-signature readability;
+- residual readability;
+- individual layer and concatenated capture;
+- renderer-transfer fact readability;
+- native branch competence against operation-wise priors.
 
-This separation prevents a weak source model from redefining the public operation semantics while still allowing the paper to measure whether latent-state sufficiency and overt behavior diverge.
+Its machine recommendation is non-promotional and authorizes no run.
 
-## Known risks
+## Decision tree after localization
 
-- Some Transformers cache implementations may not be safely cloneable. `auto` records physical `kv_reuse` where successful and exact-prefix replay where it falls back. A claim of literal cached-state branching must report this count and may require a no-fallback rerun.
-- Raw prompts rather than model-specific chat templates are used to keep the prefix/query token boundary exact and shared. Branch accuracy may therefore be low; it is diagnostic, not the primary target.
-- The graph residual coordinates are declared density and reciprocity state. They are not yet evidence for an irreducible natural-language operational residual.
-- The public graph interrogator is task-specific. Passing it would justify a second task family, not a universal interface claim.
-- Receiver-native execution, rate-matched text controls, confirmation, and locked data remain unimplemented and unauthorized.
+```text
+native branches do not beat priors
+  → freeze a prompt/task competence prerequisite
+
+native competence passes but own future signature unreadable
+  → expand capture to token-sequence or selected-KV state
+
+own future signature readable but oracle facts unreadable
+  → separate behavioral operational state from semantic grounding
+
+raw targets readable but trained quotient fails
+  → use complete model-local compilers and revise the joint objective
+```
+
+The code supports the last architecture behind:
+
+```yaml
+model:
+  public_head_scope: local
+```
+
+This makes chart, fact head, and residual head model-local while leaving public
+coordinates and the interrogator shared. It is not yet an authorized v2 config.
+
+## Requirements for Stage-A v2
+
+Before any fresh test run:
+
+1. new world seed and untouched test role;
+2. exact checkpoint revisions in config;
+3. frozen native-competence gate;
+4. explicit capture stream/pooling contract;
+5. sampled KV-reuse versus exact-replay numerical parity;
+6. self-future and oracle metrics in separate namespaces;
+7. prior-relative fact/signature metrics;
+8. renderer invariance conditioned on world specificity;
+9. local/shared compiler scope frozen in advance;
+10. real-specific decision schema.
+
+Receiver-native execution remains locked.
+
+## Evidence and repository hygiene
+
+Adopted v1 evidence is under:
+
+```text
+evidence/real_stagea_devg_v2/
+  decision.json
+  metrics.json
+  run_manifest.json
+  AUDIT.md
+  audit.json
+  manifest.json
+```
+
+The evidence package is intentionally small; generated caches and checkpoints
+remain external. `.agents/state/` is local operator state and is ignored. Do
+not commit source archives, stale scheduler snapshots, or fetched run trees.
+
+## Known integrity gaps to repair in v2
+
+- v1 YAML omitted exact checkpoint revision pins;
+- v1 run manifest had no Git commit identity;
+- all KV branches executed, but no registered replay-parity sample was stored;
+- the adopted evidence package does not contain the full training history,
+  cache metadata, predictions, or evaluation artifact manifest;
+- the historical v1 decision has a synthetic-scope metadata label due to the
+  old reducer. The outcome values remain valid; future real decisions use a
+  real-specific schema.
 
 ## Do not do next
 
-Do not add target-state reconstruction, pair-specific translators, receiver gradients, or a learned receiver rescue if Stage A fails. First localize failure among capture sufficiency, fact extraction, renderer invariance, operation generalization, and held-sender retention using the frozen artifacts.
-
-The negative outcome has been localized to capture sufficiency (fact head unfittable, global coordinates readable). The next scientific action is a user decision on a revised Stage-A protocol — for example chat-templated prefixes, a different depth grid, larger chart capacity, or a stronger fact objective — frozen as a new versioned config with a fresh untouched test role before any outcome-bearing run. Do not tune the current gates, layers, or panel.
+Do not tune the v1 test gate, rerun the same deterministic test, add a target
+hidden-state decoder, or start receiver execution. First run the existing-cache
+localization and freeze exactly one versioned v2 hypothesis.

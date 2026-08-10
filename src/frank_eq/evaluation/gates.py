@@ -1,4 +1,4 @@
-"""Fail-closed Stage-0 decision reducer."""
+"""Fail-closed Stage-0 and real Stage-A decision reducer."""
 
 from __future__ import annotations
 
@@ -59,13 +59,26 @@ def reduce_stage0(metrics: dict[str, object], gates: GateConfig) -> dict[str, ob
         },
     }
     failures = [name for name, result in checks.items() if not result["passed"]]
+    metric_scope = str(metrics.get("scope", "synthetic future-defined causal-state Stage 0"))
+    is_real = metric_scope.startswith("real ")
+    if is_real:
+        schema = "frank_eq_real_stagea_decision_v2"
+        pass_decision = "AUTHORIZE_RECEIVER_PROTOCOL_DESIGN"
+        decision_scope = "real frozen-LLM Stage-A representation gate"
+    else:
+        schema = "frank_eq_stage0_decision_v1"
+        pass_decision = "PROMOTE_REAL_MODEL_CANARY"
+        decision_scope = "synthetic implementation and falsification gate only"
+    passed = not failures
     return {
-        "schema": "frank_eq_stage0_decision_v1",
-        "status": "pass" if not failures else "fail",
-        "decision": "PROMOTE_REAL_MODEL_CANARY" if not failures else "STOP_OR_REVISE_STAGE0",
-        "authorizes_real_model_canary": not failures,
+        "schema": schema,
+        "status": "pass" if passed else "fail",
+        "decision": pass_decision if passed else "STOP_OR_REVISE_STAGE0",
+        "authorizes_real_model_canary": passed and not is_real,
+        "authorizes_receiver_protocol_design": passed and is_real,
         "authorizes_scientific_claim": False,
         "checks": checks,
         "failures": failures,
-        "scope": "synthetic implementation and falsification gate only",
+        "scope": decision_scope,
+        "metric_scope": metric_scope,
     }

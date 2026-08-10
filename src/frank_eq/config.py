@@ -50,6 +50,7 @@ class ModelConfig:
     decoder_type: str = "public_coefficients"
     graph_n_entities: int = 0
     graph_temperature: float = 3.0
+    public_head_scope: str = "shared"
 
 
 @dataclass(slots=True)
@@ -148,6 +149,8 @@ class RunConfig:
             raise ValueError("model.code_dim must be at least 4")
         if not 1 <= self.model.quantization_bits <= 16:
             raise ValueError("model.quantization_bits must be between 1 and 16")
+        if self.model.public_head_scope not in {"shared", "local"}:
+            raise ValueError("model.public_head_scope must be shared or local")
         if self.model.decoder_type not in {"public_coefficients", "graph"}:
             raise ValueError("model.decoder_type must be public_coefficients or graph")
         if self.model.decoder_type == "graph":

@@ -28,6 +28,19 @@ class QuotientOutput:
     model_logits: torch.Tensor
 
 
+def _make_public_head(
+    code_dim: int,
+    hidden_dim: int,
+    output_dim: int,
+) -> nn.Sequential:
+    return nn.Sequential(
+        nn.LayerNorm(code_dim),
+        nn.Linear(code_dim, hidden_dim),
+        nn.GELU(),
+        nn.Linear(hidden_dim, output_dim),
+    )
+
+
 class ModelLocalChart(nn.Module):
     def __init__(self, n_layers: int, hidden_dim: int, config: ModelConfig):
         super().__init__()
@@ -57,7 +70,13 @@ class ModelLocalChart(nn.Module):
 
 
 class OperationalQuotientModel(nn.Module):
-    """Model-local charts coupled through a frozen public future decoder."""
+    """Model-local compilers coupled through a frozen public future decoder.
+
+    ``public_head_scope=shared`` preserves the original Stage-A v1 and
+    synthetic checkpoint contract. ``public_head_scope=local`` gives every
+    sender a complete model-local compiler (chart plus fact/residual heads)
+    while keeping only the public state coordinates and interrogator shared.
+    """
 
     def __init__(
         self,
@@ -75,6 +94,7 @@ class OperationalQuotientModel(nn.Module):
         self.n_facts = n_facts
         self.n_residual = n_residual
         self.config = config
+        self.public_head_scope = config.public_head_scope
         self.charts = nn.ModuleDict(
             {
                 str(model_id): ModelLocalChart(n_layers, hidden_dim, config)
@@ -96,18 +116,34 @@ class OperationalQuotientModel(nn.Module):
             )
         else:
             raise ValueError(f"unsupported decoder_type: {config.decoder_type}")
-        self.fact_head = nn.Sequential(
-            nn.LayerNorm(config.code_dim),
-            nn.Linear(config.code_dim, config.chart_hidden_dim // 2),
-            nn.GELU(),
-            nn.Linear(config.chart_hidden_dim // 2, n_facts),
-        )
-        self.residual_head = nn.Sequential(
-            nn.LayerNorm(config.code_dim),
-            nn.Linear(config.code_dim, config.chart_hidden_dim // 2),
-            nn.GELU(),
-            nn.Linear(config.chart_hidden_dim // 2, n_residual),
-        )
+
+        public_hidden = max(1, config.chart_hidden_dim // 2)
+        if self.public_head_scope == "shared":
+            self.fact_head = _make_public_head(config.code_dim, public_hidden, n_facts)
+            self.residual_head = _make_public_head(config.code_dim, public_hidden, n_residual)
+            self.fact_heads = None
+            self.residual_heads = None
+        elif self.public_head_scope == "local":
+            self.fact_head = None
+            self.residual_head = None
+            self.fact_heads = nn.ModuleDict(
+                {
+                    str(model_id): _make_public_head(config.code_dim, public_hidden, n_facts)
+                    for model_id in range(len(model_hidden_dims))
+                }
+            )
+            self.residual_heads = nn.ModuleDict(
+                {
+                    str(model_id): _make_public_head(config.code_dim, public_hidden, n_residual)
+                    for model_id in range(len(model_hidden_dims))
+                }
+            )
+        else:
+            raise ValueError(
+                "public_head_scope must be 'shared' or 'local', "
+                f"got {self.public_head_scope!r}"
+            )
+
         self.gradient_reversal = GradientReversal(config.gradient_reversal_weight)
         public_dim = n_facts + n_residual
         self.model_classifier = nn.Sequential(
@@ -134,7 +170,32 @@ class OperationalQuotientModel(nn.Module):
             output[selection] = self.charts[str(model_id)](hidden[selection])
         return output
 
-    def build_public_code(self, fact_logits: torch.Tensor, residual: torch.Tensor) -> torch.Tensor:
+    def _decode_public_coordinates(
+        self,
+        private_code: torch.Tensor,
+        model_ids: torch.Tensor,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        if self.public_head_scope == "shared":
+            if self.fact_head is None or self.residual_head is None:
+                raise RuntimeError("shared public heads are not initialized")
+            return self.fact_head(private_code), self.residual_head(private_code)
+
+        if self.fact_heads is None or self.residual_heads is None:
+            raise RuntimeError("local public heads are not initialized")
+        fact_logits = private_code.new_empty((len(private_code), self.n_facts))
+        residual = private_code.new_empty((len(private_code), self.n_residual))
+        for model_id in torch.unique(model_ids).tolist():
+            model_id = int(model_id)
+            selection = model_ids == model_id
+            fact_logits[selection] = self.fact_heads[str(model_id)](private_code[selection])
+            residual[selection] = self.residual_heads[str(model_id)](private_code[selection])
+        return fact_logits, residual
+
+    def build_public_code(
+        self,
+        fact_logits: torch.Tensor,
+        residual: torch.Tensor,
+    ) -> torch.Tensor:
         signed_facts = 2.0 * torch.sigmoid(fact_logits) - 1.0
         bounded_residual = torch.clamp(
             residual / self.residual_public_scale,
@@ -168,8 +229,7 @@ class OperationalQuotientModel(nn.Module):
         operation_descriptors: torch.Tensor,
     ) -> QuotientOutput:
         private_code = self.encode_private(hidden, model_ids)
-        fact_logits = self.fact_head(private_code)
-        residual = self.residual_head(private_code)
+        fact_logits, residual = self._decode_public_coordinates(private_code, model_ids)
         code = self.build_public_code(fact_logits, residual)
         signature_logits = self.decoder(fact_logits, residual, operation_descriptors)
         model_logits = self.model_classifier(self.gradient_reversal(code))
@@ -194,11 +254,25 @@ class OperationalQuotientModel(nn.Module):
         first_chart = next(iter(self.charts.values()))
         return first_chart.quantizer.hard_quantize(code, bits=bits)
 
-    def freeze_except_chart(self, model_id: int) -> None:
+    def freeze_except_compiler(self, model_id: int) -> None:
+        """Freeze every component except one sender's complete local compiler."""
+
         for parameter in self.parameters():
             parameter.requires_grad = False
         for parameter in self.charts[str(model_id)].parameters():
             parameter.requires_grad = True
+        if self.public_head_scope == "local":
+            if self.fact_heads is None or self.residual_heads is None:
+                raise RuntimeError("local public heads are not initialized")
+            for parameter in self.fact_heads[str(model_id)].parameters():
+                parameter.requires_grad = True
+            for parameter in self.residual_heads[str(model_id)].parameters():
+                parameter.requires_grad = True
+
+    def freeze_except_chart(self, model_id: int) -> None:
+        """Backward-compatible alias for the v1 held-sender behavior."""
+
+        self.freeze_except_compiler(model_id)
 
     def unfreeze_all(self) -> None:
         for parameter in self.parameters():

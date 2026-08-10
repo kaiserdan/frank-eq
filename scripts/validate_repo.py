@@ -31,6 +31,8 @@ REQUIRED = (
     "docs/09_IMPLEMENTATION_STATUS.md",
     "docs/10_DECISION_LOG.md",
     "docs/11_REAL_STAGEA_IMPLEMENTATION.md",
+    "docs/12_STAGEA_V1_AUDIT_AND_V2_PROTOCOL.md",
+    "docs/13_STAGEA_V1_CORRECTION_LOG.md",
     "docs/OLIVIA.md",
     "docs/LUMI.md",
     "configs/stage0/synthetic_smoke.yaml",
@@ -49,7 +51,25 @@ REQUIRED = (
     "evidence/reference_stage0/metrics.json",
     "evidence/reference_stage0/decision.json",
     "evidence/reference_stage0/manifest.json",
+    "evidence/real_stagea_devg_v2/decision.json",
+    "evidence/real_stagea_devg_v2/metrics.json",
+    "evidence/real_stagea_devg_v2/run_manifest.json",
+    "evidence/real_stagea_devg_v2/verification_summary.json",
+    "evidence/real_stagea_devg_v2/AUDIT.md",
+    "evidence/real_stagea_devg_v2/audit.json",
+    "evidence/real_stagea_devg_v2/manifest.json",
 )
+
+
+def _validate_hash_manifest(directory: Path, manifest_name: str = "manifest.json") -> dict:
+    manifest = json.loads((directory / manifest_name).read_text())
+    expected = manifest.get("files", {})
+    observed = {name: sha256_file(directory / name) for name in expected}
+    if expected != observed:
+        raise SystemExit(
+            f"evidence hash mismatch in {directory}: expected={expected}, observed={observed}"
+        )
+    return manifest
 
 
 def main() -> int:
@@ -71,31 +91,84 @@ def main() -> int:
     for config_path in real_configs:
         load_real_config(config_path)
 
-    decision_path = ROOT / "evidence/reference_stage0/decision.json"
-    metrics_path = ROOT / "evidence/reference_stage0/metrics.json"
-    manifest_path = ROOT / "evidence/reference_stage0/manifest.json"
-    decision = json.loads(decision_path.read_text())
-    metrics = json.loads(metrics_path.read_text())
-    manifest = json.loads(manifest_path.read_text())
-
-    if decision.get("schema") != "frank_eq_stage0_decision_v1":
+    synthetic_dir = ROOT / "evidence/reference_stage0"
+    synthetic_decision = json.loads((synthetic_dir / "decision.json").read_text())
+    synthetic_metrics = json.loads((synthetic_dir / "metrics.json").read_text())
+    synthetic_manifest = json.loads((synthetic_dir / "manifest.json").read_text())
+    if synthetic_decision.get("schema") != "frank_eq_stage0_decision_v1":
         raise SystemExit("reference decision has the wrong schema")
-    if decision.get("status") != "pass":
+    if synthetic_decision.get("status") != "pass":
         raise SystemExit("reference Stage-0 decision is not a pass")
-    if decision.get("authorizes_scientific_claim") is not False:
+    if synthetic_decision.get("authorizes_scientific_claim") is not False:
         raise SystemExit("synthetic evidence must not authorize a scientific claim")
-    if metrics.get("schema") != "frank_eq_stage0_metrics_v1":
+    if synthetic_metrics.get("schema") != "frank_eq_stage0_metrics_v1":
         raise SystemExit("reference metrics have the wrong schema")
-
-    expected = manifest.get("files", {})
-    observed = {
-        "metrics.json": sha256_file(metrics_path),
-        "decision.json": sha256_file(decision_path),
+    synthetic_expected = synthetic_manifest.get("files", {})
+    synthetic_observed = {
+        "metrics.json": sha256_file(synthetic_dir / "metrics.json"),
+        "decision.json": sha256_file(synthetic_dir / "decision.json"),
     }
-    if expected != observed:
+    if synthetic_expected != synthetic_observed:
         raise SystemExit(
-            f"reference evidence hash mismatch: expected={expected}, observed={observed}"
+            "reference evidence hash mismatch: "
+            f"expected={synthetic_expected}, observed={synthetic_observed}"
         )
+
+    real_dir = ROOT / "evidence/real_stagea_devg_v2"
+    real_manifest = _validate_hash_manifest(real_dir)
+    real_decision = json.loads((real_dir / "decision.json").read_text())
+    real_metrics = json.loads((real_dir / "metrics.json").read_text())
+    real_audit = json.loads((real_dir / "audit.json").read_text())
+    real_verification = json.loads((real_dir / "verification_summary.json").read_text())
+    if real_manifest.get("schema") != "frank_eq_real_stagea_evidence_manifest_v1":
+        raise SystemExit("real Stage-A evidence manifest has the wrong schema")
+    if real_decision.get("status") != "fail":
+        raise SystemExit("adopted real Stage-A v1 outcome must remain a failure")
+    if real_decision.get("decision") != "STOP_OR_REVISE_STAGE0":
+        raise SystemExit("adopted real Stage-A decision changed")
+    if real_decision.get("authorizes_scientific_claim") is not False:
+        raise SystemExit("negative real evidence must not authorize a scientific claim")
+    if real_metrics.get("scope") != "real frozen-LLM future-defined causal-state Stage A":
+        raise SystemExit("real Stage-A metrics have the wrong scope")
+    if real_audit.get("outcome", {}).get("scientific_decision_valid") is not True:
+        raise SystemExit("real Stage-A audit must preserve the valid negative decision")
+    if real_audit.get("audit_findings", {}).get("failure_localization") != "unresolved":
+        raise SystemExit("real Stage-A v1 localization must remain unresolved")
+    authorization = real_audit.get("authorization", {})
+    if any(
+        authorization.get(key) is not False
+        for key in (
+            "test_reuse_authorized",
+            "new_outcome_run_authorized",
+            "receiver_execution_authorized",
+            "scientific_claim_authorized",
+        )
+    ):
+        raise SystemExit("real Stage-A audit improperly authorizes continuation")
+
+    if real_verification.get("schema") != "frank_eq_adopted_verification_summary_v1":
+        raise SystemExit("real Stage-A verification summary has the wrong schema")
+    if real_verification.get("overall") != "passed":
+        raise SystemExit("real Stage-A workflow verification did not pass")
+    workflow = real_verification.get("workflow", {})
+    if workflow.get("state") != "completed" or workflow.get("failure") is not None:
+        raise SystemExit("real Stage-A workflow did not complete cleanly")
+    if workflow.get("completed_stages") != ["cache", "validate", "train", "eval"]:
+        raise SystemExit("real Stage-A workflow stage list changed")
+    if not all(real_verification.get("artifacts", {}).values()):
+        raise SystemExit("real Stage-A verification summary has missing artifacts")
+    verification_decision = real_verification.get("scientific_decision", {})
+    if verification_decision != {
+        "decision": "STOP_OR_REVISE_STAGE0",
+        "status": "fail",
+    }:
+        raise SystemExit("verification summary does not preserve the scientific decision")
+    if real_verification.get("authorizes_scientific_claim") is not False:
+        raise SystemExit("verification summary improperly authorizes a claim")
+
+    gitignore = (ROOT / ".gitignore").read_text()
+    if ".agents/state/" not in gitignore:
+        raise SystemExit(".agents/state/ must remain ignored")
 
     print(
         json.dumps(
@@ -104,7 +177,12 @@ def main() -> int:
                 "required_files": len(REQUIRED),
                 "synthetic_configs": len(synthetic_configs),
                 "real_configs": len(real_configs),
-                "reference_decision": decision["decision"],
+                "synthetic_decision": synthetic_decision["decision"],
+                "real_stagea_v1_decision": real_decision["decision"],
+                "real_stagea_v1_localization": real_audit["audit_findings"][
+                    "failure_localization"
+                ],
+                "real_stagea_v1_workflow": real_verification["overall"],
             },
             sort_keys=True,
         )
