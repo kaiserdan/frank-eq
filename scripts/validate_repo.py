@@ -15,6 +15,7 @@ sys.path.insert(0, str(SRC))
 from frank_eq.config import load_config  # noqa: E402
 from frank_eq.real_config import load_real_config  # noqa: E402
 from frank_eq.utils import sha256_file  # noqa: E402
+from frank_eq.workflow import validate_real_stage_role  # noqa: E402
 
 REQUIRED = (
     "README.md",
@@ -37,6 +38,7 @@ REQUIRED = (
     "docs/14_STAGEA_V2_PROTOCOL.md",
     "docs/15_STAGEA_V2_REVIEW_AND_STAGEQ.md",
     "docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md",
+    "docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md",
     "docs/OLIVIA.md",
     "docs/LUMI.md",
     "configs/stage0/synthetic_smoke.yaml",
@@ -133,6 +135,23 @@ def main() -> int:
         candidate_stageq.as_dict()
     ):
         raise SystemExit("Stage-Q configs differ outside prompt contract and run identity")
+    role, stages = validate_real_stage_role(
+        candidate_stageq,
+        stageq_configs[1],
+        "cache,validate",
+    )
+    if role != "stageq" or stages != ("cache", "validate"):
+        raise SystemExit("Stage-Q cache-only workflow role did not resolve correctly")
+    try:
+        validate_real_stage_role(
+            candidate_stageq,
+            stageq_configs[1],
+            "cache,validate,train,eval",
+        )
+    except ValueError:
+        pass
+    else:
+        raise SystemExit("Stage-Q config improperly permits train/eval")
 
     synthetic_dir = ROOT / "evidence/reference_stage0"
     synthetic_decision = json.loads((synthetic_dir / "decision.json").read_text())
@@ -226,6 +245,7 @@ def main() -> int:
                 "real_stagea_v1_decision": v1_decision["decision"],
                 "real_stagea_v2_decision": v2_decision["decision"],
                 "stageq_pair_registered": True,
+                "stageq_cache_only_enforced": True,
             },
             sort_keys=True,
         )
