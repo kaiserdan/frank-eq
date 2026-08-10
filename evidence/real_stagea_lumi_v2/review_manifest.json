@@ -1,0 +1,8 @@
+{
+  "files": {
+    "REVIEW.md": "0e2dd568cbdd781e2ec44302fbaaea1c2e355e1a73137c151f73829decd39cb1",
+    "review.json": "14ea8330630b004ff8cbf9cb3842f80caef981adc62d7062bf9b9169df5ee25e"
+  },
+  "parent_evidence": "evidence/real_stagea_lumi_v2/manifest.json",
+  "schema": "frank_eq_stagea_supplemental_review_manifest_v1"
+}

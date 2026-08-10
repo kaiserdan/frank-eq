@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from frank_eq.data.real import RealBundle
 from frank_eq.qualification import compute_native_competence_qualification
 from frank_eq.schemas import OperationDefinition, SplitManifest
+from frank_eq.stageq import compare_native_competence_bundles
 
 
 def _bundle(*, competent: bool) -> RealBundle:
@@ -109,3 +111,35 @@ def test_native_qualification_stops_anti_predictive_founders() -> None:
     assert result["decision"] == "STOP_BEFORE_REPRESENTATION_TRAINING"
     assert result["brier_gain_ci"]["upper"] < 0.0
     assert set(result["by_family"]) == {"compose", "lookup"}
+
+
+def test_stageq_paired_comparison_requires_competence_and_improvement() -> None:
+    result = compare_native_competence_bundles(
+        _bundle(competent=False),
+        _bundle(competent=True),
+        min_candidate_brier_gain_lower95=0.0,
+        min_paired_improvement_lower95=0.0,
+        bootstrap_replicates=200,
+        bootstrap_seed=11,
+    )
+    assert result["status"] == "pass"
+    assert result["paired_brier_improvement_ci"]["lower"] > 0.0
+    assert result["candidate_competence"]["status"] == "pass"
+    assert result["data_usage"]["test_worlds_used"] == 0
+    assert not any(result["authorization"].values())
+
+
+def test_stageq_rejects_unpaired_caches() -> None:
+    baseline = _bundle(competent=False)
+    candidate = _bundle(competent=True)
+    candidate.world_ids = candidate.world_ids.copy()
+    candidate.world_ids[0] = 999
+    with pytest.raises(ValueError, match="world IDs"):
+        compare_native_competence_bundles(
+            baseline,
+            candidate,
+            min_candidate_brier_gain_lower95=0.0,
+            min_paired_improvement_lower95=0.0,
+            bootstrap_replicates=20,
+            bootstrap_seed=11,
+        )
