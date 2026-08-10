@@ -24,7 +24,7 @@ Requests containing `diagnose`, `train`, or `eval` fail before the run manifest
 is created. Stage-Q analysis is performed afterward with the dedicated
 qualification scripts, which consume only train/validation worlds.
 
-## Primary qualification
+## Primary source qualification
 
 For each held-out operation, estimate an oracle prior using training worlds.
 For each founder on validation worlds, compute:
@@ -37,7 +37,7 @@ Brier gain = Brier(oracle, training-world operation prior)
 Average renderer views within model/world, then bootstrap worlds with 2,000
 replicates.
 
-The candidate passes source competence only if both conditions hold:
+The candidate source contract qualifies only if both conditions hold:
 
 ```text
 aggregate founder lower95 >= 0
@@ -47,7 +47,12 @@ every individual founder lower95 >= 0
 This prevents one competent founder from masking another source that is not
 usable under the registered operation contract.
 
-## Paired prompt/capture comparison
+A source-qualification pass permits drafting exactly one new Stage-A
+registration with fresh worlds. It does not authorize running that
+registration, opening its test role, building a receiver experiment, or making
+a scientific claim.
+
+## Secondary paired prompt/capture comparison
 
 The legacy and candidate caches must be identical in:
 
@@ -62,23 +67,26 @@ The paired unit is again a world. Positive improvement means the proper
 `chat_turn` candidate has lower Brier than the legacy assistant-continuation
 baseline on the same model/world/renderer/operation rows.
 
-The prompt/capture comparison passes only if:
+A prompt-effect claim is identified only if:
 
 ```text
 paired candidate-minus-baseline improvement lower95 >= 0
 ```
 
-## Combined Stage-Q gate
+This contrast is not a prerequisite for using an independently competent source
+contract. If source competence passes but paired improvement does not, the
+candidate may be used as a frozen prerequisite while making no claim that
+corrected turn placement caused an improvement.
 
-Stage Q passes only when:
+## Stage-Q decisions
 
-1. aggregate candidate competence passes;
-2. every founder candidate competence passes;
-3. paired candidate improvement passes.
+The paired artifact reports two independent decisions:
 
-A pass authorizes drafting exactly one new Stage-A registration with fresh
-worlds. It does not authorize running that registration, opening its test role,
-building a receiver experiment, or making a scientific claim.
+1. `source_contract_qualified`: aggregate and every founder competence gate;
+2. `prompt_effect_identified`: paired candidate-minus-legacy interval.
+
+Only the first controls whether one Stage-A protocol may be drafted. The second
+controls only whether a prompt-placement effect may be claimed.
 
 ## Data roles
 
