@@ -14,11 +14,12 @@ a frozen question, preserve information boundaries, and fail closed.
 3. `evidence/real_stagea_lumi_v2/REVIEW.md`
 4. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
 5. `docs/15_STAGEA_V2_REVIEW_AND_STAGEQ.md`
-6. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
-7. `docs/05_GATES_AND_STOP_RULES.md`
-8. `docs/12_STAGEA_V1_AUDIT_AND_V2_PROTOCOL.md`
-9. `docs/09_IMPLEMENTATION_STATUS.md`
-10. `docs/10_DECISION_LOG.md`
+6. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
+7. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
+8. `docs/05_GATES_AND_STOP_RULES.md`
+9. `docs/12_STAGEA_V1_AUDIT_AND_V2_PROTOCOL.md`
+10. `docs/09_IMPLEMENTATION_STATUS.md`
+11. `docs/10_DECISION_LOG.md`
 
 For cluster work, also read
 `.agents/skills/lumi-cluster-runner/SKILL.md` or
@@ -50,8 +51,9 @@ python scripts/compare_stageq_caches.py \
   --out <out>
 ```
 
-Stage-Q worlds are permanently development-only. A pass permits protocol design,
-not a fresh outcome run by itself.
+Stage-Q worlds are permanently development-only. Source qualification permits
+one Stage-A protocol to be drafted, not run. Prompt-effect identification is a
+separate secondary conclusion.
 
 ## Interpretation invariants
 
@@ -85,9 +87,17 @@ Historical `prompt_format: chat` is reproduction-only.
 
 Before representation training or claim-bearing test access, frozen founder
 branches must beat an operation-wise training prior on validation worlds. The
-paired unit is a world, and the lower grouped 95% bound must be non-negative.
+paired unit is a world. Both the aggregate and every individual founder must
+have a non-negative lower grouped 95% bound.
 
 A point estimate computed after test evaluation does not satisfy this rule.
+
+### Prompt attribution is secondary to source qualification
+
+The paired chat-turn-minus-legacy interval tests whether corrected turn
+placement improved competence. It controls only a prompt-effect claim. A source
+contract can qualify without this effect if aggregate and every founder
+competence gate pass; in that case no prompt-mechanism claim is allowed.
 
 ### Paired comparisons require identical panels
 
@@ -167,10 +177,16 @@ Use evidence in this order:
 7. Adopt a small hash-verified evidence package before drawing a conclusion.
 8. Do not run quotient training or evaluation for either Stage-Q config.
 
-Stage Q passes only if:
+The source contract qualifies only if:
 
 ```text
-chat-turn competence lower95 >= 0
+aggregate chat-turn competence lower95 >= 0
+every founder chat-turn competence lower95 >= 0
+```
+
+A prompt-placement effect is identified separately only if:
+
+```text
 paired chat-turn-minus-legacy improvement lower95 >= 0
 ```
 
@@ -179,19 +195,20 @@ authorization false.
 
 ## Decision tree
 
-### Stage Q fails
+### Source competence fails
 
 Screen stronger checkpoints or a simpler task on development-only caches. Do
 not change the quotient architecture yet.
 
-### Competence passes but paired prompt improvement fails
+### Source competence passes, prompt effect does not
 
-Treat the passing condition as a prerequisite only. Make no prompt-mechanism
-claim.
+The candidate may be frozen as the source prerequisite for one Stage-A protocol.
+Make no prompt-mechanism claim.
 
-### Both checks pass
+### Source competence and prompt effect both pass
 
-Draft exactly one fresh Stage-A registration with:
+Draft exactly one fresh Stage-A registration and record the prompt-effect result
+as secondary evidence. The registration must use:
 
 - fresh claim-bearing worlds;
 - complete model-local compilers;
@@ -201,7 +218,7 @@ Draft exactly one fresh Stage-A registration with:
 
 ## Prohibited shortcuts
 
-- Running `train` or `eval` with Stage-Q configs.
+- Running `diagnose`, `train`, or `eval` with Stage-Q configs.
 - Reusing Stage-Q worlds as confirmation worlds.
 - Calling legacy `chat` a proper user-operation turn.
 - Comparing unpaired v1/v2 estimates as a prompt ablation.
