@@ -17,6 +17,9 @@ checkpoints/
 *.ckpt
 *.npz
 
+# Local agent/cluster operational state
+.agents/state/
+
 # Secrets and local environment
 .env
 .env.*

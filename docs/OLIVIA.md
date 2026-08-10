@@ -2,80 +2,74 @@
 
 ## Local environment
 
-The operator CLI uses your SSH alias and project root from:
-
 ```bash
 export FRANK_EQ_OLIVIA_HOST=olivia
 export FRANK_EQ_OLIVIA_ROOT=/cluster/home/dakai5365/project/frank-eq
 ```
 
-Defaults match these values. Authentication remains outside the repository.
+Authentication remains outside the repository.
+
+## Current authority
+
+Real Stage-A v1 already has a valid negative outcome. Do not submit a v1
+recapture or rerun merely to localize it. The preferred next action is local
+analysis of the fetched cache:
+
+```bash
+frank-eq diagnose-real-cache \
+  --cache .agents/state/olivia/<job>/remote/runs/cache \
+  --out runs/diagnostics/<job>
+```
+
+The diagnostic uses training/validation worlds only and is non-promotional.
 
 ## Runtime environment
 
-The `accel` partition is H200/x86_64. The default runtime container is `pytorch-2.5.1-cuda12.4-runtime-amd64.sif` (amd64); the older scratch images are arm64 and cannot run on Olivia compute nodes. The container lacks transformers and wandb, so the job installs `.[real]` extras when forwarded:
+The `accel` partition is H200/x86_64. The default runtime container is
+`pytorch-2.5.1-cuda12.4-runtime-amd64.sif`. The job may install `.[real]`
+extras when explicitly allowed:
 
 ```bash
 export FRANK_EQ_ALLOW_PIP_INSTALL=1
-export FRANK_EQ_PIP_FIND_LINKS=/cluster/projects/nn12027k/frank-eq-wheels   # offline wheels, optional
+export FRANK_EQ_PIP_FIND_LINKS=/cluster/projects/nn12027k/frank-eq-wheels
 export FRANK_EQ_OLIVIA_IMAGE=/cluster/home/dakai5365/project/frank/pytorch-2.5.1-cuda12.4-runtime-amd64.sif
 ```
 
-W&B telemetry (project `frank-eq-stagea`) is enabled by the frozen config and activated by forwarding `WANDB_API_KEY` (plus optional `WANDB_ENTITY`, `WANDB_MODE`, `WANDB_DIR`, `WANDB_BASE_URL`). It is fail-open: missing credentials only disable the stream. Credentials never enter source, configs, Slurm files, or logs.
+W&B is fail-open telemetry only. Credentials remain in the environment.
 
 ## Checkpoint preflight
 
-`configs/stage0/real_olivia.yaml` sets `local_files_only: true`. Before submission, verify that the configured revisions exist under the cluster `HF_HOME` and that the Llama license/token has already been accepted. The Slurm default is:
+Real configs use the cluster Hugging Face cache. Future v2 configs must pin
+exact checkpoint revisions. Verify all snapshots before submission.
+
+Default:
 
 ```text
 /cluster/projects/nn12027k/hf-cache
 ```
 
-Override with `FRANK_EQ_HF_HOME` at submission/runtime when required.
+## Diagnostic dry run
 
-## Dry run
+A new cache plus non-promotional diagnostic can be tested with:
 
 ```bash
 python olivia/cli.py submit \
-  --job-name frank-eq-stagea-cache-v1 \
+  --job-name frank-eq-stagea-diagnostic \
   --config configs/stage0/real_olivia.yaml \
   --profile full \
-  --stages cache,validate \
+  --stages cache,validate,diagnose \
   --dry-run --json
 ```
 
-Inspect:
+This is an operational smoke only. It does not authorize reusing the v1 test
+role or adopting a v2 architecture.
 
-- source archive SHA-256 and file count;
-- exact config path;
-- remote source/job roots;
-- Slurm script;
-- stages.
-
-## Submit and monitor
+## Status, fetch, verify
 
 ```bash
-python olivia/cli.py submit \
-  --job-name frank-eq-stagea-cache-v1 \
-  --config configs/stage0/real_olivia.yaml \
-  --profile full \
-  --stages cache,validate --json
-python olivia/cli.py status --job-name frank-eq-stagea-cache-v1 --json
-```
-
-The source package is extracted under:
-
-```text
-$FRANK_EQ_OLIVIA_ROOT/jobs/<job>/source
-```
-
-The immutable source archive is retained under `sources/<sha256>/source.tar.gz`.
-
-## Fetch and verify
-
-```bash
-python olivia/cli.py fetch --job-name frank-eq-stagea-cache-v1 --json
-python olivia/cli.py verify --job-name frank-eq-stagea-cache-v1 --json
+python olivia/cli.py status --job-name <job> --json
+python olivia/cli.py fetch --job-name <job> --json
+python olivia/cli.py verify --job-name <job> --json
 ```
 
 Local state is under:
@@ -84,14 +78,23 @@ Local state is under:
 .agents/state/olivia/<job>/
 ```
 
-A cache-only verification requires `dataset.npz`, `metadata.json`, and `cache_validation.json`. A full verification additionally requires the training checkpoint and evaluation decision.
+This path is ignored and must never be committed. Adopted evidence is copied
+selectively into `evidence/<run>/` with a hash manifest.
 
-## Resume training/evaluation
+## Workflow stages
 
-The generic submitter creates a new source/job root per job name. To reuse a prior cache, copy it only through an explicit provenance-controlled job or run the full workflow in one allocation. The default first campaign should run all stages after cache compatibility has been established.
+```text
+cache,validate,diagnose,train,eval
+```
+
+`diagnose` is optional. Historical `cache,validate,train,eval` stage lists
+remain valid. A diagnostic result is not a scientific gate.
 
 ## Result interpretation
 
 - Slurm `COMPLETED` plus workflow `completed` means engineering integrity.
-- `eval/decision.json: status=fail` is a valid scientific failure and produces only a verifier warning.
-- Missing or invalid cache hashes are engineering failures and prohibit training.
+- A failing `eval/decision.json` is a valid negative result.
+- A diagnostic recommendation has no authorization semantics.
+- Missing cache hashes or causal-boundary failures prohibit all downstream work.
+- Receiver execution remains locked until a fresh, prospective Stage-A v2 gate
+  passes.

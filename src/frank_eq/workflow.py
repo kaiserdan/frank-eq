@@ -15,13 +15,14 @@ import numpy as np
 import torch
 
 from frank_eq.data.real import RealBundle, build_real_cache, validate_real_cache
+from frank_eq.diagnostics import diagnose_real_cache
 from frank_eq.evaluation import Stage0Evaluator
 from frank_eq.real_config import RealRunConfig
 from frank_eq.telemetry import WandbTelemetry
 from frank_eq.training import Stage0Trainer
 from frank_eq.utils import atomic_write_json, sha256_file
 
-REAL_STAGE_ORDER = ("cache", "validate", "train", "eval")
+REAL_STAGE_ORDER = ("cache", "validate", "diagnose", "train", "eval")
 
 
 def _timestamp() -> str:
@@ -61,16 +62,14 @@ def parse_real_stages(value: str | list[str] | tuple[str, ...]) -> tuple[str, ..
         raise ValueError(f"unknown real Stage-A stages: {sorted(unknown)}")
     indices = [REAL_STAGE_ORDER.index(stage) for stage in stages]
     if indices != sorted(indices):
-        raise ValueError("real Stage-A stages must follow cache,validate,train,eval order")
+        raise ValueError(
+            "real Stage-A stages must follow cache,validate,diagnose,train,eval order"
+        )
     return stages
 
 
 def _cache_telemetry(cache_dir: Path, summary: dict[str, Any]) -> dict[str, Any]:
-    """Build a scalar telemetry payload from the cache build summary.
-
-    Includes the audited branch-mode accounting (physical KV reuse versus
-    exact-prefix replay) recorded in the cache metadata.
-    """
+    """Build a scalar telemetry payload from the cache build summary."""
 
     payload = {key: value for key, value in summary.items() if key not in {"cache_dir"}}
     metadata_path = cache_dir / "metadata.json"
@@ -103,6 +102,7 @@ def run_real_stagea(
     selected = parse_real_stages(stages)
     root = Path(output_dir)
     cache_dir = root / "cache"
+    diagnostic_dir = root / "diagnostics"
     train_dir = root / "train"
     eval_dir = root / "eval"
     root.mkdir(parents=True, exist_ok=True)
@@ -171,6 +171,17 @@ def run_real_stagea(
                             key: value
                             for key, value in stage_outputs[stage].items()
                             if isinstance(value, (int, float, bool, str))
+                        }
+                    }
+                )
+            elif stage == "diagnose":
+                validate_real_cache(cache_dir)
+                stage_outputs[stage] = diagnose_real_cache(cache_dir, diagnostic_dir)
+                telemetry.log(
+                    {
+                        "diagnostic": {
+                            "recommendation": stage_outputs[stage]["recommendation"]["code"],
+                            "promotional": False,
                         }
                     }
                 )

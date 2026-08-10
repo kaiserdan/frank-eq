@@ -10,6 +10,7 @@ from pathlib import Path
 from frank_eq.config import load_config
 from frank_eq.data.real import build_real_cache, validate_real_cache
 from frank_eq.data.synthetic import SyntheticBundle, generate_synthetic_bundle
+from frank_eq.diagnostics import diagnose_real_cache
 from frank_eq.evaluation import Stage0Evaluator
 from frank_eq.real_config import load_real_config
 from frank_eq.training import Stage0Trainer
@@ -62,8 +63,16 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     validate_cache.add_argument("--cache", required=True)
 
+    diagnose_cache = subparsers.add_parser(
+        "diagnose-real-cache",
+        help="localize a failed Stage-A run using train/validation worlds only",
+    )
+    diagnose_cache.add_argument("--cache", required=True)
+    diagnose_cache.add_argument("--out", required=True)
+    diagnose_cache.add_argument("--ridge", type=float, default=10.0)
+
     run_real = subparsers.add_parser(
-        "run-real-stagea", help="run cache, validation, training, and evaluation"
+        "run-real-stagea", help="run selected real cache/diagnose/train/eval stages"
     )
     run_real.add_argument("--config", required=True)
     run_real.add_argument("--out", default=None)
@@ -89,6 +98,9 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "validate-real-cache":
             _print(validate_real_cache(args.cache))
+            return 0
+        if args.command == "diagnose-real-cache":
+            _print(diagnose_real_cache(args.cache, args.out, ridge=args.ridge))
             return 0
         if args.command == "run-real-stagea":
             config = load_real_config(args.config)

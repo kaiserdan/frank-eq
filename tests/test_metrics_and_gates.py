@@ -16,8 +16,9 @@ def test_cross_model_retrieval_perfect_for_shared_codes() -> None:
     assert len(outcome_worlds) == len(outcomes)
 
 
-def test_gate_reducer_fails_closed() -> None:
-    metrics = {
+def _failing_metrics(scope: str = "synthetic future-defined causal-state Stage 0") -> dict:
+    return {
+        "scope": scope,
         "heldout_signature_brier_ci": {"upper": 0.5},
         "fact_accuracy_ci": {"lower": 0.1},
         "renderer_cosine": 0.0,
@@ -28,7 +29,22 @@ def test_gate_reducer_fails_closed() -> None:
         "held_model_retention": 0.0,
         "model_leakage_over_chance": 1.0,
     }
-    decision = reduce_stage0(metrics, GateConfig())
+
+
+def test_gate_reducer_fails_closed() -> None:
+    decision = reduce_stage0(_failing_metrics(), GateConfig())
     assert decision["status"] == "fail"
     assert decision["authorizes_real_model_canary"] is False
     assert decision["authorizes_scientific_claim"] is False
+    assert decision["schema"] == "frank_eq_stage0_decision_v1"
+
+
+def test_real_gate_uses_real_scope_and_never_reauthorizes_canary() -> None:
+    decision = reduce_stage0(
+        _failing_metrics("real frozen-LLM future-defined causal-state Stage A"),
+        GateConfig(),
+    )
+    assert decision["schema"] == "frank_eq_real_stagea_decision_v2"
+    assert decision["scope"] == "real frozen-LLM Stage-A representation gate"
+    assert decision["authorizes_real_model_canary"] is False
+    assert decision["authorizes_receiver_protocol_design"] is False

@@ -1,0 +1,21 @@
+{
+  "claim_boundary": {
+    "authorizes_scientific_claim": false,
+    "localization": "unresolved",
+    "scientific_outcome": "valid negative for Stage-A v1 exact pipeline",
+    "workflow_integrity": "supported by committed cluster verify metadata and adopted run manifest"
+  },
+  "files": {
+    "AUDIT.md": "cf08ea65dfa5afe36318f5032fcf49d834e3d56876756caf53447eff8627fd9e",
+    "audit.json": "607e4310576e67512ff6dd5c8d7897c5c732e905695607b1ac1d51bfec21dedd",
+    "decision.json": "16459118702fed64981bcc0a0ccb150ab48d159a953d9a80051114482afa2f1a",
+    "metrics.json": "657828cc6c0e5966982bbc4186c2402025bfb03cc4439584a50b4c5d0abe72f0",
+    "run_manifest.json": "94e0e1d9e6b70603bf229243a736adc470de7c41e8a9c2d494885171281874c5"
+  },
+  "run": {
+    "job_name": "frank-eq-stagea-devg-v2",
+    "slurm_job_id": "20942127",
+    "source_sha256": "bc2bff426e1c7f5a438c4004abf3e51999e3fbf2e3f13c25c6b11821d65a4751"
+  },
+  "schema": "frank_eq_real_stagea_evidence_manifest_v1"
+}

@@ -1,0 +1,56 @@
+{
+  "audit_findings": {
+    "adopted_evidence_package_complete": false,
+    "checkpoint_revisions_pinned_in_config": false,
+    "failure_localization": "unresolved",
+    "full_kv_state_used_for_branching_but_not_quotient_capture": true,
+    "future_decision_scope_metadata_bug": true,
+    "last_token_capture_only": true,
+    "primary_target_is_oracle_not_model_future_signature": true,
+    "public_fact_and_residual_heads_shared_across_models": true,
+    "renderer_pass_conditioned_on_noncollapse": false,
+    "residual_targets_explicitly_rendered_in_prefix": true
+  },
+  "authorization": {
+    "new_outcome_run_authorized": false,
+    "next_action": "TRAIN_VALIDATION_ONLY_LOCALIZATION",
+    "receiver_execution_authorized": false,
+    "scientific_claim_authorized": false,
+    "test_reuse_authorized": false
+  },
+  "observed": {
+    "cross_model_retrieval_top1": 0.20833333333333334,
+    "fact_accuracy": 0.5296296296296296,
+    "fact_accuracy_lower_95": 0.4953703703703704,
+    "held_model_retention": 0.4716606391905353,
+    "heldout_signature_brier": 0.17285647988319397,
+    "heldout_signature_brier_upper_95": 0.19783231780553856,
+    "model_leakage_over_chance": 0.6527777777777779,
+    "quantization_retention": 0.9961723902996598,
+    "renderer_cosine": 0.9924532155115732,
+    "source_branch_accuracy_to_oracle": 0.4392361111111111,
+    "wrong_world_margin": -0.05745062025056945
+  },
+  "outcome": {
+    "decision": "STOP_OR_REVISE_STAGE0",
+    "exact_pipeline_falsified": true,
+    "future_defined_quotient_generally_falsified": false,
+    "scientific_decision_valid": true,
+    "workflow_integrity_passed": true
+  },
+  "reconstructed_frozen_baselines": {
+    "constant_half_held_operation_brier": 0.2304,
+    "held_operation_prior_accuracy": 0.6354166666666666,
+    "held_operation_prior_brier": 0.208,
+    "method": "committed real_panel generator, real_lumi config, and split seed",
+    "test_fact_global_majority_accuracy": 0.5277777777777778,
+    "trained_fact_accuracy_gain": 0.0018518518518517713
+  },
+  "run": {
+    "cluster": "lumi",
+    "job_name": "frank-eq-stagea-devg-v2",
+    "slurm_job_id": "20942127",
+    "source_sha256": "bc2bff426e1c7f5a438c4004abf3e51999e3fbf2e3f13c25c6b11821d65a4751"
+  },
+  "schema": "frank_eq_real_stagea_v1_audit_v1"
+}

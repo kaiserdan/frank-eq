@@ -2,7 +2,7 @@
 
 ## Synthetic full gate
 
-The full Stage-0 decision is conjunctive:
+The synthetic Stage-0 decision is conjunctive:
 
 | Metric | Gate |
 |---|---:|
@@ -16,24 +16,75 @@ The full Stage-0 decision is conjunctive:
 | Held-sender retention | >= 0.70 |
 | Model-ID leakage over chance | <= 0.18 |
 
-A pass writes `PROMOTE_REAL_MODEL_CANARY` and authorizes only implementation of the real-model representation canary.
+A pass authorizes only a real-model canary.
 
-## Real-model representation gate
+## Real Stage-A v1 decision
 
-Freeze exact thresholds in a new versioned protocol before the first outcome-bearing run. At minimum require:
+The first real v1 decision is frozen and failed. Its gates are not changed by
+the later audit.
 
-- operation-agnostic code beats operation-local and raw-hidden baselines under matched rate;
-- held-out operation and renderer generalization;
-- correct-source versus matched-wrong-source specificity;
-- low sender identity leakage conditioned on world;
-- held-sender retention;
-- explicit facts-only comparison;
-- no operation available at state formation;
+The result falsifies only the executed v1 pipeline. Its passing renderer,
+residual, and quantization checks cannot be interpreted independently because:
+
+- renderer cosine was not conditioned on non-collapse;
+- residual coordinates were explicitly rendered in the prefix;
+- quantization retained a failed code.
+
+## Existing-cache localization gate
+
+The next action is a **diagnostic**, not a promotion gate.
+
+Allowed data:
+
+```text
+fit: training worlds
+score: validation worlds
+test worlds: zero
+```
+
+Required diagnostic families:
+
+1. facts from each layer and concatenated capture;
+2. oracle future signatures;
+3. each model's own future signatures;
+4. residual/global coordinates;
+5. renderer 0→1 and 1→0 transfer;
+6. native model branches versus operation-wise priors.
+
+The diagnostic writes a recommendation but every authorization field remains
+false. Any selected design requires a new world seed and untouched test role.
+
+## Stage-A v2 prerequisites
+
+No outcome-bearing v2 run may be frozen until the diagnostic chooses exactly
+one hypothesis. The registration must include:
+
+- exact model revision pins;
+- a native-competence gate;
+- self-future and oracle-semantic targets in separate namespaces;
+- explicit residual/token/KV capture definitions;
+- KV reuse versus replay parity;
+- local versus shared compiler scope;
+- prior-relative fact/signature metrics;
+- renderer invariance conditioned on world specificity;
+- fresh train/validation/test worlds;
+- real-specific decision metadata.
+
+At minimum, a future real representation gate must require:
+
+- positive held-out self-future prediction over an operation-wise prior;
+- positive external semantic/fact prediction over an appropriate prior;
+- held-out renderer transfer;
+- correct-world specificity;
+- low sender identity leakage conditioned on non-collapse;
+- held-sender retention with the public interrogator frozen;
+- explicit facts-only and behavior-signature-only comparisons;
 - complete world-grouped uncertainty.
 
 ## Receiver gate
 
-Receiver execution remains locked until the real representation gate passes. A receiver experiment must additionally beat:
+Receiver execution remains locked until a prospective real representation gate
+passes. A receiver experiment must additionally beat:
 
 - no communication;
 - rate-matched transcript;
@@ -45,15 +96,17 @@ Receiver execution remains locked until the real representation gate passes. A r
 
 ## Stop rules
 
-Stop or redesign the quotient if any of the following persists under the frozen canary:
+Stop or redesign the active hypothesis when:
 
-1. held-out operations fail while seen operations pass;
-2. model identity remains strongly decodable after conditioning on world;
-3. facts-only matches the full code;
-4. held sender requires updating the public decoder;
-5. renderer invariance and wrong-world separation cannot pass jointly;
+1. native operation competence does not beat registered priors;
+2. the complete registered capture cannot predict the model's own future
+   signature;
+3. fact grounding adds no information beyond priors;
+4. held sender requires updating public execution;
+5. renderer invariance and correct-world specificity cannot pass jointly;
 6. raw text matches activation-derived state at the same rate;
 7. receiver utility fails despite a passing representation gate;
 8. a valid gate miss is followed only by unregistered rescue variants.
 
-A gate change after outcomes creates a new explicitly post-outcome protocol and cannot reinterpret the previous decision.
+A gate change after outcomes creates a new explicitly post-outcome protocol and
+cannot reinterpret the previous decision.

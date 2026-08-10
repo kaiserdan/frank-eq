@@ -6,72 +6,108 @@ Snapshot: 2026-08-10
 
 | Component | Status |
 |---|---|
-| Synthetic configuration and controlled generator | complete |
-| World-grouped and family-stratified splits | complete |
-| Model-local private charts | complete |
-| Gauge-fixed facts + residual public code | complete |
-| Synthetic parameter-free coefficient decoder | complete |
+| Synthetic Stage-0 implementation and adopted reference | complete |
+| Real relational panel, capture backend, cache records, and validator | complete |
 | Founder training and held-sender onboarding | complete |
-| Facts-only, raw-hidden, leakage, retrieval, quantization, and bootstrap evaluation | complete |
-| Query-conditioned typed packet | complete |
-| Synthetic reference evidence and machine gate | complete |
-| Real checkpoint configuration and model roster contract | complete |
-| Frozen real relational-world panel | complete |
-| Two query-blind renderer families | complete |
-| Parameter-free differentiable graph interrogator | complete |
-| Hugging Face hidden-state capture at normalized depths | complete |
-| Physical KV-reuse branch path | complete |
-| Exact-prefix replay fallback with explicit accounting | complete |
-| Canonical single-token outcome mapping per tokenizer | complete |
-| Real `FutureSignatureRecord` serialization | complete |
-| Formal oracle / source branch separation | complete |
-| Real bundle serialization and cache validation | complete |
-| Real cache/train/eval workflow manifest and status | complete |
-| Olivia content-addressed submit/status/fetch/verify | complete |
-| LUMI content-addressed submit/status/fetch/verify | complete |
-| Cluster Slurm entrypoints and agent skills | complete |
-| Fail-open W&B telemetry for real Stage-A runs | complete |
-| amd64 Olivia runtime container (H200 nodes) | complete |
-| Focused real-panel, graph-decoder, config, HF utility, cluster, and telemetry tests | complete |
+| Frozen graph interrogator and query-conditioned packet | complete |
+| Olivia/LUMI content-addressed workflows | complete |
+| Fail-open W&B telemetry | complete |
+| First real Stage-A v1 outcome | complete, valid negative |
+| Stage-A v1 independent audit and evidence manifest | complete |
+| Train/validation-only real-cache localization diagnostic | implemented |
+| Complete model-local public-head option | implemented, dormant |
+| Real-specific future decision metadata | implemented |
+| Operational `.agents/state/` exclusion | implemented |
 
-## Synthetic reference
+## Adopted real Stage-A v1 outcome
 
-`configs/stage0/synthetic_full.yaml` passes every synthetic implementation gate. The adopted evidence under `evidence/reference_stage0/` authorizes only the real-model representation canary.
+`frank-eq-stagea-devg-v2` completed on LUMI job `20942127` and returned
+`STOP_OR_REVISE_STAGE0`.
 
-## Real Stage-A first outcome (negative)
-
-The first full frozen canary ran on LUMI `dev-g` (`frank-eq-stagea-devg-v2`, source `bc2bff426e1c`) and returned a valid negative decision: `STOP_OR_REVISE_STAGE0`. Engineering integrity passed end to end; the scientific gate failed on fact accuracy, retrieval, wrong-world specificity, held-sender retention, held-out Brier, and model-ID leakage. Renderer invariance, quantization retention, and the operational residual gain passed. Failure is localized to capture sufficiency (facts not linearly readable from the captured states; global coordinates are). Evidence: `evidence/real_stagea_devg_v2/`.
-
-The frozen cluster configs remain:
+Engineering integrity passed. The decision is scientifically valid for:
 
 ```text
-founders: Qwen3-0.6B, SmolLM-1.7B-Instruct
-held sender: Llama-3.2-1B-Instruct
-worlds: 64
-renderers: 2
-operations: 16 across 8 families
-capture depths: 0.35, 0.60, 0.85
-public executor: parameter-free graph interrogator
+last-token residual at three depths
+→ local chart
+→ shared fact/residual heads
+→ frozen graph interrogator
 ```
 
-A revised Stage A requires a new versioned protocol and a fresh untouched test role; no gates, layers, or panel were tuned under the negative outcome.
+The result does not falsify a future-defined quotient over the complete runtime
+state.
 
-## Not implemented or not authorized
+### Main observations
 
-- adopted real-model Stage-A evidence (the adopted outcome is negative; no positive real evidence exists);
-- receiver-native packet execution;
-- rate-matched transcript and summary controls;
-- a second task family;
+| Metric | Value | Interpretation |
+|---|---:|---|
+| Fact accuracy | 0.5296 | only +0.0019 over reconstructed global-majority baseline |
+| Held-out signature Brier | 0.1729 | better than operation-prior 0.2080, but gate upper bound fails |
+| Cross-model retrieval | 0.2083 | weak world identity across models |
+| Wrong-world margin | -0.0575 | collapse/wrong-world preference |
+| Held retention | 0.4717 | poor establishment |
+| Model leakage over chance | 0.6528 | public code remains strongly model-specific |
+| Source branch accuracy | 0.4392 | below operation-prior 0.6354 |
+| Renderer cosine | 0.9925 | not meaningful without non-collapse |
+| Quantization retention | 0.9962 | preserves failed code |
+| Residual gain | positive | confounded by explicit density/reciprocity tags |
+
+## Audit correction
+
+The earlier status described the failure as localized to capture sufficiency and
+said facts were not linearly readable. That claim was not tested. The executed
+fact head is nonlinear and jointly optimized with seven other objectives, and
+no independent layer/model readability probe exists.
+
+The failure is currently compatible with:
+
+- insufficient last-token capture;
+- inadequate pooling of a distributed KV/token state;
+- weak native task competence under raw prompts;
+- shared-head/private-gauge mismatch;
+- sample/parameter mismatch;
+- joint-objective interference;
+- absent semantic grounding despite readable own-future state.
+
+## New localization implementation
+
+`frank-eq diagnose-real-cache` fits fixed-ridge probes using training worlds and
+reports only validation worlds. It separately tests facts, oracle signatures,
+own future signatures, residual coordinates, renderer transfer, and native
+competence. It touches zero test labels and cannot promote.
+
+The real workflow now accepts the optional stage:
+
+```text
+cache,validate,diagnose,train,eval
+```
+
+## Dormant v2 architecture support
+
+`model.public_head_scope` accepts:
+
+- `shared`: exact historical v1 behavior and checkpoint compatibility;
+- `local`: complete local compiler per model (chart + fact/residual heads).
+
+The public operation semantics and interrogator remain shared. The local option
+is implementation readiness only; no outcome-bearing v2 config is frozen.
+
+## Not authorized
+
+- reuse of the v1 test role for selection;
+- a new Stage-A outcome run before localization;
+- receiver-native execution;
+- rate-matched transcript/summary experiments;
 - confirmation or locked roles;
-- safety or harm-tail evaluation;
-- multi-node or multi-GPU data parallelism.
+- safety or harm-tail claims.
 
-## Known implementation caveats
+## Known v1 evidence limitations
 
-- KV-cache object semantics vary across Transformers releases. `branch_mode=auto` attempts cloned KV reuse and records exact-prefix replay fallback counts. A literal cached-state claim requires an all-KV rerun or a predeclared tolerated fallback fraction.
-- Raw prompts are used instead of model-specific chat templates to preserve an exact shared prefix/query token boundary. Source branch accuracy is diagnostic and may understate instruction-tuned capability.
-- Density and reciprocity residuals are externally declared graph coordinates. They are not yet evidence that a natural LLM contains an irreducible operational residual beyond grounded facts.
-- The real graph interrogator is task-specific. Passing it is evidence for an operational quotient on this family, not a universal latent language.
-- The cluster workflow is sequential by model to limit VRAM and preserve simple source isolation; multi-node scaling is unnecessary until the canary passes.
-- The amd64 Olivia container lacks transformers and wandb; the job installs them from PyPI (or a pre-downloaded wheel directory via `FRANK_EQ_PIP_FIND_LINKS`) when `FRANK_EQ_ALLOW_PIP_INSTALL=1`.
-- W&B telemetry is fail-open and does not gate anything; a missing key or network simply disables the stream and is noted in `run_summary.json`.
+- checkpoint revisions were not pinned in YAML;
+- run manifest `git_commit` is null;
+- KV reuse was counted but not numerically checked against replay;
+- the small adopted evidence copy omits cache metadata, predictions, training
+  history, and evaluator artifact manifest;
+- v1's decision scope string incorrectly says synthetic due to the historical
+  reducer. Future decisions use a real-specific schema.
+
+See `docs/12_STAGEA_V1_AUDIT_AND_V2_PROTOCOL.md`.
