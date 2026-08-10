@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import json
 import os
 import platform
 import socket
@@ -16,6 +17,7 @@ import torch
 from frank_eq.data.real import RealBundle, build_real_cache, validate_real_cache
 from frank_eq.evaluation import Stage0Evaluator
 from frank_eq.real_config import RealRunConfig
+from frank_eq.telemetry import WandbTelemetry
 from frank_eq.training import Stage0Trainer
 from frank_eq.utils import atomic_write_json, sha256_file
 
@@ -63,6 +65,32 @@ def parse_real_stages(value: str | list[str] | tuple[str, ...]) -> tuple[str, ..
     return stages
 
 
+def _cache_telemetry(cache_dir: Path, summary: dict[str, Any]) -> dict[str, Any]:
+    """Build a scalar telemetry payload from the cache build summary.
+
+    Includes the audited branch-mode accounting (physical KV reuse versus
+    exact-prefix replay) recorded in the cache metadata.
+    """
+
+    payload = {key: value for key, value in summary.items() if key not in {"cache_dir"}}
+    metadata_path = cache_dir / "metadata.json"
+    if not metadata_path.is_file():
+        return payload
+    try:
+        metadata = json.loads(metadata_path.read_text())
+        models = metadata.get("extraction", {}).get("models", [])
+        payload["branch_kv_reuse"] = sum(
+            int(model.get("branch_mode_counts", {}).get("kv_reuse", 0)) for model in models
+        )
+        payload["branch_exact_prefix_replay"] = sum(
+            int(model.get("branch_mode_counts", {}).get("exact_prefix_replay", 0))
+            for model in models
+        )
+    except Exception:
+        pass
+    return payload
+
+
 def run_real_stagea(
     config: RealRunConfig,
     *,
@@ -81,6 +109,11 @@ def run_real_stagea(
     manifest_path = root / "run_manifest.json"
     status_path = root / "workflow_status.json"
     config_file = Path(config_path)
+    telemetry = WandbTelemetry(
+        config.logging.wandb,
+        run_name=config.run_name,
+        job=_environment(),
+    )
     manifest = {
         "schema": "frank_eq_real_stagea_manifest_v1",
         "run_name": config.run_name,
@@ -98,6 +131,18 @@ def run_real_stagea(
         },
     }
     atomic_write_json(manifest_path, manifest)
+    telemetry.log(
+        {
+            "run": {
+                "run_name": manifest["run_name"],
+                "config_sha256": manifest["config_sha256"],
+                "stages": ",".join(selected),
+                "python": manifest["environment"].get("python"),
+                "torch": manifest["environment"].get("torch"),
+                "cuda_available": manifest["environment"].get("cuda_available"),
+            }
+        }
+    )
     status: dict[str, Any] = {
         "schema": "frank_eq_real_stagea_status_v1",
         "state": "running",
@@ -117,8 +162,18 @@ def run_real_stagea(
             atomic_write_json(status_path, status)
             if stage == "cache":
                 stage_outputs[stage] = build_real_cache(config, cache_dir)
+                telemetry.log({"cache": _cache_telemetry(cache_dir, stage_outputs[stage])})
             elif stage == "validate":
                 stage_outputs[stage] = validate_real_cache(cache_dir)
+                telemetry.log(
+                    {
+                        "cache_validation": {
+                            key: value
+                            for key, value in stage_outputs[stage].items()
+                            if isinstance(value, (int, float, bool, str))
+                        }
+                    }
+                )
             elif stage == "train":
                 validation = validate_real_cache(cache_dir)
                 if not validation.get("authorizes_training", False):
@@ -126,7 +181,7 @@ def run_real_stagea(
                 bundle = RealBundle.load(cache_dir)
                 stage0_config = config.to_stage0_config(bundle.model_hidden_dims)
                 atomic_write_json(root / "resolved_stage0_config.json", stage0_config.as_dict())
-                trainer = Stage0Trainer(stage0_config, bundle, train_dir)
+                trainer = Stage0Trainer(stage0_config, bundle, train_dir, telemetry=telemetry)
                 stage_outputs[stage] = trainer.train()
             elif stage == "eval":
                 bundle = RealBundle.load(cache_dir)
@@ -139,9 +194,18 @@ def run_real_stagea(
                     bundle,
                     checkpoint_path=checkpoint,
                     output_dir=eval_dir,
+                    telemetry=telemetry,
                 )
                 metrics, decision = evaluator.evaluate()
                 stage_outputs[stage] = {"metrics": metrics, "decision": decision}
+                telemetry.log(
+                    {
+                        "workflow": {
+                            "scientific_decision": decision.get("decision"),
+                            "decision_status": decision.get("status"),
+                        }
+                    }
+                )
             status["completed_stages"].append(stage)
             status["stage_completed_at"] = _timestamp()
             atomic_write_json(status_path, status)
@@ -169,6 +233,7 @@ def run_real_stagea(
             "stages": stage_outputs,
             "scientific_decision": status.get("scientific_decision"),
             "authorizes_scientific_claim": False,
+            "telemetry": telemetry.status(),
         }
         atomic_write_json(root / "run_summary.json", summary)
         return summary
@@ -187,3 +252,5 @@ def run_real_stagea(
         )
         atomic_write_json(status_path, status)
         raise
+    finally:
+        telemetry.finish()

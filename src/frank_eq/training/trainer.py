@@ -15,6 +15,7 @@ from torch.utils.data import DataLoader
 from frank_eq.config import RunConfig
 from frank_eq.data.synthetic import ObservationDataset, SyntheticBundle, WorldBatchSampler
 from frank_eq.models import OperationalQuotientModel
+from frank_eq.telemetry import WandbTelemetry
 from frank_eq.utils import atomic_write_json, parameter_count, resolve_device, seed_everything
 
 from .objectives import LossBreakdown, compute_objective
@@ -23,8 +24,15 @@ from .objectives import LossBreakdown, compute_objective
 class Stage0Trainer:
     """Train independent model charts around one shared operational quotient."""
 
-    def __init__(self, config: RunConfig, bundle: SyntheticBundle, output_dir: str | Path):
+    def __init__(
+        self,
+        config: RunConfig,
+        bundle: SyntheticBundle,
+        output_dir: str | Path,
+        telemetry: WandbTelemetry | None = None,
+    ):
         self.config = config
+        self.telemetry = telemetry
         torch.set_num_threads(config.training.num_threads)
         self.bundle = bundle
         self.output_dir = Path(output_dir)
@@ -191,6 +199,14 @@ class Stage0Trainer:
                     "validation": validation_metrics,
                 }
             )
+            if self.telemetry is not None:
+                self.telemetry.log(
+                    {
+                        f"train/{phase}": {**train_metrics, "validation_total": validation_total},
+                        f"validation/{phase}": validation_metrics,
+                    },
+                    step=epoch,
+                )
             if validation_total < best_validation - 1e-6:
                 best_validation = validation_total
                 best_epoch = epoch
@@ -204,13 +220,16 @@ class Stage0Trainer:
         if best_state is None:
             raise RuntimeError(f"phase {phase} did not produce a checkpoint")
         self.model.load_state_dict(best_state)
-        return {
+        summary = {
             "phase": phase,
             "best_epoch": best_epoch,
             "best_validation_total": best_validation,
             "epochs_observed": epochs_completed,
             "elapsed_seconds": time.time() - start,
         }
+        if self.telemetry is not None:
+            self.telemetry.log({f"phase/{phase}": summary})
+        return summary
 
     def train(self) -> dict[str, object]:
         """Train founder charts, then onboard the held sender without decoder updates."""
@@ -277,4 +296,14 @@ class Stage0Trainer:
             "checkpoint": str(self.output_dir / "final.pt"),
         }
         atomic_write_json(self.output_dir / "training_summary.json", summary)
+        if self.telemetry is not None:
+            self.telemetry.log(
+                {
+                    "training": {
+                        key: value
+                        for key, value in summary.items()
+                        if key not in {"schema", "checkpoint"}
+                    }
+                }
+            )
         return summary

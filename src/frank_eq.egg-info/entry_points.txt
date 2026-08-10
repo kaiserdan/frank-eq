@@ -1,0 +1,2 @@
+[console_scripts]
+frank-eq = frank_eq.cli:main

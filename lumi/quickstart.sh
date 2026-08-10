@@ -12,7 +12,11 @@ if [[ "${FRANK_EQ_ALLOW_PIP_INSTALL:-0}" == "1" ]]; then
     runtime_root="${TMPDIR:-/tmp}/frank-eq-runtime-${SLURM_JOB_ID:-local}"
     python -m venv --system-site-packages "$runtime_root"
     source "$runtime_root/bin/activate"
-    python -m pip install -e '.[real]' --no-build-isolation
+    pip_extra=()
+    if [[ -n "${FRANK_EQ_PIP_FIND_LINKS:-}" ]]; then
+        pip_extra=(--no-index --find-links "$FRANK_EQ_PIP_FIND_LINKS")
+    fi
+    python -m pip install -e '.[real]' --no-build-isolation "${pip_extra[@]}"
 fi
 
 python - <<'PY'

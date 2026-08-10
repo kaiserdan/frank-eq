@@ -48,3 +48,15 @@
 - **Decision:** every cluster submission packages a deterministic source tarball, hashes it, records the exact config/stages/remote root, and writes local submission/status/fetch/verify state under `.agents/state/<cluster>/<job>`.
 - **Reason:** mutable working-directory deployment and prose-only job identity are insufficient for a branch-heavy research program.
 - **First authorized launch:** `cache,validate` using `configs/stage0/real_olivia.yaml` or `configs/stage0/real_lumi.yaml`, after checkpoint-cache preflight.
+
+## 2026-08-10 — add fail-open W&B telemetry to real Stage-A
+
+- **Decision:** log run identity, cache branch-mode accounting, per-epoch training losses, and evaluation metrics to a dedicated `frank-eq-stagea` W&B project. Credentials are forwarded through the environment (`WANDB_API_KEY`) and never enter source, configs, Slurm files, submission state, or logs.
+- **Reason:** training and evaluation currently write only terminal artifacts; a secondary telemetry stream is needed to diagnose whether the quotient is learning, which phase or metric diverges, and how branch modes behaved, without waiting for a fetched run root.
+- **Consequence:** a new `logging.wandb` config section on the real config; `WandbTelemetry` is fail-open (missing package, credentials, or network degrades to a stderr note and counter, never a workflow failure); the telemetry status is recorded in `run_summary.json`. W&B remains secondary telemetry: promotion authority stays exclusively with `eval/decision.json`.
+
+## 2026-08-10 — build an amd64 runtime container for Olivia
+
+- **Decision:** replace the arm64-only scratch PyTorch images with `pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime` (amd64), since every `accel` node on Olivia is H200/x86_64 and the existing images cannot execute there. Runtime pip-installs `[real]` extras (transformers, wandb) inside the job.
+- **Reason:** the previous images were built on an arm64 host and are unusable on Olivia compute nodes; the default image path in `olivia/run.slurm` was therefore broken.
+- **Consequence:** `FRANK_EQ_OLIVIA_IMAGE` default now points at the amd64 image; `FRANK_EQ_ALLOW_PIP_INSTALL=1` and optional `FRANK_EQ_PIP_FIND_LINKS` (offline wheel directory) are forwarded through the submitter for runtime dependency installation.

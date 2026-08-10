@@ -69,6 +69,36 @@ class RealPanelConfig:
 
 
 @dataclass(slots=True)
+class WandBLoggingConfig:
+    """Fail-open W&B telemetry settings for the real Stage-A workflow.
+
+    Telemetry is a convenience layer: it never changes scientific outcomes and
+    must never fail the workflow. Credentials stay in the environment
+    (``WANDB_API_KEY``); only the project identity is configured here.
+    """
+
+    enabled: bool = False
+    project: str = "frank-eq-stagea"
+    entity: str | None = None
+    tags: list[str] = field(default_factory=list)
+    offline: bool = False
+
+    def validate(self) -> None:
+        if self.enabled and not self.project.strip():
+            raise ValueError("logging.wandb.project must not be empty when enabled")
+
+
+@dataclass(slots=True)
+class LoggingConfig:
+    """Real Stage-A telemetry configuration."""
+
+    wandb: WandBLoggingConfig = field(default_factory=WandBLoggingConfig)
+
+    def validate(self) -> None:
+        self.wandb.validate()
+
+
+@dataclass(slots=True)
 class CaptureConfig:
     """Frozen Hugging Face source-capture and future-branch contract."""
 
@@ -95,6 +125,7 @@ class RealRunConfig:
     panel: RealPanelConfig = field(default_factory=RealPanelConfig)
     models: list[RealModelSpec] = field(default_factory=list)
     capture: CaptureConfig = field(default_factory=CaptureConfig)
+    logging: LoggingConfig = field(default_factory=LoggingConfig)
     model: ModelConfig = field(
         default_factory=lambda: ModelConfig(
             code_dim=32,
@@ -168,6 +199,7 @@ class RealRunConfig:
             raise ValueError("model role must be founder or held")
         if self.capture.branch_mode not in {"auto", "kv_reuse", "exact_prefix_replay"}:
             raise ValueError("capture.branch_mode must be auto, kv_reuse, or exact_prefix_replay")
+        self.logging.validate()
         if not self.capture.normalized_depths:
             raise ValueError("capture.normalized_depths must not be empty")
         if any(not 0.0 < depth <= 1.0 for depth in self.capture.normalized_depths):
@@ -241,6 +273,7 @@ def load_real_config(path: str | Path) -> RealRunConfig:
         "panel",
         "models",
         "capture",
+        "logging",
         "model",
         "losses",
         "training",
@@ -252,12 +285,16 @@ def load_real_config(path: str | Path) -> RealRunConfig:
         raise ValueError(f"unknown real-config keys: {sorted(unknown)}")
     defaults = RealRunConfig()
     models = [_construct(RealModelSpec, item) for item in raw.get("models", [])]
+    logging_raw = dict(raw.get("logging") or {})
+    if "wandb" in logging_raw:
+        logging_raw["wandb"] = _construct(WandBLoggingConfig, logging_raw["wandb"])
     config = RealRunConfig(
         run_name=raw.get("run_name", defaults.run_name),
         output_dir=raw.get("output_dir", defaults.output_dir),
         panel=_construct(RealPanelConfig, raw.get("panel")),
         models=models,
         capture=_construct(CaptureConfig, raw.get("capture")),
+        logging=_construct(LoggingConfig, logging_raw),
         model=_construct(ModelConfig, raw.get("model")),
         losses=_construct(LossConfig, raw.get("losses")),
         training=_construct(TrainingConfig, raw.get("training")),

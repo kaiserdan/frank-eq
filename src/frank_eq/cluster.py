@@ -254,6 +254,20 @@ class ClusterClient:
             "FRANK_EQ_STAGES": stages,
             "FRANK_EQ_SOURCE_SHA256": plan["source"]["sha256"],
         }
+        for key in (
+            "WANDB_API_KEY",
+            "WANDB_ENTITY",
+            "WANDB_MODE",
+            "WANDB_DIR",
+            "WANDB_BASE_URL",
+            "FRANK_EQ_OLIVIA_IMAGE",
+            "FRANK_EQ_HF_HOME",
+            "FRANK_EQ_ALLOW_PIP_INSTALL",
+            "FRANK_EQ_PIP_FIND_LINKS",
+        ):
+            value = os.environ.get(key)
+            if value:
+                exports[key] = value
         export_argument = "ALL," + ",".join(
             f"{key}={value}" for key, value in exports.items()
         )

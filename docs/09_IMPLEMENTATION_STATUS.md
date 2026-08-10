@@ -30,7 +30,9 @@ Snapshot: 2026-08-10
 | Olivia content-addressed submit/status/fetch/verify | complete |
 | LUMI content-addressed submit/status/fetch/verify | complete |
 | Cluster Slurm entrypoints and agent skills | complete |
-| Focused real-panel, graph-decoder, config, HF utility, and cluster tests | complete |
+| Fail-open W&B telemetry for real Stage-A runs | complete |
+| amd64 Olivia runtime container (H200 nodes) | complete |
+| Focused real-panel, graph-decoder, config, HF utility, cluster, and telemetry tests | complete |
 
 ## Synthetic reference
 
@@ -60,7 +62,6 @@ The first cluster action should be `cache,validate`. Training is mechanically bl
 - a second task family;
 - confirmation or locked roles;
 - safety or harm-tail evaluation;
-- W&B telemetry as a convenience layer;
 - multi-node or multi-GPU data parallelism.
 
 ## Known implementation caveats
@@ -70,3 +71,5 @@ The first cluster action should be `cache,validate`. Training is mechanically bl
 - Density and reciprocity residuals are externally declared graph coordinates. They are not yet evidence that a natural LLM contains an irreducible operational residual beyond grounded facts.
 - The real graph interrogator is task-specific. Passing it is evidence for an operational quotient on this family, not a universal latent language.
 - The cluster workflow is sequential by model to limit VRAM and preserve simple source isolation; multi-node scaling is unnecessary until the canary passes.
+- The amd64 Olivia container lacks transformers and wandb; the job installs them from PyPI (or a pre-downloaded wheel directory via `FRANK_EQ_PIP_FIND_LINKS`) when `FRANK_EQ_ALLOW_PIP_INSTALL=1`.
+- W&B telemetry is fail-open and does not gate anything; a missing key or network simply disables the stream and is noted in `run_summary.json`.

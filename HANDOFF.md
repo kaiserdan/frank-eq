@@ -8,6 +8,8 @@ Synthetic Stage 0 is complete and its adopted reference returns `PROMOTE_REAL_MO
 
 The next implementation is also complete: a real frozen-checkpoint Stage-A vertical slice that can be submitted to Olivia or LUMI. It has not produced an adopted real-model outcome yet.
 
+Real Stage-A now logs fail-open W&B telemetry (project `frank-eq-stagea`) covering run identity, cache branch-mode accounting, per-epoch training losses, and evaluation metrics. Olivia additionally uses a new amd64 PyTorch container (`pytorch-2.5.1-cuda12.4-runtime-amd64.sif`), because every `accel` node is H200/x86_64 and the previous arm64 images cannot execute there.
+
 ## Real Stage-A implementation
 
 Implemented:
@@ -49,6 +51,16 @@ LUMI uses the same scientific configuration under `configs/stage0/real_lumi.yaml
 3. Submit `cache,validate` first if cluster/model compatibility is uncertain.
 4. Fetch and verify the cache before launching or resuming `train,eval`.
 5. Treat a negative `eval/decision.json` as a valid scientific result. Do not tune gates or layers from test outcomes.
+
+For Olivia, export before submitting:
+
+```bash
+export WANDB_API_KEY=<key>            # W&B telemetry for the frank-eq-stagea project
+export FRANK_EQ_ALLOW_PIP_INSTALL=1   # container lacks transformers/wandb
+export FRANK_EQ_PIP_FIND_LINKS=/cluster/projects/nn12027k/frank-eq-wheels  # offline wheels fallback
+```
+
+`WANDB_API_KEY` is forwarded to the job through `sbatch --export` and the Apptainer environment; it is never written to source, configs, submission state, or logs.
 
 Olivia:
 

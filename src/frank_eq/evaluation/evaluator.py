@@ -14,6 +14,7 @@ from frank_eq.config import RunConfig
 from frank_eq.data.synthetic import ObservationDataset
 from frank_eq.models import OperationalQuotientModel
 from frank_eq.packet import OperationalPacketV1, QueryConditionedSelector
+from frank_eq.telemetry import WandbTelemetry
 from frank_eq.utils import atomic_write_json, resolve_device, sha256_file
 
 from .bootstrap import bootstrap_statistic
@@ -46,8 +47,10 @@ class Stage0Evaluator:
         bundle: Any,
         checkpoint_path: str | Path,
         output_dir: str | Path,
+        telemetry: WandbTelemetry | None = None,
     ):
         self.config = config
+        self.telemetry = telemetry
         torch.set_num_threads(config.training.num_threads)
         self.bundle = bundle
         self.checkpoint_path = Path(checkpoint_path)
@@ -338,6 +341,17 @@ class Stage0Evaluator:
         decision = reduce_stage0(metrics, self.config.gates)
         atomic_write_json(self.output_dir / "metrics.json", metrics)
         atomic_write_json(self.output_dir / "decision.json", decision)
+        if self.telemetry is not None:
+            self.telemetry.log(
+                {
+                    "eval": metrics,
+                    "decision": {
+                        "status": decision["status"],
+                        "decision": decision["decision"],
+                        "failures": len(decision["failures"]),
+                    },
+                }
+            )
         prediction_payload: dict[str, np.ndarray] = {
             "world_id": test["world_id"],
             "model_id": test["model_id"],

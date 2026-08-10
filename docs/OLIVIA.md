@@ -11,6 +11,18 @@ export FRANK_EQ_OLIVIA_ROOT=/cluster/home/dakai5365/project/frank-eq
 
 Defaults match these values. Authentication remains outside the repository.
 
+## Runtime environment
+
+The `accel` partition is H200/x86_64. The default runtime container is `pytorch-2.5.1-cuda12.4-runtime-amd64.sif` (amd64); the older scratch images are arm64 and cannot run on Olivia compute nodes. The container lacks transformers and wandb, so the job installs `.[real]` extras when forwarded:
+
+```bash
+export FRANK_EQ_ALLOW_PIP_INSTALL=1
+export FRANK_EQ_PIP_FIND_LINKS=/cluster/projects/nn12027k/frank-eq-wheels   # offline wheels, optional
+export FRANK_EQ_OLIVIA_IMAGE=/cluster/home/dakai5365/project/frank/pytorch-2.5.1-cuda12.4-runtime-amd64.sif
+```
+
+W&B telemetry (project `frank-eq-stagea`) is enabled by the frozen config and activated by forwarding `WANDB_API_KEY` (plus optional `WANDB_ENTITY`, `WANDB_MODE`, `WANDB_DIR`, `WANDB_BASE_URL`). It is fail-open: missing credentials only disable the stream. Credentials never enter source, configs, Slurm files, or logs.
+
 ## Checkpoint preflight
 
 `configs/stage0/real_olivia.yaml` sets `local_files_only: true`. Before submission, verify that the configured revisions exist under the cluster `HF_HOME` and that the Llama license/token has already been accepted. The Slurm default is:

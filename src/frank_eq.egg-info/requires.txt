@@ -1,0 +1,13 @@
+numpy>=2.0
+PyYAML>=6.0
+torch>=2.2
+
+[dev]
+pytest>=8.0
+ruff>=0.9
+
+[real]
+transformers<6,>=4.56
+huggingface-hub>=0.34
+safetensors>=0.6
+wandb>=0.17
