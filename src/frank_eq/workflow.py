@@ -23,6 +23,7 @@ from frank_eq.training import Stage0Trainer
 from frank_eq.utils import atomic_write_json, sha256_file
 
 REAL_STAGE_ORDER = ("cache", "validate", "diagnose", "train", "eval")
+STAGEQ_ALLOWED_STAGES = frozenset({"cache", "validate"})
 
 
 def _timestamp() -> str:
@@ -68,6 +69,40 @@ def parse_real_stages(value: str | list[str] | tuple[str, ...]) -> tuple[str, ..
     return stages
 
 
+def infer_protocol_role(config: RealRunConfig, config_path: str | Path) -> str:
+    """Infer the fail-closed execution role from registered identity and path.
+
+    Stage-Q configs are intentionally development-only and live under
+    ``configs/stageq``. The run-name check preserves the restriction if a
+    registered config is copied to a cluster job directory before execution.
+    """
+
+    path_parts = {part.lower() for part in Path(config_path).parts}
+    run_name = config.run_name.lower()
+    if "stageq" in path_parts or run_name.startswith("frank-eq-stageq-"):
+        return "stageq"
+    return "stagea"
+
+
+def validate_real_stage_role(
+    config: RealRunConfig,
+    config_path: str | Path,
+    stages: str | list[str] | tuple[str, ...],
+) -> tuple[str, tuple[str, ...]]:
+    """Validate stage order and forbid promotional work for Stage Q."""
+
+    selected = parse_real_stages(stages)
+    role = infer_protocol_role(config, config_path)
+    if role == "stageq":
+        forbidden = sorted(set(selected) - STAGEQ_ALLOWED_STAGES)
+        if forbidden:
+            raise ValueError(
+                "Stage-Q development configs permit only cache,validate; "
+                f"forbidden stages requested: {forbidden}"
+            )
+    return role, selected
+
+
 def _cache_telemetry(cache_dir: Path, summary: dict[str, Any]) -> dict[str, Any]:
     """Build a scalar telemetry payload from the cache build summary."""
 
@@ -99,7 +134,7 @@ def run_real_stagea(
 ) -> dict[str, Any]:
     """Run selected stages and preserve scientific failure as a valid job outcome."""
 
-    selected = parse_real_stages(stages)
+    protocol_role, selected = validate_real_stage_role(config, config_path, stages)
     root = Path(output_dir)
     cache_dir = root / "cache"
     diagnostic_dir = root / "diagnostics"
@@ -117,6 +152,8 @@ def run_real_stagea(
     manifest = {
         "schema": "frank_eq_real_stagea_manifest_v1",
         "run_name": config.run_name,
+        "protocol_role": protocol_role,
+        "development_only": protocol_role == "stageq",
         "created_at": _timestamp(),
         "config_path": str(config_file),
         "config_sha256": sha256_file(config_file),
@@ -128,6 +165,7 @@ def run_real_stagea(
             "receiver_tensors_available": False,
             "future_labels_available_at_capture": False,
             "held_sender_updates_public_decoder": False,
+            "claim_bearing_test_authorized": protocol_role != "stageq",
         },
     }
     atomic_write_json(manifest_path, manifest)
@@ -135,6 +173,7 @@ def run_real_stagea(
         {
             "run": {
                 "run_name": manifest["run_name"],
+                "protocol_role": protocol_role,
                 "config_sha256": manifest["config_sha256"],
                 "stages": ",".join(selected),
                 "python": manifest["environment"].get("python"),
@@ -146,6 +185,8 @@ def run_real_stagea(
     status: dict[str, Any] = {
         "schema": "frank_eq_real_stagea_status_v1",
         "state": "running",
+        "protocol_role": protocol_role,
+        "development_only": protocol_role == "stageq",
         "started_at": _timestamp(),
         "completed_stages": [],
         "current_stage": None,
@@ -238,6 +279,8 @@ def run_real_stagea(
         summary = {
             "schema": "frank_eq_real_stagea_run_v1",
             "status": "completed",
+            "protocol_role": protocol_role,
+            "development_only": protocol_role == "stageq",
             "workflow_integrity_passed": True,
             "manifest": str(manifest_path),
             "workflow_status": str(status_path),

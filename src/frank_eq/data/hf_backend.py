@@ -16,13 +16,16 @@ from frank_eq.utils import sha256_bytes
 
 from .real_panel import RealPanel, render_operation_query, render_world_prefix
 
-# Frozen v2-1 system turn. It is deliberately generic: the world statement
-# (edges, closed-world declaration, density/reciprocity tags) remains the
-# renderer output verbatim in the user turn, so the panel semantics are
-# unchanged; only the conversational wrapper differs from v1 raw prompts.
+# Frozen v2-1 system turn. Historical ``prompt_format=chat`` ended the cached
+# prefix at an assistant generation header, after which the operation text was
+# appended as assistant content. That path is retained for exact
+# reproducibility. New qualification protocols use ``chat_turn`` below.
 CHAT_SYSTEM_CONTRACT = (
     "You are a careful reasoner over a small described world. "
     "Answer questions about the world based only on the description given."
+)
+CHAT_ACKNOWLEDGEMENT = (
+    "I have stored the world description. I will answer the next registered operation."
 )
 
 
@@ -171,34 +174,56 @@ class HFModelAdapter:
             self.tokenizer, capture.answer_token_pairs
         )
 
+    def _apply_chat_template(
+        self,
+        messages: list[dict[str, str]],
+        *,
+        add_generation_prompt: bool,
+    ) -> str:
+        if not getattr(self.tokenizer, "chat_template", None):
+            raise RuntimeError(
+                f"capture.prompt_format requires a chat template but {self.spec.model_id} "
+                "tokenizer has none"
+            )
+        try:
+            return self.tokenizer.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=add_generation_prompt,
+                **dict(self.capture.chat_template_kwargs),
+            )
+        except Exception as error:
+            raise RuntimeError(
+                f"chat template application failed for {self.spec.model_id}: {error}"
+            ) from error
+
+    @staticmethod
+    def _base_chat_messages(world_statement: str) -> list[dict[str, str]]:
+        return [
+            {"role": "system", "content": CHAT_SYSTEM_CONTRACT},
+            {"role": "user", "content": world_statement},
+        ]
+
     def _format_prefix(self, prefix: str) -> str:
         if self.capture.prompt_format == "raw":
             return prefix
         if self.capture.prompt_format == "chat":
-            if not getattr(self.tokenizer, "chat_template", None):
-                raise RuntimeError(
-                    f"capture.prompt_format='chat' but {self.spec.model_id} "
-                    "tokenizer has no chat template"
-                )
-            try:
-                return self.tokenizer.apply_chat_template(
-                    [
-                        {"role": "system", "content": CHAT_SYSTEM_CONTRACT},
-                        {"role": "user", "content": prefix},
-                    ],
-                    tokenize=False,
-                    add_generation_prompt=True,
-                )
-            except Exception as error:
-                raise RuntimeError(
-                    f"chat template application failed for {self.spec.model_id}: {error}"
-                ) from error
+            # Historical v2-1 contract. The operation suffix was appended after
+            # this assistant header, so it became assistant content rather than
+            # a new user turn. Retain only for reproducing the adopted result.
+            return self._apply_chat_template(
+                self._base_chat_messages(prefix),
+                add_generation_prompt=True,
+            )
+        if self.capture.prompt_format == "chat_turn":
+            messages = self._base_chat_messages(prefix)
+            messages.append({"role": "assistant", "content": CHAT_ACKNOWLEDGEMENT})
+            return self._apply_chat_template(messages, add_generation_prompt=False)
         raise ValueError(f"unsupported capture.prompt_format: {self.capture.prompt_format}")
 
     def _tokenize(self, text: str, *, add_special_tokens: bool | None = None) -> torch.Tensor:
         if add_special_tokens is None:
-            # Chat-formatted prefixes carry their own opening markers; injecting
-            # special tokens would double tags or append a trailing EOS.
+            # Chat-formatted strings carry their own opening and turn markers.
             add_special_tokens = self.capture.prompt_format == "raw"
         encoded = self.tokenizer(
             text,
@@ -208,18 +233,46 @@ class HFModelAdapter:
         )["input_ids"]
         if encoded.shape[1] > self.capture.max_length:
             raise RuntimeError(
-                f"prefix length {encoded.shape[1]} exceeds max_length={self.capture.max_length}"
+                f"sequence length {encoded.shape[1]} exceeds max_length={self.capture.max_length}"
             )
         return encoded.to(self.device)
 
-    def _query_ids(self, query: str) -> torch.Tensor:
-        encoded = self.tokenizer(
-            query,
-            add_special_tokens=False,
-            return_tensors="pt",
-            truncation=False,
-        )["input_ids"]
-        return encoded.to(self.device)
+    def _query_ids(
+        self,
+        query: str,
+        *,
+        world_statement: str | None = None,
+        prefix_ids: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        if self.capture.prompt_format != "chat_turn":
+            encoded = self.tokenizer(
+                query,
+                add_special_tokens=False,
+                return_tensors="pt",
+                truncation=False,
+            )["input_ids"]
+            return encoded.to(self.device)
+
+        if world_statement is None or prefix_ids is None:
+            raise ValueError("chat_turn suffix construction requires world_statement and prefix_ids")
+        messages = self._base_chat_messages(world_statement)
+        messages.extend(
+            [
+                {"role": "assistant", "content": CHAT_ACKNOWLEDGEMENT},
+                {"role": "user", "content": query},
+            ]
+        )
+        full_text = self._apply_chat_template(messages, add_generation_prompt=True)
+        full_ids = self._tokenize(full_text, add_special_tokens=False)
+        prefix_length = int(prefix_ids.shape[1])
+        if full_ids.shape[1] <= prefix_length:
+            raise RuntimeError("chat_turn operation suffix is empty")
+        if not torch.equal(full_ids[:, :prefix_length], prefix_ids):
+            raise RuntimeError(
+                "chat_turn template violates exact prefix continuity; operation reveal would "
+                "change the cached token history"
+            )
+        return full_ids[:, prefix_length:]
 
     def _probability_from_logits(self, logits: torch.Tensor) -> float:
         pair = logits[list(self.answer_ids)].float()
@@ -263,6 +316,7 @@ class HFModelAdapter:
         mode_counts = {"kv_reuse": 0, "exact_prefix_replay": 0}
         parity_audit: dict[str, Any] = {
             "sample_size": self.capture.parity_sample_size,
+            "prompt_format": self.capture.prompt_format,
             "entries": [],
         }
         false_label, true_label = self.answer_labels
@@ -272,7 +326,8 @@ class HFModelAdapter:
         for world in panel.worlds:
             split = split_by_world[world.world_id]
             for renderer_id in range(int(panel.config["n_renderers"])):
-                prefix = self._format_prefix(render_world_prefix(world, renderer_id))
+                world_statement = render_world_prefix(world, renderer_id)
+                prefix = self._format_prefix(world_statement)
                 prefix_ids = self._tokenize(prefix)
                 request_cache = self.capture.branch_mode in {"auto", "kv_reuse"}
                 with torch.inference_mode():
@@ -312,7 +367,11 @@ class HFModelAdapter:
                         false_label,
                         true_label,
                     )
-                    query_ids = self._query_ids(query)
+                    query_ids = self._query_ids(
+                        query,
+                        world_statement=world_statement,
+                        prefix_ids=prefix_ids,
+                    )
                     selected_mode = self.capture.branch_mode
                     if selected_mode == "auto":
                         selected_mode = "kv_reuse"
@@ -339,12 +398,10 @@ class HFModelAdapter:
                         and selected_mode == "kv_reuse"
                     ):
                         try:
-                            replay_probability = self._branch_exact_replay(
-                                prefix_ids, query_ids
-                            )
+                            replay_probability = self._branch_exact_replay(prefix_ids, query_ids)
                         except Exception:
-                            # Parity is engineering telemetry on an already-verified
-                            # KV path; a replay-side failure must not abort capture.
+                            # Parity is stack telemetry on an already-verified KV
+                            # path; a replay-side failure does not alter that path.
                             pass
                         else:
                             parity_audit["entries"].append(

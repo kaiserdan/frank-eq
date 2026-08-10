@@ -7,152 +7,180 @@ Snapshot: 2026-08-10
 | Component | Status |
 |---|---|
 | Synthetic Stage-0 implementation and adopted reference | complete |
-| Real relational panel, capture backend, cache records, and validator | complete |
+| Real graph panel, causal cache records, validator, and frozen interrogator | complete |
 | Founder training and held-sender onboarding | complete |
-| Frozen graph interrogator and query-conditioned packet | complete |
-| Olivia/LUMI content-addressed workflows | complete |
-| Fail-open W&B telemetry | complete |
-| First real Stage-A v1 outcome | complete, valid negative |
-| Stage-A v1 independent audit and evidence manifest | complete |
-| Train/validation-only real-cache localization diagnostic | implemented |
+| Olivia/LUMI content-addressed workflows and W&B telemetry | complete |
+| Real Stage-A v1 outcome and independent audit | complete, valid negative |
+| Real Stage-A v2-1 outcome | complete, valid exact-pipeline negative |
+| Supplemental v2-1 interpretation review | complete |
+| Train/validation-only readability diagnostic | complete |
 | Complete model-local public-head option | implemented, dormant |
-| Real-specific future decision metadata | implemented |
-| Operational `.agents/state/` exclusion | implemented |
+| Proper new-user-turn `chat_turn` capture | implemented |
+| Aggregate and per-founder native-competence qualification | implemented |
+| Paired identical-panel prompt/capture comparison | implemented |
+| Stage-Q cache-only workflow enforcement | implemented |
+| Stage-Q LUMI development configs | frozen, not run |
 
-## Adopted real Stage-A v1 outcome
+## Adopted real outcomes
 
-`frank-eq-stagea-devg-v2` completed on LUMI job `20942127` and returned
-`STOP_OR_REVISE_STAGE0`.
+### Stage-A v1
 
-Engineering integrity passed. The decision is scientifically valid for:
+`frank-eq-stagea-devg-v2` returned `STOP_OR_REVISE_STAGE0` for final-token
+residual capture, local charts, shared public heads, and the frozen graph
+interrogator. Its exact-pipeline negative remains valid.
 
-```text
-last-token residual at three depths
-→ local chart
-→ shared fact/residual heads
-→ frozen graph interrogator
-```
+### Stage-A v2-1
 
-The result does not falsify a future-defined quotient over the complete runtime
-state.
+`frank-eq-stagea-lumi-v2` returned `STOP_OR_REVISE_STAGE0`:
 
-### Main observations
+| Metric | Value |
+|---|---:|
+| Native competence gain versus prior | -0.0521 |
+| Held-out signature Brier | 0.2065; upper95 0.2421 |
+| Fact accuracy | 0.5509; lower95 0.5120 |
+| Cross-model retrieval | 0.1528; lower95 0.0972 |
+| Wrong-world margin | -0.0607 |
+| Held-sender retention | -0.3445 |
+| Model-ID leakage over chance | 0.6389 |
+| Renderer cosine | 0.9793 |
 
-| Metric | Value | Interpretation |
-|---|---:|---|
-| Fact accuracy | 0.5296 | only +0.0019 over reconstructed global-majority baseline |
-| Held-out signature Brier | 0.1729 | better than operation-prior 0.2080, but gate upper bound fails |
-| Cross-model retrieval | 0.2083 | weak world identity across models |
-| Wrong-world margin | -0.0575 | collapse/wrong-world preference |
-| Held retention | 0.4717 | poor establishment |
-| Model leakage over chance | 0.6528 | public code remains strongly model-specific |
-| Source branch accuracy | 0.4392 | below operation-prior 0.6354 |
-| Renderer cosine | 0.9925 | not meaningful without non-collapse |
-| Quantization retention | 0.9962 | preserves failed code |
-| Residual gain | positive | confounded by explicit density/reciprocity tags |
+This is a decisive negative for the exact v2-1 shared-head oracle quotient.
+Receiver execution remains blocked.
 
-## Audit correction
+## v2-1 interpretation correction
 
-The earlier status described the failure as localized to capture sufficiency and
-said facts were not linearly readable. That claim was not tested. The executed
-fact head is nonlinear and jointly optimized with seven other objectives, and
-no independent layer/model readability probe exists.
+The original adoption text overreached in calling native chat prompting
+falsified.
 
-The failure is currently compatible with:
+Historical `prompt_format: chat` produced a cache ending at an assistant
+-generation header. The operation string was appended after that header and was
+therefore assistant content, not a new user turn. In addition, v1 and v2 used
+different panel seeds, which changed worlds, operations, and split assignments.
+No paired prompt contrast or interval for the v1/v2 difference existed.
 
-- insufficient last-token capture;
-- inadequate pooling of a distributed KV/token state;
-- weak native task competence under raw prompts;
-- shared-head/private-gauge mismatch;
-- sample/parameter mismatch;
-- joint-objective interference;
-- absent semantic grounding despite readable own-future state.
+The correct conclusion is:
 
-## Localization outcome (diagnostic executed)
+> v2-1 falsifies the exact legacy chat-assistant-continuation pipeline, not all
+> native chat prompting.
 
-The existing-cache diagnostic ran on train/validation worlds only
-(`runs/diagnostics/frank-eq-stagea-devg-v2/localization.json`; full record in
-`docs/13_STAGEA_V1_CORRECTION_LOG.md`). Machine recommendation:
+The competence gate also used a point estimate and ran during final evaluation,
+so it did not stop training/test use as a true prerequisite.
+
+See:
 
 ```text
-FIX_NATIVE_COMPETENCE_BEFORE_LATENT_REVISION
+evidence/real_stagea_lumi_v2/REVIEW.md
+docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md
+docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md
 ```
 
-Founder native branch Brier gain over the operation-wise prior is −0.060 on
-validation worlds (negative in every operation family), while facts
-(+0.006..+0.035 gain), oracle signatures (+0.062..+0.067), and own-future
-signatures (+0.0008..+0.0115) are all readable from the existing capture.
-Renderer-transfer fact probes lose to the coordinate prior (−0.18..−0.26),
-so the v1 renderer-cosine pass is treated as invariance without specificity.
-Residual R2 0.64..0.69 is a declared-global control (density/reciprocity tags
-are rendered in the prefix) and carries no hidden-operational evidence.
+## Stage-Q implementation
 
-Per the frozen decision tree the next hypothesis is a model/task competence
-prerequisite (e.g. native chat template or stronger checkpoints); it still
-requires a versioned Stage-A v2 registration with a fresh test role.
+Stage Q corrects these deficiencies before another Stage-A registration.
 
-## New localization implementation
+### Proper conversation contract
 
-`frank-eq diagnose-real-cache` fits fixed-ridge probes using training worlds and
-reports only validation worlds. It separately tests facts, oracle signatures,
-own future signatures, residual coordinates, renderer transfer, and native
-competence. It touches zero test labels and cannot promote.
+`capture.prompt_format` now accepts:
 
-The real workflow now accepts the optional stage:
+- `raw`: historical raw text;
+- `chat`: historical v2-1 assistant-continuation path, retained for reproduction;
+- `chat_turn`: complete system/user/assistant prefix followed by a new user
+  operation turn after capture.
+
+For `chat_turn`, the backend tokenizes the full conversation and fails closed if
+the cached prefix is not an exact token prefix of the branch conversation.
+Optional `capture.chat_template_kwargs` are passed to the model template; Stage Q
+freezes `enable_thinking: false`.
+
+### Development competence qualifier
+
+`src/frank_eq/qualification.py` computes founder competence on train/validation
+worlds only:
 
 ```text
-cache,validate,diagnose,train,eval
+operation-prior Brier - frozen-source Brier
 ```
 
-## Dormant v2 architecture support
+Model/renderer rows are averaged within world before a 2,000-replicate grouped
+bootstrap. The held sender and test worlds are excluded. Both aggregate and
+every individual founder lower confidence bound must be non-negative. The
+output authorizes nothing beyond protocol design.
 
-`model.public_head_scope` accepts:
+CLI:
 
-- `shared`: exact historical v1 behavior and checkpoint compatibility;
-- `local`: complete local compiler per model (chart + fact/residual heads).
+```bash
+python scripts/qualify_real_cache.py --cache <cache> --out <out>
+```
 
-The public operation semantics and interrogator remain shared. The local option
-is implementation readiness only; no outcome-bearing v2 config is frozen.
+### Paired Stage-Q comparison
 
-## Stage-A v2-1 registration (falsified; adopted negative)
+`src/frank_eq/stageq.py` rejects caches unless their models, world IDs,
+renderers, labels, operation registry, descriptors, and split manifest are
+identical. It then bootstraps the paired candidate-minus-baseline Brier
+improvement by world.
 
-Per decision-tree branch A (native competence prerequisite), exactly one
-versioned v2 hypothesis was frozen: same checkpoints and panel geometry, capture
-prefix wrapped in each model's native chat template. It ran on LUMI dev-g
-(`frank-eq-stagea-lumi-v2`, Slurm 20952565) and is **falsified**: native
-competence gain −0.0521 (vs −0.0603 diagnostic), held-out Brier upper 0.242,
-held-sender retention −0.34. The prompt surface is not the competence
-bottleneck; the source models' branches are oracle-incompetent on this task
-under both raw and chat prompts. Adopted negative under
-`evidence/real_stagea_lumi_v2/`. Protocol: `docs/14_STAGEA_V2_PROTOCOL.md`.
+The paired result is a prompt-attribution diagnostic, not a source-qualification
+prerequisite. It reports `prompt_effect_identified` separately from
+`source_contract_qualified`.
 
-Two engineering amendments were recorded during the run (parity-tolerance
-calibration from a 32-branch measurement; exclusive `kv_reuse` branch mode with
-fallback disabled); they change no scientific gate and are logged in
-`docs/13_STAGEA_V1_CORRECTION_LOG.md`.
+CLI:
 
-Next hypothesis candidates (branch A continuation): stronger checkpoints, or a
-task revision. Both require a new versioned registration with a fresh untouched
-test role.
+```bash
+python scripts/compare_stageq_caches.py \
+  --baseline-cache <legacy> \
+  --candidate-cache <chat-turn> \
+  --out <out>
+```
+
+### Frozen development configs
+
+```text
+configs/stageq/real_lumi_legacy_chat.yaml
+configs/stageq/real_lumi_chat_turn.yaml
+```
+
+They share panel seed `20260811` and differ only in `prompt_format` plus run
+identity/telemetry tags. They are for `cache,validate` only; their worlds are
+permanently development-only. `src/frank_eq/workflow.py` rejects `diagnose`,
+`train`, and `eval` for Stage-Q identities.
+
+## Current continuation gate
+
+The source contract qualifies only when:
+
+```text
+aggregate candidate competence lower95 >= 0
+every individual founder competence lower95 >= 0
+```
+
+This permits drafting one fresh Stage-A registration. It does not authorize
+running that registration, a receiver experiment, or a scientific claim.
+
+The paired candidate improvement controls only a claim that corrected turn
+placement helped. If it fails while source competence passes, the candidate may
+still be frozen as the source prerequisite without a prompt-mechanism claim.
+
+If source competence fails, the next work is development-only checkpoint/task
+qualification. Do not modify the quotient architecture until a source/task pair
+passes both aggregate and per-founder gates.
+
+## Dormant future architecture
+
+`model.public_head_scope: local` provides one complete compiler per source model
+(chart plus fact/residual heads) while retaining externally fixed public
+coordinates and a frozen interrogator. It should be considered only after
+source competence passes.
+
+A later Stage-A registration should separate:
+
+- behavioral self-future prediction;
+- oracle semantic grounding.
 
 ## Not authorized
 
-- reuse of the v1 test role for selection;
-- a new Stage-A outcome run (localization completed; a v2 registration must be
-  frozen and versioned first);
+- Stage-Q `diagnose`, training, or evaluation stages;
+- reuse of Stage-Q worlds for confirmation;
+- another Stage-A test run before Stage-Q source qualification;
+- shared-head oracle-quotient rescue variants;
 - receiver-native execution;
-- rate-matched transcript/summary experiments;
-- confirmation or locked roles;
-- safety or harm-tail claims.
-
-## Known v1 evidence limitations
-
-- checkpoint revisions were not pinned in YAML;
-- run manifest `git_commit` is null;
-- KV reuse was counted but not numerically checked against replay;
-- the small adopted evidence copy omits cache metadata, predictions, training
-  history, and evaluator artifact manifest;
-- v1's decision scope string incorrectly says synthetic due to the historical
-  reducer. Future decisions use a real-specific schema.
-
-See `docs/12_STAGEA_V1_AUDIT_AND_V2_PROTOCOL.md`.
+- rate-matched communication, confirmation, safety, or harm-tail claims.

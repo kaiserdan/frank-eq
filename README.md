@@ -2,11 +2,11 @@
 
 **Future-defined operational equivalence quotients for cross-model LLM state interfaces.**
 
-Frank-EQ asks whether a pre-operation LLM state can be compressed into a
-public, model-independent description of the future computations it supports.
-It does not treat hidden-coordinate similarity as interoperability.
+Frank-EQ asks whether a state formed before an operation is revealed can be
+compiled into a public description of the future computations it supports. It
+does not equate hidden-coordinate similarity with interoperability.
 
-For frozen model `M`, cached state `h`, and public operation family `K`:
+For frozen model `M`, cached state `h`, and operation family `K`:
 
 ```text
 Sigma_M(h) = { p_M(y | h, k) : k in K }.
@@ -16,219 +16,222 @@ Sigma_M(h) = { p_M(y | h, k) : k in K }.
 
 ### Synthetic Stage 0
 
-The controlled implementation reference passes and authorizes only a real-model
-canary. It is not evidence about LLM latent spaces.
+The controlled implementation reference passes. It establishes only that the
+contracts, packet, frozen decoder, held-sender workflow, and gates are
+executable.
 
-### Real Stage A v1: valid negative
-
-The first frozen real run, `frank-eq-stagea-devg-v2` on LUMI job `20942127`,
-completed with full engineering integrity and returned:
+### Real Stage A: two valid negatives
 
 ```text
-STOP_OR_REVISE_STAGE0
+v1  frank-eq-stagea-devg-v2   LUMI 20942127   STOP_OR_REVISE_STAGE0
+v2  frank-eq-stagea-lumi-v2   LUMI 20952565   STOP_OR_REVISE_STAGE0
 ```
 
-The exact failed pipeline was:
+The v2-1 shared-head oracle quotient failed decisively:
 
 ```text
-raw non-chat world prefix
-→ final-token residual at normalized depths 0.35/0.60/0.85
-→ model-local chart
-→ shared fact/residual heads
-→ frozen graph interrogator
+native competence gain vs prior:  -0.0521
+held-out signature Brier:          0.2065 (upper95 0.2421)
+fact accuracy:                     0.5509 (lower95 0.5120)
+cross-model retrieval:             0.1528 (lower95 0.0972)
+wrong-world margin:               -0.0607
+held-sender retention:            -0.3445
+model-ID leakage over chance:      0.6389
 ```
 
-Six gates failed: fact accuracy, held-out signature Brier, cross-model
-retrieval, wrong-world specificity, held-sender retention, and model-ID
-leakage. The trained fact accuracy was `0.5296`, only `0.0019` above the
-reconstructed global-majority baseline. Renderer cosine and quantization
-passed, but renderer stability coexisted with code collapse/model identity and
-does not rescue the result.
+No receiver experiment or scientific claim is authorized.
 
-The decision is retained as a valid negative for Stage-A v1. The broader
-diagnosis is **not yet identified**. V1 did not independently test whether the
-source information was readable before applying its nonlinear, multi-objective,
-shared-head quotient.
+### Important v2-1 interpretation correction
+
+The exact v2-1 negative remains valid, but the original description as a
+falsification of native chat prompting was too broad.
+
+Historical `prompt_format: chat` cached a sequence ending at an
+assistant-generation header. The operation was appended after that header, so
+it entered as assistant content rather than as a new user turn. In addition,
+v1 and v2 used different panel seeds, changing worlds, operations, and split
+assignments. Their competence point estimates were not a paired prompt
+comparison and had no interval for the difference.
+
+The claim supported by v2-1 is therefore:
+
+> The exact legacy chat-assistant-continuation, final-token, shared-head oracle
+> quotient fails.
 
 See:
 
-- `evidence/real_stagea_devg_v2/`
-- `docs/12_STAGEA_V1_AUDIT_AND_V2_PROTOCOL.md`
-- `docs/10_DECISION_LOG.md`
-
-## Immediate next action
-
-Run the non-promotional train/validation-only localization on the fetched v1
-cache:
-
-```bash
-frank-eq diagnose-real-cache \
-  --cache <fetched-run>/runs/cache \
-  --out <fetched-run>/runs/diagnostics
+```text
+evidence/real_stagea_lumi_v2/REVIEW.md
+docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md
+docs/15_STAGEA_V2_REVIEW_AND_STAGEQ.md
+docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md
 ```
 
-It separately measures:
+## Current next step: Stage Q
 
-- formal fact readability;
-- oracle-signature readability;
-- readability of each model's own future branch signature;
-- renderer-transfer readability;
-- native branch competence against operation-wise priors;
-- individual-layer versus concatenated capture.
+Stage Q is a development-only source-competence qualification. It must run
+before another quotient is trained or another claim-bearing test role is used.
 
-It consumes zero test worlds and cannot authorize another run. Its result
-selects which Stage-A v2 hypothesis to freeze:
+Two frozen LUMI configs share the same models, worlds, renderers, operations,
+split, and KV path:
 
 ```text
-native incompetence
-  → repair task/prompt competence first
-
-own future signature unreadable
-  → expand capture to token-sequence / selected-KV state
-
-own future signature readable but facts unreadable
-  → separate operational state from semantic grounding
-
-raw targets readable but quotient fails
-  → complete model-local compilers and revise the joint objective
+configs/stageq/real_lumi_legacy_chat.yaml
+configs/stageq/real_lumi_chat_turn.yaml
 ```
 
-## Architecture
+The candidate `chat_turn` path caches a complete system/user/assistant
+conversation and reveals the operation afterward as a new user message. The
+backend fails closed unless the cached token IDs are an exact prefix of the full
+branch conversation.
 
-```text
-frozen source state before operation reveal
-        |
-        v
-model-local causal-state capture
-        |
-        v
-complete model-local compiler
-        |
-        +---- self-future operational signature
-        |
-        +---- externally grounded facts / calibration
-        |
-        v
-typed public state
-        |
-        v
-frozen public interrogator
-        |
-        v
-receiver-native execution (locked)
-```
-
-The repository preserves the v1 shared-head architecture by default. A dormant
-v2 option, `model.public_head_scope: local`, gives every sender its own chart,
-fact head, and residual head while keeping public semantics and the
-interrogator shared. It must not be launched until a versioned v2 protocol and
-fresh test role are frozen.
-
-## Local setup
+Build and validate both caches only. The workflow rejects `diagnose`, `train`,
+and `eval` for Stage-Q configs:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e '.[dev]'
+python lumi/cli.py submit \
+  --job-name frank-eq-stageq-legacy-chat \
+  --config configs/stageq/real_lumi_legacy_chat.yaml \
+  --profile full --stages cache,validate --json
 
-frank-eq validate-config --config configs/stage0/synthetic_smoke.yaml
-frank-eq run-stage0 \
-  --config configs/stage0/synthetic_smoke.yaml \
-  --out runs/synthetic-smoke
+python lumi/cli.py submit \
+  --job-name frank-eq-stageq-chat-turn \
+  --config configs/stageq/real_lumi_chat_turn.yaml \
+  --profile full --stages cache,validate --json
 ```
 
-Real extraction additionally requires:
+Then qualify and compare them locally:
 
 ```bash
-pip install -e '.[real,dev]'
-frank-eq validate-real-config --config configs/stage0/real_smoke.yaml
+python scripts/qualify_real_cache.py \
+  --cache <legacy>/runs/cache \
+  --out runs/stageq/legacy-qualification
+
+python scripts/qualify_real_cache.py \
+  --cache <chat-turn>/runs/cache \
+  --out runs/stageq/chat-turn-qualification
+
+python scripts/compare_stageq_caches.py \
+  --baseline-cache <legacy>/runs/cache \
+  --candidate-cache <chat-turn>/runs/cache \
+  --out runs/stageq/paired-comparison
 ```
 
-Available real commands:
+The qualifier uses founder models and train/validation worlds only, averages
+views within world, and reports grouped 95% intervals. It excludes test worlds
+and the held sender. Every output keeps all scientific, receiver, test-access,
+and fresh-outcome authorization fields false.
+
+The source contract qualifies only when:
 
 ```text
+aggregate candidate competence lower95 >= 0
+every individual founder competence lower95 >= 0
+```
+
+This permits one fresh Stage-A registration to be drafted, not run.
+
+The paired comparison answers a separate attribution question:
+
+```text
+paired candidate-minus-legacy Brier improvement lower95 >= 0
+```
+
+If it passes, corrected turn placement has an identified positive effect. If it
+fails while source competence passes, the candidate may still be used as a
+frozen prerequisite, but no prompt-mechanism claim is allowed.
+
+## Architecture direction after qualification
+
+The current shared-head oracle quotient should not be rescued unchanged. A
+future Stage-A registration, only after source competence passes, should
+separate:
+
+```text
+behavioral operational channel
+  predicts the frozen source model's own future response distribution
+
+semantic grounding channel
+  maps model-local state to externally defined facts and correctness
+```
+
+It should also use complete model-local compilers:
+
+```yaml
+model:
+  public_head_scope: local
+```
+
+This makes the chart, fact head, and residual head local to each sender while
+keeping public coordinate semantics and the interrogator frozen. The option is
+implemented but dormant.
+
+## Implemented commands
+
+Synthetic and real workflow commands:
+
+```text
+frank-eq validate-config
+frank-eq run-stage0
+frank-eq validate-real-config
 frank-eq make-real-cache
 frank-eq validate-real-cache
 frank-eq diagnose-real-cache
 frank-eq run-real-stagea
 ```
 
-The workflow stage order is:
+Development qualification commands:
 
 ```text
-cache,validate,diagnose,train,eval
+python scripts/qualify_real_cache.py
+python scripts/compare_stageq_caches.py
 ```
 
-`diagnose` is optional and non-promotional. Historical
-`cache,validate,train,eval` commands remain valid.
-
-## Olivia
+## Local setup
 
 ```bash
-python olivia/cli.py submit \
-  --job-name frank-eq-stagea-localization \
-  --config configs/stage0/real_olivia.yaml \
-  --profile full \
-  --stages cache,validate,diagnose \
-  --dry-run --json
+python -m venv .venv
+source .venv/bin/activate
+pip install -e '.[real,dev]'
+
+python -m compileall -q src scripts olivia lumi
+ruff check src scripts tests
+pytest -q
+python scripts/validate_repo.py
 ```
-
-## LUMI
-
-```bash
-python lumi/cli.py submit \
-  --job-name frank-eq-stagea-localization-lumi \
-  --config configs/stage0/real_lumi.yaml \
-  --profile full \
-  --stages cache,validate,diagnose \
-  --dry-run --json
-```
-
-For the existing v1 cache, prefer the standalone diagnostic rather than
-recapturing data.
 
 ## Evidence hierarchy
 
 ```text
-frozen config/source identity
+frozen protocol and source identity
 cache validation and access audit
 machine decision
 held-out metrics
-predictions
-training history
-non-promotional localization
+predictions and training history
+development-only diagnostics/qualification
 W&B telemetry
 prose
 ```
 
-Operational `.agents/state/` caches and source archives are local-only and must
-not be committed. Adopted evidence belongs under `evidence/` with a hash
-manifest.
-
-## Validation
-
-```bash
-python -m compileall -q src scripts olivia lumi
-ruff check src scripts tests
-pytest -q
-bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
-python scripts/validate_repo.py
-```
+Adopted evidence belongs under `evidence/` with hashes. Generated caches,
+checkpoints, scheduler state, and source archives remain local under `runs/` or
+`.agents/state/` and must not be committed.
 
 ## Claim boundary
 
 Frank-EQ currently establishes:
 
-- a functioning synthetic quotient implementation;
-- a causally ordered, reproducible real Stage-A workflow;
-- a valid negative result for one narrow real architecture.
+- a functioning synthetic implementation;
+- causally ordered real-cache and cluster workflows;
+- two valid negative results for narrow real architectures;
+- a development-only path for correctly qualifying source competence.
 
-It does **not** establish:
+It does not establish:
 
-- that future-defined quotients are absent from LLMs;
-- that such a quotient exists across model families;
+- the existence or non-existence of a universal operational quotient;
+- native-chat incompetence in general;
+- cross-family sender establishment;
 - receiver-native execution;
-- held-sender establishment;
 - superiority to text communication;
 - safety or causal utility.
 

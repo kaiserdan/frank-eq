@@ -1,0 +1,43 @@
+{
+  "authorization": {
+    "new_stagea_outcome_run_authorized": false,
+    "receiver_execution_authorized": false,
+    "scientific_claim_authorized": false,
+    "test_access_authorized": false
+  },
+  "continuation": {
+    "code": "RUN_DEVELOPMENT_STAGE_Q_BEFORE_STAGEA_V3",
+    "paired_panel_required": true,
+    "proper_chat_turn_required": true,
+    "stop_before_training_and_test_on_failure": true,
+    "world_grouped_interval_required": true
+  },
+  "interpretation": {
+    "failure_scope": "legacy chat assistant-continuation plus shared-head oracle quotient",
+    "native_chat_template_falsified": false,
+    "prompt_surface_isolated": false,
+    "reasons": [
+      "operation was appended inside the assistant turn rather than revealed as a new user turn",
+      "v1 and v2 used different worlds, operation registries, and split assignments",
+      "native competence used a point estimate without a grouped confidence interval",
+      "competence was evaluated after training and test-world scoring",
+      "KV reuse and exact replay were empirically non-equivalent on the execution stack"
+    ]
+  },
+  "measured": {
+    "fact_accuracy": 0.5509259259259259,
+    "held_model_retention": -0.3444558950607524,
+    "heldout_signature_brier": 0.20654068887233734,
+    "heldout_signature_brier_upper95": 0.24205697613457838,
+    "model_leakage_over_chance": 0.6388888888888888,
+    "native_competence_brier_gain": -0.052091971039772034,
+    "wrong_world_margin": -0.060714256639281906
+  },
+  "preserved_outcome": {
+    "engineering_valid": true,
+    "exact_pipeline_negative_valid": true,
+    "scientific_decision": "STOP_OR_REVISE_STAGE0"
+  },
+  "run": "frank-eq-stagea-lumi-v2",
+  "schema": "frank_eq_stagea_v2_independent_review_v1"
+}

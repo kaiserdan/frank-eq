@@ -100,7 +100,14 @@ class LoggingConfig:
 
 @dataclass(slots=True)
 class CaptureConfig:
-    """Frozen Hugging Face source-capture and future-branch contract."""
+    """Frozen Hugging Face source-capture and future-branch contract.
+
+    ``chat`` is retained for historical v2-1 reproducibility: it ends the
+    cached prefix at an assistant-generation boundary and appends operation
+    text as assistant content. New competence protocols must use
+    ``chat_turn``, which caches a complete assistant acknowledgement and then
+    reveals the operation as a new user turn.
+    """
 
     normalized_depths: list[float] = field(default_factory=lambda: [0.35, 0.60, 0.85])
     max_length: int = 512
@@ -115,6 +122,7 @@ class CaptureConfig:
     branch_batch_size: int = 8
     local_files_only: bool = False
     prompt_format: str = "raw"
+    chat_template_kwargs: dict[str, Any] = field(default_factory=dict)
     parity_sample_size: int = 0
     parity_max_abs_diff: float = 0.01
 
@@ -212,10 +220,14 @@ class RealRunConfig:
             raise ValueError("capture.normalized_depths must be unique")
         if self.capture.max_length < 64:
             raise ValueError("capture.max_length must be at least 64")
-        if not self.capture.answer_token_pairs or any(len(pair) != 2 for pair in self.capture.answer_token_pairs):
+        if not self.capture.answer_token_pairs or any(
+            len(pair) != 2 for pair in self.capture.answer_token_pairs
+        ):
             raise ValueError("capture.answer_token_pairs must contain false/true token pairs")
-        if self.capture.prompt_format not in {"raw", "chat"}:
-            raise ValueError("capture.prompt_format must be raw or chat")
+        if self.capture.prompt_format not in {"raw", "chat", "chat_turn"}:
+            raise ValueError("capture.prompt_format must be raw, chat, or chat_turn")
+        if any(not isinstance(key, str) for key in self.capture.chat_template_kwargs):
+            raise ValueError("capture.chat_template_kwargs keys must be strings")
         if self.capture.parity_sample_size < 0:
             raise ValueError("capture.parity_sample_size must be non-negative")
         if self.capture.parity_max_abs_diff <= 0:
