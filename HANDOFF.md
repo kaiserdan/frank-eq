@@ -22,6 +22,7 @@ with v2-1. Read, in order:
 1. `evidence/real_stagea_lumi_v2/REVIEW.md`
 2. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
 3. `docs/15_STAGEA_V2_REVIEW_AND_STAGEQ.md`
+4. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
 
 ## What v2-1 establishes
 
@@ -98,7 +99,8 @@ assistant generation boundary
 The backend fails closed unless the cached prefix token IDs are an exact prefix
 of the full conversation.
 
-Build only `cache,validate` for each condition. Then run:
+Build only `cache,validate` for each condition. The workflow now rejects
+`diagnose`, `train`, and `eval` for Stage-Q identities. Then run:
 
 ```bash
 python scripts/qualify_real_cache.py \
@@ -116,35 +118,40 @@ python scripts/compare_stageq_caches.py \
 ```
 
 The qualification uses founder models and train/validation worlds only. It
-reports a world-grouped 95% interval. Test worlds and the held sender are not
+reports world-grouped 95% intervals. Test worlds and the held sender are not
 used.
 
-Stage Q passes only when:
+The source contract qualifies only when:
 
 ```text
-candidate competence lower95 >= 0
-paired candidate-minus-legacy Brier improvement lower95 >= 0
+aggregate candidate competence lower95 >= 0
+every individual founder competence lower95 >= 0
 ```
+
+The paired candidate-minus-legacy interval is a separate prompt-attribution
+test. It does not gate use of an independently competent source contract.
 
 Every Stage-Q artifact keeps all claim, receiver, fresh-test, and outcome-run
 authorization fields false.
 
 ## Decision after Stage Q
 
-### Stage Q fails
+### Source competence fails
 
 Do not revise the latent architecture. Screen stronger checkpoints or a simpler
 formal task on development-only competence caches. Freeze a source/task pair
-only after its lower confidence bound is non-negative.
+only after the aggregate and every founder lower confidence bound are
+non-negative.
 
-### Competence passes but paired prompt improvement fails
+### Source competence passes but paired prompt improvement fails
 
-The candidate is usable as a source prerequisite, but no prompt-mechanism claim
-is supported.
+The candidate may be frozen as the source prerequisite for one Stage-A
+registration, but no prompt-mechanism claim is supported.
 
-### Both checks pass
+### Source competence and paired prompt improvement pass
 
-Draft one fresh Stage-A registration. It should use:
+Draft one fresh Stage-A registration and retain the paired prompt result as
+secondary evidence. The new registration should use:
 
 - fresh claim-bearing worlds never used by Stage Q;
 - complete model-local compilers (`public_head_scope: local`);
@@ -156,14 +163,15 @@ Draft one fresh Stage-A registration. It should use:
 
 ```text
 src/frank_eq/data/hf_backend.py       legacy chat + proper chat_turn capture
-src/frank_eq/qualification.py         development native-competence interval
-src/frank_eq/stageq.py                paired identical-panel comparison
+src/frank_eq/qualification.py         aggregate and per-founder competence intervals
+src/frank_eq/stageq.py                paired identical-panel prompt comparison
+src/frank_eq/workflow.py              Stage-Q cache-only role enforcement
 scripts/qualify_real_cache.py         single-cache qualification CLI
 scripts/compare_stageq_caches.py      paired Stage-Q comparison CLI
 ```
 
-Historical `prompt_format: chat` remains supported only to reproduce v2-1.
-Future chat competence work must use `chat_turn`.
+Historical `prompt_format: chat` remains supported only to reproduce the legacy
+turn placement. Future chat competence work must use `chat_turn`.
 
 ## Evidence boundary
 
@@ -193,7 +201,7 @@ outside Git under `.agents/state/` and `runs/`.
 
 ## Prohibited next actions
 
-- Running Stage-Q configs through `train` or `eval`.
+- Running Stage-Q configs through `diagnose`, `train`, or `eval`.
 - Reusing Stage-Q worlds as a Stage-A confirmation role.
 - Treating v1/v2 point differences as a prompt ablation.
 - Resuming the shared-head oracle quotient unchanged.
