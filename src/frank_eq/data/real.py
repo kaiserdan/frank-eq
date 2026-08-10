@@ -220,19 +220,45 @@ def _enforce_parity_audit(
 
     if parity_sample_size <= 0:
         return
+    details: list[str] = []
     for entry in extraction_models:
         parity = entry["parity_audit"]
         if not parity["entries"]:
-            raise RuntimeError(
-                f"parity audit requested ({parity_sample_size} branches) but "
-                f"{entry['model_id']} recorded no dual-mode sample"
-            )
-        if parity["max_abs_diff"] > parity_max_abs_diff:
-            raise RuntimeError(
-                f"KV-reuse versus exact-replay parity divergence for "
-                f"{entry['model_id']}: max_abs_diff={parity['max_abs_diff']:.6f} "
-                f"exceeds limit {parity_max_abs_diff}"
-            )
+            details.append(f"{entry['model_id']}: no dual-mode sample recorded")
+            continue
+        rows = sorted(
+            parity["entries"],
+            key=lambda row: abs(
+                float(row["kv_probability"]) - float(row["replay_probability"])
+            ),
+            reverse=True,
+        )
+        top = [
+            f"{row['state_id']}/{row['operation_id']}: "
+            f"kv={row['kv_probability']:.4f} replay={row['replay_probability']:.4f} "
+            f"diff={abs(float(row['kv_probability']) - float(row['replay_probability'])):.5f}"
+            for row in rows[:3]
+        ]
+        details.append(
+            f"{entry['model_id']}: max_abs_diff={parity['max_abs_diff']:.6f} "
+            f"mean={parity['mean_abs_diff']:.6f} (n={len(rows)}) top={top}"
+        )
+    if any(not row["parity_audit"]["entries"] for row in extraction_models):
+        missing = [
+            row["model_id"] for row in extraction_models if not row["parity_audit"]["entries"]
+        ]
+        raise RuntimeError(
+            f"parity audit requested ({parity_sample_size} branches) but these "
+            f"models recorded no dual-mode sample: {missing}"
+        )
+    if any(
+        row["parity_audit"]["max_abs_diff"] > parity_max_abs_diff
+        for row in extraction_models
+    ):
+        raise RuntimeError(
+            "KV-reuse versus exact-replay parity divergence "
+            f"(limit {parity_max_abs_diff}):\n" + "\n".join(details)
+        )
 
 
 def build_real_cache(config: RealRunConfig, output_dir: str | Path) -> dict[str, Any]:

@@ -48,8 +48,13 @@ capture:
   branch_batch_size: 8
   local_files_only: true
   prompt_format: chat
-  parity_sample_size: 8
-  parity_max_abs_diff: 0.01
+  # AMENDMENT 2026-08-10 (docs/13): tolerance raised to 1.0 for a 32-branch
+  # noise-floor measurement run only. The run's cache is discarded; the final
+  # tolerance is set from the measured distribution before any outcome-bearing
+  # evaluation. Initial 0.01 tolerance failed on qwen3-0.6b at max_abs_diff
+  # 0.0305 (bf16/ROCm kernel-level branch-mode noise, hypothesis).
+  parity_sample_size: 32
+  parity_max_abs_diff: 1.0
 
 logging:
   wandb:
