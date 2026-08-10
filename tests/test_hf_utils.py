@@ -1,6 +1,8 @@
+import torch
 import pytest
 
 from frank_eq.data.hf_backend import (
+    CHAT_ACKNOWLEDGEMENT,
     CHAT_SYSTEM_CONTRACT,
     HFModelAdapter,
     choose_answer_token_pair,
@@ -13,7 +15,7 @@ class FakeTokenizer:
         mapping = {" A": [1], " B": [2], "A": [3, 4], "B": [5, 6]}
         return mapping[text]
 
-    chat_template = "{{ bos_token }}{{ messages[0]['content'] }}"
+    chat_template = "stub"
 
 
 def test_hf_backend_utility_contracts() -> None:
@@ -26,20 +28,42 @@ def test_hf_backend_utility_contracts() -> None:
 
 
 class StubTokenizer:
-    chat_template = "{{- '<|im_start|>system\\n' + messages[0]['content'] + '<|im_end|>\\n<|im_start|>user\\n' + messages[1]['content'] + '<|im_end|>\\n<|im_start|>assistant\\n' }}"
+    chat_template = "stub"
+
+    def __init__(self):
+        self.last_messages = None
+        self.last_kwargs = None
+
+    @staticmethod
+    def _encode_text(text: str) -> torch.Tensor:
+        return torch.tensor([[ord(character) + 1 for character in text]], dtype=torch.long)
 
     def __call__(self, text, add_special_tokens=True, return_tensors="pt", truncation=False):
-        return {"input_ids": [[1, 2, 3]]}
+        return {"input_ids": self._encode_text(text)}
 
-    def apply_chat_template(self, messages, tokenize=False, add_generation_prompt=True):
+    def apply_chat_template(
+        self,
+        messages,
+        tokenize=False,
+        add_generation_prompt=True,
+        **kwargs,
+    ):
         assert tokenize is False
-        assert add_generation_prompt is True
-        return "<|im_start|>system\n" + messages[0]["content"] + "<|im_end|>\n<|im_start|>user\n" + messages[1]["content"] + "<|im_end|>\n<|im_start|>assistant\n"
+        self.last_messages = [dict(message) for message in messages]
+        self.last_kwargs = dict(kwargs)
+        rendered = "".join(
+            f"<{message['role']}>{message['content']}</{message['role']}>"
+            for message in messages
+        )
+        if add_generation_prompt:
+            rendered += "<assistant>"
+        return rendered
 
 
 class StubCapture:
     prompt_format = "chat"
-    max_length = 512
+    max_length = 4096
+    chat_template_kwargs = {"enable_thinking": False}
 
 
 class StubSpec:
@@ -56,17 +80,49 @@ def _stub_adapter(prompt_format: str) -> HFModelAdapter:
     adapter.capture = StubCapture()
     adapter.capture.prompt_format = prompt_format
     adapter.tokenizer = StubTokenizer()
-    adapter.device = None
+    adapter.device = torch.device("cpu")
     return adapter
 
 
-def test_chat_format_wraps_world_statement() -> None:
+def test_chat_format_preserves_historical_assistant_header() -> None:
     adapter = _stub_adapter("chat")
     formatted = adapter._format_prefix("world statement")
-    assert formatted.startswith("<|im_start|>system\n")
     assert CHAT_SYSTEM_CONTRACT in formatted
-    assert "world statement" in formatted
-    assert formatted.endswith("<|im_start|>assistant\n")
+    assert "<user>world statement</user>" in formatted
+    assert formatted.endswith("<assistant>")
+
+
+def test_chat_turn_reveals_operation_as_new_user_turn_with_exact_prefix() -> None:
+    adapter = _stub_adapter("chat_turn")
+    world = "world statement"
+    query = "registered operation"
+    prefix = adapter._format_prefix(world)
+    assert CHAT_ACKNOWLEDGEMENT in prefix
+    assert prefix.endswith(f"<assistant>{CHAT_ACKNOWLEDGEMENT}</assistant>")
+    prefix_ids = adapter._tokenize(prefix)
+    suffix_ids = adapter._query_ids(
+        query,
+        world_statement=world,
+        prefix_ids=prefix_ids,
+    )
+    combined = torch.cat([prefix_ids, suffix_ids], dim=1)
+    expected_text = (
+        f"<system>{CHAT_SYSTEM_CONTRACT}</system>"
+        f"<user>{world}</user>"
+        f"<assistant>{CHAT_ACKNOWLEDGEMENT}</assistant>"
+        f"<user>{query}</user><assistant>"
+    )
+    expected = adapter.tokenizer(expected_text, add_special_tokens=False, return_tensors="pt")[
+        "input_ids"
+    ]
+    assert torch.equal(combined, expected)
+    assert [message["role"] for message in adapter.tokenizer.last_messages] == [
+        "system",
+        "user",
+        "assistant",
+        "user",
+    ]
+    assert adapter.tokenizer.last_kwargs == {"enable_thinking": False}
 
 
 def test_raw_format_passes_through() -> None:
@@ -84,6 +140,19 @@ class StubEncoder:
 
 def test_chat_prefix_tokenization_suppresses_special_tokens() -> None:
     adapter = _stub_adapter("chat")
+    calls = []
+
+    def recording_tokenizer(text, add_special_tokens=True, return_tensors="pt", truncation=False):
+        calls.append(add_special_tokens)
+        return {"input_ids": StubEncoder()}
+
+    adapter.tokenizer = recording_tokenizer
+    adapter._tokenize("anything")
+    assert calls == [False]
+
+
+def test_chat_turn_prefix_tokenization_suppresses_special_tokens() -> None:
+    adapter = _stub_adapter("chat_turn")
     calls = []
 
     def recording_tokenizer(text, add_special_tokens=True, return_tensors="pt", truncation=False):
