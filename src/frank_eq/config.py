@@ -113,6 +113,8 @@ class GateConfig:
     min_quantization_retention: float = 0.90
     min_held_model_retention: float = 0.70
     max_model_leakage_over_chance: float = 0.18
+    min_native_competence_brier_gain: float = 0.0
+    control_checks: list[str] = field(default_factory=list)
 
 
 @dataclass(slots=True)

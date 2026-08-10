@@ -58,31 +58,30 @@ distribution. V2 must separate those objects.
 
 ## Immediate next action
 
-The existing-cache localization has been executed:
-
-```bash
-frank-eq diagnose-real-cache \
-  --cache .agents/state/lumi/frank-eq-stagea-devg-v2/remote/runs/cache \
-  --out runs/diagnostics/frank-eq-stagea-devg-v2
-```
-
-Machine recommendation (non-promotional):
+A Stage-A v2-1 registration is frozen and ready for ratification:
 
 ```text
-FIX_NATIVE_COMPETENCE_BEFORE_LATENT_REVISION
-founder native Brier gain over operation-wise prior: -0.060
-founder self-signature Brier gain (min):            +0.0008
-founder fact Brier gain (min):                      +0.0063
-founder fact balanced accuracy (min):               0.664
+hypothesis: native chat-template competence (same checkpoints, panel, depths)
+protocol:   docs/14_STAGEA_V2_PROTOCOL.md
+config:     configs/stage0/real_lumi_v2.yaml
+world seed: 20260810 (fresh untouched test role)
 ```
 
-Tree branch A: the frozen models' own branches do not beat operation-wise
-priors on validation worlds, so a prompt/runtime competence prerequisite is the
-next frozen hypothesis. Probe detail (renderer transfer fails, self-future
-signatures readable) is recorded in `docs/13_STAGEA_V1_CORRECTION_LOG.md`.
-Localization output stays under `runs/diagnostics/` (ignored). The diagnostic
-authorizes no run; the next step is a user decision to freeze exactly one
-versioned Stage-A v2 hypothesis satisfying the ten prerequisites below.
+Ratification step (one decision): approve the frozen registration, then submit:
+
+```bash
+python lumi/cli.py submit \
+  --job-name frank-eq-stagea-lumi-v2 \
+  --config configs/stage0/real_lumi_v2.yaml \
+  --profile full \
+  --stages cache,validate,train,eval
+```
+
+with `WANDB_API_KEY` and `FRANK_EQ_LUMI_PARTITION`/`FRANK_EQ_LUMI_TIME` in the
+environment (standard-g recommended). Deviating from the registration (stronger
+checkpoints, capture expansion, local head scope) requires a new versioned
+protocol and fresh test role. The dry-run submission already succeeds; no
+outcome-bearing run has been submitted.
 
 ## Decision tree after localization
 
@@ -160,7 +159,8 @@ not commit source archives, stale scheduler snapshots, or fetched run trees.
 
 Do not tune the v1 test gate, rerun the same deterministic test, add a target
 hidden-state decoder, or start receiver execution. The existing-cache
-localization is complete (tree branch A: native competence prerequisite);
-the next step is freezing exactly one versioned Stage-A v2 hypothesis with a
-fresh untouched test role. Any v2 capture/prompt change must still satisfy
-state-capture-before-reveal and the ten registration prerequisites above.
+localization is complete (tree branch A: native competence prerequisite) and
+one versioned Stage-A v2 registration (chat-template competence) is frozen,
+implemented, and tested — but it is NOT submitted until ratified. Any v2
+capture/prompt change must still satisfy state-capture-before-reveal and the
+ten registration prerequisites in `docs/12`.

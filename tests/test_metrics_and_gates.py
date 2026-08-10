@@ -48,3 +48,27 @@ def test_real_gate_uses_real_scope_and_never_reauthorizes_canary() -> None:
     assert decision["scope"] == "real frozen-LLM Stage-A representation gate"
     assert decision["authorizes_real_model_canary"] is False
     assert decision["authorizes_receiver_protocol_design"] is False
+
+
+def test_native_competence_gate_joins_the_decision() -> None:
+    metrics = _failing_metrics("real frozen-LLM future-defined causal-state Stage A")
+    metrics["native_competence_brier_gain_over_prior"] = -0.05
+    decision = reduce_stage0(metrics, GateConfig(min_native_competence_brier_gain=0.0))
+    assert decision["checks"]["native_competence"]["passed"] is False
+    assert "native_competence" in decision["failures"]
+
+    metrics["native_competence_brier_gain_over_prior"] = 0.02
+    decision = reduce_stage0(metrics, GateConfig(min_native_competence_brier_gain=0.0))
+    assert decision["checks"]["native_competence"]["passed"] is True
+
+
+def test_control_checks_are_reported_but_do_not_gate() -> None:
+    metrics = _failing_metrics("real frozen-LLM future-defined causal-state Stage A")
+    decision = reduce_stage0(
+        metrics,
+        GateConfig(control_checks=["operational_residual"]),
+    )
+    assert decision["checks"]["operational_residual"]["control"] is True
+    assert "operational_residual" not in decision["failures"]
+    # other failures still gate
+    assert "fact_accuracy" in decision["failures"]

@@ -191,6 +191,50 @@ def _split_by_world(split: SplitManifest) -> dict[int, str]:
     return result
 
 
+def _parity_summary(audit: dict[str, Any]) -> dict[str, Any]:
+    """Reduce one model's dual-mode branch sample to a machine-readable record."""
+
+    entries = list(audit.get("entries") or [])
+    if not entries:
+        return {
+            "sample_size": int(audit.get("sample_size", 0)),
+            "entries": [],
+            "max_abs_diff": None,
+            "mean_abs_diff": None,
+        }
+    diffs = [abs(float(entry["kv_probability"]) - float(entry["replay_probability"])) for entry in entries]
+    return {
+        "sample_size": int(audit.get("sample_size", 0)),
+        "entries": entries,
+        "max_abs_diff": float(max(diffs)),
+        "mean_abs_diff": float(np.mean(diffs)),
+    }
+
+
+def _enforce_parity_audit(
+    extraction_models: list[dict[str, Any]],
+    parity_max_abs_diff: float,
+    parity_sample_size: int,
+) -> None:
+    """Fail the cache build when a requested parity sample is missing or diverges."""
+
+    if parity_sample_size <= 0:
+        return
+    for entry in extraction_models:
+        parity = entry["parity_audit"]
+        if not parity["entries"]:
+            raise RuntimeError(
+                f"parity audit requested ({parity_sample_size} branches) but "
+                f"{entry['model_id']} recorded no dual-mode sample"
+            )
+        if parity["max_abs_diff"] > parity_max_abs_diff:
+            raise RuntimeError(
+                f"KV-reuse versus exact-replay parity divergence for "
+                f"{entry['model_id']}: max_abs_diff={parity['max_abs_diff']:.6f} "
+                f"exceeds limit {parity_max_abs_diff}"
+            )
+
+
 def build_real_cache(config: RealRunConfig, output_dir: str | Path) -> dict[str, Any]:
     """Extract all founder and held-sender views without training a quotient model."""
 
@@ -238,6 +282,7 @@ def build_real_cache(config: RealRunConfig, output_dir: str | Path) -> dict[str,
                 "normalized_depths": config.capture.normalized_depths,
                 "answer_labels": list(captured.answer_labels),
                 "branch_mode_counts": captured.branch_mode_counts,
+                "parity_audit": _parity_summary(captured.parity_audit),
             }
         )
         del adapter
@@ -248,6 +293,12 @@ def build_real_cache(config: RealRunConfig, output_dir: str | Path) -> dict[str,
                 torch.cuda.empty_cache()
         except ImportError:
             pass
+
+    _enforce_parity_audit(
+        extraction_models,
+        parity_max_abs_diff=config.capture.parity_max_abs_diff,
+        parity_sample_size=config.capture.parity_sample_size,
+    )
 
     model_hidden_dims = [captured.hidden_dim for captured in captured_by_model]
     max_hidden = max(model_hidden_dims)

@@ -114,6 +114,18 @@ cache,validate,diagnose,train,eval
 The public operation semantics and interrogator remain shared. The local option
 is implementation readiness only; no outcome-bearing v2 config is frozen.
 
+## Stage-A v2-1 registration (frozen, awaiting ratification)
+
+Per decision-tree branch A (native competence prerequisite), exactly one
+versioned v2 hypothesis is frozen: same checkpoints and panel geometry, capture
+prefix wrapped in each model's native chat template. Protocol:
+`docs/14_STAGEA_V2_PROTOCOL.md`; config: `configs/stage0/real_lumi_v2.yaml`
+(new world seed 20260810, required revision pins, chat capture,
+KV-versus-replay parity audit, frozen native-competence gate, residual check as
+declared-global control). Implementation and tests are complete (50/50 green,
+dry-run submission succeeds); no outcome-bearing run is submitted until the
+registration is ratified.
+
 ## Not authorized
 
 - reuse of the v1 test role for selection;

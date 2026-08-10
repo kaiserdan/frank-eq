@@ -114,6 +114,9 @@ class CaptureConfig:
     branch_seed: int = 1729
     branch_batch_size: int = 8
     local_files_only: bool = False
+    prompt_format: str = "raw"
+    parity_sample_size: int = 0
+    parity_max_abs_diff: float = 0.01
 
 
 @dataclass(slots=True)
@@ -122,6 +125,7 @@ class RealRunConfig:
 
     run_name: str = "frank-eq-real-stagea"
     output_dir: str = "runs/real-stagea"
+    require_revision_pins: bool = False
     panel: RealPanelConfig = field(default_factory=RealPanelConfig)
     models: list[RealModelSpec] = field(default_factory=list)
     capture: CaptureConfig = field(default_factory=CaptureConfig)
@@ -210,6 +214,16 @@ class RealRunConfig:
             raise ValueError("capture.max_length must be at least 64")
         if not self.capture.answer_token_pairs or any(len(pair) != 2 for pair in self.capture.answer_token_pairs):
             raise ValueError("capture.answer_token_pairs must contain false/true token pairs")
+        if self.capture.prompt_format not in {"raw", "chat"}:
+            raise ValueError("capture.prompt_format must be raw or chat")
+        if self.capture.parity_sample_size < 0:
+            raise ValueError("capture.parity_sample_size must be non-negative")
+        if self.capture.parity_max_abs_diff <= 0:
+            raise ValueError("capture.parity_max_abs_diff must be positive")
+        if self.require_revision_pins and any(spec.revision is None for spec in self.models):
+            raise ValueError(
+                "require_revision_pins is set but some model entries lack an exact revision"
+            )
         self.model.decoder_type = "graph"
         self.model.graph_n_entities = self.panel.n_entities
         if self.model.graph_temperature <= 0:
@@ -270,6 +284,7 @@ def load_real_config(path: str | Path) -> RealRunConfig:
     allowed = {
         "run_name",
         "output_dir",
+        "require_revision_pins",
         "panel",
         "models",
         "capture",
@@ -291,6 +306,7 @@ def load_real_config(path: str | Path) -> RealRunConfig:
     config = RealRunConfig(
         run_name=raw.get("run_name", defaults.run_name),
         output_dir=raw.get("output_dir", defaults.output_dir),
+        require_revision_pins=raw.get("require_revision_pins", defaults.require_revision_pins),
         panel=_construct(RealPanelConfig, raw.get("panel")),
         models=models,
         capture=_construct(CaptureConfig, raw.get("capture")),

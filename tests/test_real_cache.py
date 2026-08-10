@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import numpy as np
@@ -78,6 +79,20 @@ class FakeHFModelAdapter:
             layer_indices=[1, 2, 3],
             answer_labels=(" A", " B"),
             branch_mode_counts={"kv_reuse": len(records) * len(panel.operations), "exact_prefix_replay": 0},
+            parity_audit={
+                "sample_size": int(getattr(self.capture, "parity_sample_size", 0)),
+                "entries": [
+                    {
+                        "state_id": "parity",
+                        "operation_id": str(operation.definition.operation_id),
+                        "kv_probability": 0.5 + 0.01 * model_number,
+                        "replay_probability": 0.5
+                        + 0.01 * model_number
+                        + float(getattr(self.capture, "parity_audit_bias", 0.0)),
+                    }
+                    for operation in panel.operations[: int(getattr(self.capture, "parity_sample_size", 0))]
+                ],
+            },
             model_revision="fake-revision",
         )
 
@@ -104,3 +119,85 @@ def test_real_cache_build_and_validation_are_complete(monkeypatch, tmp_path: Pat
     assert bundle.n_views == 24 * 3 * 2
     assert bundle.model_hidden_dims == [10, 11, 12]
     assert validation["causal_boundary_passed"] is True
+
+
+def test_real_cache_parity_audit_fails_on_divergence(monkeypatch, tmp_path: Path) -> None:
+    import frank_eq.data.real as real_module
+
+    class BiasedParityAdapter(FakeHFModelAdapter):
+        def capture_panel(self, panel, split_by_world):
+            rows = super().capture_panel(panel, split_by_world)
+            for entry in rows.parity_audit["entries"]:
+                entry["replay_probability"] += 0.1
+            return rows
+
+    monkeypatch.setattr(real_module, "HFModelAdapter", BiasedParityAdapter)
+    config = RealRunConfig(
+        panel=RealPanelConfig(n_worlds=24, n_entities=5, n_operations=16, seed=31),
+        models=[
+            RealModelSpec("model-0", "fake/0", "founder"),
+            RealModelSpec("model-1", "fake/1", "founder"),
+            RealModelSpec("model-2", "fake/2", "held"),
+        ],
+    )
+    config.capture.normalized_depths = [0.25, 0.5, 0.75]
+    config.capture.parity_sample_size = 8
+    config.capture.parity_max_abs_diff = 0.001
+    try:
+        build_real_cache(config, tmp_path / "cache")
+    except RuntimeError as error:
+        assert "parity" in str(error).lower()
+    else:
+        raise AssertionError("divergent parity sample must fail the cache build")
+
+
+def test_real_cache_parity_audit_passes_when_parity_holds(monkeypatch, tmp_path: Path) -> None:
+    import frank_eq.data.real as real_module
+
+    monkeypatch.setattr(real_module, "HFModelAdapter", FakeHFModelAdapter)
+    config = RealRunConfig(
+        panel=RealPanelConfig(n_worlds=24, n_entities=5, n_operations=16, seed=31),
+        models=[
+            RealModelSpec("model-0", "fake/0", "founder"),
+            RealModelSpec("model-1", "fake/1", "founder"),
+            RealModelSpec("model-2", "fake/2", "held"),
+        ],
+    )
+    config.capture.normalized_depths = [0.25, 0.5, 0.75]
+    config.capture.parity_sample_size = 8
+    config.capture.parity_max_abs_diff = 0.01
+    cache = tmp_path / "cache"
+    summary = build_real_cache(config, cache)
+    assert summary["status"] == "passed"
+    metadata = json.loads((cache / "metadata.json").read_text())
+    for entry in metadata["extraction"]["models"]:
+        assert entry["parity_audit"]["sample_size"] == 8
+        assert entry["parity_audit"]["max_abs_diff"] <= 0.01
+
+
+def test_real_cache_parity_audit_requested_but_missing_fails(monkeypatch, tmp_path: Path) -> None:
+    import frank_eq.data.real as real_module
+
+    class MissingParityAdapter(FakeHFModelAdapter):
+        def capture_panel(self, panel, split_by_world):
+            rows = super().capture_panel(panel, split_by_world)
+            rows.parity_audit = {"sample_size": 8, "entries": []}
+            return rows
+
+    monkeypatch.setattr(real_module, "HFModelAdapter", MissingParityAdapter)
+    config = RealRunConfig(
+        panel=RealPanelConfig(n_worlds=24, n_entities=5, n_operations=16, seed=31),
+        models=[
+            RealModelSpec("model-0", "fake/0", "founder"),
+            RealModelSpec("model-1", "fake/1", "founder"),
+            RealModelSpec("model-2", "fake/2", "held"),
+        ],
+    )
+    config.capture.normalized_depths = [0.25, 0.5, 0.75]
+    config.capture.parity_sample_size = 8
+    try:
+        build_real_cache(config, tmp_path / "cache")
+    except RuntimeError as error:
+        assert "no dual-mode sample" in str(error)
+    else:
+        raise AssertionError("a requested-but-missing parity sample must fail the build")

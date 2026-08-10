@@ -58,7 +58,22 @@ def reduce_stage0(metrics: dict[str, object], gates: GateConfig) -> dict[str, ob
             <= gates.max_model_leakage_over_chance,
         },
     }
-    failures = [name for name, result in checks.items() if not result["passed"]]
+    if "native_competence_brier_gain_over_prior" in metrics:
+        checks["native_competence"] = {
+            "required": f">= {gates.min_native_competence_brier_gain}",
+            "observed": metrics["native_competence_brier_gain_over_prior"],
+            "passed": metrics["native_competence_brier_gain_over_prior"]
+            >= gates.min_native_competence_brier_gain,
+        }
+    controls = set(gates.control_checks)
+    for name in controls:
+        if name in checks:
+            checks[name]["control"] = True
+    failures = [
+        name
+        for name, result in checks.items()
+        if name not in controls and not result["passed"]
+    ]
     metric_scope = str(metrics.get("scope", "synthetic future-defined causal-state Stage 0"))
     is_real = metric_scope.startswith("real ")
     if is_real:

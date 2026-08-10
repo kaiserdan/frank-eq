@@ -40,6 +40,8 @@ REQUIRED = (
     "configs/stage0/real_smoke.yaml",
     "configs/stage0/real_olivia.yaml",
     "configs/stage0/real_lumi.yaml",
+    "configs/stage0/real_lumi_v2.yaml",
+    "docs/14_STAGEA_V2_PROTOCOL.md",
     "olivia/cli.py",
     "olivia/run.slurm",
     "olivia/quickstart.sh",
@@ -85,6 +87,7 @@ def main() -> int:
         ROOT / "configs/stage0/real_smoke.yaml",
         ROOT / "configs/stage0/real_olivia.yaml",
         ROOT / "configs/stage0/real_lumi.yaml",
+        ROOT / "configs/stage0/real_lumi_v2.yaml",
     )
     for config_path in synthetic_configs:
         load_config(config_path)

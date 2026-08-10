@@ -117,6 +117,45 @@ class Stage0Evaluator:
             result["model_signature"] = np.asarray(self.bundle.model_signatures)[result["row_index"]]
         return result
 
+    def _native_competence(self, heldout_ops: np.ndarray) -> dict[str, object] | None:
+        """Frozen source-model branch fidelity versus operation priors.
+
+        Computed directly from the cache on validation worlds and founder
+        models only; no trained weights, no test labels. Prior is the
+        coordinate-wise training-world oracle mean.
+        """
+
+        bundle = self.bundle
+        if not hasattr(bundle, "model_signatures") or bundle.model_signatures is None:
+            return None
+        founder_ids = tuple(bundle.split.founder_model_ids)
+        train_worlds = np.asarray(bundle.split.train_world_ids, dtype=np.int64)
+        validation_worlds = np.asarray(bundle.split.validation_world_ids, dtype=np.int64)
+        founder_mask = np.isin(bundle.model_ids, np.asarray(founder_ids))
+        train_mask = np.isin(bundle.world_ids, train_worlds)
+        validation_mask = np.isin(bundle.world_ids, validation_worlds)
+        train = bundle.signatures[train_mask & founder_mask][:, heldout_ops]
+        validation = bundle.signatures[validation_mask & founder_mask][:, heldout_ops]
+        native = bundle.model_signatures[validation_mask & founder_mask][:, heldout_ops]
+        if len(validation) == 0 or len(train) == 0:
+            return None
+        prior = np.clip(train.mean(axis=0, keepdims=True), 1e-6, 1.0 - 1e-6)
+        prior_prediction = np.repeat(prior, len(validation), axis=0)
+        native_brier = float(np.mean((validation - native) ** 2))
+        prior_brier = float(np.mean((validation - prior_prediction) ** 2))
+        by_model: dict[str, float] = {}
+        for model_id in founder_ids:
+            model_mask = bundle.model_ids == model_id
+            target = bundle.signatures[validation_mask & model_mask][:, heldout_ops]
+            predicted = bundle.model_signatures[validation_mask & model_mask][:, heldout_ops]
+            by_model[bundle.model_names[model_id]] = float(np.mean((target - predicted) ** 2))
+        return {
+            "brier": native_brier,
+            "coordinate_prior_brier": prior_brier,
+            "brier_gain_over_prior": prior_brier - native_brier,
+            "by_model_brier": by_model,
+        }
+
     def _quantization_retention(self, test: dict[str, np.ndarray], operation_ids: np.ndarray) -> float:
         code = torch.from_numpy(test["code"]).float().to(self.device)
         with torch.no_grad():
@@ -318,6 +357,12 @@ class Stage0Evaluator:
             "packet_audit": self._packet_audit(test),
             "operation_families": operation_families,
         }
+        native = self._native_competence(heldout_ops)
+        if native is not None:
+            metrics["native_competence"] = native
+            metrics["native_competence_brier_gain_over_prior"] = native[
+                "brier_gain_over_prior"
+            ]
         if "model_signature" in test:
             metrics["source_branch_brier_to_oracle"] = float(
                 brier_score(

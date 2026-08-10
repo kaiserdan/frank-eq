@@ -23,6 +23,23 @@ frank-eq diagnose-real-cache \
 
 This uses train/validation worlds only and authorizes nothing.
 
+## Stage-A v2-1 registration (frozen, awaiting ratification)
+
+Protocol `docs/14_STAGEA_V2_PROTOCOL.md`, config `configs/stage0/real_lumi_v2.yaml`.
+Same checkpoints and panel; chat-templated capture; new world seed 20260810;
+revision pins required; parity audit; native-competence gate. Dry-run:
+
+```bash
+python lumi/cli.py submit \
+  --job-name frank-eq-stagea-lumi-v2 \
+  --config configs/stage0/real_lumi_v2.yaml \
+  --profile full \
+  --stages cache,validate,train,eval \
+  --dry-run --json
+```
+
+No outcome-bearing run until the registration is ratified.
+
 ## Runtime
 
 Default container:

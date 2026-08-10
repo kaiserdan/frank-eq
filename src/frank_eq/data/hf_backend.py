@@ -16,6 +16,15 @@ from frank_eq.utils import sha256_bytes
 
 from .real_panel import RealPanel, render_operation_query, render_world_prefix
 
+# Frozen v2-1 system turn. It is deliberately generic: the world statement
+# (edges, closed-world declaration, density/reciprocity tags) remains the
+# renderer output verbatim in the user turn, so the panel semantics are
+# unchanged; only the conversational wrapper differs from v1 raw prompts.
+CHAT_SYSTEM_CONTRACT = (
+    "You are a careful reasoner over a small described world. "
+    "Answer questions about the world based only on the description given."
+)
+
 
 @dataclass(slots=True)
 class CapturedModelRows:
@@ -30,6 +39,7 @@ class CapturedModelRows:
     layer_indices: list[int]
     answer_labels: tuple[str, str]
     branch_mode_counts: dict[str, int]
+    parity_audit: dict[str, Any]
     model_revision: str | None
 
 
@@ -161,10 +171,38 @@ class HFModelAdapter:
             self.tokenizer, capture.answer_token_pairs
         )
 
-    def _tokenize(self, text: str) -> torch.Tensor:
+    def _format_prefix(self, prefix: str) -> str:
+        if self.capture.prompt_format == "raw":
+            return prefix
+        if self.capture.prompt_format == "chat":
+            if not getattr(self.tokenizer, "chat_template", None):
+                raise RuntimeError(
+                    f"capture.prompt_format='chat' but {self.spec.model_id} "
+                    "tokenizer has no chat template"
+                )
+            try:
+                return self.tokenizer.apply_chat_template(
+                    [
+                        {"role": "system", "content": CHAT_SYSTEM_CONTRACT},
+                        {"role": "user", "content": prefix},
+                    ],
+                    tokenize=False,
+                    add_generation_prompt=True,
+                )
+            except Exception as error:
+                raise RuntimeError(
+                    f"chat template application failed for {self.spec.model_id}: {error}"
+                ) from error
+        raise ValueError(f"unsupported capture.prompt_format: {self.capture.prompt_format}")
+
+    def _tokenize(self, text: str, *, add_special_tokens: bool | None = None) -> torch.Tensor:
+        if add_special_tokens is None:
+            # Chat-formatted prefixes carry their own opening markers; injecting
+            # special tokens would double tags or append a trailing EOS.
+            add_special_tokens = self.capture.prompt_format == "raw"
         encoded = self.tokenizer(
             text,
-            add_special_tokens=True,
+            add_special_tokens=add_special_tokens,
             return_tensors="pt",
             truncation=False,
         )["input_ids"]
@@ -223,6 +261,10 @@ class HFModelAdapter:
         branch_rows: list[np.ndarray] = []
         records: list[FutureSignatureRecord] = []
         mode_counts = {"kv_reuse": 0, "exact_prefix_replay": 0}
+        parity_audit: dict[str, Any] = {
+            "sample_size": self.capture.parity_sample_size,
+            "entries": [],
+        }
         false_label, true_label = self.answer_labels
         model_slug = _safe_model_slug(self.spec.model_id)
         hidden_dim: int | None = None
@@ -230,7 +272,7 @@ class HFModelAdapter:
         for world in panel.worlds:
             split = split_by_world[world.world_id]
             for renderer_id in range(int(panel.config["n_renderers"])):
-                prefix = render_world_prefix(world, renderer_id)
+                prefix = self._format_prefix(render_world_prefix(world, renderer_id))
                 prefix_ids = self._tokenize(prefix)
                 request_cache = self.capture.branch_mode in {"auto", "kv_reuse"}
                 with torch.inference_mode():
@@ -292,6 +334,29 @@ class HFModelAdapter:
                     mode_counts[selected_mode] += 1
                     probability = float(np.clip(probability, 1e-7, 1.0 - 1e-7))
                     probabilities.append(probability)
+                    if (
+                        len(parity_audit["entries"]) < self.capture.parity_sample_size
+                        and selected_mode == "kv_reuse"
+                    ):
+                        try:
+                            replay_probability = self._branch_exact_replay(
+                                prefix_ids, query_ids
+                            )
+                        except Exception:
+                            # Parity is engineering telemetry on an already-verified
+                            # KV path; a replay-side failure must not abort capture.
+                            pass
+                        else:
+                            parity_audit["entries"].append(
+                                {
+                                    "state_id": state_id,
+                                    "operation_id": str(operation.definition.operation_id),
+                                    "kv_probability": probability,
+                                    "replay_probability": float(
+                                        np.clip(replay_probability, 1e-7, 1.0 - 1e-7)
+                                    ),
+                                }
+                            )
                     branches.append(
                         FutureBranchRecord(
                             state_id=state_id,
@@ -325,5 +390,6 @@ class HFModelAdapter:
             layer_indices=list(self.layer_indices),
             answer_labels=self.answer_labels,
             branch_mode_counts=mode_counts,
+            parity_audit=parity_audit,
             model_revision=None if revision is None else str(revision),
         )
