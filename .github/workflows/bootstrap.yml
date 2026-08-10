@@ -1,6 +1,9 @@
 name: bootstrap-frank-eq
 
 on:
+  push:
+    paths:
+      - .github/workflows/bootstrap.yml
   workflow_dispatch:
 
 permissions:
