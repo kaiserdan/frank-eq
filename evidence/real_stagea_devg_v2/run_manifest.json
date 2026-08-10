@@ -1,0 +1,36 @@
+{
+  "access_contract": {
+    "capture_precedes_operation": true,
+    "future_labels_available_at_capture": false,
+    "held_sender_updates_public_decoder": false,
+    "receiver_tensors_available": false
+  },
+  "config_path": "configs/stage0/real_lumi.yaml",
+  "config_sha256": "42c60a0170c38e0e47e4f46f08bda209963fdf19da746ea46c3c29d2d0570b3c",
+  "created_at": "2026-08-10T16:03:28.843986+00:00",
+  "environment": {
+    "accelerators": [
+      "AMD Instinct MI250X"
+    ],
+    "cluster": "lumi",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "git_commit": null,
+    "hostname": "nid005001",
+    "numpy": "2.2.6",
+    "platform": "Linux-6.4.0-150600.23.73_15.0.14-cray_shasta_c-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "slurm_job_id": "20942127",
+    "source_sha256": "bc2bff426e1c7f5a438c4004abf3e51999e3fbf2e3f13c25c6b11821d65a4751",
+    "torch": "2.9.1+rocm6.4"
+  },
+  "output_dir": "runs",
+  "run_name": "frank-eq-real-stagea-lumi-v1",
+  "schema": "frank_eq_real_stagea_manifest_v1",
+  "stages": [
+    "cache",
+    "validate",
+    "train",
+    "eval"
+  ]
+}

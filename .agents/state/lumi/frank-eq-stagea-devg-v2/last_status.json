@@ -1,0 +1,42 @@
+{
+  "cluster": "lumi",
+  "job_name": "frank-eq-stagea-devg-v2",
+  "scheduler": {
+    "elapsed": "00:03:11",
+    "exit_code": "0:0",
+    "job_id": "20942127",
+    "state": "RUNNING"
+  },
+  "scheduler_rows": [
+    {
+      "elapsed": "00:03:11",
+      "exit_code": "0:0",
+      "job_id": "20942127",
+      "state": "RUNNING"
+    },
+    {
+      "elapsed": "00:03:11",
+      "exit_code": "0:0",
+      "job_id": "20942127.batch",
+      "state": "RUNNING"
+    },
+    {
+      "elapsed": "00:03:07",
+      "exit_code": "0:0",
+      "job_id": "20942127.0",
+      "state": "RUNNING"
+    }
+  ],
+  "schema": "frank_eq_cluster_status_v1",
+  "slurm_job_id": "20942127",
+  "stderr": null,
+  "workflow": {
+    "completed_stages": [],
+    "current_stage": "cache",
+    "failure": null,
+    "schema": "frank_eq_real_stagea_status_v1",
+    "stage_started_at": "2026-08-10T16:03:42.302295+00:00",
+    "started_at": "2026-08-10T16:03:42.300265+00:00",
+    "state": "running"
+  }
+}

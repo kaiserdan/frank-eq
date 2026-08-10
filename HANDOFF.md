@@ -6,7 +6,7 @@ Snapshot: 2026-08-10
 
 Synthetic Stage 0 is complete and its adopted reference returns `PROMOTE_REAL_MODEL_CANARY` with `authorizes_scientific_claim=false`.
 
-The next implementation is also complete: a real frozen-checkpoint Stage-A vertical slice that can be submitted to Olivia or LUMI. It has not produced an adopted real-model outcome yet.
+The first real Stage-A canary has now run and produced a **valid negative decision**: `STOP_OR_REVISE_STAGE0` (`frank-eq-stagea-devg-v2` on LUMI `dev-g`, evidence under `evidence/real_stagea_devg_v2/`). Engineering integrity passed end to end (cache validation, 100% KV-reuse branches, W&B telemetry synced to project `frank-eq-stagea`). The failure is localized to capture sufficiency: per-edge graph facts are not linearly readable from the captured hidden states of the small frozen models under raw prompts, while the declared global coordinates are. The frozen config was not modified and no gates were tuned.
 
 Real Stage-A now logs fail-open W&B telemetry (project `frank-eq-stagea`) covering run identity, cache branch-mode accounting, per-epoch training losses, and evaluation metrics. Olivia additionally uses a new amd64 PyTorch container (`pytorch-2.5.1-cuda12.4-runtime-amd64.sif`), because every `accel` node is H200/x86_64 and the previous arm64 images cannot execute there.
 
@@ -100,3 +100,5 @@ This separation prevents a weak source model from redefining the public operatio
 ## Do not do next
 
 Do not add target-state reconstruction, pair-specific translators, receiver gradients, or a learned receiver rescue if Stage A fails. First localize failure among capture sufficiency, fact extraction, renderer invariance, operation generalization, and held-sender retention using the frozen artifacts.
+
+The negative outcome has been localized to capture sufficiency (fact head unfittable, global coordinates readable). The next scientific action is a user decision on a revised Stage-A protocol — for example chat-templated prefixes, a different depth grid, larger chart capacity, or a stronger fact objective — frozen as a new versioned config with a fresh untouched test role before any outcome-bearing run. Do not tune the current gates, layers, or panel.

@@ -1,0 +1,165 @@
+{
+  "artifacts": {
+    "cache/cache_validation.json": true,
+    "cache/dataset.npz": true,
+    "cache/metadata.json": true,
+    "eval/artifact_manifest.json": true,
+    "eval/decision.json": true,
+    "eval/metrics.json": true,
+    "train/final.pt": true,
+    "train/training_summary.json": true
+  },
+  "cache_dir": "/Users/dk/Code/frank-eq/.agents/state/lumi/frank-eq-stagea-devg-v2/remote",
+  "cluster": "lumi",
+  "failures": [],
+  "job_name": "frank-eq-stagea-devg-v2",
+  "overall": "passed",
+  "root_cause": null,
+  "schema": "frank_eq_cluster_verify_v1",
+  "scientific_decision": {
+    "authorizes_real_model_canary": false,
+    "authorizes_scientific_claim": false,
+    "checks": {
+      "cross_model_retrieval": {
+        "observed": 0.09722222222222222,
+        "passed": false,
+        "required": "lower_95 >= 0.3"
+      },
+      "fact_accuracy": {
+        "observed": 0.4953703703703704,
+        "passed": false,
+        "required": "lower_95 >= 0.7"
+      },
+      "held_model_retention": {
+        "observed": 0.4716606391905353,
+        "passed": false,
+        "required": ">= 0.7"
+      },
+      "heldout_signature_brier": {
+        "observed": 0.19783231780553856,
+        "passed": false,
+        "required": "upper_95 <= 0.18"
+      },
+      "model_identity_leakage": {
+        "observed": 0.6527777777777779,
+        "passed": false,
+        "required": "over_chance <= 0.25"
+      },
+      "operational_residual": {
+        "observed": 0.11669022337947457,
+        "passed": true,
+        "required": "lower_95 >= 0.005"
+      },
+      "quantization_retention": {
+        "observed": 0.9961723902996598,
+        "passed": true,
+        "required": ">= 0.9"
+      },
+      "renderer_invariance": {
+        "observed": 0.9924532155115732,
+        "passed": true,
+        "required": "mean >= 0.85"
+      },
+      "wrong_world_margin": {
+        "observed": -0.07908207227786382,
+        "passed": false,
+        "required": "lower_95 >= 0.03"
+      }
+    },
+    "decision": "STOP_OR_REVISE_STAGE0",
+    "failures": [
+      "heldout_signature_brier",
+      "fact_accuracy",
+      "cross_model_retrieval",
+      "wrong_world_margin",
+      "held_model_retention",
+      "model_identity_leakage"
+    ],
+    "schema": "frank_eq_stage0_decision_v1",
+    "scope": "synthetic implementation and falsification gate only",
+    "status": "fail"
+  },
+  "warnings": [
+    "scientific gate failed; workflow may still be valid"
+  ],
+  "workflow": {
+    "completed_at": "2026-08-10T16:08:06.847720+00:00",
+    "completed_stages": [
+      "cache",
+      "validate",
+      "train",
+      "eval"
+    ],
+    "current_stage": null,
+    "elapsed_seconds": 264.5454361438751,
+    "failure": null,
+    "schema": "frank_eq_real_stagea_status_v1",
+    "scientific_decision": {
+      "authorizes_real_model_canary": false,
+      "authorizes_scientific_claim": false,
+      "checks": {
+        "cross_model_retrieval": {
+          "observed": 0.09722222222222222,
+          "passed": false,
+          "required": "lower_95 >= 0.3"
+        },
+        "fact_accuracy": {
+          "observed": 0.4953703703703704,
+          "passed": false,
+          "required": "lower_95 >= 0.7"
+        },
+        "held_model_retention": {
+          "observed": 0.4716606391905353,
+          "passed": false,
+          "required": ">= 0.7"
+        },
+        "heldout_signature_brier": {
+          "observed": 0.19783231780553856,
+          "passed": false,
+          "required": "upper_95 <= 0.18"
+        },
+        "model_identity_leakage": {
+          "observed": 0.6527777777777779,
+          "passed": false,
+          "required": "over_chance <= 0.25"
+        },
+        "operational_residual": {
+          "observed": 0.11669022337947457,
+          "passed": true,
+          "required": "lower_95 >= 0.005"
+        },
+        "quantization_retention": {
+          "observed": 0.9961723902996598,
+          "passed": true,
+          "required": ">= 0.9"
+        },
+        "renderer_invariance": {
+          "observed": 0.9924532155115732,
+          "passed": true,
+          "required": "mean >= 0.85"
+        },
+        "wrong_world_margin": {
+          "observed": -0.07908207227786382,
+          "passed": false,
+          "required": "lower_95 >= 0.03"
+        }
+      },
+      "decision": "STOP_OR_REVISE_STAGE0",
+      "failures": [
+        "heldout_signature_brier",
+        "fact_accuracy",
+        "cross_model_retrieval",
+        "wrong_world_margin",
+        "held_model_retention",
+        "model_identity_leakage"
+      ],
+      "schema": "frank_eq_stage0_decision_v1",
+      "scope": "synthetic implementation and falsification gate only",
+      "status": "fail"
+    },
+    "stage_completed_at": "2026-08-10T16:08:06.845909+00:00",
+    "stage_started_at": "2026-08-10T16:07:47.476266+00:00",
+    "started_at": "2026-08-10T16:03:42.300265+00:00",
+    "state": "completed"
+  }
+}

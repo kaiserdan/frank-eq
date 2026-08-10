@@ -38,9 +38,11 @@ Snapshot: 2026-08-10
 
 `configs/stage0/synthetic_full.yaml` passes every synthetic implementation gate. The adopted evidence under `evidence/reference_stage0/` authorizes only the real-model representation canary.
 
-## Real Stage-A readiness
+## Real Stage-A first outcome (negative)
 
-The implementation is ready for a sequential one-GPU canary on Olivia or LUMI. The cluster configs freeze:
+The first full frozen canary ran on LUMI `dev-g` (`frank-eq-stagea-devg-v2`, source `bc2bff426e1c`) and returned a valid negative decision: `STOP_OR_REVISE_STAGE0`. Engineering integrity passed end to end; the scientific gate failed on fact accuracy, retrieval, wrong-world specificity, held-sender retention, held-out Brier, and model-ID leakage. Renderer invariance, quantization retention, and the operational residual gain passed. Failure is localized to capture sufficiency (facts not linearly readable from the captured states; global coordinates are). Evidence: `evidence/real_stagea_devg_v2/`.
+
+The frozen cluster configs remain:
 
 ```text
 founders: Qwen3-0.6B, SmolLM-1.7B-Instruct
@@ -52,11 +54,11 @@ capture depths: 0.35, 0.60, 0.85
 public executor: parameter-free graph interrogator
 ```
 
-The first cluster action should be `cache,validate`. Training is mechanically blocked unless the cache validator passes causal ordering, complete operation coverage, split integrity, prefix/hidden/descriptor hashes, and model/world/renderer coverage.
+A revised Stage A requires a new versioned protocol and a fresh untouched test role; no gates, layers, or panel were tuned under the negative outcome.
 
 ## Not implemented or not authorized
 
-- adopted real-model Stage-A evidence;
+- adopted real-model Stage-A evidence (the adopted outcome is negative; no positive real evidence exists);
 - receiver-native packet execution;
 - rate-matched transcript and summary controls;
 - a second task family;
