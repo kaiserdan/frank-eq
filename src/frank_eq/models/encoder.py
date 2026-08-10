@@ -11,6 +11,7 @@ from frank_eq.config import ModelConfig
 
 from .layers import (
     GradientReversal,
+    GraphOperationDecoder,
     PublicOperationDecoder,
     StraightThroughQuantizer,
     WorkspaceGate,
@@ -19,8 +20,6 @@ from .layers import (
 
 @dataclass(slots=True)
 class QuotientOutput:
-    """Outputs of one operational quotient forward pass."""
-
     code: torch.Tensor
     private_code: torch.Tensor
     signature_logits: torch.Tensor
@@ -30,14 +29,7 @@ class QuotientOutput:
 
 
 class ModelLocalChart(nn.Module):
-    """Map one model's hidden trajectory into a bounded public state code."""
-
-    def __init__(
-        self,
-        n_layers: int,
-        hidden_dim: int,
-        config: ModelConfig,
-    ):
+    def __init__(self, n_layers: int, hidden_dim: int, config: ModelConfig):
         super().__init__()
         input_dim = n_layers * hidden_dim
         self.n_layers = n_layers
@@ -65,13 +57,7 @@ class ModelLocalChart(nn.Module):
 
 
 class OperationalQuotientModel(nn.Module):
-    """Model-local charts coupled through a shared future-operation decoder.
-
-    The code is formed before any operation is selected. Operations enter only
-    through the shared decoder, making the learned state explicitly
-    operation-agnostic while allowing generalization to held-out operation
-    instances described by public descriptors.
-    """
+    """Model-local charts coupled through a frozen public future decoder."""
 
     def __init__(
         self,
@@ -95,11 +81,21 @@ class OperationalQuotientModel(nn.Module):
                 for model_id, hidden_dim in enumerate(model_hidden_dims)
             }
         )
-        self.decoder = PublicOperationDecoder(
-            n_facts=n_facts,
-            n_residual=n_residual,
-            descriptor_dim=operation_descriptor_dim,
-        )
+        if config.decoder_type == "public_coefficients":
+            self.decoder = PublicOperationDecoder(
+                n_facts=n_facts,
+                n_residual=n_residual,
+                descriptor_dim=operation_descriptor_dim,
+            )
+        elif config.decoder_type == "graph":
+            self.decoder = GraphOperationDecoder(
+                n_entities=config.graph_n_entities,
+                n_residual=n_residual,
+                descriptor_dim=operation_descriptor_dim,
+                temperature=config.graph_temperature,
+            )
+        else:
+            raise ValueError(f"unsupported decoder_type: {config.decoder_type}")
         self.fact_head = nn.Sequential(
             nn.LayerNorm(config.code_dim),
             nn.Linear(config.code_dim, config.chart_hidden_dim // 2),
@@ -138,11 +134,7 @@ class OperationalQuotientModel(nn.Module):
             output[selection] = self.charts[str(model_id)](hidden[selection])
         return output
 
-    def build_public_code(
-        self,
-        fact_logits: torch.Tensor,
-        residual: torch.Tensor,
-    ) -> torch.Tensor:
+    def build_public_code(self, fact_logits: torch.Tensor, residual: torch.Tensor) -> torch.Tensor:
         signed_facts = 2.0 * torch.sigmoid(fact_logits) - 1.0
         bounded_residual = torch.clamp(
             residual / self.residual_public_scale,
@@ -156,12 +148,14 @@ class OperationalQuotientModel(nn.Module):
         code: torch.Tensor,
         operation_descriptors: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        """Execute a gauge-fixed public code without a model-local chart."""
-
         expected = self.n_facts + self.n_residual
         if code.ndim != 2 or code.shape[1] != expected:
             raise ValueError(f"expected public code [batch,{expected}], got {tuple(code.shape)}")
-        fact_probabilities = torch.clamp((code[:, : self.n_facts] + 1.0) * 0.5, 1e-5, 1.0 - 1e-5)
+        fact_probabilities = torch.clamp(
+            (code[:, : self.n_facts] + 1.0) * 0.5,
+            1e-5,
+            1.0 - 1e-5,
+        )
         fact_logits = torch.logit(fact_probabilities)
         residual = code[:, self.n_facts :] * self.residual_public_scale
         signature_logits = self.decoder(fact_logits, residual, operation_descriptors)
@@ -189,7 +183,7 @@ class OperationalQuotientModel(nn.Module):
         )
 
     def workspace_regularization(self, model_ids: torch.Tensor) -> torch.Tensor:
-        unique_ids = sorted(int(v) for v in torch.unique(model_ids).tolist())
+        unique_ids = sorted(int(value) for value in torch.unique(model_ids).tolist())
         if not unique_ids:
             return torch.tensor(0.0, device=model_ids.device)
         return torch.stack(
@@ -201,8 +195,6 @@ class OperationalQuotientModel(nn.Module):
         return first_chart.quantizer.hard_quantize(code, bits=bits)
 
     def freeze_except_chart(self, model_id: int) -> None:
-        """Freeze the public decoder and all other charts for held-sender onboarding."""
-
         for parameter in self.parameters():
             parameter.requires_grad = False
         for parameter in self.charts[str(model_id)].parameters():

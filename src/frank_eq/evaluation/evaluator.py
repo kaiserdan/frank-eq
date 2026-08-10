@@ -4,18 +4,14 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
 from frank_eq.config import RunConfig
-from frank_eq.data.synthetic import (
-    OPERATION_FAMILIES,
-    ObservationDataset,
-    SyntheticBundle,
-    facts_only_signatures,
-)
+from frank_eq.data.synthetic import ObservationDataset
 from frank_eq.models import OperationalQuotientModel
 from frank_eq.packet import OperationalPacketV1, QueryConditionedSelector
 from frank_eq.utils import atomic_write_json, resolve_device, sha256_file
@@ -47,7 +43,7 @@ class Stage0Evaluator:
     def __init__(
         self,
         config: RunConfig,
-        bundle: SyntheticBundle,
+        bundle: Any,
         checkpoint_path: str | Path,
         output_dir: str | Path,
     ):
@@ -113,7 +109,10 @@ class Stage0Evaluator:
                 collected["truth_fact"].append(batch["facts"].numpy())
                 collected["truth_residual"].append(batch["residual"].numpy())
                 collected["hidden"].append(batch["hidden"].numpy())
-        return {key: np.concatenate(values, axis=0) for key, values in collected.items()}
+        result = {key: np.concatenate(values, axis=0) for key, values in collected.items()}
+        if hasattr(self.bundle, "model_signatures"):
+            result["model_signature"] = np.asarray(self.bundle.model_signatures)[result["row_index"]]
+        return result
 
     def _quantization_retention(self, test: dict[str, np.ndarray], operation_ids: np.ndarray) -> float:
         code = torch.from_numpy(test["code"]).float().to(self.device)
@@ -133,18 +132,32 @@ class Stage0Evaluator:
             return -1.0
         return float((baseline - quantized_brier) / denominator)
 
+    def _facts_only_prediction(self, test: dict[str, np.ndarray]) -> np.ndarray:
+        signed_facts = 2.0 * np.asarray(test["fact"], dtype=np.float32) - 1.0
+        zeros = np.zeros((len(signed_facts), self.bundle.residual.shape[1]), dtype=np.float32)
+        code = torch.from_numpy(np.concatenate([signed_facts, zeros], axis=1)).to(self.device)
+        with torch.no_grad():
+            logits, _, _ = self.model.decode_from_code(code, self.descriptors)
+        return torch.sigmoid(logits).cpu().numpy()
+
     def _packet_audit(self, test: dict[str, np.ndarray]) -> dict[str, object]:
         selector = QueryConditionedSelector(self.bundle.operation_descriptors)
         sample_count = min(8, len(test["world_id"]))
         byte_lengths: list[int] = []
         for index in range(sample_count):
-            query_id = int(self.bundle.split.heldout_operation_ids[index % len(self.bundle.split.heldout_operation_ids)])
+            query_id = int(
+                self.bundle.split.heldout_operation_ids[
+                    index % len(self.bundle.split.heldout_operation_ids)
+                ]
+            )
             probe_ids = selector.select(query_id, self.config.evaluation.packet_probe_count)
             uncertainty = float(
                 np.mean(test["signature"][index] * (1.0 - test["signature"][index])) * 4.0
             )
             packet = OperationalPacketV1.build(
-                task_family="synthetic_future_operations",
+                task_family=getattr(
+                    self.bundle, "task_family", "synthetic_future_operations"
+                ),
                 query_operation_id=query_id,
                 fact_probabilities=test["fact"][index],
                 signature_probabilities=test["signature"][index],
@@ -169,14 +182,17 @@ class Stage0Evaluator:
         train = self._collect(self.bundle.split.train_world_ids, all_models)
         test = self._collect(self.bundle.split.test_world_ids, all_models)
         heldout_ops = np.asarray(self.bundle.split.heldout_operation_ids, dtype=np.int64)
+        residual_families = {"residual", "hybrid", "density", "reciprocity"}
         residual_ops = np.asarray(
             [
                 operation.operation_id
                 for operation in self.bundle.operations
-                if operation.family in {"residual", "hybrid"}
+                if operation.family in residual_families
             ],
             dtype=np.int64,
         )
+        if residual_ops.size == 0:
+            residual_ops = heldout_ops
 
         view_brier = brier_score(
             test["truth_signature"][:, heldout_ops],
@@ -185,19 +201,13 @@ class Stage0Evaluator:
         )
         view_fact_accuracy = binary_accuracy(test["truth_fact"], test["fact"], axis=1)
         renderer_scores = renderer_invariance_cosine(
-            test["code"],
-            test["world_id"],
-            test["model_id"],
+            test["code"], test["world_id"], test["model_id"]
         )
         retrieval_outcomes, retrieval_margins, retrieval_worlds = cross_model_retrieval(
-            test["code"],
-            test["world_id"],
-            test["model_id"],
+            test["code"], test["world_id"], test["model_id"]
         )
 
-        facts_only = facts_only_signatures(
-            test["fact"], self.bundle.operation_descriptors, self.bundle.residual.shape[1]
-        )
+        facts_only = self._facts_only_prediction(test)
         residual_full_per_view = brier_score(
             test["truth_signature"][:, residual_ops],
             test["signature"][:, residual_ops],
@@ -233,13 +243,9 @@ class Stage0Evaluator:
             held_brier = float(np.mean(view_brier[held_mask]))
 
         leakage_accuracy = model_identity_probe(
-            train["code"],
-            train["model_id"],
-            test["code"],
-            test["model_id"],
+            train["code"], train["model_id"], test["code"], test["model_id"]
         )
         chance = 1.0 / len(all_models)
-
         replicates = self.config.evaluation.bootstrap_replicates
         seed = self.config.evaluation.bootstrap_seed
         hidden_r2 = pairwise_hidden_ridge_r2(
@@ -250,10 +256,13 @@ class Stage0Evaluator:
             test["world_id"],
             test["model_id"],
         )
+        operation_families = sorted({operation.family for operation in self.bundle.operations})
 
         metrics: dict[str, object] = {
             "schema": "frank_eq_stage0_metrics_v1",
-            "scope": "synthetic future-defined causal-state Stage 0",
+            "scope": getattr(
+                self.bundle, "scope", "synthetic future-defined causal-state Stage 0"
+            ),
             "n_test_views": int(len(test["world_id"])),
             "n_test_worlds": int(len(np.unique(test["world_id"]))),
             "n_models": len(all_models),
@@ -286,33 +295,62 @@ class Stage0Evaluator:
             "founder_gain_over_constant": founder_gain,
             "held_model_heldout_brier": held_brier,
             "held_model_gain_over_constant": (
-                None if held_model_id is None else float(np.mean(baseline_brier[test["model_id"] == held_model_id] - view_brier[test["model_id"] == held_model_id]))
+                None
+                if held_model_id is None
+                else float(
+                    np.mean(
+                        baseline_brier[test["model_id"] == held_model_id]
+                        - view_brier[test["model_id"] == held_model_id]
+                    )
+                )
             ),
             "held_model_retention": float(held_retention),
             "model_leakage_accuracy": leakage_accuracy,
             "model_leakage_chance": chance,
             "model_leakage_over_chance": leakage_accuracy - chance,
             "pairwise_hidden_ridge_r2": hidden_r2,
-            "mean_pairwise_hidden_ridge_r2": float(np.nanmean(list(hidden_r2.values())))
-            if hidden_r2
-            else None,
+            "mean_pairwise_hidden_ridge_r2": (
+                float(np.nanmean(list(hidden_r2.values()))) if hidden_r2 else None
+            ),
             "packet_audit": self._packet_audit(test),
-            "operation_families": list(OPERATION_FAMILIES),
+            "operation_families": operation_families,
         }
+        if "model_signature" in test:
+            metrics["source_branch_brier_to_oracle"] = float(
+                brier_score(
+                    test["truth_signature"][:, heldout_ops],
+                    test["model_signature"][:, heldout_ops],
+                )
+            )
+            metrics["quotient_brier_to_source_branch"] = float(
+                brier_score(
+                    test["model_signature"][:, heldout_ops],
+                    test["signature"][:, heldout_ops],
+                )
+            )
+            metrics["source_branch_accuracy_to_oracle"] = float(
+                binary_accuracy(
+                    test["truth_signature"][:, heldout_ops],
+                    test["model_signature"][:, heldout_ops],
+                )
+            )
+
         decision = reduce_stage0(metrics, self.config.gates)
         atomic_write_json(self.output_dir / "metrics.json", metrics)
         atomic_write_json(self.output_dir / "decision.json", decision)
-        np.savez_compressed(
-            self.output_dir / "predictions.npz",
-            world_id=test["world_id"],
-            model_id=test["model_id"],
-            renderer_id=test["renderer_id"],
-            code=test["code"],
-            signature=test["signature"],
-            fact=test["fact"],
-            truth_signature=test["truth_signature"],
-            truth_fact=test["truth_fact"],
-        )
+        prediction_payload: dict[str, np.ndarray] = {
+            "world_id": test["world_id"],
+            "model_id": test["model_id"],
+            "renderer_id": test["renderer_id"],
+            "code": test["code"],
+            "signature": test["signature"],
+            "fact": test["fact"],
+            "truth_signature": test["truth_signature"],
+            "truth_fact": test["truth_fact"],
+        }
+        if "model_signature" in test:
+            prediction_payload["model_signature"] = test["model_signature"]
+        np.savez_compressed(self.output_dir / "predictions.npz", **prediction_payload)
         manifest = {
             "schema": "frank_eq_artifact_manifest_v1",
             "checkpoint": {

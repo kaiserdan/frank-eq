@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate repository contracts, configs, docs, and adopted evidence."""
+"""Validate repository contracts, configs, docs, cluster surfaces, and adopted evidence."""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ SRC = ROOT / "src"
 sys.path.insert(0, str(SRC))
 
 from frank_eq.config import load_config  # noqa: E402
+from frank_eq.real_config import load_real_config  # noqa: E402
 from frank_eq.utils import sha256_file  # noqa: E402
 
 REQUIRED = (
@@ -29,8 +30,22 @@ REQUIRED = (
     "docs/08_LINEAGE_AND_NEGATIVE_EVIDENCE.md",
     "docs/09_IMPLEMENTATION_STATUS.md",
     "docs/10_DECISION_LOG.md",
+    "docs/11_REAL_STAGEA_IMPLEMENTATION.md",
+    "docs/OLIVIA.md",
+    "docs/LUMI.md",
     "configs/stage0/synthetic_smoke.yaml",
     "configs/stage0/synthetic_full.yaml",
+    "configs/stage0/real_smoke.yaml",
+    "configs/stage0/real_olivia.yaml",
+    "configs/stage0/real_lumi.yaml",
+    "olivia/cli.py",
+    "olivia/run.slurm",
+    "olivia/quickstart.sh",
+    "lumi/cli.py",
+    "lumi/run.slurm",
+    "lumi/quickstart.sh",
+    ".agents/skills/olivia-cluster-runner/SKILL.md",
+    ".agents/skills/lumi-cluster-runner/SKILL.md",
     "evidence/reference_stage0/metrics.json",
     "evidence/reference_stage0/decision.json",
     "evidence/reference_stage0/manifest.json",
@@ -42,11 +57,19 @@ def main() -> int:
     if missing:
         raise SystemExit(f"missing required files: {missing}")
 
-    for config_path in (
+    synthetic_configs = (
         ROOT / "configs/stage0/synthetic_smoke.yaml",
         ROOT / "configs/stage0/synthetic_full.yaml",
-    ):
+    )
+    real_configs = (
+        ROOT / "configs/stage0/real_smoke.yaml",
+        ROOT / "configs/stage0/real_olivia.yaml",
+        ROOT / "configs/stage0/real_lumi.yaml",
+    )
+    for config_path in synthetic_configs:
         load_config(config_path)
+    for config_path in real_configs:
+        load_real_config(config_path)
 
     decision_path = ROOT / "evidence/reference_stage0/decision.json"
     metrics_path = ROOT / "evidence/reference_stage0/metrics.json"
@@ -70,14 +93,17 @@ def main() -> int:
         "decision.json": sha256_file(decision_path),
     }
     if expected != observed:
-        raise SystemExit(f"reference evidence hash mismatch: expected={expected}, observed={observed}")
+        raise SystemExit(
+            f"reference evidence hash mismatch: expected={expected}, observed={observed}"
+        )
 
     print(
         json.dumps(
             {
                 "status": "passed",
                 "required_files": len(REQUIRED),
-                "configs": 2,
+                "synthetic_configs": len(synthetic_configs),
+                "real_configs": len(real_configs),
                 "reference_decision": decision["decision"],
             },
             sort_keys=True,

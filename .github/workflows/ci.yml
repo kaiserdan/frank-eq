@@ -22,7 +22,7 @@ jobs:
       - name: Compile
         run: python -m compileall -q src scripts
       - name: Lint
-        run: ruff check src scripts tests
+        run: ruff check --output-format=github src scripts tests
       - name: Test
         run: pytest -q
       - name: Validate repository

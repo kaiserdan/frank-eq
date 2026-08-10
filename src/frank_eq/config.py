@@ -47,6 +47,9 @@ class ModelConfig:
     use_workspace_gate: bool = True
     workspace_l1: float = 2e-4
     gradient_reversal_weight: float = 0.10
+    decoder_type: str = "public_coefficients"
+    graph_n_entities: int = 0
+    graph_temperature: float = 3.0
 
 
 @dataclass(slots=True)
@@ -95,9 +98,9 @@ class EvaluationConfig:
 class GateConfig:
     """Prospective Stage-0 promotion gates.
 
-    Thresholds intentionally target a synthetic proof-of-implementation, not a
-    scientific claim about real LLMs. Real-model campaigns must freeze their own
-    gates before any outcome-bearing evaluation.
+    Thresholds intentionally target an implementation canary, not a scientific
+    claim. A real-model campaign must freeze its own thresholds before any
+    outcome-bearing evaluation.
     """
 
     max_heldout_signature_brier: float = 0.16
@@ -145,6 +148,20 @@ class RunConfig:
             raise ValueError("model.code_dim must be at least 4")
         if not 1 <= self.model.quantization_bits <= 16:
             raise ValueError("model.quantization_bits must be between 1 and 16")
+        if self.model.decoder_type not in {"public_coefficients", "graph"}:
+            raise ValueError("model.decoder_type must be public_coefficients or graph")
+        if self.model.decoder_type == "graph":
+            if self.model.graph_n_entities < 3:
+                raise ValueError("graph decoder requires model.graph_n_entities >= 3")
+            expected_facts = self.model.graph_n_entities * (self.model.graph_n_entities - 1)
+            if self.data.n_facts != expected_facts:
+                raise ValueError(
+                    f"graph decoder requires data.n_facts={expected_facts}, got {self.data.n_facts}"
+                )
+            if self.data.n_residual < 2:
+                raise ValueError("graph decoder requires at least two residual coordinates")
+            if self.model.graph_temperature <= 0:
+                raise ValueError("model.graph_temperature must be positive")
         if self.training.epochs < 1 or self.training.onboarding_epochs < 1:
             raise ValueError("training epochs must be positive")
         if self.training.num_threads < 1:
@@ -172,7 +189,16 @@ def load_config(path: str | Path) -> RunConfig:
     if not config_path.is_file():
         raise FileNotFoundError(f"configuration not found: {config_path}")
     raw = yaml.safe_load(config_path.read_text()) or {}
-    allowed = {"run_name", "output_dir", "data", "model", "losses", "training", "evaluation", "gates"}
+    allowed = {
+        "run_name",
+        "output_dir",
+        "data",
+        "model",
+        "losses",
+        "training",
+        "evaluation",
+        "gates",
+    }
     unknown = set(raw) - allowed
     if unknown:
         raise ValueError(f"unknown top-level config keys: {sorted(unknown)}")

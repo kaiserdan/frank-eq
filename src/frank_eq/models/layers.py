@@ -7,6 +7,8 @@ import math
 import torch
 from torch import nn
 
+from frank_eq.real_config import GRAPH_OPERATION_FAMILIES
+
 
 class _GradientReversalFunction(torch.autograd.Function):
     @staticmethod
@@ -23,8 +25,6 @@ class _GradientReversalFunction(torch.autograd.Function):
 
 
 class GradientReversal(nn.Module):
-    """Identity in the forward pass and sign-reversed gradient in backward."""
-
     def __init__(self, scale: float):
         super().__init__()
         self.scale = float(scale)
@@ -34,8 +34,6 @@ class GradientReversal(nn.Module):
 
 
 class WorkspaceGate(nn.Module):
-    """Learned sparse gate over model-local capture coordinates."""
-
     def __init__(self, input_dim: int, enabled: bool):
         super().__init__()
         self.enabled = enabled
@@ -62,8 +60,6 @@ class WorkspaceGate(nn.Module):
 
 
 class StraightThroughQuantizer(nn.Module):
-    """Uniform bounded quantization with a straight-through estimator."""
-
     def __init__(self, bits: int):
         super().__init__()
         if not 1 <= bits <= 16:
@@ -85,12 +81,7 @@ class StraightThroughQuantizer(nn.Module):
 
 
 class PublicOperationDecoder(nn.Module):
-    """Execute public future-operation coefficients on a decoded causal state.
-
-    This decoder has no learned parameters. It is the synthetic Stage-0
-    analogue of a frozen interrogator: held-out operations are executable as
-    soon as their public coefficient descriptors are supplied.
-    """
+    """Execute public synthetic coefficients on a decoded causal state."""
 
     def __init__(self, n_facts: int, n_residual: int, descriptor_dim: int):
         super().__init__()
@@ -115,10 +106,11 @@ class PublicOperationDecoder(nn.Module):
             for i in range(self.n_facts)
             for j in range(i + 1, self.n_facts)
         ]
-        if pair_terms:
-            pairs = torch.stack(pair_terms, dim=1)
-        else:
-            pairs = signed.new_zeros((signed.shape[0], 0))
+        pairs = (
+            torch.stack(pair_terms, dim=1)
+            if pair_terms
+            else signed.new_zeros((signed.shape[0], 0))
+        )
         constant = signed.new_ones((signed.shape[0], 1))
         basis = torch.cat([signed, pairs, residual, constant], dim=1)
         coefficients = descriptors[:, self.coefficient_offset :]
@@ -127,8 +119,154 @@ class PublicOperationDecoder(nn.Module):
         return basis @ coefficients.transpose(0, 1)
 
 
+class GraphOperationDecoder(nn.Module):
+    """Frozen differentiable interrogator for the real relational-world panel."""
+
+    def __init__(
+        self,
+        *,
+        n_entities: int,
+        n_residual: int,
+        descriptor_dim: int,
+        temperature: float,
+    ):
+        super().__init__()
+        if n_entities < 3:
+            raise ValueError("GraphOperationDecoder requires at least three entities")
+        if n_residual < 2:
+            raise ValueError("GraphOperationDecoder requires density and reciprocity residuals")
+        expected = len(GRAPH_OPERATION_FAMILIES) + 4 * n_entities + 1
+        if descriptor_dim != expected:
+            raise ValueError(
+                f"graph operation descriptor width must be {expected}, got {descriptor_dim}"
+            )
+        self.n_entities = n_entities
+        self.n_facts = n_entities * (n_entities - 1)
+        self.n_residual = n_residual
+        self.temperature = float(temperature)
+        edge_index = torch.full((n_entities, n_entities), -1, dtype=torch.long)
+        cursor = 0
+        for source in range(n_entities):
+            for target in range(n_entities):
+                if source == target:
+                    continue
+                edge_index[source, target] = cursor
+                cursor += 1
+        self.register_buffer("edge_index", edge_index, persistent=True)
+
+    def _edge(self, probabilities: torch.Tensor, source: int, target: int) -> torch.Tensor:
+        if source == target:
+            return probabilities.new_zeros(probabilities.shape[0])
+        index = int(self.edge_index[source, target].item())
+        return probabilities[:, index]
+
+    def _compose(
+        self,
+        probabilities: torch.Tensor,
+        source: int,
+        target: int,
+        *,
+        forced_edge: tuple[int, int] | None = None,
+    ) -> torch.Tensor:
+        path_probabilities: list[torch.Tensor] = []
+        for middle in range(self.n_entities):
+            if middle in {source, target}:
+                continue
+            left = self._edge(probabilities, source, middle)
+            right = self._edge(probabilities, middle, target)
+            if forced_edge == (source, middle):
+                left = torch.ones_like(left)
+            if forced_edge == (middle, target):
+                right = torch.ones_like(right)
+            path_probabilities.append(left * right)
+        if not path_probabilities:
+            return probabilities.new_zeros(probabilities.shape[0])
+        paths = torch.stack(path_probabilities, dim=1)
+        return 1.0 - torch.prod(1.0 - paths, dim=1)
+
+    @staticmethod
+    def _bounded_logit(probability: torch.Tensor) -> torch.Tensor:
+        return torch.logit(torch.clamp(probability, 1e-5, 1.0 - 1e-5))
+
+    def forward(
+        self,
+        fact_logits: torch.Tensor,
+        residual: torch.Tensor,
+        descriptors: torch.Tensor,
+    ) -> torch.Tensor:
+        probabilities = torch.sigmoid(fact_logits)
+        if probabilities.shape[1] != self.n_facts:
+            raise ValueError(
+                f"graph decoder expected {self.n_facts} edge facts, got {probabilities.shape[1]}"
+            )
+        family_width = len(GRAPH_OPERATION_FAMILIES)
+        family_ids = torch.argmax(descriptors[:, :family_width], dim=1)
+        offset = family_width
+        argument_blocks = [
+            torch.argmax(
+                descriptors[:, offset + block * self.n_entities : offset + (block + 1) * self.n_entities],
+                dim=1,
+            )
+            for block in range(4)
+        ]
+        polarities = descriptors[:, -1]
+        outputs: list[torch.Tensor] = []
+        for operation_index in range(descriptors.shape[0]):
+            family = GRAPH_OPERATION_FAMILIES[int(family_ids[operation_index].item())]
+            source, target, aux_source, aux_target = (
+                int(block[operation_index].item()) for block in argument_blocks
+            )
+            if family == "lookup":
+                probability = self._edge(probabilities, source, target)
+            elif family == "inverse":
+                probability = self._edge(probabilities, target, source)
+            elif family == "mutual":
+                probability = self._edge(probabilities, source, target) * self._edge(
+                    probabilities, target, source
+                )
+            elif family == "compose":
+                probability = self._compose(probabilities, source, target)
+            elif family == "compare_outdegree":
+                source_degree = torch.stack(
+                    [
+                        self._edge(probabilities, source, other)
+                        for other in range(self.n_entities)
+                        if other != source
+                    ],
+                    dim=1,
+                ).sum(dim=1)
+                target_degree = torch.stack(
+                    [
+                        self._edge(probabilities, target, other)
+                        for other in range(self.n_entities)
+                        if other != target
+                    ],
+                    dim=1,
+                ).sum(dim=1)
+                probability = torch.sigmoid(
+                    self.temperature * (source_degree - target_degree - 0.5)
+                )
+            elif family == "counterfactual_add":
+                probability = self._compose(
+                    probabilities,
+                    aux_source,
+                    aux_target,
+                    forced_edge=(source, target),
+                )
+            elif family == "density":
+                probability = torch.sigmoid(self.temperature * (residual[:, 0] - 1e-4))
+            elif family == "reciprocity":
+                probability = torch.sigmoid(self.temperature * (residual[:, 1] - 1e-4))
+            else:
+                raise ValueError(f"unsupported graph operation family: {family}")
+            if float(polarities[operation_index].item()) < 0:
+                probability = 1.0 - probability
+            outputs.append(self._bounded_logit(probability))
+        return torch.stack(outputs, dim=1)
+
+
 class DotProductOperationDecoder(nn.Module):
-    """Decode future operations from one operation-agnostic state code."""
+    """Optional learned comparison decoder; not used by the primary Stage-A path."""
 
     def __init__(
         self,
