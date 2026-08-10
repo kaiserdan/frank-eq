@@ -64,6 +64,7 @@ See:
 evidence/real_stagea_lumi_v2/REVIEW.md
 docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md
 docs/15_STAGEA_V2_REVIEW_AND_STAGEQ.md
+docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md
 ```
 
 ## Current next step: Stage Q
@@ -84,7 +85,8 @@ conversation and reveals the operation afterward as a new user message. The
 backend fails closed unless the cached token IDs are an exact prefix of the full
 branch conversation.
 
-Build and validate both caches only:
+Build and validate both caches only. The workflow rejects `diagnose`, `train`,
+and `eval` for Stage-Q configs:
 
 ```bash
 python lumi/cli.py submit \
@@ -116,19 +118,28 @@ python scripts/compare_stageq_caches.py \
 ```
 
 The qualifier uses founder models and train/validation worlds only, averages
-views within world, and reports a grouped 95% interval. It excludes test worlds
+views within world, and reports grouped 95% intervals. It excludes test worlds
 and the held sender. Every output keeps all scientific, receiver, test-access,
 and fresh-outcome authorization fields false.
 
-Stage Q requires:
+The source contract qualifies only when:
 
 ```text
-candidate competence lower95 >= 0
+aggregate candidate competence lower95 >= 0
+every individual founder competence lower95 >= 0
+```
+
+This permits one fresh Stage-A registration to be drafted, not run.
+
+The paired comparison answers a separate attribution question:
+
+```text
 paired candidate-minus-legacy Brier improvement lower95 >= 0
 ```
 
-A pass permits drafting one fresh Stage-A registration; it does not itself
-establish a latent interface.
+If it passes, corrected turn placement has an identified positive effect. If it
+fails while source competence passes, the candidate may still be used as a
+frozen prerequisite, but no prompt-mechanism claim is allowed.
 
 ## Architecture direction after qualification
 
