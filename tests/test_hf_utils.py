@@ -98,6 +98,7 @@ def test_chat_turn_reveals_operation_as_new_user_turn_with_exact_prefix() -> Non
     query = "registered operation"
     prefix = adapter._format_prefix(world)
     assert CHAT_ACKNOWLEDGEMENT in prefix
+    assert world in prefix
     assert prefix.endswith(f"<assistant>{CHAT_ACKNOWLEDGEMENT}</assistant>")
     prefix_ids = adapter._tokenize(prefix)
     suffix_ids = adapter._query_ids(
@@ -107,8 +108,7 @@ def test_chat_turn_reveals_operation_as_new_user_turn_with_exact_prefix() -> Non
     )
     combined = torch.cat([prefix_ids, suffix_ids], dim=1)
     expected_text = (
-        f"<system>{CHAT_SYSTEM_CONTRACT}</system>"
-        f"<user>{world}</user>"
+        f"<system>{CHAT_SYSTEM_CONTRACT}\n\n{world}</system>"
         f"<assistant>{CHAT_ACKNOWLEDGEMENT}</assistant>"
         f"<user>{query}</user><assistant>"
     )
@@ -118,11 +118,64 @@ def test_chat_turn_reveals_operation_as_new_user_turn_with_exact_prefix() -> Non
     assert torch.equal(combined, expected)
     assert [message["role"] for message in adapter.tokenizer.last_messages] == [
         "system",
-        "user",
         "assistant",
         "user",
     ]
     assert adapter.tokenizer.last_kwargs == {"enable_thinking": False}
+
+
+class QwenLikeTokenizer(StubTokenizer):
+    """Mimics Qwen3's context-dependent template: a final assistant message that
+    follows the last user message gains a ``<think>`` wrapper that disappears
+    once a later user message exists."""
+
+    def apply_chat_template(self, messages, tokenize=False, add_generation_prompt=True, **kwargs):
+        assert tokenize is False
+        self.last_messages = [dict(message) for message in messages]
+        self.last_kwargs = dict(kwargs)
+        last_user = max(
+            (index for index, message in enumerate(messages) if message["role"] == "user"),
+            default=len(messages) - 1,
+        )
+        rendered = ""
+        for index, message in enumerate(messages):
+            if message["role"] == "system":
+                rendered += f"<system>{message['content']}</system>"
+            elif message["role"] == "user":
+                rendered += f"<user>{message['content']}</user>"
+            elif message["role"] == "assistant":
+                if index > last_user and (index == len(messages) - 1):
+                    rendered += f"<assistant><think></think>{message['content']}</assistant>"
+                else:
+                    rendered += f"<assistant>{message['content']}</assistant>"
+        if add_generation_prompt:
+            rendered += "<assistant><think></think>"
+        return rendered
+
+
+def test_chat_turn_exact_prefix_under_context_dependent_template() -> None:
+    """Regression: Qwen3's template renders a trailing post-query assistant
+    message with a think wrapper that vanishes once a later user message
+    exists. The chat_turn construction must remain token-prefix stable."""
+
+    adapter = _stub_adapter("chat_turn")
+    adapter.tokenizer = QwenLikeTokenizer()
+    world = "world statement"
+    query = "registered operation"
+    prefix = adapter._format_prefix(world)
+    assert "<think>" not in prefix
+    prefix_ids = adapter._tokenize(prefix)
+    suffix_ids = adapter._query_ids(query, world_statement=world, prefix_ids=prefix_ids)
+    combined = torch.cat([prefix_ids, suffix_ids], dim=1)
+    expected_text = (
+        f"<system>{CHAT_SYSTEM_CONTRACT}\n\n{world}</system>"
+        f"<assistant>{CHAT_ACKNOWLEDGEMENT}</assistant>"
+        f"<user>{query}</user><assistant><think></think>"
+    )
+    expected = adapter.tokenizer(expected_text, add_special_tokens=False, return_tensors="pt")[
+        "input_ids"
+    ]
+    assert torch.equal(combined, expected)
 
 
 def test_raw_format_passes_through() -> None:

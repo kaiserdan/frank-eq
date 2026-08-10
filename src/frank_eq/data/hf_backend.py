@@ -204,6 +204,28 @@ class HFModelAdapter:
             {"role": "user", "content": world_statement},
         ]
 
+    @staticmethod
+    def _chat_turn_messages(world_statement: str) -> list[dict[str, str]]:
+        """Candidate conversation for ``prompt_format=chat_turn``.
+
+        The query-blind world statement is placed in the system message and the
+        fixed acknowledgement is the only assistant message, so the cached
+        prefix contains no assistant turn that follows a user turn. Qwen3's
+        chat template renders such turns context-dependently (a final post-query
+        assistant message gains a ``<think>`` wrapper that disappears once a
+        later user message exists), which would break exact-prefix continuity;
+        this construction renders identically in the prefix and in the
+        full-conversation reveal for every frozen checkpoint.
+        """
+
+        return [
+            {
+                "role": "system",
+                "content": f"{CHAT_SYSTEM_CONTRACT}\n\n{world_statement}",
+            },
+            {"role": "assistant", "content": CHAT_ACKNOWLEDGEMENT},
+        ]
+
     def _format_prefix(self, prefix: str) -> str:
         if self.capture.prompt_format == "raw":
             return prefix
@@ -216,9 +238,10 @@ class HFModelAdapter:
                 add_generation_prompt=True,
             )
         if self.capture.prompt_format == "chat_turn":
-            messages = self._base_chat_messages(prefix)
-            messages.append({"role": "assistant", "content": CHAT_ACKNOWLEDGEMENT})
-            return self._apply_chat_template(messages, add_generation_prompt=False)
+            return self._apply_chat_template(
+                self._chat_turn_messages(prefix),
+                add_generation_prompt=False,
+            )
         raise ValueError(f"unsupported capture.prompt_format: {self.capture.prompt_format}")
 
     def _tokenize(self, text: str, *, add_special_tokens: bool | None = None) -> torch.Tensor:
@@ -255,13 +278,8 @@ class HFModelAdapter:
 
         if world_statement is None or prefix_ids is None:
             raise ValueError("chat_turn suffix construction requires world_statement and prefix_ids")
-        messages = self._base_chat_messages(world_statement)
-        messages.extend(
-            [
-                {"role": "assistant", "content": CHAT_ACKNOWLEDGEMENT},
-                {"role": "user", "content": query},
-            ]
-        )
+        messages = self._chat_turn_messages(world_statement)
+        messages.append({"role": "user", "content": query})
         full_text = self._apply_chat_template(messages, add_generation_prompt=True)
         full_ids = self._tokenize(full_text, add_special_tokens=False)
         prefix_length = int(prefix_ids.shape[1])

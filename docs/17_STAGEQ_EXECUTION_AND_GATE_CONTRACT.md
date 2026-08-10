@@ -24,6 +24,32 @@ Requests containing `diagnose`, `train`, or `eval` fail before the run manifest
 is created. Stage-Q analysis is performed afterward with the dedicated
 qualification scripts, which consume only train/validation worlds.
 
+## Candidate rendering (2026-08-11 correction)
+
+The candidate caches:
+
+```text
+system:   reasoning contract + query-blind world statement
+assistant: fixed acknowledgement
+```
+
+and reveals the operation after capture as:
+
+```text
+user: operation question
+assistant: generation boundary
+```
+
+The world statement lives in the system message because Qwen3's chat template
+renders assistant messages that follow the last user message
+context-dependently: a trailing post-query assistant message gains a
+`<think>` wrapper that disappears once a later user message exists, which
+breaks exact-prefix continuity. The system+acknowledgement construction
+renders identically in the cached prefix and in the full-conversation reveal
+for every frozen checkpoint (verified against the real templates). The
+backend still fails closed unless the cached prefix token IDs are an exact
+prefix of the full conversation.
+
 ## Primary source qualification
 
 For each held-out operation, estimate an oracle prior using training worlds.

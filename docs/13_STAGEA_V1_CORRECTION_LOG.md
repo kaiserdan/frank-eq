@@ -93,6 +93,13 @@ made after the first real Stage-A v1 outcome. It does not rewrite
 - **Amendment (engineering, not scientific):** `branch_mode: kv_reuse` is now the EXCLUSIVE mode and `allow_exact_replay_fallback: false` — no cache can mix modes; a KV-clone failure fails the build instead of silently replaying. The 32-branch parity sample stays registered per model as a stack-property audit, and `parity_max_abs_diff: 0.33` follows the announced formula max(0.05, 3 × measured max). Protocol `docs/14` updated. v1 is unaffected (pure-kv cache; decision stands).
 - **Status:** v2-1 registration re-frozen with the amended capture contract; full run submitted next.
 
+## 2026-08-11 — Stage-Q chat_turn prefix-continuity defect and candidate rendering correction
+
+- **Finding:** the first `frank-eq-stageq-chat-turn` cache run (Slurm 20961621, dev-g) failed closed with `chat_turn template violates exact prefix continuity`. Reproduction against the real templates (container, login node) showed Qwen3-0.6B's chat template renders assistant messages context-dependently: a trailing post-query assistant message gains a `<think>\n\n</think>\n\n` wrapper (`loop.index0 > last_query_index and loop.last`), which disappears once a later user message exists. The original candidate (system contract / user world statement / assistant acknowledgement) therefore could not satisfy exact-prefix continuity under Qwen3 — the prefix render wrapped the acknowledgement, the full-conversation render did not. SmolLM and Llama were unaffected. `enable_thinking: false` does not bind this branch of Qwen3's template.
+- **Fix (frozen in code and protocol):** the candidate conversation is now `system: reasoning contract + query-blind world statement; assistant: fixed acknowledgement`, with the operation revealed as `user: operation question` + generation boundary. With no user message before the acknowledgement, Qwen3's post-query branch never applies and both renders are identical. Verified token-prefix equality against all three real templates (qwen3, smollm, llama). Regression test added with a Qwen3-like context-dependent stub template.
+- **Contract docs updated:** `docs/15` §4.2 and `docs/17` (candidate rendering correction).
+- **Status:** chat_turn cache,validate re-submitted after the fix; legacy baseline cache (Slurm 20961538) already completed and is unaffected.
+
 ## 2026-08-10 — v2-1 falsified: chat template is not the competence bottleneck
 
 - **Run:** `frank-eq-stagea-lumi-v2` (Slurm 20952565, dev-g, source `1aa741d5df31`), full workflow completed with zero failures; adopted negative under `evidence/real_stagea_lumi_v2/`; decision log entry appended.

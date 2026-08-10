@@ -120,8 +120,7 @@ turn-placement baseline rather than a bitwise replay of the historical run.
 `chat_turn` caches a complete conversation:
 
 ```text
-system: fixed reasoning contract
-user:   query-blind world statement
+system:   reasoning contract + query-blind world statement
 assistant: fixed acknowledgement
 ```
 
@@ -132,9 +131,15 @@ user: operation question
 assistant: <generation boundary>
 ```
 
-The backend renders the entire candidate conversation, tokenizes it, and fails
-closed unless the cached prefix token IDs are an exact prefix of the full
-conversation. The operation can therefore enter only after state formation.
+The world statement is part of the system message: Qwen3's chat template
+renders a trailing post-query assistant message with a `<think>` wrapper that
+vanishes once a later user message exists, which breaks exact-prefix
+continuity for any construction ending in an assistant turn after a user
+message. The system+acknowledgement form renders identically in the cached
+prefix and the full reveal for every frozen checkpoint. The backend renders
+the entire candidate conversation, tokenizes it, and fails closed unless the
+cached prefix token IDs are an exact prefix of the full conversation. The
+operation can therefore enter only after state formation.
 
 `chat_template_kwargs.enable_thinking: false` is frozen for both development
 conditions so model-specific hidden reasoning modes do not differ between them.
