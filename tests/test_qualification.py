@@ -132,7 +132,7 @@ def test_aggregate_gain_cannot_hide_one_failed_founder() -> None:
     assert result["status"] == "fail"
 
 
-def test_stageq_paired_comparison_requires_competence_and_improvement() -> None:
+def test_stageq_paired_comparison_identifies_improvement_when_both_pass() -> None:
     result = compare_native_competence_bundles(
         _bundle(competent=False),
         _bundle(competent=True),
@@ -142,10 +142,30 @@ def test_stageq_paired_comparison_requires_competence_and_improvement() -> None:
         bootstrap_seed=11,
     )
     assert result["status"] == "pass"
+    assert result["source_contract_qualified"] is True
+    assert result["prompt_effect_identified"] is True
     assert result["paired_brier_improvement_ci"]["lower"] > 0.0
     assert result["candidate_competence"]["status"] == "pass"
     assert result["data_usage"]["test_worlds_used"] == 0
     assert not any(result["authorization"].values())
+
+
+def test_source_can_qualify_without_a_prompt_effect_claim() -> None:
+    baseline = _bundle(competent=True)
+    candidate = _bundle(competent=True)
+    result = compare_native_competence_bundles(
+        baseline,
+        candidate,
+        min_candidate_brier_gain_lower95=0.0,
+        min_paired_improvement_lower95=0.01,
+        bootstrap_replicates=200,
+        bootstrap_seed=11,
+    )
+    assert result["status"] == "pass"
+    assert result["decision"] == "SOURCE_CONTRACT_QUALIFIED_FOR_STAGEA_REGISTRATION"
+    assert result["source_contract_qualified"] is True
+    assert result["prompt_effect_identified"] is False
+    assert result["prompt_effect_decision"] == "NO_PROMPT_EFFECT_CLAIM"
 
 
 def test_stageq_rejects_unpaired_caches() -> None:
