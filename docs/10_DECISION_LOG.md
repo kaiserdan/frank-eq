@@ -60,3 +60,9 @@
 - **Decision:** replace the arm64-only scratch PyTorch images with `pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime` (amd64), since every `accel` node on Olivia is H200/x86_64 and the existing images cannot execute there. Runtime pip-installs `[real]` extras (transformers, wandb) inside the job.
 - **Reason:** the previous images were built on an arm64 host and are unusable on Olivia compute nodes; the default image path in `olivia/run.slurm` was therefore broken.
 - **Consequence:** `FRANK_EQ_OLIVIA_IMAGE` default now points at the amd64 image; `FRANK_EQ_ALLOW_PIP_INSTALL=1` and optional `FRANK_EQ_PIP_FIND_LINKS` (offline wheel directory) are forwarded through the submitter for runtime dependency installation.
+
+## 2026-08-10 — switch the first canary launch to LUMI
+
+- **Decision:** launch the first `cache,validate` canary on LUMI (`small-g`) instead of Olivia. The Olivia `accel` queue had 761 pending jobs with no idle GPU nodes; LUMI scheduled the same job with an ~8-hour estimate. The scientific configuration is identical (`configs/stage0/real_lumi.yaml`); only run identity and the operational partition differ.
+- **Checkpoint staging:** `Qwen/Qwen3-0.6B` was already cached on LUMI. `HuggingFaceTB/SmolLM-1.7B-Instruct` was downloaded at the exact Olivia snapshot revision, and `meta-llama/Llama-3.2-1B-Instruct` was transferred from the Olivia cache (no token available on either cluster for gated re-download). All three load offline in the runtime container.
+- **Operational notes:** huggingface_hub 1.x resolves only `$HF_HOME/hub/models--*`; `snapshot_download` with a SHA revision does not write `refs/main`, and a trailing newline in `refs/main` breaks offline resolution. The LUMI cache entries were repaired accordingly.

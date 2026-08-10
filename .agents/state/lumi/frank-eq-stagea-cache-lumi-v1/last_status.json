@@ -1,0 +1,22 @@
+{
+  "cluster": "lumi",
+  "job_name": "frank-eq-stagea-cache-lumi-v1",
+  "scheduler": {
+    "elapsed": "00:00:00",
+    "exit_code": "0:0",
+    "job_id": "20940318",
+    "state": "PENDING"
+  },
+  "scheduler_rows": [
+    {
+      "elapsed": "00:00:00",
+      "exit_code": "0:0",
+      "job_id": "20940318",
+      "state": "PENDING"
+    }
+  ],
+  "schema": "frank_eq_cluster_status_v1",
+  "slurm_job_id": "20940318",
+  "stderr": null,
+  "workflow": null
+}

@@ -1,0 +1,23 @@
+{
+  "cluster": "lumi",
+  "config": "configs/stage0/real_lumi.yaml",
+  "dry_run": false,
+  "host": "lumi",
+  "job_name": "frank-eq-stagea-cache-lumi-v1",
+  "profile": "full",
+  "remote_job": "/scratch/project_465002861/kaiserda/frank-eq/jobs/frank-eq-stagea-cache-lumi-v1",
+  "remote_logs": "/scratch/project_465002861/kaiserda/frank-eq/jobs/frank-eq-stagea-cache-lumi-v1/source/logs",
+  "remote_root": "/scratch/project_465002861/kaiserda/frank-eq",
+  "remote_run_root": "/scratch/project_465002861/kaiserda/frank-eq/jobs/frank-eq-stagea-cache-lumi-v1/source/runs",
+  "remote_source": "/scratch/project_465002861/kaiserda/frank-eq/sources/0b79e263b21a253e65972566c64491798ce49cb1d1bebf86ccb9e905497df389",
+  "schema": "frank_eq_cluster_submission_plan_v1",
+  "slurm_job_id": "20940318",
+  "slurm_script": "lumi/run.slurm",
+  "source": {
+    "archive": "/Users/dk/Code/frank-eq/.agents/state/lumi/.archives/0b79e263b21a253e65972566c64491798ce49cb1d1bebf86ccb9e905497df389.tar.gz",
+    "bytes": 94078,
+    "file_count": 104,
+    "sha256": "0b79e263b21a253e65972566c64491798ce49cb1d1bebf86ccb9e905497df389"
+  },
+  "stages": "cache,validate"
+}
