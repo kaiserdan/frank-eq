@@ -56,12 +56,12 @@ a scientific claim.
 
 The legacy and candidate caches must be identical in:
 
-- checkpoint roster and revisions;
+- checkpoint roster and requested/observed revisions;
 - world, model, and renderer row identities;
 - fact, residual, and oracle labels;
 - operation registry and descriptors;
 - split manifest;
-- branch mode.
+- selected layers, answer labels, and branch-mode accounting.
 
 The paired unit is again a world. Positive improvement means the proper
 `chat_turn` candidate has lower Brier than the legacy assistant-continuation
@@ -70,12 +70,13 @@ baseline on the same model/world/renderer/operation rows.
 A prompt-effect claim is identified only if:
 
 ```text
-paired candidate-minus-baseline improvement lower95 >= 0
+paired candidate-minus-baseline improvement lower95 > 0
 ```
 
-This contrast is not a prerequisite for using an independently competent source
-contract. If source competence passes but paired improvement does not, the
-candidate may be used as a frozen prerequisite while making no claim that
+This strict inequality prevents identical conditions from being labeled an
+effect. The contrast is not a prerequisite for using an independently competent
+source contract. If source competence passes but paired improvement does not,
+the candidate may be used as a frozen prerequisite while making no claim that
 corrected turn placement caused an improvement.
 
 ## Stage-Q decisions
@@ -83,23 +84,36 @@ corrected turn placement caused an improvement.
 The paired artifact reports two independent decisions:
 
 1. `source_contract_qualified`: aggregate and every founder competence gate;
-2. `prompt_effect_identified`: paired candidate-minus-legacy interval.
+2. `prompt_effect_identified`: strictly positive paired candidate-minus-legacy
+   lower confidence bound.
 
 Only the first controls whether one Stage-A protocol may be drafted. The second
 controls only whether a prompt-placement effect may be claimed.
 
-## Data roles
+## Data and model roles
 
 Stage-Q uses:
 
 - training worlds to estimate operation priors;
 - validation worlds for all qualification intervals;
-- zero test worlds;
-- founder models only;
-- no held-sender evidence.
+- zero test-world labels;
+- founder rows only in the qualification statistic.
+
+The current cache format still extracts the model registered in the historical
+`held` slot, although its rows are excluded from every Stage-Q statistic. That
+checkpoint is therefore **development-exposed** and may not be presented as the
+held sender in a later Stage-A registration. A future Stage-A protocol must
+choose a new unopened held checkpoint/model role.
 
 The Stage-Q panel seed `20260811` is permanently development-only and may not be
 reused for a later Stage-A test or confirmation role.
+
+## Frozen versus exploratory settings
+
+The primary CLIs read thresholds, bootstrap replicate counts, and seeds from the
+cache's frozen config. They expose no command-line threshold override. Internal
+exploratory overrides are marked `protocol_mode=exploratory_override` and are
+automatically demoted to `NO_PROMOTION_EXPLORATORY_OVERRIDE`.
 
 ## Required artifacts
 
