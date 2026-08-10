@@ -54,6 +54,7 @@ REQUIRED = (
     "evidence/real_stagea_devg_v2/decision.json",
     "evidence/real_stagea_devg_v2/metrics.json",
     "evidence/real_stagea_devg_v2/run_manifest.json",
+    "evidence/real_stagea_devg_v2/verification_summary.json",
     "evidence/real_stagea_devg_v2/AUDIT.md",
     "evidence/real_stagea_devg_v2/audit.json",
     "evidence/real_stagea_devg_v2/manifest.json",
@@ -118,6 +119,7 @@ def main() -> int:
     real_decision = json.loads((real_dir / "decision.json").read_text())
     real_metrics = json.loads((real_dir / "metrics.json").read_text())
     real_audit = json.loads((real_dir / "audit.json").read_text())
+    real_verification = json.loads((real_dir / "verification_summary.json").read_text())
     if real_manifest.get("schema") != "frank_eq_real_stagea_evidence_manifest_v1":
         raise SystemExit("real Stage-A evidence manifest has the wrong schema")
     if real_decision.get("status") != "fail":
@@ -144,6 +146,26 @@ def main() -> int:
     ):
         raise SystemExit("real Stage-A audit improperly authorizes continuation")
 
+    if real_verification.get("schema") != "frank_eq_adopted_verification_summary_v1":
+        raise SystemExit("real Stage-A verification summary has the wrong schema")
+    if real_verification.get("overall") != "passed":
+        raise SystemExit("real Stage-A workflow verification did not pass")
+    workflow = real_verification.get("workflow", {})
+    if workflow.get("state") != "completed" or workflow.get("failure") is not None:
+        raise SystemExit("real Stage-A workflow did not complete cleanly")
+    if workflow.get("completed_stages") != ["cache", "validate", "train", "eval"]:
+        raise SystemExit("real Stage-A workflow stage list changed")
+    if not all(real_verification.get("artifacts", {}).values()):
+        raise SystemExit("real Stage-A verification summary has missing artifacts")
+    verification_decision = real_verification.get("scientific_decision", {})
+    if verification_decision != {
+        "decision": "STOP_OR_REVISE_STAGE0",
+        "status": "fail",
+    }:
+        raise SystemExit("verification summary does not preserve the scientific decision")
+    if real_verification.get("authorizes_scientific_claim") is not False:
+        raise SystemExit("verification summary improperly authorizes a claim")
+
     gitignore = (ROOT / ".gitignore").read_text()
     if ".agents/state/" not in gitignore:
         raise SystemExit(".agents/state/ must remain ignored")
@@ -160,6 +182,7 @@ def main() -> int:
                 "real_stagea_v1_localization": real_audit["audit_findings"][
                     "failure_localization"
                 ],
+                "real_stagea_v1_workflow": real_verification["overall"],
             },
             sort_keys=True,
         )
