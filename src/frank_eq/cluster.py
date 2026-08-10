@@ -43,6 +43,8 @@ class ClusterProfile:
     remote_root_environment: str
     default_remote_root: str
     slurm_script: str
+    partition_environment: str
+    time_environment: str
 
 
 PROFILES = {
@@ -53,6 +55,8 @@ PROFILES = {
         remote_root_environment="FRANK_EQ_OLIVIA_ROOT",
         default_remote_root="/cluster/home/dakai5365/project/frank-eq",
         slurm_script="olivia/run.slurm",
+        partition_environment="FRANK_EQ_OLIVIA_PARTITION",
+        time_environment="FRANK_EQ_OLIVIA_TIME",
     ),
     "lumi": ClusterProfile(
         name="lumi",
@@ -61,6 +65,8 @@ PROFILES = {
         remote_root_environment="FRANK_EQ_LUMI_ROOT",
         default_remote_root="/scratch/project_465002861/kaiserda/frank-eq",
         slurm_script="lumi/run.slurm",
+        partition_environment="FRANK_EQ_LUMI_PARTITION",
+        time_environment="FRANK_EQ_LUMI_TIME",
     ),
 }
 
@@ -209,6 +215,8 @@ class ClusterClient:
             "remote_job": remote_job,
             "remote_source": f"{self.remote_root}/sources/{archive['sha256']}",
             "slurm_script": self.profile.slurm_script,
+            "slurm_partition": os.environ.get(self.profile.partition_environment),
+            "slurm_time": os.environ.get(self.profile.time_environment),
         }
 
     def submit(
@@ -251,7 +259,9 @@ class ClusterClient:
             "FRANK_EQ_CONFIG": plan["config"],
             "FRANK_EQ_RUN_ROOT": "runs",
             "FRANK_EQ_PROFILE": profile,
-            "FRANK_EQ_STAGES": stages,
+            # sbatch --export splits values on commas, so encode the stage list
+            # with '+' and decode it again in the job's quickstart script.
+            "FRANK_EQ_STAGES": stages.replace(",", "+"),
             "FRANK_EQ_SOURCE_SHA256": plan["source"]["sha256"],
         }
         for key in (
@@ -276,8 +286,14 @@ class ClusterClient:
             "--parsable",
             f"--job-name={job_name}",
             f"--export={export_argument}",
-            plan["slurm_script"],
         ]
+        partition = os.environ.get(self.profile.partition_environment)
+        if partition:
+            submit_parts.append(f"--partition={partition}")
+        time_limit = os.environ.get(self.profile.time_environment)
+        if time_limit:
+            submit_parts.append(f"--time={time_limit}")
+        submit_parts.append(plan["slurm_script"])
         submit_command = f"cd {shlex.quote(remote_job)}/source && " + _shell_join(submit_parts)
         completed = _run(["ssh", self.host, submit_command])
         slurm_job_id = completed.stdout.strip().split(";")[0]

@@ -29,8 +29,11 @@ if missing:
     )
 PY
 
+stages_arg="${FRANK_EQ_STAGES:-cache,validate,train,eval}"
+stages_arg="${stages_arg//+/ ,}"  # decoded from the sbatch-safe '+' encoding
+stages_arg="${stages_arg// /}"
 python -m frank_eq.cli validate-real-config --config "${FRANK_EQ_CONFIG:?missing FRANK_EQ_CONFIG}"
 python -m frank_eq.cli run-real-stagea \
   --config "$FRANK_EQ_CONFIG" \
   --out "${FRANK_EQ_RUN_ROOT:-runs}" \
-  --stages "${FRANK_EQ_STAGES:-cache,validate,train,eval}"
+  --stages "$stages_arg"

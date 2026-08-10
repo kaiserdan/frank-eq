@@ -5,14 +5,14 @@
     "elapsed": "00:00:00",
     "exit_code": "0:0",
     "job_id": "20940318",
-    "state": "PENDING"
+    "state": "CANCELLED by 327003761"
   },
   "scheduler_rows": [
     {
       "elapsed": "00:00:00",
       "exit_code": "0:0",
       "job_id": "20940318",
-      "state": "PENDING"
+      "state": "CANCELLED by 327003761"
     }
   ],
   "schema": "frank_eq_cluster_status_v1",

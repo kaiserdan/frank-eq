@@ -66,3 +66,9 @@
 - **Decision:** launch the first `cache,validate` canary on LUMI (`small-g`) instead of Olivia. The Olivia `accel` queue had 761 pending jobs with no idle GPU nodes; LUMI scheduled the same job with an ~8-hour estimate. The scientific configuration is identical (`configs/stage0/real_lumi.yaml`); only run identity and the operational partition differ.
 - **Checkpoint staging:** `Qwen/Qwen3-0.6B` was already cached on LUMI. `HuggingFaceTB/SmolLM-1.7B-Instruct` was downloaded at the exact Olivia snapshot revision, and `meta-llama/Llama-3.2-1B-Instruct` was transferred from the Olivia cache (no token available on either cluster for gated re-download). All three load offline in the runtime container.
 - **Operational notes:** huggingface_hub 1.x resolves only `$HF_HOME/hub/models--*`; `snapshot_download` with a SHA revision does not write `refs/main`, and a trailing newline in `refs/main` breaks offline resolution. The LUMI cache entries were repaired accordingly.
+
+## 2026-08-10 — fix stage-list truncation in cluster submissions
+
+- **Bug:** `sbatch --export` splits `KEY=VALUE` pairs on commas, so `FRANK_EQ_STAGES=cache,validate,train,eval` reached the job as `FRANK_EQ_STAGES=cache`; the first dev-g run executed only the cache stage and the workflow reported completed without eval artifacts. This would have affected any multi-stage submission on either cluster.
+- **Fix:** the submitter encodes the stage list with `+` separators (`FRANK_EQ_STAGES=cache+validate+train+eval`) and both quickstart scripts decode `+` back to commas before invoking `run-real-stagea`. The submission plan and local state keep the human-readable comma form.
+- **Consequence:** a new dev-g test job re-runs the full `cache,validate,train,eval` workflow before the standard-g campaign.
