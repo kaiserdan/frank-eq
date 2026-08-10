@@ -1,7 +1,8 @@
 # Stage-A v2 protocol registration: native chat-template competence
 
-Status: frozen implementation protocol, proposed for ratification before any
-outcome-bearing run.  
+Status: executed and falsified (adopted negative, 2026-08-10; see
+`evidence/real_stagea_lumi_v2/`). This document remains the immutable frozen
+registration; it does not authorize any further run.  
 Date: 2026-08-10  
 Config: `configs/stage0/real_lumi_v2.yaml`
 

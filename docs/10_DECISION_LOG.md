@@ -80,6 +80,13 @@
 - **Passing gates:** renderer invariance 0.992, operational residual gain lower-95 0.117, quantization retention 0.996.
 - **Failing gates:** held-out signature Brier upper-95 0.198 (≤0.18), fact accuracy lower-95 0.495 (≥0.70), cross-model retrieval lower-95 0.097 (≥0.30), wrong-world margin lower-95 −0.079 (≥0.03), held-sender retention 0.472 (≥0.70), model-ID leakage 0.653 over chance (≤0.25).
 
+## 2026-08-10 — Stage-A v2-1 (chat-template competence) is falsified
+
+- **Run:** `frank-eq-stagea-lumi-v2` on LUMI `dev-g` (Slurm 20952565, source archive `1aa741d5df31`, frozen `configs/stage0/real_lumi_v2.yaml`), full `cache,validate,train,eval`, engineering verification passed, 276.3 s wall. Adopted as a valid terminal negative for v2-1; evidence under `evidence/real_stagea_lumi_v2/`.
+- **Decision:** `STOP_OR_REVISE_STAGE0`, `authorizes_scientific_claim=false`. The native chat-template hypothesis is falsified: native-competence gain is −0.0521 (validation worlds, founders, held-out ops; gate ≥ 0.0) versus −0.0603 in the v1 diagnostic — the prompt surface is not the competence bottleneck. Quotient metrics worsened (held-out Brier upper 0.242 vs 0.198; held-sender retention −0.34 vs 0.47).
+- **Localization (train/validation only):** under chat capture, own-future signatures are more readable (qwen3 balanced accuracy 0.89) but linear fact readability dropped (best gain −0.015..+0.007 vs +0.006..+0.035) and renderer-transfer of facts still loses to the prior in both directions. The source models' branches remain oracle-incompetent on this task; an oracle-grounded quotient is bounded by source task competence.
+- **Consequence:** the next hypothesis must raise model task competence (branch A continuation: stronger checkpoints) or revise the task; per the stop rules it requires a new versioned registration with a fresh untouched test role. No gates, layers, panel, prompts, or checkpoints were tuned under this outcome.
+
 ## 2026-08-10 — localize the Stage-A failure to capture sufficiency
 
 - **Evidence:** training curves show the supervised fact head is unfittable — facts BCE moves 0.702→0.660 over 49 epochs (chance ≈ 0.693) with validation loss *increasing* (0.696→0.710), while the residual coordinates drop 1.09→0.35 and the signature loss improves. Seen-operation Brier (0.170) equals held-out (0.173), so operation generalization and the frozen decoder are not the limit; renderer code cosine is 0.99, so nuisance invariance is not the limit.

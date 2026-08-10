@@ -60,6 +60,12 @@ REQUIRED = (
     "evidence/real_stagea_devg_v2/AUDIT.md",
     "evidence/real_stagea_devg_v2/audit.json",
     "evidence/real_stagea_devg_v2/manifest.json",
+    "evidence/real_stagea_lumi_v2/AUDIT.md",
+    "evidence/real_stagea_lumi_v2/decision.json",
+    "evidence/real_stagea_lumi_v2/metrics.json",
+    "evidence/real_stagea_lumi_v2/run_manifest.json",
+    "evidence/real_stagea_lumi_v2/verification_summary.json",
+    "evidence/real_stagea_lumi_v2/manifest.json",
 )
 
 
@@ -123,6 +129,29 @@ def main() -> int:
     real_metrics = json.loads((real_dir / "metrics.json").read_text())
     real_audit = json.loads((real_dir / "audit.json").read_text())
     real_verification = json.loads((real_dir / "verification_summary.json").read_text())
+
+    v2_dir = ROOT / "evidence/real_stagea_lumi_v2"
+    v2_manifest = _validate_hash_manifest(v2_dir)
+    v2_decision = json.loads((v2_dir / "decision.json").read_text())
+    v2_verification = json.loads((v2_dir / "verification_summary.json").read_text())
+    if v2_manifest.get("schema") != "frank_eq_real_stagea_evidence_manifest_v1":
+        raise SystemExit("real Stage-A v2 evidence manifest has the wrong schema")
+    if v2_decision.get("status") != "fail":
+        raise SystemExit("adopted real Stage-A v2 outcome must remain a failure")
+    if v2_decision.get("decision") != "STOP_OR_REVISE_STAGE0":
+        raise SystemExit("adopted real Stage-A v2 decision changed")
+    if v2_decision.get("authorizes_scientific_claim") is not False:
+        raise SystemExit("negative v2 evidence must not authorize a scientific claim")
+    if v2_verification.get("overall") != "passed":
+        raise SystemExit("real Stage-A v2 workflow verification did not pass")
+    if v2_verification.get("workflow", {}).get("completed_stages") != [
+        "cache",
+        "validate",
+        "train",
+        "eval",
+    ]:
+        raise SystemExit("real Stage-A v2 workflow stage list changed")
+
     if real_manifest.get("schema") != "frank_eq_real_stagea_evidence_manifest_v1":
         raise SystemExit("real Stage-A evidence manifest has the wrong schema")
     if real_decision.get("status") != "fail":
@@ -186,6 +215,8 @@ def main() -> int:
                     "failure_localization"
                 ],
                 "real_stagea_v1_workflow": real_verification["overall"],
+                "real_stagea_v2_decision": v2_decision["decision"],
+                "real_stagea_v2_workflow": v2_verification["overall"],
             },
             sort_keys=True,
         )

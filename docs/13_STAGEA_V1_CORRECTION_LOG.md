@@ -92,3 +92,10 @@ made after the first real Stage-A v1 outcome. It does not rewrite
 - **Conclusion:** exact-replay and KV-reuse are not interchangeable at scientific-gate precision on this stack (bf16 ROCm kernel-level accumulation differences). A mixed-mode cache could carry up to ~0.11 probability error per branch.
 - **Amendment (engineering, not scientific):** `branch_mode: kv_reuse` is now the EXCLUSIVE mode and `allow_exact_replay_fallback: false` — no cache can mix modes; a KV-clone failure fails the build instead of silently replaying. The 32-branch parity sample stays registered per model as a stack-property audit, and `parity_max_abs_diff: 0.33` follows the announced formula max(0.05, 3 × measured max). Protocol `docs/14` updated. v1 is unaffected (pure-kv cache; decision stands).
 - **Status:** v2-1 registration re-frozen with the amended capture contract; full run submitted next.
+
+## 2026-08-10 — v2-1 falsified: chat template is not the competence bottleneck
+
+- **Run:** `frank-eq-stagea-lumi-v2` (Slurm 20952565, dev-g, source `1aa741d5df31`), full workflow completed with zero failures; adopted negative under `evidence/real_stagea_lumi_v2/`; decision log entry appended.
+- **Result:** native-competence gain −0.0521 (validation worlds, founders, held-out ops) vs −0.0603 in the v1 diagnostic — unchanged within noise. The frozen chat-template hypothesis (v2-1) is falsified; the prompt surface is not the driver of branch incompetence.
+- **Probe deltas (chat vs raw):** own-future signatures more readable (qwen3 balanced accuracy 0.813→0.892); linear fact readability decreased (best gain +0.006..+0.035 → −0.015..+0.007); residual R2 up (declared-global control); renderer-transfer still loses to the prior both directions (−0.15..−0.26).
+- **Interpretation:** the source models are oracle-incompetent on this 6-entity graph task under both prompt surfaces (their branches are anti-predictive vs the operation prior); an oracle-grounded quotient is bounded by source task competence. Branch A continuation: stronger checkpoints, or a task revision — a new versioned registration with a fresh test role either way. No tuning occurred under this outcome.

@@ -23,22 +23,19 @@ frank-eq diagnose-real-cache \
 
 This uses train/validation worlds only and authorizes nothing.
 
-## Stage-A v2-1 registration (frozen, awaiting ratification)
+## Stage-A v2-1 (falsified; adopted negative)
 
 Protocol `docs/14_STAGEA_V2_PROTOCOL.md`, config `configs/stage0/real_lumi_v2.yaml`.
-Same checkpoints and panel; chat-templated capture; new world seed 20260810;
-revision pins required; parity audit; native-competence gate. Dry-run:
-
-```bash
-python lumi/cli.py submit \
-  --job-name frank-eq-stagea-lumi-v2 \
-  --config configs/stage0/real_lumi_v2.yaml \
-  --profile full \
-  --stages cache,validate,train,eval \
-  --dry-run --json
-```
-
-No outcome-bearing run until the registration is ratified.
+Chat-templated capture, world seed 20260810, revision pins, parity audit,
+native-competence gate. Ran on dev-g (`frank-eq-stagea-lumi-v2`, Slurm
+20952565): workflow completed, decision `STOP_OR_REVISE_STAGE0` — native
+competence −0.0521, prompt surface not the bottleneck. Evidence:
+`evidence/real_stagea_lumi_v2/`. Engineering amendments during the run:
+parity tolerance calibrated from a 32-branch measurement
+(`parity_max_abs_diff: 0.33` = max(0.05, 3× max measured)), and
+`branch_mode: kv_reuse` is exclusive (fallback disabled) because exact-replay
+differs from KV-reuse by up to ~0.11 probability on this stack. Do not reuse
+the v2-1 test role.
 
 ## Runtime
 

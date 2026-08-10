@@ -1,0 +1,102 @@
+{
+  "cross_model_retrieval_top1": 0.1527777777777778,
+  "cross_model_retrieval_top1_ci": {
+    "estimate": 0.1527777777777778,
+    "lower": 0.09722222222222221,
+    "replicates": 2000,
+    "upper": 0.20833333333333334
+  },
+  "fact_accuracy": 0.5509259259259259,
+  "fact_accuracy_ci": {
+    "estimate": 0.5509259259259259,
+    "lower": 0.5120254629629629,
+    "replicates": 2000,
+    "upper": 0.5925925925925926
+  },
+  "facts_only_residual_brier": 0.2303919792175293,
+  "founder_gain_over_constant": 0.043235260993242264,
+  "founder_heldout_brier": 0.18716472387313843,
+  "full_residual_brier": 0.1391276866197586,
+  "held_model_gain_over_constant": -0.0148926405236125,
+  "held_model_heldout_brier": 0.24529261887073517,
+  "held_model_retention": -0.3444558950607524,
+  "heldout_operation_ids": [
+    0,
+    2,
+    4,
+    7,
+    8,
+    11,
+    12,
+    15
+  ],
+  "heldout_signature_brier": 0.20654068887233734,
+  "heldout_signature_brier_ci": {
+    "estimate": 0.20654068276700052,
+    "lower": 0.1734462325901,
+    "replicates": 2000,
+    "upper": 0.24205697613457838
+  },
+  "mean_pairwise_hidden_ridge_r2": 0.30826939448774665,
+  "model_leakage_accuracy": 0.9722222222222222,
+  "model_leakage_chance": 0.3333333333333333,
+  "model_leakage_over_chance": 0.6388888888888888,
+  "n_models": 3,
+  "n_test_views": 72,
+  "n_test_worlds": 12,
+  "native_competence": {
+    "brier": 0.2806764543056488,
+    "brier_gain_over_prior": -0.052091971039772034,
+    "by_model_brier": {
+      "qwen3-0.6b": 0.327859491109848,
+      "smollm-1.7b-instruct": 0.23349341750144958
+    },
+    "coordinate_prior_brier": 0.22858448326587677
+  },
+  "native_competence_brier_gain_over_prior": -0.052091971039772034,
+  "operation_families": [
+    "compare_outdegree",
+    "compose",
+    "counterfactual_add",
+    "density",
+    "inverse",
+    "lookup",
+    "mutual",
+    "reciprocity"
+  ],
+  "packet_audit": {
+    "max_serialized_bytes": 462,
+    "mean_serialized_bytes": 460.25,
+    "roundtrip_passed": true,
+    "samples": 8
+  },
+  "pairwise_hidden_ridge_r2": {
+    "0->1": 0.4562499494163921,
+    "0->2": 0.4316045406277167,
+    "1->0": 0.1635027302211426,
+    "1->2": 0.49010192398292707,
+    "2->0": 0.06574767086674826,
+    "2->1": 0.24240955181155333
+  },
+  "quantization_retention": 1.0043555649930989,
+  "quotient_brier_to_source_branch": 0.21169926226139069,
+  "renderer_cosine": 0.9793111885689376,
+  "residual_brier_gain": 0.0912642851471901,
+  "residual_brier_gain_ci": {
+    "estimate": 0.09126429042468469,
+    "lower": 0.05255575994702263,
+    "replicates": 2000,
+    "upper": 0.124090533861373
+  },
+  "schema": "frank_eq_stage0_metrics_v1",
+  "scope": "real frozen-LLM future-defined causal-state Stage A",
+  "source_branch_accuracy_to_oracle": 0.4444444444444444,
+  "source_branch_brier_to_oracle": 0.3670870363712311,
+  "wrong_world_margin": -0.060714256639281906,
+  "wrong_world_margin_ci": {
+    "estimate": -0.06071425663928192,
+    "lower": -0.09258871500173375,
+    "replicates": 2000,
+    "upper": -0.03171526453871695
+  }
+}

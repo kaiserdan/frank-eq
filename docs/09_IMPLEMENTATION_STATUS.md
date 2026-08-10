@@ -114,17 +114,26 @@ cache,validate,diagnose,train,eval
 The public operation semantics and interrogator remain shared. The local option
 is implementation readiness only; no outcome-bearing v2 config is frozen.
 
-## Stage-A v2-1 registration (frozen, awaiting ratification)
+## Stage-A v2-1 registration (falsified; adopted negative)
 
 Per decision-tree branch A (native competence prerequisite), exactly one
-versioned v2 hypothesis is frozen: same checkpoints and panel geometry, capture
-prefix wrapped in each model's native chat template. Protocol:
-`docs/14_STAGEA_V2_PROTOCOL.md`; config: `configs/stage0/real_lumi_v2.yaml`
-(new world seed 20260810, required revision pins, chat capture,
-KV-versus-replay parity audit, frozen native-competence gate, residual check as
-declared-global control). Implementation and tests are complete (50/50 green,
-dry-run submission succeeds); no outcome-bearing run is submitted until the
-registration is ratified.
+versioned v2 hypothesis was frozen: same checkpoints and panel geometry, capture
+prefix wrapped in each model's native chat template. It ran on LUMI dev-g
+(`frank-eq-stagea-lumi-v2`, Slurm 20952565) and is **falsified**: native
+competence gain −0.0521 (vs −0.0603 diagnostic), held-out Brier upper 0.242,
+held-sender retention −0.34. The prompt surface is not the competence
+bottleneck; the source models' branches are oracle-incompetent on this task
+under both raw and chat prompts. Adopted negative under
+`evidence/real_stagea_lumi_v2/`. Protocol: `docs/14_STAGEA_V2_PROTOCOL.md`.
+
+Two engineering amendments were recorded during the run (parity-tolerance
+calibration from a 32-branch measurement; exclusive `kv_reuse` branch mode with
+fallback disabled); they change no scientific gate and are logged in
+`docs/13_STAGEA_V1_CORRECTION_LOG.md`.
+
+Next hypothesis candidates (branch A continuation): stronger checkpoints, or a
+task revision. Both require a new versioned registration with a fresh untouched
+test role.
 
 ## Not authorized
 

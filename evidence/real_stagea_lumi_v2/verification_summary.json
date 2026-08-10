@@ -1,0 +1,41 @@
+{
+ "schema": "frank_eq_adopted_verification_summary_v1",
+ "cluster": "lumi",
+ "job_name": "frank-eq-stagea-lumi-v2",
+ "overall": "passed",
+ "warnings": [
+  "scientific gate failed; workflow may still be valid"
+ ],
+ "artifacts": {
+  "cache/cache_validation.json": true,
+  "cache/dataset.npz": true,
+  "cache/metadata.json": true,
+  "eval/artifact_manifest.json": true,
+  "eval/decision.json": true,
+  "eval/metrics.json": true,
+  "train/final.pt": true,
+  "train/training_summary.json": true
+ },
+ "authorizes_scientific_claim": false,
+ "workflow": {
+  "state": "completed",
+  "completed_at": "2026-08-10T19:03:26.788583+00:00",
+  "completed_stages": [
+   "cache",
+   "validate",
+   "train",
+   "eval"
+  ],
+  "elapsed_seconds": 276.28373289108276,
+  "failure": null
+ },
+ "scientific_decision": {
+  "decision": "STOP_OR_REVISE_STAGE0",
+  "status": "fail"
+ },
+ "source": {
+  "adopted_from_commit": "33606a5",
+  "source_archive_sha256": "1aa741d5df312893c6d105d1dbda6245123780dc5feedaac926a74181b57c1b7",
+  "path": ".agents/state/lumi/frank-eq-stagea-lumi-v2/verify.json"
+ }
+}

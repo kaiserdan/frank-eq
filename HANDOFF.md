@@ -16,13 +16,23 @@ workflow integrity: passed
 scientific claim authorized: false
 ```
 
-The negative decision is correct for the exact v1 pipeline and remains
-immutable. The previous prose localization to “capture sufficiency” was too
-strong. The failure source is unresolved because v1 did not run independent
-readability/capacity probes.
+Real Stage-A v2-1 (native chat-template competence) is also an adopted
+negative:
 
-Read `docs/12_STAGEA_V1_AUDIT_AND_V2_PROTOCOL.md` and
-`evidence/real_stagea_devg_v2/AUDIT.md`.
+```text
+run: frank-eq-stagea-lumi-v2
+cluster/job: LUMI dev-g / 20952565
+decision: STOP_OR_REVISE_STAGE0
+native competence gain: -0.0521 (vs -0.0603 diagnostic) — prompt surface
+is not the competence bottleneck
+```
+
+The v1 negative is immutable for the exact v1 pipeline. The v2-1 negative is
+immutable for the exact v2-1 registration; the chat-template hypothesis is
+falsified. The failure source is unresolved beyond "source task competence is
+the binding constraint; hidden-state capture carries readable self-future
+signal". Read `docs/12_STAGEA_V1_AUDIT_AND_V2_PROTOCOL.md`,
+`docs/14_STAGEA_V2_PROTOCOL.md`, and `evidence/real_stagea_lumi_v2/AUDIT.md`.
 
 ## What v1 indicates
 
@@ -58,30 +68,27 @@ distribution. V2 must separate those objects.
 
 ## Immediate next action
 
-A Stage-A v2-1 registration is frozen and ready for ratification:
+Stage-A v2-1 (native chat-template competence) ran on LUMI dev-g and is
+**falsified** as an adopted negative:
 
 ```text
-hypothesis: native chat-template competence (same checkpoints, panel, depths)
-protocol:   docs/14_STAGEA_V2_PROTOCOL.md
-config:     configs/stage0/real_lumi_v2.yaml
-world seed: 20260810 (fresh untouched test role)
+run:      frank-eq-stagea-lumi-v2 (Slurm 20952565, source 1aa741d5df31)
+decision: STOP_OR_REVISE_STAGE0
+native competence gain: -0.0521  (v1 diagnostic: -0.0603)
+held-out Brier upper:   0.2421   (v1: 0.1978) | held retention: -0.34 (v1: 0.47)
 ```
 
-Ratification step (one decision): approve the frozen registration, then submit:
+The prompt surface is not the competence bottleneck: the frozen source models'
+branches are oracle-incompetent on the 6-entity graph task under both raw and
+chat prompts (anti-predictive vs operation priors). Chat made own-future
+signatures more readable (qwen3 balacc 0.89) but linear fact readability
+dropped. Evidence: `evidence/real_stagea_lumi_v2/`; decision log + correction
+log entries appended.
 
-```bash
-python lumi/cli.py submit \
-  --job-name frank-eq-stagea-lumi-v2 \
-  --config configs/stage0/real_lumi_v2.yaml \
-  --profile full \
-  --stages cache,validate,train,eval
-```
-
-with `WANDB_API_KEY` and `FRANK_EQ_LUMI_PARTITION`/`FRANK_EQ_LUMI_TIME` in the
-environment (standard-g recommended). Deviating from the registration (stronger
-checkpoints, capture expansion, local head scope) requires a new versioned
-protocol and fresh test role. The dry-run submission already succeeds; no
-outcome-bearing run has been submitted.
+Next hypothesis candidates (branch A continuation — a user decision):
+stronger checkpoints (e.g. Qwen3-4B-class founders) or a task revision. Either
+requires a new versioned registration with a fresh untouched test role;
+receiver execution stays locked. No tuning occurred under this outcome.
 
 ## Decision tree after localization
 
@@ -157,10 +164,11 @@ not commit source archives, stale scheduler snapshots, or fetched run trees.
 
 ## Do not do next
 
-Do not tune the v1 test gate, rerun the same deterministic test, add a target
-hidden-state decoder, or start receiver execution. The existing-cache
-localization is complete (tree branch A: native competence prerequisite) and
-one versioned Stage-A v2 registration (chat-template competence) is frozen,
-implemented, and tested — but it is NOT submitted until ratified. Any v2
-capture/prompt change must still satisfy state-capture-before-reveal and the
-ten registration prerequisites in `docs/12`.
+Do not tune the v1/v2 test gates, rerun the same deterministic tests, add a
+target hidden-state decoder, or start receiver execution. The chat-template
+hypothesis is falsified (v2-1 adopted negative). The next step is a user
+decision: one new versioned registration raising source task competence
+(stronger checkpoints) or revising the task, with a fresh untouched test role
+and all ten registration prerequisites. Any capture/prompt/checkpoint change
+must satisfy state-capture-before-reveal and the frozen parity regime
+(exclusive kv_reuse, registered stack-noise audit).

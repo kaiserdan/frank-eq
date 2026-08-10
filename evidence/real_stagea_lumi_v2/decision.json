@@ -1,0 +1,72 @@
+{
+  "authorizes_real_model_canary": false,
+  "authorizes_receiver_protocol_design": false,
+  "authorizes_scientific_claim": false,
+  "checks": {
+    "cross_model_retrieval": {
+      "observed": 0.09722222222222221,
+      "passed": false,
+      "required": "lower_95 >= 0.3"
+    },
+    "fact_accuracy": {
+      "observed": 0.5120254629629629,
+      "passed": false,
+      "required": "lower_95 >= 0.7"
+    },
+    "held_model_retention": {
+      "observed": -0.3444558950607524,
+      "passed": false,
+      "required": ">= 0.7"
+    },
+    "heldout_signature_brier": {
+      "observed": 0.24205697613457838,
+      "passed": false,
+      "required": "upper_95 <= 0.18"
+    },
+    "model_identity_leakage": {
+      "observed": 0.6388888888888888,
+      "passed": false,
+      "required": "over_chance <= 0.25"
+    },
+    "native_competence": {
+      "observed": -0.052091971039772034,
+      "passed": false,
+      "required": ">= 0.0"
+    },
+    "operational_residual": {
+      "control": true,
+      "observed": 0.05255575994702263,
+      "passed": true,
+      "required": "lower_95 >= 0.005"
+    },
+    "quantization_retention": {
+      "observed": 1.0043555649930989,
+      "passed": true,
+      "required": ">= 0.9"
+    },
+    "renderer_invariance": {
+      "observed": 0.9793111885689376,
+      "passed": true,
+      "required": "mean >= 0.85"
+    },
+    "wrong_world_margin": {
+      "observed": -0.09258871500173375,
+      "passed": false,
+      "required": "lower_95 >= 0.03"
+    }
+  },
+  "decision": "STOP_OR_REVISE_STAGE0",
+  "failures": [
+    "heldout_signature_brier",
+    "fact_accuracy",
+    "cross_model_retrieval",
+    "wrong_world_margin",
+    "held_model_retention",
+    "model_identity_leakage",
+    "native_competence"
+  ],
+  "metric_scope": "real frozen-LLM future-defined causal-state Stage A",
+  "schema": "frank_eq_real_stagea_decision_v2",
+  "scope": "real frozen-LLM Stage-A representation gate",
+  "status": "fail"
+}

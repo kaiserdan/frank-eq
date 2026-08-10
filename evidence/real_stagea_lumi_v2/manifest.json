@@ -1,0 +1,12 @@
+{
+ "schema": "frank_eq_real_stagea_evidence_manifest_v1",
+ "run": "frank-eq-stagea-lumi-v2",
+ "adopted_from_commit": "33606a5",
+ "files": {
+  "AUDIT.md": "621705169057ac59eb4b95fb3870432ce3bc0754aaf0e2bbb9c5a5d95cf811b8",
+  "decision.json": "5ac43b34e26acd1a134cf76c69bea41363c98e9b60cb6e0cff44df246c91f83c",
+  "metrics.json": "254e38a89dba0d37ce887d4dbd71e20afc2e9933f6682cda711bb65c55c2b8f5",
+  "run_manifest.json": "08ca6efd4f54cce7de79ff10b54de4c6d799ac914bbeeaa24bc933988cdffb33",
+  "verification_summary.json": "90acc786687ce7673695641a1af06e3fe94a5b46b5f4d08fcb4dd0225cd14920"
+ }
+}
