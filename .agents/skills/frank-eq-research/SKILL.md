@@ -1,6 +1,6 @@
 ---
 name: frank-eq-research
-description: Audit and extend Frank-EQ future-defined operational-state experiments while preserving causal order, paired development gates, and immutable negative evidence.
+description: Audit and extend Frank-EQ future-defined operational-state experiments while preserving causal order, development-only source gates, and immutable negative evidence.
 ---
 
 # Frank-EQ research skill
@@ -15,7 +15,8 @@ description: Audit and extend Frank-EQ future-defined operational-state experime
 
 ## Current authority
 
-Read `AGENTS.md` and `HANDOFF.md` before acting.
+Read `AGENTS.md`, `HANDOFF.md`, and
+`docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md` before acting.
 
 Stage-A v1 and v2-1 are valid exact-pipeline negatives. V2-1 does not falsify
 native chat prompting generally: its operation was appended inside the assistant
@@ -28,8 +29,8 @@ configs/stageq/real_lumi_legacy_chat.yaml
 configs/stageq/real_lumi_chat_turn.yaml
 ```
 
-Run `cache,validate` only. Do not train a quotient or access a fresh Stage-A test
-role.
+Run `cache,validate` only. The workflow rejects `diagnose`, `train`, and `eval`
+for these configs. Do not access a fresh Stage-A test role.
 
 ## Mandatory Stage-Q workflow
 
@@ -54,8 +55,20 @@ python scripts/compare_stageq_caches.py \
    and keeps all authorization fields false.
 7. Adopt only a small hash-verified evidence package.
 
-Stage Q passes only if candidate competence and paired improvement both have a
-non-negative lower 95% world-grouped bound.
+## Stage-Q decisions
+
+The candidate source contract qualifies only if:
+
+```text
+aggregate competence lower95 >= 0
+every individual founder competence lower95 >= 0
+```
+
+This permits one fresh Stage-A protocol to be drafted, not run.
+
+The paired candidate-minus-legacy interval controls a separate prompt-effect
+claim. If its lower bound is negative, make no turn-placement claim; this does
+not invalidate an independently passing source competence gate.
 
 ## Causal and statistical invariants
 
@@ -65,6 +78,7 @@ non-negative lower 95% world-grouped bound.
 - Prompt comparisons must use identical world/model/operation rows.
 - Average renderer/model views within world before bootstrap resampling.
 - Use training worlds to fit priors and validation worlds for qualification.
+- Require every founder to pass; do not let an aggregate mask one sender.
 - Keep test worlds and the held sender unopened during Stage Q.
 - Keep self-future behavior separate from oracle semantic correctness.
 - Do not treat renderer cosine as invariance without specificity and low model
@@ -75,12 +89,13 @@ non-negative lower 95% world-grouped bound.
 
 ## After Stage Q
 
-If Stage Q fails, qualify stronger models or a simpler task on development data.
-Do not revise the latent architecture first.
+If source competence fails, qualify stronger models or a simpler task on
+development data. Do not revise the latent architecture first.
 
-If Stage Q passes, draft one fresh Stage-A registration using complete local
-compilers, separate behavioral/semantic channels, fresh worlds, and a frozen
-capture representation. Receiver execution remains locked.
+If source competence passes, draft one fresh Stage-A registration using complete
+local compilers, separate behavioral/semantic channels, fresh worlds, and a
+frozen capture representation. Record a prompt-effect claim only if the paired
+interval also passes. Receiver execution remains locked.
 
 ## Validation
 
