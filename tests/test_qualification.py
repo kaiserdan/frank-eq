@@ -86,31 +86,42 @@ def _bundle(*, competent: bool) -> RealBundle:
     )
 
 
-def test_native_qualification_passes_for_competent_founders() -> None:
-    result = compute_native_competence_qualification(
-        _bundle(competent=True),
+def _qualify(bundle: RealBundle) -> dict:
+    return compute_native_competence_qualification(
+        bundle,
         min_brier_gain_lower95=0.0,
         bootstrap_replicates=200,
         bootstrap_seed=7,
     )
+
+
+def test_native_qualification_passes_for_competent_founders() -> None:
+    result = _qualify(_bundle(competent=True))
     assert result["status"] == "pass"
     assert result["brier_gain_ci"]["lower"] > 0.0
+    assert all(check["passed"] for check in result["founder_checks"].values())
     assert result["data_usage"]["test_worlds_used"] == 0
     assert result["data_usage"]["held_sender_used"] is False
     assert not any(result["authorization"].values())
 
 
 def test_native_qualification_stops_anti_predictive_founders() -> None:
-    result = compute_native_competence_qualification(
-        _bundle(competent=False),
-        min_brier_gain_lower95=0.0,
-        bootstrap_replicates=200,
-        bootstrap_seed=7,
-    )
+    result = _qualify(_bundle(competent=False))
     assert result["status"] == "fail"
     assert result["decision"] == "STOP_BEFORE_REPRESENTATION_TRAINING"
     assert result["brier_gain_ci"]["upper"] < 0.0
     assert set(result["by_family"]) == {"compose", "lookup"}
+
+
+def test_aggregate_gain_cannot_hide_one_failed_founder() -> None:
+    bundle = _bundle(competent=True)
+    failed_model = bundle.model_ids == 1
+    bundle.model_signatures[failed_model] = 1.0 - bundle.signatures[failed_model]
+    result = _qualify(bundle)
+    assert result["aggregate_check"]["passed"] is True
+    assert result["founder_checks"]["founder-a"]["passed"] is True
+    assert result["founder_checks"]["founder-b"]["passed"] is False
+    assert result["status"] == "fail"
 
 
 def test_stageq_paired_comparison_requires_competence_and_improvement() -> None:
