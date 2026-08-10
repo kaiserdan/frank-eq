@@ -111,6 +111,20 @@ made after the first real Stage-A v1 outcome. It does not rewrite
 - **Decision:** `STOP_STAGEQ_CANDIDATE` (machine); all authorization fields false; zero test labels consumed; held-sender rows unused (checkpoint development-exposed, future Stage-A must choose a new held role).
 - **Consequence (docs/15 §6):** do not modify the latent architecture. The next step is screening stronger source checkpoints or a simpler formal task on development-only competence caches, freezing the first combination whose aggregate and every founder lower confidence bound are non-negative before any Stage-A representation training. Both the "prompt surface" and the "0.6–1.7B competence" questions are now answered under correct paired methodology: prompt placement does not matter (no effect), and the frozen small checkpoints are oracle-incompetent on the 6-entity graph task.
 
+## 2026-08-11 — source screening series: no passing combination; competence wall recorded
+
+Screening per docs/15 §6 used development-only `cache,validate` caches under the corrected `chat_turn` contract with `scripts/qualify_real_cache.py` (world-grouped 2000-replicate CIs, held-out operations, founders, validation worlds). Artifacts under `runs/stageq/screen-*-qualification/` (ignored). Configs frozen in `configs/stageq/` (screen-strong: qwen3-1.7b + qwen3-4b; screen-8b: qwen3-4b + qwen3-8b; both pinned revisions, dev seeds 20260812/20260813, held smollm-1.7b-instruct development-exposed and excluded).
+
+| Screen | aggregate lower95 | per-founder lower95 |
+|---|---|---|
+| Stage-Q (0.6B + 1.7B-smollm) | −0.162 | qwen3-0.6b −0.329, smollm-1.7b −0.066 |
+| screen-strong (qwen3-1.7b + qwen3-4b) | −0.262 | qwen3-1.7b −0.454, qwen3-4b −0.092 |
+| screen-8b (qwen3-4b + qwen3-8b) | −0.129 | qwen3-4b −0.164, qwen3-8b −0.112 |
+
+- **Wall finding:** model scale helps slowly (aggregate −0.16 → −0.13 from 0.6B to 8B class) while the multi-edge structural operations remain the binding constraint. First per-family passes appear only at 8B: `inverse` lower95 +0.136, `reciprocity` lower95 +0.147 (screen-8b). The hard families (`mutual` −0.758, `lookup` −0.482, `compose` −0.299, `compare_outdegree` −0.252 at 8B) are multi-edge reasoning under the frozen A/B forced-choice interrogator; single-edge and global operations are oracle-competent at 8B.
+- **Staging:** Qwen3-1.7B (`70d244cc…`), Qwen3-4B (`1cfa9a72…`), Qwen3-8B (`b968826d…`) staged in the LUMI HF cache (ungated); Qwen3.5-0.8B and gemma-4-E2B were evaluated and rejected (Qwen3.5 template requires a user message in every render; gemma-4-E2B ships no chat template), so they are not usable under the chat_turn contract.
+- **Decision (user):** stop screening; record the series. No source/task combination passed the frozen aggregate + per-founder gate. The latent architecture is not modified; all authorization fields remain false. Next options remain on the table for a future decision: task simplification (4-entity panel), further scale (Qwen3-14B), or a query-contract revision — all require passing the same development qualification before any Stage-A representation training.
+
 ## 2026-08-10 — v2-1 falsified: chat template is not the competence bottleneck
 
 - **Run:** `frank-eq-stagea-lumi-v2` (Slurm 20952565, dev-g, source `1aa741d5df31`), full workflow completed with zero failures; adopted negative under `evidence/real_stagea_lumi_v2/`; decision log entry appended.

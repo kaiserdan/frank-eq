@@ -94,6 +94,25 @@ Stage-A representation training. This is a user decision (checkpoint roster
 and/or task change); the latent architecture is not modified. Stage-Q
 artifacts: `runs/stageq/` (ignored); record in `docs/13_STAGEA_V1_CORRECTION_LOG.md`.
 
+## Screening series: stopped without a passing combination
+
+Three development screens ran (Stage-Q pair plus qwen3-4b/qwen3-8b rosters);
+none passed the frozen aggregate + per-founder gate:
+
+```text
+Stage-Q (0.6B+1.7B)      aggregate lower95 -0.162
+screen-strong (1.7B+4B)  aggregate lower95 -0.262   (qwen3-1.7b -0.454)
+screen-8b (4B+8B)        aggregate lower95 -0.129   (qwen3-8b -0.112)
+```
+
+Wall: multi-edge structural operations fail even at 8B (mutual -0.758,
+compose -0.299) while single-edge/global ops pass at 8B (inverse +0.136,
+reciprocity +0.147). Scale helps slowly; the 6-entity task depth is the
+binding constraint. Series stopped by user decision; next options for a future
+decision: 4-entity task simplification, Qwen3-14B scale push, or query-contract
+revision — all must pass the same development qualification first. Staged on
+LUMI: Qwen3-1.7B/4B/8B (pinned revisions in `configs/stageq/real_lumi_screen_*.yaml`).
+
 ## Decision after Stage Q
 
 ### Source competence fails

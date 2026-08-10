@@ -172,6 +172,17 @@ checkpoint/task qualification (stronger checkpoints or a simpler formal task).
 Do not modify the quotient architecture until a source/task pair passes both
 aggregate and per-founder gates.
 
+**Screening series (2026-08-11, stopped by user decision):** three development
+screens ran under the chat_turn contract — Stage-Q (0.6B/1.7B, lower95 −0.162),
+screen-strong (qwen3-1.7b/qwen3-4b, lower95 −0.262), screen-8b (qwen3-4b/
+qwen3-8b, lower95 −0.129) — none passed. Multi-edge structural operations are
+the wall (mutual −0.758, compose −0.299 at 8B); single-edge/global ops pass at
+8B (inverse +0.136, reciprocity +0.147). Record: `docs/13_STAGEA_V1_CORRECTION_LOG.md`;
+configs `configs/stageq/real_lumi_screen_*.yaml`; artifacts `runs/stageq/`
+(ignored). Future options (4-entity task, Qwen3-14B, query-contract revision)
+all require a passing development qualification before Stage-A representation
+training.
+
 ## Dormant future architecture
 
 `model.public_head_scope: local` provides one complete compiler per source model

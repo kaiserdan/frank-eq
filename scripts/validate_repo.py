@@ -49,6 +49,8 @@ REQUIRED = (
     "configs/stage0/real_lumi_v2.yaml",
     "configs/stageq/real_lumi_legacy_chat.yaml",
     "configs/stageq/real_lumi_chat_turn.yaml",
+    "configs/stageq/real_lumi_screen_strong.yaml",
+    "configs/stageq/real_lumi_screen_8b.yaml",
     "scripts/qualify_real_cache.py",
     "scripts/compare_stageq_caches.py",
     "olivia/cli.py",
@@ -124,6 +126,8 @@ def main() -> int:
         load_config(config_path)
     for config_path in (*stagea_configs, *stageq_configs):
         load_real_config(config_path)
+    load_real_config(ROOT / "configs/stageq/real_lumi_screen_strong.yaml")
+    load_real_config(ROOT / "configs/stageq/real_lumi_screen_8b.yaml")
 
     legacy_stageq = load_real_config(stageq_configs[0])
     candidate_stageq = load_real_config(stageq_configs[1])
