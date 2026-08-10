@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+import copy
+
 import numpy as np
 import pytest
 
 from frank_eq.data.real import RealBundle
 from frank_eq.qualification import compute_native_competence_qualification
 from frank_eq.schemas import OperationDefinition, SplitManifest
-from frank_eq.stageq import compare_native_competence_bundles
+from frank_eq.stageq import _assert_paired_metadata, compare_native_competence_bundles
 
 
 def _bundle(*, competent: bool) -> RealBundle:
@@ -95,13 +97,56 @@ def _qualify(bundle: RealBundle) -> dict:
     )
 
 
+def _metadata(prompt_format: str) -> dict:
+    return {
+        "panel_sha256": "a" * 64,
+        "real_config": {
+            "run_name": f"stageq-{prompt_format}",
+            "output_dir": f"runs/{prompt_format}",
+            "panel": {"seed": 17},
+            "models": [
+                {"model_id": "a", "hf_id": "org/a", "role": "founder", "revision": "r1"},
+                {"model_id": "b", "hf_id": "org/b", "role": "founder", "revision": "r2"},
+                {"model_id": "c", "hf_id": "org/c", "role": "held", "revision": "r3"},
+            ],
+            "capture": {
+                "prompt_format": prompt_format,
+                "branch_mode": "kv_reuse",
+                "normalized_depths": [0.5],
+            },
+            "logging": {"wandb": {"tags": [prompt_format]}},
+        },
+        "extraction": {
+            "models": [
+                {
+                    "model_index": index,
+                    "model_id": name,
+                    "hf_id": f"org/{name}",
+                    "role": "held" if name == "c" else "founder",
+                    "revision_requested": f"r{index + 1}",
+                    "revision_observed": f"r{index + 1}",
+                    "hidden_dim": 8,
+                    "layer_indices": [4],
+                    "normalized_depths": [0.5],
+                    "answer_labels": [" A", " B"],
+                    "branch_mode_counts": {"kv_reuse": 10, "exact_prefix_replay": 0},
+                }
+                for index, name in enumerate(("a", "b", "c"))
+            ]
+        },
+    }
+
+
 def test_native_qualification_passes_for_competent_founders() -> None:
     result = _qualify(_bundle(competent=True))
     assert result["status"] == "pass"
     assert result["brier_gain_ci"]["lower"] > 0.0
     assert all(check["passed"] for check in result["founder_checks"].values())
     assert result["data_usage"]["test_worlds_used"] == 0
-    assert result["data_usage"]["held_sender_used"] is False
+    assert result["data_usage"]["held_sender_rows_used"] is False
+    assert result["data_usage"]["held_sender_cache_present"] is True
+    assert result["data_usage"]["held_sender_development_exposed"] is True
+    assert result["data_usage"]["future_held_sender_reuse_permitted"] is False
     assert not any(result["authorization"].values())
 
 
@@ -157,7 +202,7 @@ def test_source_can_qualify_without_a_prompt_effect_claim() -> None:
         baseline,
         candidate,
         min_candidate_brier_gain_lower95=0.0,
-        min_paired_improvement_lower95=0.01,
+        min_paired_improvement_lower95=0.0,
         bootstrap_replicates=200,
         bootstrap_seed=11,
     )
@@ -182,3 +227,13 @@ def test_stageq_rejects_unpaired_caches() -> None:
             bootstrap_replicates=20,
             bootstrap_seed=11,
         )
+
+
+def test_stageq_metadata_requires_same_observed_checkpoint_and_branch_path() -> None:
+    baseline = _metadata("chat")
+    candidate = _metadata("chat_turn")
+    _assert_paired_metadata(baseline, candidate)
+    mismatched = copy.deepcopy(candidate)
+    mismatched["extraction"]["models"][1]["revision_observed"] = "different"
+    with pytest.raises(ValueError, match="observed checkpoint"):
+        _assert_paired_metadata(baseline, mismatched)
