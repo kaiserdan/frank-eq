@@ -110,9 +110,10 @@ be promoted into a later Stage-A confirmation role.
 
 ### 4.1 Baseline
 
-`legacy_chat` exactly reproduces the v2-1 conversational construction: the
-cached prefix ends at an assistant-generation header and the operation suffix is
-assistant content.
+`legacy_chat` reproduces the v2-1 turn placement: the cached prefix ends at an
+assistant-generation header and the operation suffix is assistant content. Both
+Stage-Q conditions freeze `enable_thinking: false`, so this is a paired legacy
+turn-placement baseline rather than a bitwise replay of the historical run.
 
 ### 4.2 Candidate
 
@@ -138,7 +139,7 @@ conversation. The operation can therefore enter only after state formation.
 `chat_template_kwargs.enable_thinking: false` is frozen for both development
 conditions so model-specific hidden reasoning modes do not differ between them.
 
-### 4.3 Primary competence statistic
+### 4.3 Primary source-competence statistic
 
 For founder models and validation worlds only, on held-out operation instances:
 
@@ -147,19 +148,34 @@ gain = Brier(oracle, operation-wise training prior)
      - Brier(oracle, frozen source branch)
 ```
 
-Views are averaged within world before a 2,000-replicate grouped bootstrap.
-Stage Q requires:
+Views are averaged within model/world before a 2,000-replicate grouped
+bootstrap. The source contract qualifies only if:
 
 ```text
-candidate competence lower95 >= 0
-paired candidate-minus-baseline Brier improvement lower95 >= 0
+aggregate candidate competence lower95 >= 0
+every individual founder competence lower95 >= 0
 ```
 
 Model- and operation-family intervals are mandatory diagnostics. The held sender
 and every test world are excluded.
 
-A Stage-Q pass permits drafting one fresh Stage-A registration. It does not
-permit receiver execution or a scientific claim.
+A source-qualification pass permits drafting one fresh Stage-A registration. It
+does not permit running that registration, receiver execution, or a scientific
+claim.
+
+### 4.4 Secondary prompt-effect statistic
+
+On identical model/world/renderer/operation rows, compute:
+
+```text
+paired improvement = Brier(oracle, legacy branch)
+                   - Brier(oracle, chat-turn branch)
+```
+
+A non-negative lower 95% bound identifies a positive effect of corrected turn
+placement. This is not required for using an independently competent source
+contract. If source competence passes but paired improvement does not, no prompt
+mechanism claim may be made.
 
 ## 5. Execution
 
@@ -176,6 +192,9 @@ python lumi/cli.py submit \
   --config configs/stageq/real_lumi_chat_turn.yaml \
   --profile full --stages cache,validate --json
 ```
+
+The workflow fails closed if `diagnose`, `train`, or `eval` is requested for a
+Stage-Q config.
 
 Fetch and verify both jobs, then run:
 
@@ -194,26 +213,25 @@ python scripts/compare_stageq_caches.py \
   --out runs/stageq/paired-comparison
 ```
 
-Do not run `train` or `eval` for these configs.
-
 ## 6. Decision after Stage Q
 
-### Candidate fails competence
+### Candidate fails aggregate or any founder competence gate
 
 Do not modify the latent architecture. Screen stronger source checkpoints or a
 simpler formal task using development-only competence caches. Freeze the first
-combination whose lower confidence bound is non-negative before Stage-A
-representation training.
+combination whose aggregate and every founder lower confidence bound are
+non-negative before Stage-A representation training.
 
 ### Candidate passes competence but not paired improvement
 
-The models are competent, but the effect cannot be attributed to the corrected
-chat turn. Use the competent condition as a source prerequisite only; make no
-prompt-mechanism claim.
+The candidate may be frozen as the source prerequisite for one fresh Stage-A
+registration. The turn-placement effect is not identified, so make no prompt
+mechanism claim.
 
-### Candidate passes both gates
+### Candidate passes competence and paired improvement
 
-Freeze one Stage-A v3 registration with:
+Freeze one Stage-A v3 registration and retain the paired prompt effect as
+secondary evidence. The new registration must use:
 
 - fresh worlds unavailable to Stage Q;
 - complete model-local compilers (`public_head_scope: local`);
@@ -226,7 +244,8 @@ Freeze one Stage-A v3 registration with:
 
 - Reinterpreting v2-1 as a native-chat falsification.
 - Comparing v1 and v2 point estimates as a paired prompt experiment.
-- Running quotient training or test evaluation before Stage-Q qualification.
+- Running `diagnose`, quotient training, or test evaluation with Stage-Q
+  configs.
 - Tuning thresholds, operations, checkpoints, or prompts on a fresh Stage-A
   test split.
 - Resuming the shared-head oracle quotient unchanged.
