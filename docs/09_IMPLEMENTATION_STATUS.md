@@ -160,9 +160,17 @@ The paired candidate improvement controls only a claim that corrected turn
 placement helped. If it fails while source competence passes, the candidate may
 still be frozen as the source prerequisite without a prompt-mechanism claim.
 
-If source competence fails, the next work is development-only checkpoint/task
-qualification. Do not modify the quotient architecture until a source/task pair
-passes both aggregate and per-founder gates.
+**Stage-Q result (2026-08-11):** both development conditions failed the gate
+with fully negative world-grouped intervals (legacy −0.152 lower95, chat_turn
+−0.162 lower95; all founders and families negative), and the paired prompt
+effect was not identified (−0.020, lower95 −0.107). Machine decision
+`STOP_STAGEQ_CANDIDATE`; artifacts under `runs/stageq/`; record in
+`docs/13_STAGEA_V1_CORRECTION_LOG.md`.
+
+Since source competence fails, the next work is development-only
+checkpoint/task qualification (stronger checkpoints or a simpler formal task).
+Do not modify the quotient architecture until a source/task pair passes both
+aggregate and per-founder gates.
 
 ## Dormant future architecture
 

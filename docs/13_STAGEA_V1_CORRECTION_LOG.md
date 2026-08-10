@@ -100,6 +100,17 @@ made after the first real Stage-A v1 outcome. It does not rewrite
 - **Contract docs updated:** `docs/15` §4.2 and `docs/17` (candidate rendering correction).
 - **Status:** chat_turn cache,validate re-submitted after the fix; legacy baseline cache (Slurm 20961538) already completed and is unaffected.
 
+## 2026-08-11 — Stage-Q executed: both conditions fail source competence; candidate stopped
+
+- **Runs:** legacy `frank-eq-stageq-legacy-chat` (Slurm 20961538) and candidate `frank-eq-stageq-chat-turn` (Slurm 20963352 after the prefix-continuity fix), dev-g, `cache,validate` only, panel seed 20260811, both verified. Qualification and paired artifacts under `runs/stageq/` (ignored): `legacy-qualification/`, `chat-turn-qualification/`, `paired-comparison/`.
+- **Source competence (world-grouped 95% CIs, 2000 replicates, held-out operations, founders, validation worlds — both FAIL):**
+  - legacy: aggregate estimate −0.098, lower95 −0.152, upper95 −0.040 (fully negative);
+  - chat_turn: aggregate estimate −0.118, lower95 −0.162, upper95 −0.068 (fully negative);
+  - every founder and every operation family negative in both conditions (qwen3-0.6b worst: −0.17/−0.21; smollm-1.7b least bad: −0.03/−0.03).
+- **Prompt effect: NOT identified.** Paired candidate-minus-legacy improvement estimate −0.020, lower95 −0.107 → `prompt_effect_identified: false`, `NO_PROMPT_EFFECT_CLAIM`. The proper new-user-turn reveal is not better than the legacy assistant-continuation construction.
+- **Decision:** `STOP_STAGEQ_CANDIDATE` (machine); all authorization fields false; zero test labels consumed; held-sender rows unused (checkpoint development-exposed, future Stage-A must choose a new held role).
+- **Consequence (docs/15 §6):** do not modify the latent architecture. The next step is screening stronger source checkpoints or a simpler formal task on development-only competence caches, freezing the first combination whose aggregate and every founder lower confidence bound are non-negative before any Stage-A representation training. Both the "prompt surface" and the "0.6–1.7B competence" questions are now answered under correct paired methodology: prompt placement does not matter (no effect), and the frozen small checkpoints are oracle-incompetent on the 6-entity graph task.
+
 ## 2026-08-10 — v2-1 falsified: chat template is not the competence bottleneck
 
 - **Run:** `frank-eq-stagea-lumi-v2` (Slurm 20952565, dev-g, source `1aa741d5df31`), full workflow completed with zero failures; adopted negative under `evidence/real_stagea_lumi_v2/`; decision log entry appended.

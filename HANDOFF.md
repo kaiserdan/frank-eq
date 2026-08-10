@@ -70,69 +70,29 @@ The exact v2-1 negative is preserved. The statements that native chat was
 falsified, the prompt surface was not the bottleneck, or the values were
 unchanged within noise are withdrawn.
 
-## Current authorized action: Stage Q only
+## Current authorized action: Stage Q completed — candidate stopped
 
-Stage Q is a development-only competence qualification. It compares two caches
-on exactly the same models, worlds, renderers, operation registry, split, and KV
-branch path:
-
-```text
-configs/stageq/real_lumi_legacy_chat.yaml
-configs/stageq/real_lumi_chat_turn.yaml
-```
-
-The candidate `chat_turn` contract caches:
+Stage Q ran both development conditions on LUMI dev-g (panel seed 20260811,
+cache,validate only, both verified). Machine verdict `STOP_STAGEQ_CANDIDATE`:
 
 ```text
-system contract
-user world statement
-assistant fixed acknowledgement
+source competence (world-grouped 95% CI, founders, held-out ops):
+  legacy    aggregate -0.098  [-0.152, -0.040]   FAIL
+  chat_turn aggregate -0.118  [-0.162, -0.068]   FAIL
+  every founder and every operation family negative in both conditions
+prompt effect: paired improvement -0.020 [-0.107, 0.071] -> NOT identified
 ```
 
-and reveals the operation after capture as:
+The proper new-user-turn reveal is not better than the legacy
+assistant-continuation construction, and neither is oracle-competent. The
+prompt-surface question is now answered under correct paired methodology.
 
-```text
-user operation
-assistant generation boundary
-```
-
-The backend fails closed unless the cached prefix token IDs are an exact prefix
-of the full conversation.
-
-Build only `cache,validate` for each condition. The workflow now rejects
-`diagnose`, `train`, and `eval` for Stage-Q identities. Then run:
-
-```bash
-python scripts/qualify_real_cache.py \
-  --cache <legacy>/runs/cache \
-  --out runs/stageq/legacy-qualification
-
-python scripts/qualify_real_cache.py \
-  --cache <chat-turn>/runs/cache \
-  --out runs/stageq/chat-turn-qualification
-
-python scripts/compare_stageq_caches.py \
-  --baseline-cache <legacy>/runs/cache \
-  --candidate-cache <chat-turn>/runs/cache \
-  --out runs/stageq/paired-comparison
-```
-
-The qualification uses founder models and train/validation worlds only. It
-reports world-grouped 95% intervals. Test worlds and the held sender are not
-used.
-
-The source contract qualifies only when:
-
-```text
-aggregate candidate competence lower95 >= 0
-every individual founder competence lower95 >= 0
-```
-
-The paired candidate-minus-legacy interval is a separate prompt-attribution
-test. It does not gate use of an independently competent source contract.
-
-Every Stage-Q artifact keeps all claim, receiver, fresh-test, and outcome-run
-authorization fields false.
+Next per `docs/15` §6: screen stronger source checkpoints or a simpler formal
+task on development-only competence caches; freeze the first combination whose
+aggregate and every founder lower confidence bound are non-negative before any
+Stage-A representation training. This is a user decision (checkpoint roster
+and/or task change); the latent architecture is not modified. Stage-Q
+artifacts: `runs/stageq/` (ignored); record in `docs/13_STAGEA_V1_CORRECTION_LOG.md`.
 
 ## Decision after Stage Q
 
