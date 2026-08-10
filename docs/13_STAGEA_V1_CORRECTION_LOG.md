@@ -84,3 +84,11 @@ made after the first real Stage-A v1 outcome. It does not rewrite
 - **Interpretation:** KV-reuse and exact-replay branch modes are not bit-identical on this stack (bf16 ROCm; plausible kernel-level accumulation differences). The v1 cache was unaffected because it used kv_reuse exclusively (2048/0 per model); the finding constrains only mixed-mode caches.
 - **Amendment (engineering tolerance, not a scientific gate):** run one cache-only measurement with `parity_sample_size: 32` and a non-blocking tolerance to map the noise floor across models and operations. The measurement cache is discarded. The final tolerance is then set from the measured distribution (floor 0.05, headroom 3x measured max) and documented here before the outcome-bearing run resumes.
 - **Observability:** the enforcement error now reports per-model max/mean diffs and the top-3 diverging branches, so the measurement run needs no code changes.
+
+## 2026-08-10 — parity measurement results and exclusive-kv amendment
+
+- **Measurement run:** Slurm 20951659 (dev-g, cache,validate, source `b09a2781eb26`), 32 dual-mode branches per model, non-blocking tolerance; cache discarded after reading.
+- **Measured noise floor (max abs probability diff):** qwen3-0.6b 0.0757 (mean 0.014), smollm-1.7b-instruct 0.1089 (mean 0.039), llama-3.2-1b-instruct-held 0.0517 (mean 0.019). All 2048/2048 branches ran kv_reuse in the measurement cache; no mixing occurred.
+- **Conclusion:** exact-replay and KV-reuse are not interchangeable at scientific-gate precision on this stack (bf16 ROCm kernel-level accumulation differences). A mixed-mode cache could carry up to ~0.11 probability error per branch.
+- **Amendment (engineering, not scientific):** `branch_mode: kv_reuse` is now the EXCLUSIVE mode and `allow_exact_replay_fallback: false` — no cache can mix modes; a KV-clone failure fails the build instead of silently replaying. The 32-branch parity sample stays registered per model as a stack-property audit, and `parity_max_abs_diff: 0.33` follows the announced formula max(0.05, 3 × measured max). Protocol `docs/14` updated. v1 is unaffected (pure-kv cache; decision stands).
+- **Status:** v2-1 registration re-frozen with the amended capture contract; full run submitted next.

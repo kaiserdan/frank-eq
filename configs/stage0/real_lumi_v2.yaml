@@ -38,8 +38,6 @@ capture:
   max_length: 1024
   dtype: bfloat16
   device: cuda
-  branch_mode: auto
-  allow_exact_replay_fallback: true
   answer_token_pairs:
     - [" A", " B"]
     - ["A", "B"]
@@ -48,13 +46,16 @@ capture:
   branch_batch_size: 8
   local_files_only: true
   prompt_format: chat
-  # AMENDMENT 2026-08-10 (docs/13): tolerance raised to 1.0 for a 32-branch
-  # noise-floor measurement run only. The run's cache is discarded; the final
-  # tolerance is set from the measured distribution before any outcome-bearing
-  # evaluation. Initial 0.01 tolerance failed on qwen3-0.6b at max_abs_diff
-  # 0.0305 (bf16/ROCm kernel-level branch-mode noise, hypothesis).
+  # AMENDMENT 2026-08-10 (docs/13): measured branch-mode noise floor (n=32):
+  # qwen3-0.6b max 0.0757 / smollm max 0.1089 / llama-held max 0.0517.
+  # Exact-replay and KV-reuse are not interchangeable at gate precision, so
+  # kv_reuse is now the EXCLUSIVE branch mode (no fallback, no mode mixing).
+  # The parity sample remains as a registered stack-property audit; tolerance
+  # follows the announced formula max(0.05, 3x measured max) = 0.33.
+  branch_mode: kv_reuse
+  allow_exact_replay_fallback: false
   parity_sample_size: 32
-  parity_max_abs_diff: 1.0
+  parity_max_abs_diff: 0.33
 
 logging:
   wandb:

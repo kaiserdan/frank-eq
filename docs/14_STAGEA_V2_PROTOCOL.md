@@ -38,7 +38,7 @@ in this registration.
 | Capture prompt | raw non-chat text | native chat template per model (system contract + world statement in user turn) |
 | World seed | 1729 | 20260810 (fresh worlds, untouched test role) |
 | Revision pins | omitted | required, exact hashes in every model entry |
-| KV-vs-replay parity | branch-mode counts only | frozen sample-wise parity audit in cache metadata |
+| KV-vs-replay parity | branch-mode counts only | registered 32-branch audit per model; kv_reuse exclusive, no fallback; tolerance 0.33 (3× measured max) |
 | Native-competence gate | absent | frozen, validation-worlds, founders, held-out operations |
 | Residual gate | decision-gating | declared-global control, reported but not gating |
 | Renderer invariance | cosine only | conjunctive: cosine AND retrieval AND low leakage (unchanged, restated) |
@@ -70,12 +70,15 @@ in this registration.
    Dimensionality per model: qwen3-0.6b 1536, smollm-1.7b-instruct 2048,
    llama-3.2-1b-instruct-held 2048.
 5. **KV-versus-replay numerical parity on a frozen sample** —
-   `capture.parity_sample_size: 8` per model (first eight operations of the
-   first world × renderer cell); both branch modes run on the same prefix
-   state; `max_abs_diff` recorded in `cache/metadata.json`;
-   `capture.parity_max_abs_diff: 0.01` is an engineering-integrity limit —
-   exceeding it fails the cache build. Parity sample membership is
-   deterministic from the frozen panel order.
+   measured noise floor on a 32-branch sample per model (dev-g, bf16/ROCm):
+   qwen3-0.6b max 0.0757, smollm-1.7b max 0.1089, llama-3.2-1b-held max
+   0.0517. The two branch modes are therefore NOT interchangeable at gate
+   precision on this stack; `branch_mode: kv_reuse` is the exclusive mode
+   (`allow_exact_replay_fallback: false`), so no cache can mix modes. The
+   32-branch dual-mode sample remains registered per model in
+   `cache/metadata.json` as a stack-property audit; tolerance
+   `parity_max_abs_diff: 0.33` = max(0.05, 3 × measured max 0.1089),
+   guarding any future re-enablement of fallback.
 6. **Compiler scope declared in advance** — `model.public_head_scope:
    shared` (v1-compatible). Local compilers remain a dormant option only.
 7. **Self-future and oracle namespaces** — `model_signatures` (self-future)
