@@ -59,7 +59,7 @@ class RelationalWorld:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, payload: dict[str, Any]) -> "RelationalWorld":
+    def from_dict(cls, payload: dict[str, Any]) -> RelationalWorld:
         return cls(
             world_id=int(payload["world_id"]),
             edges=tuple(tuple(int(value) for value in row) for row in payload["edges"]),
@@ -84,7 +84,7 @@ class FrozenOperation:
         }
 
     @classmethod
-    def from_dict(cls, payload: dict[str, Any]) -> "FrozenOperation":
+    def from_dict(cls, payload: dict[str, Any]) -> FrozenOperation:
         return cls(
             definition=OperationDefinition.from_dict(payload["definition"]),
             descriptor=tuple(float(value) for value in payload["descriptor"]),
@@ -112,7 +112,7 @@ class RealPanel:
         }
 
     @classmethod
-    def from_dict(cls, payload: dict[str, Any]) -> "RealPanel":
+    def from_dict(cls, payload: dict[str, Any]) -> RealPanel:
         if payload.get("schema") != "frank_eq_real_panel_v1":
             raise ValueError("unsupported real-panel schema")
         panel = cls(

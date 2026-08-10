@@ -112,7 +112,7 @@ class RealBundle:
         atomic_write_json(target / "metadata.json", metadata)
 
     @classmethod
-    def load(cls, directory: str | Path) -> "RealBundle":
+    def load(cls, directory: str | Path) -> RealBundle:
         source = Path(directory)
         required = ("dataset.npz", "metadata.json", "panel.json", "future_signature_records.jsonl")
         missing = [name for name in required if not (source / name).is_file()]

@@ -98,20 +98,22 @@ def build_source_archive(root: Path, output_directory: Path) -> dict[str, Any]:
     ) as temporary:
         archive_path = Path(temporary.name)
     try:
-        with archive_path.open("wb") as raw:
-            with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as compressed:
-                with tarfile.open(fileobj=compressed, mode="w") as archive:
-                    for path in files:
-                        relative = path.relative_to(root).as_posix()
-                        info = archive.gettarinfo(str(path), arcname=relative)
-                        info.uid = 0
-                        info.gid = 0
-                        info.uname = ""
-                        info.gname = ""
-                        info.mtime = 0
-                        info.mode = 0o755 if os.access(path, os.X_OK) else 0o644
-                        with path.open("rb") as handle:
-                            archive.addfile(info, handle)
+        with (
+            archive_path.open("wb") as raw,
+            gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as compressed,
+            tarfile.open(fileobj=compressed, mode="w") as archive,
+        ):
+            for path in files:
+                relative = path.relative_to(root).as_posix()
+                info = archive.gettarinfo(str(path), arcname=relative)
+                info.uid = 0
+                info.gid = 0
+                info.uname = ""
+                info.gname = ""
+                info.mtime = 0
+                info.mode = 0o755 if os.access(path, os.X_OK) else 0o644
+                with path.open("rb") as handle:
+                    archive.addfile(info, handle)
         digest = sha256_file(archive_path)
         final_path = output_directory / f"{digest}.tar.gz"
         if final_path.exists():
@@ -134,8 +136,7 @@ def _run(command: list[str], *, check: bool = True) -> subprocess.CompletedProce
         command,
         check=check,
         text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
 
 

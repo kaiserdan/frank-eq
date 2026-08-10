@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import datetime as dt
 import os
 import platform
 import socket
@@ -22,9 +23,7 @@ REAL_STAGE_ORDER = ("cache", "validate", "train", "eval")
 
 
 def _timestamp() -> str:
-    import datetime as dt
-
-    return dt.datetime.now(dt.timezone.utc).isoformat()
+    return dt.datetime.now(dt.UTC).isoformat()
 
 
 def _environment() -> dict[str, Any]:
