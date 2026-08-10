@@ -1,0 +1,71 @@
+run_name: frank-eq-synthetic-stage0-v1
+output_dir: runs/synthetic-stage0-v1
+
+data:
+  n_worlds: 384
+  n_founder_models: 3
+  include_held_model: true
+  n_renderers: 2
+  n_layers: 3
+  model_hidden_dims: [48, 64, 80, 56]
+  n_facts: 12
+  n_residual: 4
+  n_operations: 36
+  operation_holdout_fraction: 0.25
+  train_fraction: 0.65
+  validation_fraction: 0.15
+  observation_noise: 0.02
+  renderer_nuisance_scale: 0.7
+  model_private_scale: 0.35
+  seed: 1729
+
+model:
+  code_dim: 24
+  chart_hidden_dim: 96
+  operation_hidden_dim: 64
+  dropout: 0.05
+  quantization_bits: 8
+  use_workspace_gate: true
+  workspace_l1: 0.0002
+  gradient_reversal_weight: 0.10
+
+losses:
+  signature: 1.0
+  facts: 0.6
+  residual: 0.3
+  renderer_invariance: 0.2
+  cross_model_invariance: 0.15
+  world_contrastive: 0.15
+  model_adversary: 0.05
+  code_variance_floor: 0.02
+
+training:
+  epochs: 80
+  onboarding_epochs: 50
+  worlds_per_batch: 16
+  learning_rate: 0.002
+  onboarding_learning_rate: 0.003
+  weight_decay: 0.0001
+  gradient_clip: 1.0
+  patience: 15
+  num_threads: 1
+  device: auto
+  seed: 1729
+
+evaluation:
+  bootstrap_replicates: 2000
+  bootstrap_seed: 991
+  packet_probe_count: 8
+  packet_quantization_bits: 8
+  retrieval_chunk_size: 512
+
+gates:
+  max_heldout_signature_brier: 0.16
+  min_fact_accuracy: 0.82
+  min_renderer_cosine: 0.90
+  min_cross_model_retrieval_top1: 0.65
+  min_wrong_world_margin: 0.08
+  min_residual_brier_gain: 0.015
+  min_quantization_retention: 0.90
+  min_held_model_retention: 0.70
+  max_model_leakage_over_chance: 0.18

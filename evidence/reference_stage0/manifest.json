@@ -1,0 +1,23 @@
+{
+  "claim_boundary": "does not authorize a scientific claim about real LLMs",
+  "command": "frank-eq run-stage0 --config configs/stage0/synthetic_full.yaml --out <run-root>",
+  "config": {
+    "path": "configs/stage0/synthetic_full.yaml",
+    "sha256": "f972343b738a2dfbc4aa8bcc5b8bdd6dbcfc148e8175c4d41693482e81f10e67"
+  },
+  "date": "2026-08-10",
+  "environment": {
+    "device": "cpu",
+    "python": "3.13.5",
+    "torch_threads": 1
+  },
+  "files": {
+    "decision.json": "742161daf217ddc2dc671cccb58e4a7a0b2654afa5fe60062f0c9065cc23aca9",
+    "metrics.json": "6d0e78dc217a285155a7e9b94332f1187250a6ede029f1333e37cf45e7f21c17"
+  },
+  "schema": "frank_eq_reference_evidence_manifest_v1",
+  "scope": "synthetic implementation gate only",
+  "secondary_files": {
+    "training_summary.json": "c17fbe1d8b59a44196fdd833e22eb17ea4bb9985d9117ddfe6a5717b90adbcc1"
+  }
+}

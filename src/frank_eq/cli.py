@@ -1,0 +1,132 @@
+"""Command-line entry point for Frank-EQ."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+from frank_eq.config import load_config
+from frank_eq.data.synthetic import SyntheticBundle, generate_synthetic_bundle
+from frank_eq.evaluation import Stage0Evaluator
+from frank_eq.training import Stage0Trainer
+from frank_eq.utils import atomic_write_json
+
+
+def _build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="frank-eq",
+        description="Future-defined operational equivalence quotient experiments",
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    validate = subparsers.add_parser("validate-config", help="validate a YAML configuration")
+    validate.add_argument("--config", required=True)
+
+    make_data = subparsers.add_parser("make-synthetic", help="build the controlled Stage-0 bundle")
+    make_data.add_argument("--config", required=True)
+    make_data.add_argument("--out", required=True)
+
+    train = subparsers.add_parser("train-stage0", help="train founder charts and onboard held sender")
+    train.add_argument("--config", required=True)
+    train.add_argument("--data", required=True)
+    train.add_argument("--out", required=True)
+
+    evaluate = subparsers.add_parser("eval-stage0", help="evaluate and reduce the Stage-0 decision")
+    evaluate.add_argument("--config", required=True)
+    evaluate.add_argument("--data", required=True)
+    evaluate.add_argument("--checkpoint", required=True)
+    evaluate.add_argument("--out", required=True)
+
+    run = subparsers.add_parser("run-stage0", help="run data, train, eval, and decision end to end")
+    run.add_argument("--config", required=True)
+    run.add_argument("--out", default=None)
+    return parser
+
+
+def _print(payload: object) -> None:
+    print(json.dumps(payload, indent=2, sort_keys=True, allow_nan=False))
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = _build_parser()
+    args = parser.parse_args(argv)
+    try:
+        config = load_config(args.config)
+        if args.command == "validate-config":
+            _print({"status": "passed", "config": config.as_dict()})
+            return 0
+
+        if args.command == "make-synthetic":
+            bundle = generate_synthetic_bundle(config.data)
+            bundle.save(args.out)
+            summary = {
+                "status": "passed",
+                "schema": "frank_eq_synthetic_build_v1",
+                "views": bundle.n_views,
+                "worlds": config.data.n_worlds,
+                "models": config.data.n_models,
+                "renderers": config.data.n_renderers,
+                "operations": config.data.n_operations,
+                "out": str(Path(args.out)),
+            }
+            atomic_write_json(Path(args.out) / "build_summary.json", summary)
+            _print(summary)
+            return 0
+
+        if args.command == "train-stage0":
+            bundle = SyntheticBundle.load(args.data)
+            trainer = Stage0Trainer(config, bundle, args.out)
+            _print(trainer.train())
+            return 0
+
+        if args.command == "eval-stage0":
+            bundle = SyntheticBundle.load(args.data)
+            evaluator = Stage0Evaluator(
+                config,
+                bundle,
+                checkpoint_path=args.checkpoint,
+                output_dir=args.out,
+            )
+            metrics, decision = evaluator.evaluate()
+            _print({"metrics": metrics, "decision": decision})
+            return 0 if decision["status"] == "pass" else 2
+
+        if args.command == "run-stage0":
+            root = Path(args.out or config.output_dir)
+            data_dir = root / "data"
+            train_dir = root / "train"
+            eval_dir = root / "eval"
+            bundle = generate_synthetic_bundle(config.data)
+            bundle.save(data_dir)
+            trainer = Stage0Trainer(config, bundle, train_dir)
+            training_summary = trainer.train()
+            evaluator = Stage0Evaluator(
+                config,
+                bundle,
+                checkpoint_path=train_dir / "final.pt",
+                output_dir=eval_dir,
+            )
+            metrics, decision = evaluator.evaluate()
+            run_summary = {
+                "schema": "frank_eq_stage0_run_v1",
+                "run_name": config.run_name,
+                "root": str(root),
+                "training": training_summary,
+                "metrics": metrics,
+                "decision": decision,
+            }
+            atomic_write_json(root / "run_summary.json", run_summary)
+            _print(run_summary)
+            return 0 if decision["status"] == "pass" else 2
+
+        parser.error(f"unsupported command: {args.command}")
+    except (FileNotFoundError, ValueError, RuntimeError, KeyError) as error:
+        print(f"frank-eq: {error}", file=sys.stderr)
+        return 1
+    return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

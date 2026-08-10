@@ -1,0 +1,56 @@
+{
+  "authorizes_real_model_canary": true,
+  "authorizes_scientific_claim": false,
+  "checks": {
+    "cross_model_retrieval": {
+      "observed": 0.9100877192982457,
+      "passed": true,
+      "required": "lower_95 >= 0.65"
+    },
+    "fact_accuracy": {
+      "observed": 0.9401041666666665,
+      "passed": true,
+      "required": "lower_95 >= 0.82"
+    },
+    "held_model_retention": {
+      "observed": 0.9553059977438854,
+      "passed": true,
+      "required": ">= 0.7"
+    },
+    "heldout_signature_brier": {
+      "observed": 0.04462616009803983,
+      "passed": true,
+      "required": "upper_95 <= 0.16"
+    },
+    "model_identity_leakage": {
+      "observed": -0.016447368421052627,
+      "passed": true,
+      "required": "over_chance <= 0.18"
+    },
+    "operational_residual": {
+      "observed": 0.024597789690022565,
+      "passed": true,
+      "required": "lower_95 >= 0.015"
+    },
+    "quantization_retention": {
+      "observed": 1.0000103070723647,
+      "passed": true,
+      "required": ">= 0.9"
+    },
+    "renderer_invariance": {
+      "observed": 0.9598173472884417,
+      "passed": true,
+      "required": "mean >= 0.9"
+    },
+    "wrong_world_margin": {
+      "observed": 0.20673898799639,
+      "passed": true,
+      "required": "lower_95 >= 0.08"
+    }
+  },
+  "decision": "PROMOTE_REAL_MODEL_CANARY",
+  "failures": [],
+  "schema": "frank_eq_stage0_decision_v1",
+  "scope": "synthetic implementation and falsification gate only",
+  "status": "pass"
+}

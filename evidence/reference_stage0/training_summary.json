@@ -1,0 +1,27 @@
+{
+  "checkpoint": "<run-root>/train/final.pt",
+  "device": "cpu",
+  "founder_trainable_parameter_count": 124220,
+  "founders": {
+    "best_epoch": 29,
+    "best_validation_total": 0.6396242420189082,
+    "elapsed_seconds": 11.531411409378052,
+    "epochs_observed": 45,
+    "phase": "founders"
+  },
+  "held_sender": {
+    "best_epoch": 44,
+    "best_validation_total": 0.5733234785031528,
+    "elapsed_seconds": 5.872333288192749,
+    "epochs_observed": 50,
+    "phase": "held_sender_onboarding"
+  },
+  "parameter_count": 124220,
+  "schema": "frank_eq_training_summary_v1",
+  "workspace_active_fraction": {
+    "0": 1.0,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 1.0
+  }
+}
