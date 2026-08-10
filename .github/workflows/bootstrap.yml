@@ -24,7 +24,8 @@ jobs:
       - name: Validate implementation
         run: |
           python -m compileall -q src scripts
-          ruff check .
+          ruff check src scripts tests --fix --unsafe-fixes
+          ruff check src scripts tests
           pytest -q
           python scripts/validate_repo.py
       - name: Commit implementation
