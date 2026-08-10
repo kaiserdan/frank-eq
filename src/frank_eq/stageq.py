@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,8 @@ from frank_eq.data.real import RealBundle
 from frank_eq.evaluation.bootstrap import bootstrap_statistic
 from frank_eq.qualification import compute_native_competence_qualification
 from frank_eq.utils import atomic_write_json
+
+STAGEQ_PROMPT_EFFECT_THRESHOLD = 0.0
 
 
 def _world_means(values: np.ndarray, world_ids: np.ndarray) -> np.ndarray:
@@ -54,6 +57,58 @@ def _assert_paired_contract(baseline: RealBundle, candidate: RealBundle) -> None
             raise ValueError(f"Stage-Q caches are not paired on {name}")
 
 
+def _normalized_real_config(metadata: dict[str, Any]) -> dict[str, Any]:
+    config = copy.deepcopy(metadata.get("real_config") or {})
+    if not config:
+        raise ValueError("Stage-Q cache metadata has no real_config")
+    config.pop("run_name", None)
+    config.pop("output_dir", None)
+    logging = config.get("logging", {}).get("wandb", {})
+    if isinstance(logging, dict):
+        logging["tags"] = []
+    capture = config.get("capture", {})
+    if not isinstance(capture, dict) or "prompt_format" not in capture:
+        raise ValueError("Stage-Q cache metadata lacks capture.prompt_format")
+    capture["prompt_format"] = "paired-placeholder"
+    return config
+
+
+def _extraction_identity(metadata: dict[str, Any]) -> list[dict[str, Any]]:
+    models = metadata.get("extraction", {}).get("models")
+    if not isinstance(models, list) or not models:
+        raise ValueError("Stage-Q cache metadata has no extraction model records")
+    keys = (
+        "model_index",
+        "model_id",
+        "hf_id",
+        "role",
+        "revision_requested",
+        "revision_observed",
+        "hidden_dim",
+        "layer_indices",
+        "normalized_depths",
+        "answer_labels",
+        "branch_mode_counts",
+    )
+    return [{key: row.get(key) for key in keys} for row in models]
+
+
+def _assert_paired_metadata(
+    baseline_metadata: dict[str, Any],
+    candidate_metadata: dict[str, Any],
+) -> None:
+    """Reject paired comparisons with different checkpoints or execution paths."""
+
+    if baseline_metadata.get("panel_sha256") != candidate_metadata.get("panel_sha256"):
+        raise ValueError("Stage-Q caches use different frozen panels")
+    if _normalized_real_config(baseline_metadata) != _normalized_real_config(candidate_metadata):
+        raise ValueError("Stage-Q cache configs differ outside prompt contract and run identity")
+    if _extraction_identity(baseline_metadata) != _extraction_identity(candidate_metadata):
+        raise ValueError(
+            "Stage-Q caches differ in observed checkpoint, layer, label, or branch provenance"
+        )
+
+
 def compare_native_competence_bundles(
     baseline: RealBundle,
     candidate: RealBundle,
@@ -89,8 +144,6 @@ def compare_native_competence_bundles(
     if truth.size == 0:
         raise ValueError("Stage-Q comparison has no founder validation examples")
 
-    # Positive means the candidate reduces Brier relative to the baseline on
-    # the identical model/world/renderer/operation unit.
     paired_row_improvement = (
         (truth - baseline_native) ** 2 - (truth - candidate_native) ** 2
     ).mean(axis=1)
@@ -139,7 +192,7 @@ def compare_native_competence_bundles(
         bootstrap_replicates=bootstrap_replicates,
         bootstrap_seed=bootstrap_seed + 10_000,
     )
-    prompt_effect_passed = paired_interval.lower >= min_paired_improvement_lower95
+    prompt_effect_passed = paired_interval.lower > min_paired_improvement_lower95
     source_qualified = candidate_qualification["status"] == "pass"
     return {
         "schema": "frank_eq_stageq_paired_prompt_comparison_v1",
@@ -159,7 +212,7 @@ def compare_native_competence_bundles(
         ),
         "paired_improvement_check": {
             "required_for_prompt_effect_claim_only": (
-                f"lower_95 >= {min_paired_improvement_lower95}"
+                f"lower_95 > {min_paired_improvement_lower95}"
             ),
             "observed": paired_interval.lower,
             "passed": prompt_effect_passed,
@@ -173,7 +226,11 @@ def compare_native_competence_bundles(
             "test_worlds_used": 0,
             "test_labels_consumed": False,
             "founder_model_ids": founder_ids.tolist(),
+            "held_sender_rows_used": False,
+            "held_sender_cache_present": baseline.split.held_model_id is not None,
+            "held_sender_development_exposed": baseline.split.held_model_id is not None,
             "held_sender_used": False,
+            "future_held_sender_reuse_permitted": False,
         },
         "authorization": {
             "new_stagea_outcome_run_authorized": False,
@@ -188,15 +245,14 @@ def compare_native_competence_caches(
     baseline_cache: str | Path,
     candidate_cache: str | Path,
     output_dir: str | Path,
-    *,
-    min_paired_improvement_lower95: float = 0.0,
 ) -> dict[str, Any]:
-    """Load two paired caches and write a Stage-Q comparison artifact."""
+    """Load two paired caches and write the frozen Stage-Q comparison."""
 
     baseline_path = Path(baseline_cache)
     candidate_path = Path(candidate_cache)
     baseline_metadata = json.loads((baseline_path / "metadata.json").read_text())
     candidate_metadata = json.loads((candidate_path / "metadata.json").read_text())
+    _assert_paired_metadata(baseline_metadata, candidate_metadata)
     baseline_config = baseline_metadata.get("real_config", {})
     candidate_config = candidate_metadata.get("real_config", {})
     evaluation = candidate_config.get("evaluation", {})
@@ -209,7 +265,7 @@ def compare_native_competence_caches(
         RealBundle.load(baseline_path),
         RealBundle.load(candidate_path),
         min_candidate_brier_gain_lower95=candidate_threshold,
-        min_paired_improvement_lower95=min_paired_improvement_lower95,
+        min_paired_improvement_lower95=STAGEQ_PROMPT_EFFECT_THRESHOLD,
         bootstrap_replicates=replicates,
         bootstrap_seed=seed,
     )
