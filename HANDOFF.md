@@ -168,11 +168,12 @@ The causal core now includes fresh panels, canonical typed-coordinate masking,
 independent semantic and behavioral token/slot compilers, and process-locked
 one-time test access. All-token capture, cloned-KV teacher branches,
 world-balanced compiler fitting, parameter-matched token/final-token controls,
-and deterministic text parsing are also implemented and tested. Complete direct
-calibration/selection, the continuous baseline, packet/executor records, grouped
-gates, protected decision fields, independent verification, and cluster
-entrypoints. Validate and commit the complete implementation before staging the
-unopened held model or launching the representation workflow.
+deterministic text parsing, the historical continuous quotient, train-only
+direct selection, packet/executor records, grouped gates, protected decisions,
+and rate/compute tables are implemented and tested. Complete workflow and
+freeze-manifest orchestration, independent verification/recomputation, CLI, and
+Olivia entrypoints. Validate and commit the complete implementation before
+staging the unopened held model or launching the representation workflow.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every

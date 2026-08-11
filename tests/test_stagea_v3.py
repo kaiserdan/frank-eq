@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 import torch
 
-from frank_eq.data.real_panel import RealPanel
+from frank_eq.data.real_panel import RealPanel, evaluate_operation
 from frank_eq.rate_compute.backend import ProtocolScore
 from frank_eq.stagea_v3 import (
     IndependentChannelCompilers,
@@ -29,12 +29,29 @@ from frank_eq.stagea_v3.baselines import (
     parse_v3_world_prefix,
 )
 from frank_eq.stagea_v3.compiler import active_coordinate_indices, canonical_coordinates
+from frank_eq.stagea_v3.controls import apply_train_controls, fit_train_controls
+from frank_eq.stagea_v3.evaluation import reduce_stagea_v3_decision
+from frank_eq.stagea_v3.packet import (
+    TypedEdgePacket,
+    encode_rate_matched_text_basis,
+    encode_typed_edge_packet,
+    execute_typed_basis,
+    panel_control_thresholds,
+)
 from frank_eq.stagea_v3.panel import V3Panel
+from frank_eq.stagea_v3.predictions import (
+    assemble_prediction_bundle,
+    load_prediction_bundle,
+    write_prediction_bundle_artifacts,
+)
 from frank_eq.stagea_v3.training import (
     load_basis_predictor,
+    load_continuous_quotient,
     make_basis_predictor,
     predict_basis_logits,
+    predict_continuous_logits,
     train_basis_predictor,
+    train_continuous_quotient,
 )
 from frank_eq.utils import atomic_write_json, sha256_file
 
@@ -85,6 +102,212 @@ def test_text_parser_recovers_all_frozen_renderer_grammars() -> None:
     for renderer in ("natural", "adjacency", "canonical_edge_list"):
         rendered = render_v3_world_prefix(world, renderer)
         assert np.array_equal(parse_v3_world_prefix(rendered, 6), world.fact_vector())
+
+
+def test_typed_packet_round_trip_separates_payload_and_framing_bits() -> None:
+    for entity_count in (4, 6):
+        coordinates = entity_count * (entity_count - 1)
+        probabilities = np.linspace(0.01, 0.99, coordinates)
+        packet = encode_typed_edge_packet(
+            probabilities,
+            entity_count=entity_count,
+            bits=4,
+        )
+        restored = TypedEdgePacket.from_dict(packet.to_dict())
+        assert restored.payload_bits == coordinates * 4
+        assert restored.framing_bits > 0
+        assert restored.serialized_bits == restored.payload_bits + restored.framing_bits
+        assert restored.probabilities().shape == (coordinates,)
+
+        text_packet = encode_rate_matched_text_basis(
+            np.asarray([index % 2 for index in range(coordinates)]),
+            entity_count=entity_count,
+        )
+        assert text_packet.payload_bits == packet.payload_bits
+
+        tampered = packet.to_dict()
+        tampered["checksum_sha256"] = "0" * 64
+        with pytest.raises(ValueError, match="checksum"):
+            TypedEdgePacket.from_dict(tampered)
+
+
+def test_exact_public_basis_reproduces_every_panel_operation() -> None:
+    config = load_stagea_v3_config(CONFIG_PATH)
+    for entity_count in (4, 6):
+        panel = generate_v3_panel(config, "train", entity_count).panel
+        thresholds = panel_control_thresholds(panel.worlds)
+        for world in panel.worlds[:4]:
+            for operation in panel.operations:
+                probability = execute_typed_basis(
+                    world.fact_vector(),
+                    operation.definition,
+                    entity_count=entity_count,
+                    control_thresholds=thresholds,
+                )
+                assert int(probability >= 0.5) == int(
+                    evaluate_operation(world, operation.definition)
+                )
+
+
+def test_prediction_bundle_requires_every_registered_control(tmp_path: Path) -> None:
+    config = load_stagea_v3_config(CONFIG_PATH)
+    full_panel = generate_v3_panel(config, "test", 4)
+    worlds = full_panel.panel.worlds
+    panel = V3Panel(
+        role="test",
+        entity_count=4,
+        panel=RealPanel(
+            worlds=worlds,
+            operations=full_panel.panel.operations,
+            oracle_signatures=full_panel.panel.oracle_signatures,
+            config=full_panel.panel.config,
+        ),
+        operation_registry_sha256=full_panel.operation_registry_sha256,
+    )
+    semantic_rows: list[np.ndarray] = []
+    operation_rows: list[np.ndarray] = []
+    prefix_metadata: list[dict[str, object]] = []
+    world_ids: list[int] = []
+    renderer_ids: list[int] = []
+    for world in worlds:
+        for renderer_id, renderer in enumerate(
+            ("natural", "adjacency", "canonical_edge_list")
+        ):
+            semantic_rows.append(world.fact_vector())
+            operation_rows.append(
+                np.asarray(full_panel.panel.oracle_signatures[world.world_id])
+            )
+            text = render_v3_world_prefix(world, renderer)
+            prefix_metadata.append({"prefix_utf8_hex": text.encode().hex()})
+            world_ids.append(world.world_id)
+            renderer_ids.append(renderer_id)
+    semantic = np.stack(semantic_rows).astype(np.float32)
+    operations = np.stack(operation_rows).astype(np.float32)
+    rows, coordinates = semantic.shape
+    behavioral = semantic * 0.6 + 0.2
+    shard = V3CaptureShard(
+        model_id=config.founder_models[0].model_id,
+        role="test",
+        entity_count=4,
+        layer_indices=(1, 2, 3, 4),
+        hidden_width=8,
+        residuals=torch.zeros(rows, 4, 3, 8),
+        token_ids=torch.ones(rows, 3, dtype=torch.long),
+        attention_mask=torch.ones(rows, 3, dtype=torch.bool),
+        world_ids=torch.tensor(world_ids),
+        renderer_ids=torch.tensor(renderer_ids),
+        semantic_targets=torch.from_numpy(semantic),
+        behavioral_targets=torch.from_numpy(behavioral),
+        behavioral_log_odds=torch.logit(torch.from_numpy(behavioral)),
+        operation_targets=torch.from_numpy(operations),
+        operation_targets_hard=torch.from_numpy((operations >= 0.5).astype(np.int8)),
+        direct_probabilities=torch.full((rows, 32, 3), 0.5),
+        direct_log_odds=torch.zeros(rows, 32, 3),
+        direct_generated_tokens=torch.zeros(rows, 32, 3, dtype=torch.int32),
+        prefix_metadata=prefix_metadata,
+        capture_summary={
+            "prefix_forwards": rows,
+            "operation_registry_sha256": panel.operation_registry_sha256,
+        },
+    )
+    semantic_prediction = semantic * 0.8 + 0.1
+    behavioral_prediction = behavioral * 0.8 + 0.1
+    continuous = operations * 0.8 + 0.1
+
+    def logit(value: np.ndarray) -> np.ndarray:
+        return np.log(value) - np.log1p(-value)
+
+    seeds = 3
+    controls: dict[str, np.ndarray | list[str]] = {
+        "semantic_edge_prior": np.full((rows, coordinates), 0.5),
+        "behavioral_edge_prior": np.full((rows, coordinates), 0.5),
+        "operation_prior": np.full((rows, 32), 0.5),
+        "interactive_basis": semantic_prediction,
+        "direct_probability": continuous,
+        "direct_generated_tokens": np.zeros((rows, 32), dtype=np.int64),
+        "direct_protocols": ["sequence"] * 32,
+    }
+    bundle = assemble_prediction_bundle(
+        config,
+        shard=shard,
+        panel=panel,
+        semantic_primary=semantic_prediction,
+        behavioral_primary=behavioral_prediction,
+        token_primary=semantic_prediction,
+        final_token_primary=semantic_prediction,
+        continuous_primary=continuous,
+        semantic_seed_logits=[logit(semantic_prediction)] * seeds,
+        behavioral_seed_logits=[logit(behavioral_prediction)] * seeds,
+        token_seed_logits=[logit(semantic_prediction)] * seeds,
+        final_token_seed_logits=[logit(semantic_prediction)] * seeds,
+        continuous_seed_logits=[logit(continuous)] * seeds,
+        controls=controls,
+        compiler_compute={"parameter_count": 1},
+    )
+    assert bundle.semantic_basis["primary_q4"].shape == (rows, coordinates)
+    assert set(bundle.operations) >= {
+        "historical_continuous_quotient",
+        "train_selected_direct_protocol",
+        "deterministic_text_parser",
+    }
+    assert all(
+        record["payload_bits"] == 48
+        for record in bundle.packet_records
+        if record["bits_per_coordinate"] == 4
+    )
+    assert np.array_equal(
+        bundle.operations["oracle_basis"] >= 0.5,
+        bundle.operation_truth_hard.astype(bool),
+    )
+    artifacts = write_prediction_bundle_artifacts(
+        tmp_path / "predictions.npz",
+        tmp_path / "predictions.json",
+        bundle,
+        config_sha256=config.config_sha256,
+    )
+    restored = load_prediction_bundle(
+        tmp_path / "predictions.npz",
+        tmp_path / "predictions.json",
+        config_sha256=config.config_sha256,
+        expected_array_sha256=artifacts["array_sha256"],
+        expected_metadata_sha256=artifacts["metadata_sha256"],
+    )
+    assert np.array_equal(restored.operations["primary_q4"], bundle.operations["primary_q4"])
+
+
+def test_v3_decision_reducer_is_conjunctive_and_keeps_protected_actions_closed() -> None:
+    checks = {
+        "integrity": True,
+        "semantic_basis": True,
+        "unseen_renderer": True,
+        "behavioral_basis": True,
+        "activation_specificity": True,
+        "composition": True,
+        "public_alignment": True,
+        "held_sender": True,
+        "quantization": True,
+        "oracle_executor": True,
+    }
+    passed = reduce_stagea_v3_decision(checks, {"artifacts": True})
+    assert passed["diagnosis"] == "STAGEA_V3_REPRESENTATION_QUALIFIED"
+    assert passed["authorization"]["receiver_protocol_draft_authorized"] is True
+    assert passed["authorization"]["receiver_execution_authorized"] is False
+    assert passed["authorization"]["scientific_claim_authorized"] is False
+
+    expected = {
+        "integrity": "INVALID_STAGEA_V3_RUN",
+        "semantic_basis": "ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED",
+        "behavioral_basis": "BEHAVIORAL_STATE_NOT_QUALIFIED",
+        "activation_specificity": "NO_ACTIVATION_SPECIFIC_ADVANTAGE",
+        "composition": "NO_ONE_SHOT_COMPOSITION_ADVANTAGE",
+        "held_sender": "HELD_SENDER_NOT_ESTABLISHED",
+    }
+    for failed_check, diagnosis in expected.items():
+        failed = dict(checks)
+        failed[failed_check] = False
+        decision = reduce_stagea_v3_decision(failed, {"artifacts": failed_check != "integrity"})
+        assert decision["diagnosis"] == diagnosis
+        assert not any(decision["authorization"].values())
 
 
 def _compiler(**overrides: int | float) -> TokenSlotCompiler:
@@ -489,3 +712,76 @@ def test_basis_trainer_world_groups_and_restores_frozen_checkpoint(tmp_path: Pat
         device_name="cpu",
     )
     assert logits.shape == (8, 12)
+
+    descriptors = {
+        entity_count: torch.randn(32, 35, generator=torch.Generator().manual_seed(entity_count))
+        for entity_count in (4, 6)
+    }
+    continuous_path = tmp_path / "continuous-211.pt"
+    continuous_summary = train_continuous_quotient(
+        config,  # type: ignore[arg-type]
+        train_shards=train,
+        validation_shards=validation,
+        operation_descriptors=descriptors,
+        registered_seed=211,
+        checkpoint_path=continuous_path,
+        onboarding=False,
+        capture_sha256={"train4": "1" * 64},
+        descriptor_sha256={"n4": "3" * 64, "n6": "4" * 64},
+        device_name="cpu",
+    )
+    assert continuous_summary["kind"] == "historical_continuous_quotient"
+    continuous, continuous_metadata = load_continuous_quotient(
+        config, continuous_path, device_name="cpu"  # type: ignore[arg-type]
+    )
+    continuous_logits = predict_continuous_logits(
+        continuous,
+        continuous_metadata,
+        validation[6],
+        descriptors[6],
+        worlds_per_batch=2,
+        device_name="cpu",
+    )
+    assert continuous_logits.shape == (8, 32)
+
+
+def test_train_controls_fit_only_train_and_apply_frozen_selection() -> None:
+    config = load_stagea_v3_config(CONFIG_PATH)
+    model_id = config.founder_models[0].model_id
+    train_panels = {
+        entity_count: generate_v3_panel(config, "train", entity_count)
+        for entity_count in (4, 6)
+    }
+    train_shards: dict[int, V3CaptureShard] = {}
+    for entity_count, panel in train_panels.items():
+        shard = _tiny_shard("train", entity_count)
+        shard.model_id = model_id
+        shard.capture_summary.update(
+            {
+                "operation_registry_sha256": panel.operation_registry_sha256,
+                "direct_protocol_order": ["sequence", "reason", "pause"],
+            }
+        )
+        train_shards[entity_count] = shard
+    artifact = fit_train_controls(
+        config,
+        model_id=model_id,
+        train_shards=train_shards,
+        panels=train_panels,
+        capture_sha256={"n4": "1" * 64, "n6": "2" * 64},
+    )
+    assert artifact["fit_role"] == "train"
+    assert artifact["validation_rows_used"] == artifact["test_rows_used"] == 0
+
+    validation_panel = generate_v3_panel(config, "validation", 4)
+    validation_shard = _tiny_shard("validation", 4)
+    validation_shard.model_id = model_id
+    applied = apply_train_controls(
+        config,
+        artifact,
+        validation_shard,
+        validation_panel,
+    )
+    assert np.asarray(applied["interactive_basis"]).shape == (8, 12)
+    assert np.asarray(applied["direct_probability"]).shape == (8, 32)
+    assert len(applied["direct_protocols"]) == 32

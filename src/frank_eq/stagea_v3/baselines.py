@@ -164,6 +164,24 @@ def unified_operation_descriptor(
     return descriptor
 
 
+def unified_operation_descriptors(
+    operations: tuple[FrozenOperation, ...] | list[FrozenOperation],
+    *,
+    entity_count: int,
+    max_entities: int = 6,
+) -> np.ndarray:
+    return np.stack(
+        [
+            unified_operation_descriptor(
+                operation,
+                entity_count=entity_count,
+                max_entities=max_entities,
+            )
+            for operation in operations
+        ]
+    ).astype(np.float32)
+
+
 class HistoricalContinuousQuotient(nn.Module):
     """The registered private continuous-code plus learned-operation baseline."""
 

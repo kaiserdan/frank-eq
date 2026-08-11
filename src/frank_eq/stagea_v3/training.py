@@ -15,7 +15,7 @@ from torch.nn import functional as F
 
 from frank_eq.utils import parameter_count, resolve_device, seed_everything
 
-from .baselines import FinalTokenPublicMLP, TokenIDResampler
+from .baselines import FinalTokenPublicMLP, HistoricalContinuousQuotient, TokenIDResampler
 from .capture import V3CaptureShard
 from .compiler import TokenSlotCompiler
 from .config import StageAV3Config
@@ -542,5 +542,331 @@ def predict_basis_ensemble(
     models = {str(row["model_id"]) for row in metadata_rows}
     if len(kinds) != 1 or len(channels) != 1 or models != {shard.model_id}:
         raise ValueError("basis ensemble mixes model, kind, or channel namespaces")
+    mean_logit = torch.stack(logits).mean(dim=0)
+    return torch.sigmoid(mean_logit), logits, metadata_rows
+
+
+def _continuous_validation_metric(
+    model: HistoricalContinuousQuotient,
+    shards: dict[int, V3CaptureShard],
+    descriptors: dict[int, torch.Tensor],
+    *,
+    worlds_per_batch: int,
+    device: torch.device,
+    consistency_weight: float,
+) -> dict[str, float]:
+    model.eval()
+    squared_errors: list[torch.Tensor] = []
+    variances: list[float] = []
+    with torch.inference_mode():
+        for entity_count, indices in _epoch_batches(
+            shards,
+            worlds_per_batch=worlds_per_batch,
+            seed=0,
+            shuffle=False,
+        ):
+            shard = shards[entity_count]
+            logits, _ = model(
+                shard.residuals[indices].to(device),
+                shard.attention_mask[indices].to(device),
+                descriptors[entity_count].to(device),
+            )
+            probabilities = torch.sigmoid(logits)
+            targets = shard.operation_targets[indices].to(device)
+            squared_errors.append(((probabilities - targets) ** 2).cpu().reshape(-1))
+            variances.append(
+                float(
+                    _renderer_variance(
+                        probabilities,
+                        shard.world_ids[indices].to(device),
+                    ).cpu()
+                )
+            )
+    brier = float(torch.cat(squared_errors).mean())
+    renderer_variance = float(np.mean(variances))
+    return {
+        "brier": brier,
+        "renderer_variance": renderer_variance,
+        "selection_metric": brier + consistency_weight * renderer_variance,
+    }
+
+
+def _validate_operation_descriptors(
+    descriptors: dict[int, torch.Tensor],
+    shards: dict[int, V3CaptureShard],
+) -> None:
+    if set(descriptors) != set(shards):
+        raise ValueError("continuous baseline descriptors omit a registered complexity")
+    for entity_count, descriptor in descriptors.items():
+        operations = shards[entity_count].operation_targets.shape[1]
+        if descriptor.shape != (operations, 35) or descriptor.dtype != torch.float32:
+            raise ValueError("continuous baseline operation descriptors have the wrong shape")
+
+
+def train_continuous_quotient(
+    config: StageAV3Config,
+    *,
+    train_shards: dict[int, V3CaptureShard],
+    validation_shards: dict[int, V3CaptureShard],
+    operation_descriptors: dict[int, torch.Tensor],
+    registered_seed: int,
+    checkpoint_path: str | Path,
+    onboarding: bool,
+    capture_sha256: dict[str, str],
+    descriptor_sha256: dict[str, str],
+    device_name: str = "auto",
+) -> dict[str, Any]:
+    """Fit the historical final-token continuous quotient and learned operation head."""
+
+    if registered_seed not in config.section("compiler")["seeds"]:
+        raise ValueError("continuous baseline seed is not part of the frozen ensemble")
+    model_id, input_width, depth_count = _validate_shard_pair(
+        train_shards, validation_shards, config
+    )
+    _validate_operation_descriptors(operation_descriptors, train_shards)
+    model_role = next(model.role for model in config.models if model.model_id == model_id)
+    if onboarding != (model_role == "held"):
+        raise ValueError("continuous onboarding flag disagrees with model role")
+    initialization_seed = registered_seed * 100 + 31
+    seed_everything(initialization_seed)
+    model = HistoricalContinuousQuotient(
+        input_width=input_width,
+        n_depths=depth_count,
+    )
+    training = config.section("training")
+    consistency_weight = float(config.section("compiler")["renderer_consistency_weight"])
+    epochs = int(training["onboarding_epochs"] if onboarding else training["epochs"])
+    learning_rate = float(
+        training["onboarding_learning_rate"] if onboarding else training["learning_rate"]
+    )
+    patience = int(training["patience"])
+    worlds_per_batch = int(training["worlds_per_batch"])
+    device = resolve_device(device_name)
+    model.to(device)
+    optimizer = torch.optim.AdamW(
+        model.parameters(),
+        lr=learning_rate,
+        weight_decay=float(training["weight_decay"]),
+    )
+    descriptors = {
+        entity_count: descriptor.to(device)
+        for entity_count, descriptor in operation_descriptors.items()
+    }
+
+    best_state: dict[str, torch.Tensor] | None = None
+    best_metric = float("inf")
+    best_epoch = -1
+    stale = 0
+    history: list[dict[str, Any]] = []
+    started = time.time()
+    for epoch in range(epochs):
+        model.train()
+        train_rows: list[dict[str, float]] = []
+        for entity_count, indices in _epoch_batches(
+            train_shards,
+            worlds_per_batch=worlds_per_batch,
+            seed=initialization_seed + epoch * 10_007,
+            shuffle=True,
+        ):
+            shard = train_shards[entity_count]
+            optimizer.zero_grad(set_to_none=True)
+            logits, _ = model(
+                shard.residuals[indices].to(device),
+                shard.attention_mask[indices].to(device),
+                descriptors[entity_count],
+            )
+            targets = shard.operation_targets[indices].to(device)
+            prediction_loss = F.binary_cross_entropy_with_logits(logits, targets)
+            renderer_variance = _renderer_variance(
+                torch.sigmoid(logits), shard.world_ids[indices].to(device)
+            )
+            loss = prediction_loss + consistency_weight * renderer_variance
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(
+                model.parameters(), float(training["gradient_clip"])
+            )
+            optimizer.step()
+            train_rows.append(
+                {
+                    "prediction_loss": float(prediction_loss.detach().cpu()),
+                    "renderer_variance": float(renderer_variance.detach().cpu()),
+                    "total": float(loss.detach().cpu()),
+                }
+            )
+        validation = _continuous_validation_metric(
+            model,
+            validation_shards,
+            descriptors,
+            worlds_per_batch=worlds_per_batch,
+            device=device,
+            consistency_weight=consistency_weight,
+        )
+        history.append(
+            {
+                "epoch": epoch,
+                "train": {
+                    key: float(np.mean([row[key] for row in train_rows]))
+                    for key in ("prediction_loss", "renderer_variance", "total")
+                },
+                "validation": validation,
+            }
+        )
+        if validation["selection_metric"] < best_metric - 1e-8:
+            best_metric = validation["selection_metric"]
+            best_epoch = epoch
+            best_state = {
+                key: value.detach().cpu().clone()
+                for key, value in model.state_dict().items()
+            }
+            stale = 0
+        else:
+            stale += 1
+        if stale >= patience:
+            break
+    if best_state is None:
+        raise RuntimeError("continuous baseline fitting did not produce a checkpoint")
+    model.load_state_dict(best_state)
+    final_validation = _continuous_validation_metric(
+        model,
+        validation_shards,
+        descriptors,
+        worlds_per_batch=worlds_per_batch,
+        device=device,
+        consistency_weight=consistency_weight,
+    )
+    metadata: dict[str, Any] = {
+        "schema": "frank_eq_stagea_v3_continuous_checkpoint_v1",
+        "config_sha256": config.config_sha256,
+        "model_id": model_id,
+        "model_role": model_role,
+        "kind": "historical_continuous_quotient",
+        "channel": "semantic",
+        "registered_seed": registered_seed,
+        "initialization_seed": initialization_seed,
+        "input_width": input_width,
+        "depth_count": depth_count,
+        "parameter_count": parameter_count(model),
+        "best_epoch": best_epoch,
+        "epochs_observed": len(history),
+        "best_selection_metric": best_metric,
+        "final_validation": final_validation,
+        "onboarding": onboarding,
+        "capture_sha256": dict(sorted(capture_sha256.items())),
+        "descriptor_sha256": dict(sorted(descriptor_sha256.items())),
+        "elapsed_seconds": time.time() - started,
+        "history": history,
+    }
+    target = Path(checkpoint_path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    temporary = target.with_suffix(target.suffix + ".tmp")
+    torch.save({"metadata": metadata, "state_dict": best_state}, temporary)
+    os.replace(temporary, target)
+    return metadata
+
+
+def load_continuous_quotient(
+    config: StageAV3Config,
+    checkpoint_path: str | Path,
+    *,
+    expected_sha256: str | None = None,
+    device_name: str = "auto",
+) -> tuple[HistoricalContinuousQuotient, dict[str, Any]]:
+    source = Path(checkpoint_path)
+    if expected_sha256 is not None:
+        from frank_eq.utils import sha256_file
+
+        if sha256_file(source) != expected_sha256:
+            raise ValueError("continuous checkpoint hash mismatch")
+    payload = torch.load(source, map_location="cpu", weights_only=False)
+    metadata = dict(payload["metadata"])
+    if metadata.get("schema") != "frank_eq_stagea_v3_continuous_checkpoint_v1":
+        raise ValueError("unsupported continuous checkpoint schema")
+    if metadata.get("config_sha256") != config.config_sha256:
+        raise ValueError("continuous checkpoint belongs to another frozen config")
+    model = HistoricalContinuousQuotient(
+        input_width=int(metadata["input_width"]),
+        n_depths=int(metadata["depth_count"]),
+    )
+    model.load_state_dict(payload["state_dict"], strict=True)
+    model.to(resolve_device(device_name))
+    model.eval()
+    return model, metadata
+
+
+def predict_continuous_logits(
+    model: HistoricalContinuousQuotient,
+    metadata: dict[str, Any],
+    shard: V3CaptureShard,
+    operation_descriptors: torch.Tensor,
+    *,
+    worlds_per_batch: int,
+    device_name: str = "auto",
+) -> torch.Tensor:
+    if shard.model_id != metadata["model_id"]:
+        raise ValueError("continuous checkpoint and capture shard model IDs differ")
+    device = resolve_device(device_name)
+    model.to(device)
+    descriptors = operation_descriptors.to(device)
+    output = torch.empty_like(shard.operation_targets, dtype=torch.float32)
+    model.eval()
+    with torch.inference_mode():
+        for indices in _world_batches(
+            shard,
+            worlds_per_batch=worlds_per_batch,
+            seed=0,
+            shuffle=False,
+        ):
+            logits, _ = model(
+                shard.residuals[indices].to(device),
+                shard.attention_mask[indices].to(device),
+                descriptors,
+            )
+            output[indices] = logits.detach().float().cpu()
+    return output
+
+
+def predict_continuous_ensemble(
+    config: StageAV3Config,
+    checkpoint_paths: list[str | Path],
+    shard: V3CaptureShard,
+    operation_descriptors: torch.Tensor,
+    *,
+    checkpoint_sha256: dict[str, str] | None = None,
+    device_name: str = "auto",
+) -> tuple[torch.Tensor, list[torch.Tensor], list[dict[str, Any]]]:
+    registered = config.section("compiler")["seeds"]
+    if len(checkpoint_paths) != len(registered):
+        raise ValueError("continuous ensemble must include every frozen seed")
+    logits: list[torch.Tensor] = []
+    metadata_rows: list[dict[str, Any]] = []
+    worlds_per_batch = int(config.section("training")["worlds_per_batch"])
+    for path in checkpoint_paths:
+        source = Path(path)
+        expected = None
+        if checkpoint_sha256 is not None:
+            expected = checkpoint_sha256.get(str(source)) or checkpoint_sha256.get(source.name)
+        model, metadata = load_continuous_quotient(
+            config,
+            source,
+            expected_sha256=expected,
+            device_name=device_name,
+        )
+        logits.append(
+            predict_continuous_logits(
+                model,
+                metadata,
+                shard,
+                operation_descriptors,
+                worlds_per_batch=worlds_per_batch,
+                device_name=device_name,
+            )
+        )
+        metadata_rows.append(metadata)
+        del model
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+    seeds = [int(row["registered_seed"]) for row in metadata_rows]
+    if seeds != registered or {row["model_id"] for row in metadata_rows} != {shard.model_id}:
+        raise ValueError("continuous ensemble checkpoint order or model differs")
     mean_logit = torch.stack(logits).mean(dim=0)
     return torch.sigmoid(mean_logit), logits, metadata_rows

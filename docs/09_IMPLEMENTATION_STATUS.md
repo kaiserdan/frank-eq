@@ -109,10 +109,17 @@ Focused tests cover deterministic panels, renderer completeness, padding
 isolation, coordinate masking, channel disjointness, manifest hash drift, early
 or repeated test access, capture/query accounting, config mutation, text-parser
 exactness, baseline parameter matching, and a fit/save/reload/predict cycle.
-Direct calibration/selection, the continuous quotient, packet/executor records,
-grouped reduction, the machine decision, workflow verification, and cluster
-entrypoints remain to be completed before the implementation freeze and dry
-run.
+The third implementation checkpoint adds the historical continuous quotient,
+train-only Platt calibration and direct-protocol selection, typed packet
+serialization, deterministic execution, all registered negative/text/oracle
+conditions, hash-bound prediction bundles, world-grouped gates, public retrieval
+and identity probes, held-sender retention, rate/compute accounting, and the
+seven-way machine reducer. Payload, framing, checksum, source queries, generated
+tokens, and consumer work remain separate quantities.
+
+Workflow orchestration, freeze-manifest construction, independent artifact
+verification/recomputation, CLI and Olivia entrypoints remain to be completed
+before the implementation freeze and content-addressed dry run.
 
 The user authorized implementation and one representation run after the
 registration and implementation are separately committed and validated. No
