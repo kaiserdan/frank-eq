@@ -177,6 +177,13 @@ exact unopened Qwen3-14B revision without task queries, inspect the repository
 launcher dry run, and submit exactly one full v3-2 workflow. Do not instantiate
 the registered test panel locally.
 
+Those pre-launch freezes are now complete: implementation commit `e75952a`,
+plan commit `e1b2010` with internal hash `c71c1b26...11d0af`, and task-blind
+Qwen3-14B staging job `1895307` with 18 hashed files, eight weight shards, zero
+broken files, zero prompts, and no model inference. The immediate next action is
+to inspect the clean repository-launcher dry run and submit the one authorized
+workflow without changing the bound implementation.
+
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every
 edge; a pass cannot support a hidden-over-text claim.

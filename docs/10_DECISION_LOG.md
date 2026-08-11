@@ -163,3 +163,10 @@
 - **Exposure audit:** the import failed before `snapshot_download`; the exact Qwen3-14B snapshot remained absent. The job executed zero task prompts, zero model inference, and no Stage-A panel generation or access.
 - **Repair:** use the Python 3.10-compatible `datetime.now(timezone.utc)` spelling only. Preserve the failed immutable deployment and use a fresh source version and Slurm job for checkpoint staging.
 - **Scientific boundary:** the frozen v3-2 implementation files and inspected plan are unchanged; this cache receipt repair does not alter any estimand, model interaction, seed, gate, or outcome path.
+
+## 2026-08-12 — stage and verify the unopened held checkpoint
+
+- **Staging:** immutable Olivia job `1895307` (source archive `76905ed3...be098`) completed in 60 seconds and resolved `Qwen/Qwen3-14B` exactly at `40c069824f4251a91eefaf281ebe4c544efd3e18`.
+- **Receipt:** hash all 18 resolved snapshot files totaling `29,552,613,776` bytes. An independent filesystem check finds eight referenced weight shards and zero missing or broken files.
+- **Exposure:** the receipt records `task_prompts_executed=0` and `model_inference_executed=false`. The checkpoint is staged but remains task-unopened; only the ordered v3 workflow may expose it to registered train worlds after the founder freeze.
+- **Plan:** the inspected plan remains byte-exact at internal SHA-256 `c71c1b26...11d0af`; cache staging changed none of its 64 bound implementation files.
