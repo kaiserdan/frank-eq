@@ -8,11 +8,11 @@ import json
 import sys
 from pathlib import Path
 
-import numpy as np
-
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 sys.path.insert(0, str(SRC))
+
+import numpy as np  # noqa: E402
 
 from frank_eq.data.real_panel import evaluate_operation  # noqa: E402
 from frank_eq.rate_compute.config import load_rate_compute_config  # noqa: E402
@@ -23,6 +23,7 @@ from frank_eq.rate_compute.records import build_panels  # noqa: E402
 REQUIRED = (
     "docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md",
     "docs/19_STAGE_R_CLUSTER_RUNBOOK.md",
+    "docs/20_RC0_DECISION_RECORD.md",
     "configs/rate_compute/real_lumi_rc0.yaml",
     "configs/rate_compute/real_olivia_rc0.yaml",
     "scripts/verify_rate_compute_run.py",
