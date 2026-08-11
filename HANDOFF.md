@@ -190,9 +190,16 @@ weight shards, zero broken files, zero prompts, and no model inference. The
 subsequent neutral-prefix runtime smoke `1895366` loaded the exact offline held
 revision, produced a 5,120-wide hidden state, cloned its KV cache, and verified
 chat-prefix continuity. Its receipt records zero registered worlds, operations,
-answers, and test accesses. The immediate next action is to inspect a fresh
-clean repository-launcher dry run and submit the one authorized workflow without
-changing the bound implementation.
+answers, and test accesses.
+
+The one authorized v3-2 workflow is now running as Olivia Slurm job `1895410`
+under immutable job name `frank-eq-stagea-v3-2-olivia-20260812a`. It is bound to
+Git commit `91a0021`, source archive `b81c704e...cb47a`, and the inspected plan
+above. The archive was reproduced byte-for-byte and independently checked for
+all 64 bound hashes and 208 safe regular files before submission. The immediate
+next action is to monitor the ordered workflow, preserve failures immutably, and
+fetch and independently verify the terminal artifact package. Do not attempt a
+same-registration retry after official test access.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every
