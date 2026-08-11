@@ -62,6 +62,12 @@ exact revision, zero task prompts, no model inference, no broken files, and
 content hashes for every resolved snapshot file. This cache-only job is not the
 v3 outcome run.
 
+Before the outcome dry run, use `olivia/stagea_v3_held_smoke.slurm` from a fresh
+immutable generic deployment. It may load the exact held checkpoint and perform
+one neutral prefix forward, KV clone, and tokenizer-only chat-prefix continuity
+check. Its receipt must report zero registered worlds, operations, answers, and
+test accesses. It must not generate text or score a task response.
+
 ## V3 implementation and plan freeze
 
 Run the full local contract and commit the complete implementation. Only then
