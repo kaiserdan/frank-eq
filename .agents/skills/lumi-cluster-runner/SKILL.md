@@ -1,45 +1,64 @@
 ---
 name: lumi-cluster-runner
-description: Package, submit, monitor, fetch, and verify Frank-EQ Stage-A jobs on LUMI-G.
+description: Package, submit, monitor, fetch, and verify Frank-EQ jobs on LUMI-G, including the development-only RC0 audit.
 ---
 
 # LUMI cluster runner
 
-Use this skill for Frank-EQ jobs on LUMI. The operator surface is `lumi/cli.py`. It shares the same content-addressed and fail-closed workflow as Olivia.
+Use `lumi/cli.py` for content-addressed Frank-EQ submissions. Read `AGENTS.md`,
+`HANDOFF.md`, `docs/LUMI.md`, and the protocol governing the selected config.
 
-## Workflow
+## Current authorized run
 
-1. Read `AGENTS.md`, `HANDOFF.md`, `docs/11_REAL_STAGEA_IMPLEMENTATION.md`, and `docs/LUMI.md`.
-2. Run local tests and config validation.
-3. Dry-run:
+The only authorized new scientific execution is RC0:
 
-   ```bash
-   python lumi/cli.py submit \
-     --job-name <immutable-name> \
-     --config configs/stage0/real_lumi.yaml \
-     --profile smoke \
-     --stages cache,validate,train,eval \
-     --dry-run --json
-   ```
-
-4. Submit without `--dry-run`; record the returned source hash and Slurm ID.
-5. Poll, fetch, and verify using the same job name.
-6. Treat a complete negative scientific decision as a valid result.
-
-## Commands
-
-```bash
-python lumi/cli.py status --job-name <name> --json
-python lumi/cli.py fetch --job-name <name> --json
-python lumi/cli.py verify --job-name <name> --json
+```text
+config: configs/rate_compute/real_lumi_rc0.yaml
+stages: audit
+role: development-only
 ```
 
-## LUMI constraints
+Dry run:
 
-- The job loads the pinned LUMI/ROCm modules in `lumi/run.slurm` and uses the configured Singularity image.
-- Keep caches and temporary compilation state under project scratch; never under `$HOME`.
-- Start with one GPU and the smoke panel. Scale only after cache validation and memory telemetry are complete.
-- Set `local_files_only: true` for claim-bearing jobs and pre-stage exact checkpoint revisions.
-- Do not mix source archives, model revisions, or operation manifests across reruns.
+```bash
+python lumi/cli.py submit \
+  --job-name frank-eq-rc0-rate-compute \
+  --config configs/rate_compute/real_lumi_rc0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
+```
 
-See `references/contract.md` for artifact and failure requirements.
+After checking the source hash and exact model revisions, submit without
+`--dry-run`.
+
+## Operator commands
+
+```bash
+python lumi/cli.py status --job-name frank-eq-rc0-rate-compute --json
+python lumi/cli.py fetch  --job-name frank-eq-rc0-rate-compute --json
+python lumi/cli.py verify --job-name frank-eq-rc0-rate-compute --json
+```
+
+Then run the RC0-specific verifier against the fetched run root:
+
+```bash
+python scripts/verify_rate_compute_run.py --run <fetched-run-root>
+```
+
+## Mandatory checks
+
+- Qwen3-4B and Qwen3-8B exact revisions are present in the shared HF cache.
+- `local_files_only: true` remains set.
+- The submitted stages string is exactly `audit`.
+- Both entity-count panels and both renderers complete.
+- All branches use cloned KV reuse; no replay fallback occurs.
+- A scientific negative remains a scheduler-successful result.
+- Generated runs remain under project scratch and outside Git.
+
+Do not launch historical Stage-A or Stage-Q configs as an adaptive follow-up.
+Do not reuse RC0 development worlds or exposed models for a later held or
+confirmation role.
+
+See `docs/19_STAGE_R_CLUSTER_RUNBOOK.md` and `references/contract.md` for the
+full artifact contract.
