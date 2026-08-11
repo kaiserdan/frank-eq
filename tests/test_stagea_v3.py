@@ -75,15 +75,14 @@ def test_v3_panels_are_role_fresh_but_share_operations() -> None:
     for entity_count in (4, 6):
         train = generate_v3_panel(config, "train", entity_count)
         validation = generate_v3_panel(config, "validation", entity_count)
-        test = generate_v3_panel(config, "test", entity_count)
         repeat = generate_v3_panel(config, "train", entity_count)
 
         assert train.operation_registry_sha256 == validation.operation_registry_sha256
-        assert train.operation_registry_sha256 == test.operation_registry_sha256
         assert train.to_dict() == repeat.to_dict()
         assert train.panel.worlds[0].edges != validation.panel.worlds[0].edges
-        assert validation.panel.worlds[0].edges != test.panel.worlds[0].edges
-        assert len({train.public_world_id(0), validation.public_world_id(0), test.public_world_id(0)}) == 3
+        assert train.public_world_id(0) != validation.public_world_id(0)
+        with pytest.raises(RuntimeError, match="access-ledger grant"):
+            generate_v3_panel(config, "test", entity_count)
 
 
 def test_unseen_renderer_is_query_blind_and_coordinate_complete() -> None:
@@ -151,18 +150,18 @@ def test_exact_public_basis_reproduces_every_panel_operation() -> None:
 
 def test_prediction_bundle_requires_every_registered_control(tmp_path: Path) -> None:
     config = load_stagea_v3_config(CONFIG_PATH)
-    full_panel = generate_v3_panel(config, "test", 4)
-    worlds = full_panel.panel.worlds
+    source_panel = generate_v3_panel(config, "validation", 4)
+    worlds = source_panel.panel.worlds
     panel = V3Panel(
         role="test",
         entity_count=4,
         panel=RealPanel(
             worlds=worlds,
-            operations=full_panel.panel.operations,
-            oracle_signatures=full_panel.panel.oracle_signatures,
-            config=full_panel.panel.config,
+            operations=source_panel.panel.operations,
+            oracle_signatures=source_panel.panel.oracle_signatures,
+            config=source_panel.panel.config,
         ),
-        operation_registry_sha256=full_panel.operation_registry_sha256,
+        operation_registry_sha256=source_panel.operation_registry_sha256,
     )
     semantic_rows: list[np.ndarray] = []
     operation_rows: list[np.ndarray] = []
@@ -175,7 +174,7 @@ def test_prediction_bundle_requires_every_registered_control(tmp_path: Path) -> 
         ):
             semantic_rows.append(world.fact_vector())
             operation_rows.append(
-                np.asarray(full_panel.panel.oracle_signatures[world.world_id])
+                np.asarray(source_panel.panel.oracle_signatures[world.world_id])
             )
             text = render_v3_world_prefix(world, renderer)
             prefix_metadata.append({"prefix_utf8_hex": text.encode().hex()})

@@ -1,4 +1,4 @@
-"""Hash-bound configuration loader for the frozen Stage-A v3-1 registration."""
+"""Hash-bound configuration loader for the frozen Stage-A v3-2 registration."""
 
 from __future__ import annotations
 
@@ -124,7 +124,7 @@ def _validate_payload(payload: dict[str, Any]) -> tuple[StageAV3ModelSpec, ...]:
             f"Stage-A v3 top-level keys differ; missing={sorted(missing)}, unknown={sorted(unknown)}"
         )
     _require_equal(payload["schema"], "frank_eq_stagea_v3_registration_v1", "schema")
-    _require_equal(payload["protocol_version"], "stagea-v3-1", "protocol_version")
+    _require_equal(payload["protocol_version"], "stagea-v3-2", "protocol_version")
     _require_equal(payload["require_revision_pins"], True, "require_revision_pins")
 
     rows = payload.get("models")
@@ -156,7 +156,7 @@ def _validate_payload(payload: dict[str, Any]) -> tuple[StageAV3ModelSpec, ...]:
     expected_roles = {
         "train": {"worlds_per_complexity": 80, "seed": 2026081201},
         "validation": {"worlds_per_complexity": 24, "seed": 2026081202},
-        "test": {"worlds_per_complexity": 32, "seed": 2026081203},
+        "test": {"worlds_per_complexity": 32, "seed": 2026081297},
     }
     _require_equal(panel["roles"], expected_roles, "panel.roles")
     _require_equal(panel["renderers"]["fit"], ["natural", "adjacency"], "fit renderers")

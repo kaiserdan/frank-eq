@@ -25,7 +25,7 @@ capture:  frank-eq-rc0-rate-compute-olivia-20260811c  Slurm 1874736
 recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
 ```
 
-Stage-A v3-1 is now frozen in `docs/20_STAGEA_V3_PROTOCOL.md` and
+Stage-A v3-2 is now frozen in `docs/20_STAGEA_V3_PROTOCOL.md` and
 `configs/stagea_v3/real_olivia_v3.yaml`. The user explicitly authorized the
 sequential next steps on 2026-08-12. Implementation and exactly one
 outcome-bearing representation run may proceed only after separate protocol and
@@ -163,7 +163,7 @@ A pass authorizes protocol drafting, not execution.
 
 ## Next action
 
-Complete the frozen v3-1 implementation without changing its scientific fields.
+Complete the frozen v3-2 implementation without changing its scientific fields.
 The causal core now includes fresh panels, canonical typed-coordinate masking,
 independent semantic and behavioral token/slot compilers, and process-locked
 one-time test access. All-token capture, cloned-KV teacher branches,

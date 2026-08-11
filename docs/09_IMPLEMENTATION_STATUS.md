@@ -84,7 +84,7 @@ claim-bearing test access, receiver execution, or a scientific claim.
 
 ## Current implementation boundary
 
-Stage-A v3-1 is frozen and its causal core is now implemented. The first
+Stage-A v3-2 is frozen and its causal core is now implemented. The first
 implementation checkpoint adds:
 
 - hash-bound config loading for the exact registration;
@@ -124,7 +124,7 @@ before the implementation freeze and content-addressed dry run.
 The user authorized implementation and one representation run after the
 registration and implementation are separately committed and validated. No
 receiver execution is authorized. A v3 pass may authorize drafting one receiver
-protocol; a miss is terminal for v3-1.
+protocol; a miss is terminal for v3-2.
 
 ## Intended architecture after a pass
 

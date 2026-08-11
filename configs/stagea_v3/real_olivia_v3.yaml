@@ -1,8 +1,8 @@
-# Frozen Stage-A v3-1 representation registration.
+# Frozen Stage-A v3-2 representation registration.
 # Protocol: docs/20_STAGEA_V3_PROTOCOL.md
 # Any scientific change after this file is committed creates a new registration.
 schema: frank_eq_stagea_v3_registration_v1
-protocol_version: stagea-v3-1
+protocol_version: stagea-v3-2
 run_name: frank-eq-stagea-v3-olivia
 output_dir: runs/stagea-v3-olivia
 require_revision_pins: true
@@ -45,7 +45,7 @@ panel:
   roles:
     train: {worlds_per_complexity: 80, seed: 2026081201}
     validation: {worlds_per_complexity: 24, seed: 2026081202}
-    test: {worlds_per_complexity: 32, seed: 2026081203}
+    test: {worlds_per_complexity: 32, seed: 2026081297}
   renderers:
     fit: [natural, adjacency]
     test_seen: [natural, adjacency]

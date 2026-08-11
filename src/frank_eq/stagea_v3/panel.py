@@ -107,9 +107,25 @@ def _frozen_operations(config: StageAV3Config, entity_count: int) -> list[Frozen
     return _sample_operations(operation_config, rng)
 
 
-def generate_v3_panel(config: StageAV3Config, role: str, entity_count: int) -> V3Panel:
+def generate_v3_panel(
+    config: StageAV3Config,
+    role: str,
+    entity_count: int,
+    *,
+    test_access_grant: dict[str, Any] | None = None,
+) -> V3Panel:
     """Generate role-specific worlds under one complexity-specific operation registry."""
 
+    if role == "test" and (
+        test_access_grant is None
+        or test_access_grant.get("schema") != "frank_eq_stagea_v3_access_ledger_v1"
+        or test_access_grant.get("config_sha256") != config.config_sha256
+        or test_access_grant.get("current_stage") != "evaluate"
+        or test_access_grant.get("test_access_count") != 1
+    ):
+        raise RuntimeError(
+            "registered test-panel generation requires the consumed access-ledger grant"
+        )
     if entity_count not in config.section("panel")["entity_counts"]:
         raise ValueError(f"entity count {entity_count} is not registered")
     role_config = _panel_config(config, role, entity_count)

@@ -139,3 +139,11 @@
 - **Wire contract:** serialize clipped-logit typed edge packets with exact bit packing, SHA-256 checksum, and distinct payload/framing counts. The four-bit primary carries 48 or 120 payload bits. The canonical-text ceiling is parsed first, then compressed into the same typed wire budget; it remains an oracle-like text control.
 - **Prediction registry:** require every registered prior, token, final-token, continuous, direct, interactive, text, oracle, shuffled, wrong-world, zero, and 1/2/4/8-bit condition before reduction. Prediction arrays and metadata round-trip under hashes.
 - **Reducer:** compute 2,000-replicate world-grouped intervals, model/complexity/renderer/family/seed strata, retrieval, wrong-world margin, train-to-test sender identity, held retention, quantization retention, oracle mismatches, and amortized rate/compute. Emit only the seven frozen diagnoses; even a representation pass opens protocol drafting only and leaves receiver execution and every claim field false.
+
+## 2026-08-12 — void v3-1 test role and freeze the v3-2 access repair
+
+- **Detected boundary violation:** implementation tests called the deterministic panel generator with the registered v3-1 test seed `2026081203` before founder and held freezes. No checkpoint was loaded, no model saw a task row, and no outcome was computed, but the worlds and labels were no longer unopened.
+- **Disposition:** void v3-1 before execution. It cannot be launched or interpreted. Preserve this exposure in the append-only log rather than relabeling the seed as fresh.
+- **V3-2 repair:** change only the test-world seed to previously uninstantiated `2026081297`; keep train/validation worlds, operation registry, models, architecture, losses, baselines, gates, and bootstrap contract fixed.
+- **Enforcement:** the panel generator now rejects the registered test role unless it receives a config-matching access ledger already advanced to `evaluate` with its one access consumed. Tests use train/validation panels or synthetic role wrappers and assert that an ungranted test request fails before generation.
+- **Authority:** this is a pre-outcome causal-access repair. The unopened held model remains unstaged and no Stage-A v3 model result exists.

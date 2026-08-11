@@ -320,7 +320,7 @@ def main() -> int:
     v3_registration = yaml.safe_load(v3_path.read_text())
     if v3_registration.get("schema") != "frank_eq_stagea_v3_registration_v1":
         raise SystemExit("Stage-A v3 registration has the wrong schema")
-    if v3_registration.get("protocol_version") != "stagea-v3-1":
+    if v3_registration.get("protocol_version") != "stagea-v3-2":
         raise SystemExit("Stage-A v3 protocol version changed")
     expected_v3_models = {
         "qwen3-4b": ("founder", "1cfa9a7208912126459214e8b04321603b3df60c"),
@@ -339,7 +339,7 @@ def main() -> int:
     observed_v3_seeds = [
         panel_roles.get(role, {}).get("seed") for role in ("train", "validation", "test")
     ]
-    if observed_v3_seeds != [2026081201, 2026081202, 2026081203]:
+    if observed_v3_seeds != [2026081201, 2026081202, 2026081297]:
         raise SystemExit("Stage-A v3 fresh panel seeds changed")
     access = v3_registration.get("access", {})
     if access.get("test_creation_after_freeze") is not True or access.get(

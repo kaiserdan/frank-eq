@@ -144,7 +144,7 @@ configs/rate_compute/real_olivia_rc0.yaml
 
 No RC0 rerun is authorized.
 
-## Current next step: implement frozen Stage-A v3-1
+## Current next step: complete frozen Stage-A v3-2
 
 The one-shot compiler protocol is now frozen in
 `docs/20_STAGEA_V3_PROTOCOL.md` and

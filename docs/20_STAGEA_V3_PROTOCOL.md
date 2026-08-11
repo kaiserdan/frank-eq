@@ -4,7 +4,7 @@ Status: **frozen registration; implementation and one representation run
 authorized after this registration is committed and validated**.
 
 Date: 2026-08-12
-Protocol: `stagea-v3-1`
+Protocol: `stagea-v3-2`
 Config: `configs/stagea_v3/real_olivia_v3.yaml`
 
 ## 1. Authority and scope
@@ -101,7 +101,7 @@ independent deterministic panels for each entity count in `{4, 6}`:
 |---|---:|---:|---|
 | train | 80 | 2026081201 | compiler fitting, train-only calibration and direct-protocol selection |
 | validation | 24 | 2026081202 | early stopping and pre-test checkpoint selection only |
-| test | 32 | 2026081203 | one frozen representation evaluation |
+| test | 32 | 2026081297 | one frozen representation evaluation |
 
 Every model, renderer, coordinate, operation, protocol, compiler seed, and
 baseline row for a world inherits that world's role. No row may cross roles.
@@ -119,6 +119,17 @@ The implementation must enforce this order:
 
 Test panel files and test labels must not exist before both freeze steps. A test
 access ledger records creation time, process stage, and every opened test file.
+
+### v3-2 access repair
+
+The original v3-1 seed `2026081203` was deterministically instantiated by a
+unit test while the implementation was still under construction. No checkpoint
+or model was loaded and no model outcome existed, but the world/label role was
+no longer unopened. V3-1 is therefore void before execution. V3-2 changes only
+the test seed to fresh value `2026081297` and requires a consumed, hash-matching
+access-ledger grant at the panel generator itself. Unit and repository tests may
+exercise train/validation worlds or synthetic role wrappers only; they cannot
+instantiate the registered test panel.
 
 ## 6. Renderers and operations
 
@@ -323,7 +334,7 @@ Only `STAGEA_V3_REPRESENTATION_QUALIFIED` may set
 new receiver-world access, scientific claim, and paper-claim authorization
 false.
 
-A valid miss is terminal for `stagea-v3-1`. Do not tune gates, layers, seeds,
+A valid miss is terminal for `stagea-v3-2`. Do not tune gates, layers, seeds,
 models, renderers, compiler width, losses, or baselines after test access. An
 engineering failure before test creation may be repaired under a fresh source
 and job only if the failed run remains immutable and a hash-bound provenance

@@ -10,7 +10,7 @@ recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
 result:   PUBLIC_BASIS_COMPOSITION_SUPPORTED
 ```
 
-Stage-A v3-1 is now frozen and the user authorized one sequential representation
+Stage-A v3-2 is now frozen and the user authorized one sequential representation
 run after separate registration and implementation commits, full validation,
 held-checkpoint staging, and an inspected content-addressed dry run. See
 `docs/20_STAGEA_V3_PROTOCOL.md`.
