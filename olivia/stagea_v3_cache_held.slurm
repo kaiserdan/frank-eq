@@ -47,7 +47,7 @@ import hashlib
 import json
 import os
 import platform
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from huggingface_hub import snapshot_download
@@ -98,7 +98,7 @@ receipt = {
     "file_count": len(files),
     "total_bytes": sum(row["bytes"] for row in files),
     "python": platform.python_version(),
-    "completed_at": datetime.now(UTC).isoformat(),
+    "completed_at": datetime.now(timezone.utc).isoformat(),
 }
 target = Path(os.environ["OUTPUT_ROOT"]) / "held_cache_receipt.json"
 temporary = target.with_suffix(".json.tmp")

@@ -156,3 +156,10 @@
 - **Verification:** independently reload every prediction group, revalidate freeze/checkpoint/access/provenance hashes, recompute all world-grouped metrics, rate tables, and the machine decision, and require protected authorization fields to remain false.
 - **Olivia:** add a repository-native one-GH200, 192-GiB, seven-day entrypoint. The launcher permits only v3-2 `full` with the complete stage sequence and a separately committed implementation-matching inspected plan. Any failure after test access consumes v3-2; there is no artifact-only same-registration retry.
 - **Boundary:** no registered test world has been instantiated and the Qwen3-14B held revision remains task-unopened at this checkpoint.
+
+## 2026-08-12 — repair the task-blind held-cache receipt helper
+
+- **Failed staging job:** immutable Olivia cache job `1895296` (source archive `bbac2962...fab7b6`) failed in 15 seconds while importing the Python 3.11-only `datetime.UTC` name from the pinned Python 3.10 container.
+- **Exposure audit:** the import failed before `snapshot_download`; the exact Qwen3-14B snapshot remained absent. The job executed zero task prompts, zero model inference, and no Stage-A panel generation or access.
+- **Repair:** use the Python 3.10-compatible `datetime.now(timezone.utc)` spelling only. Preserve the failed immutable deployment and use a fresh source version and Slurm job for checkpoint staging.
+- **Scientific boundary:** the frozen v3-2 implementation files and inspected plan are unchanged; this cache receipt repair does not alter any estimand, model interaction, seed, gate, or outcome path.
