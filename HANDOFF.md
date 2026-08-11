@@ -166,10 +166,13 @@ A pass authorizes protocol drafting, not execution.
 Complete the frozen v3-1 implementation without changing its scientific fields.
 The causal core now includes fresh panels, canonical typed-coordinate masking,
 independent semantic and behavioral token/slot compilers, and process-locked
-one-time test access. Capture, fitting, all registered baselines, grouped gates,
-protected decision fields, and cluster entrypoints still require implementation
-and focused tests. Commit and validate the complete implementation before
-staging the unopened held model or launching the representation workflow.
+one-time test access. All-token capture, cloned-KV teacher branches,
+world-balanced compiler fitting, parameter-matched token/final-token controls,
+and deterministic text parsing are also implemented and tested. Complete direct
+calibration/selection, the continuous baseline, packet/executor records, grouped
+gates, protected decision fields, independent verification, and cluster
+entrypoints. Validate and commit the complete implementation before staging the
+unopened held model or launching the representation workflow.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every

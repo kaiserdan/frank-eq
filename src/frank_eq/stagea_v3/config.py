@@ -10,7 +10,7 @@ from typing import Any
 
 import yaml
 
-from frank_eq.utils import sha256_file
+from frank_eq.utils import canonical_json_bytes, sha256_bytes, sha256_file
 
 _TOP_LEVEL_KEYS = {
     "schema",
@@ -65,6 +65,14 @@ class StageAV3Config:
     source_path: Path
     payload: dict[str, Any]
     models: tuple[StageAV3ModelSpec, ...]
+    source_sha256: str
+    payload_sha256: str
+
+    def _assert_intact(self) -> None:
+        if sha256_file(self.source_path) != self.source_sha256:
+            raise RuntimeError("frozen Stage-A v3 config changed after loading")
+        if sha256_bytes(canonical_json_bytes(self.payload)) != self.payload_sha256:
+            raise RuntimeError("in-memory Stage-A v3 config changed after loading")
 
     @property
     def protocol_version(self) -> str:
@@ -88,15 +96,18 @@ class StageAV3Config:
 
     @property
     def config_sha256(self) -> str:
-        return sha256_file(self.source_path)
+        self._assert_intact()
+        return self.source_sha256
 
     def section(self, name: str) -> dict[str, Any]:
+        self._assert_intact()
         value = self.payload[name]
         if not isinstance(value, dict):
             raise TypeError(f"Stage-A v3 section {name!r} is not a mapping")
         return copy.deepcopy(value)
 
     def as_dict(self) -> dict[str, Any]:
+        self._assert_intact()
         return copy.deepcopy(self.payload)
 
 
@@ -243,4 +254,10 @@ def load_stagea_v3_config(
     if not isinstance(payload, dict):
         raise ValueError("Stage-A v3 config must contain a mapping")
     models = _validate_payload(payload)
-    return StageAV3Config(source_path=source, payload=payload, models=models)
+    return StageAV3Config(
+        source_path=source,
+        payload=payload,
+        models=models,
+        source_sha256=sha256_file(source),
+        payload_sha256=sha256_bytes(canonical_json_bytes(payload)),
+    )

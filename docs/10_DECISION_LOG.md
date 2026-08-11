@@ -123,3 +123,11 @@
 - **Channel separation:** semantic and behavioral modules are constructed independently, expose disjoint parameter identities, and retain separate forward namespaces.
 - **Access:** add an OS-locked, hash-bound stage ledger. Test-panel creation is rejected until both founder and held freeze manifests validate, consumes exactly one access, and records every sanctioned test-file open.
 - **Verification:** focused tests pass for panel determinism/freshness, unseen-renderer completeness, coordinate selection, padding isolation, channel disjointness, early/repeated access rejection, and artifact-hash drift. This is an implementation checkpoint, not permission to stage the held model or inspect test data.
+
+## 2026-08-12 — implement Stage-A v3 capture and basis fitting
+
+- **Capture:** store every unpadded prefix-token residual at all four registered depths in float32, with exact formatted prefix bytes, tokenizer offsets, token IDs, selected layers, residual hashes, and observed model revision. Prefix state is materialized before any basis or target query.
+- **Teachers:** derive behavioral edge targets and all sequence/reason/pause direct responses only through query-exclusive cloned KV branches. Logical queries, batches, generated tokens, prefix-continuity checks, and the primary compiler's zero-query contract are separate counters.
+- **Fitting:** train one source-local module per channel and seed with world-balanced batches that retain both renderer views. Semantic BCE and behavioral soft-label Brier remain separate; validation Brier plus the registered renderer variance selects checkpoints.
+- **Controls:** use a deterministic public token-ID feature map with the exact token/slot architecture and parameter count. Solve the final-token MLP width against the primary parameter count and fail outside the 5% tolerance. Add an exact parser for all three renderer grammars.
+- **Integrity:** detect both on-disk and in-memory config mutation, atomically write capture/checkpoint files, bind capture hashes into checkpoints, and test a full miniature fit/save/reload/predict cycle. The unopened held model remains unstaged; this checkpoint does not authorize test creation.

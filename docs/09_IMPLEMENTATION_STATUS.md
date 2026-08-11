@@ -98,11 +98,21 @@ implementation checkpoint adds:
   held manifests both exist and verify, then consumes the registered access
   exactly once.
 
+The second implementation checkpoint adds causally ordered all-token capture,
+exclusive cloned-KV semantic and direct teachers, exact prefix bytes/token
+offsets/layer hashes, world-balanced fitting, validation-only early stopping,
+and hash-bound checkpoint reload. The token-ID resampler has exactly the primary
+parameter count; the final-token MLP is constructed and checked within the
+frozen 5% tolerance. A deterministic parser recovers every frozen renderer.
+
 Focused tests cover deterministic panels, renderer completeness, padding
-isolation, coordinate masking, channel disjointness, manifest hash drift, and
-early or repeated test access. Capture, fitting, baselines, grouped reduction,
-the machine decision, and cluster entrypoints remain to be completed before the
-implementation freeze and dry run.
+isolation, coordinate masking, channel disjointness, manifest hash drift, early
+or repeated test access, capture/query accounting, config mutation, text-parser
+exactness, baseline parameter matching, and a fit/save/reload/predict cycle.
+Direct calibration/selection, the continuous quotient, packet/executor records,
+grouped reduction, the machine decision, workflow verification, and cluster
+entrypoints remain to be completed before the implementation freeze and dry
+run.
 
 The user authorized implementation and one representation run after the
 registration and implementation are separately committed and validated. No
