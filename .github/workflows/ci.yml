@@ -26,4 +26,6 @@ jobs:
       - name: Test
         run: pytest -q
       - name: Validate repository
-        run: python scripts/validate_repo.py
+        run: |
+          python scripts/validate_repo.py
+          python scripts/validate_rate_compute.py
