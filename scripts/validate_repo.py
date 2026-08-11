@@ -66,6 +66,7 @@ REQUIRED = (
     "olivia/run.slurm",
     "olivia/quickstart.sh",
     "olivia/stagea_v3.slurm",
+    "olivia/stagea_v3_cache_held.slurm",
     "lumi/cli.py",
     "lumi/run.slurm",
     "lumi/quickstart.sh",

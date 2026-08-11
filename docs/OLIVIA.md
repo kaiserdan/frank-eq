@@ -56,6 +56,12 @@ must not see a registered train prefix until the workflow has frozen both
 founder checkpoints, and it must not see test data before its own freeze. No
 unpinned head or network fallback is allowed during the outcome run.
 
+Stage the missing held snapshot through an immutable generic deployment and the
+task-blind `olivia/stagea_v3_cache_held.slurm` job. The receipt must report the
+exact revision, zero task prompts, no model inference, no broken files, and
+content hashes for every resolved snapshot file. This cache-only job is not the
+v3 outcome run.
+
 ## V3 implementation and plan freeze
 
 Run the full local contract and commit the complete implementation. Only then
