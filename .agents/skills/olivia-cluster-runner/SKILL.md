@@ -1,53 +1,67 @@
 ---
 name: olivia-cluster-runner
-description: Package, submit, monitor, fetch, and verify Frank-EQ Stage-A jobs on the UiT Olivia cluster.
+description: Package, submit, monitor, fetch, and verify Frank-EQ jobs on Olivia, including the development-only RC0 audit.
 ---
 
 # Olivia cluster runner
 
-Use this skill for Frank-EQ jobs on Olivia. The operator surface is `olivia/cli.py`; do not create ad-hoc `scp` or mutable remote worktrees.
+Use `olivia/cli.py`; do not create mutable remote worktrees or ad-hoc copy
+procedures. Read `AGENTS.md`, `HANDOFF.md`, `docs/OLIVIA.md`, and the selected
+protocol first.
 
-## Contract
+## Current authorized run
 
-1. Read `AGENTS.md`, `HANDOFF.md`, `docs/11_REAL_STAGEA_IMPLEMENTATION.md`, and `docs/OLIVIA.md`.
-2. Validate locally:
-
-   ```bash
-   python -m compileall -q src scripts olivia
-   pytest -q
-   python scripts/validate_repo.py
-   python -m frank_eq.cli validate-real-config --config <config>
-   ```
-
-3. Dry-run the exact submission:
-
-   ```bash
-   python olivia/cli.py submit \
-     --job-name <immutable-name> \
-     --config <repo-relative-config> \
-     --profile smoke \
-     --stages cache,validate,train,eval \
-     --dry-run --json
-   ```
-
-4. Submit only after the dry-run records a deterministic source SHA-256. The client packages the repository, excluding local state and generated artifacts, and deploys it under a content-addressed source identity.
-5. Monitor with `status`, then `fetch`, then `verify`. A failed scientific gate is a valid completed workflow; engineering validity and scientific promotion are separate.
-6. Preserve `.agents/state/olivia/<job>/submission.json`, `last_status.json`, `fetch.json`, and `verify.json`.
-
-## Commands
-
-```bash
-python olivia/cli.py status --job-name <name> --json
-python olivia/cli.py fetch --job-name <name> --json
-python olivia/cli.py verify --job-name <name> --json
+```text
+config: configs/rate_compute/real_olivia_rc0.yaml
+stages: audit
+role: development-only
 ```
 
-## Safety and access
+Local validation:
 
-- Never put Hugging Face or W&B credentials in source, configs, Slurm files, or logs.
-- Use environment variables forwarded by `olivia/run.slurm`.
-- Do not reinterpret a scheduler success as a scientific pass.
-- Do not run receiver execution or locked data from a Stage-A representation job.
-- Do not change the operation panel, model roles, layers, or gates after inspecting test outcomes.
+```bash
+python -m compileall -q src scripts olivia lumi
+ruff check src scripts tests
+pytest -q
+python scripts/validate_repo.py
+python scripts/validate_rate_compute.py
+```
 
-See `references/contract.md` for expected artifacts and failure handling.
+Dry run:
+
+```bash
+python olivia/cli.py submit \
+  --job-name frank-eq-rc0-rate-compute \
+  --config configs/rate_compute/real_olivia_rc0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
+```
+
+Submit only after checking the deterministic source SHA-256 and confirming both
+exact model revisions are available on Olivia.
+
+## Operator commands
+
+```bash
+python olivia/cli.py status --job-name frank-eq-rc0-rate-compute --json
+python olivia/cli.py fetch  --job-name frank-eq-rc0-rate-compute --json
+python olivia/cli.py verify --job-name frank-eq-rc0-rate-compute --json
+python scripts/verify_rate_compute_run.py --run <fetched-run-root>
+```
+
+## Invariants
+
+- Stages must equal `audit`.
+- No model revision substitution or network-resolved unpinned head.
+- Corrected `chat_turn`, exclusive KV reuse, no replay fallback.
+- Both complexity panels and renderer views complete.
+- Scheduler completion and scientific promotion remain separate.
+- Generated caches, responses, source archives, and `.agents/state/` stay out of
+  Git.
+- RC0 development worlds and exposed models cannot become later confirmation or
+  held roles.
+
+Do not launch receiver execution or another Stage-Q scale screen. See
+`docs/19_STAGE_R_CLUSTER_RUNBOOK.md` and `references/contract.md` for the full
+artifact and failure contract.

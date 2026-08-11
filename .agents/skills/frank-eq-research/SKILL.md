@@ -1,101 +1,110 @@
 ---
 name: frank-eq-research
-description: Audit and extend Frank-EQ future-defined operational-state experiments while preserving causal order, development-only source gates, and immutable negative evidence.
+description: Audit and extend Frank-EQ public operational-interface experiments while preserving causal order, rate/compute accounting, and immutable negative evidence.
 ---
 
 # Frank-EQ research skill
 
 ## Use this skill when
 
-- auditing an adopted Stage-A result;
-- building or comparing source-competence caches;
-- changing prompt/capture contracts;
-- implementing model-local compilers or operational channels;
-- preparing a frozen Stage-A registration or evidence package.
+- auditing an adopted Frank-EQ result;
+- changing a future-operation or response protocol;
+- implementing a public operational basis or model-local compiler;
+- preparing a development qualification or Stage-A registration;
+- adopting a compact evidence package.
 
 ## Current authority
 
-Read `AGENTS.md`, `HANDOFF.md`, and
-`docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md` before acting.
+Read `AGENTS.md`, `HANDOFF.md`,
+`docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`, and
+`docs/19_STAGE_R_CLUSTER_RUNBOOK.md` before acting.
 
-Stage-A v1 and v2-1 are valid exact-pipeline negatives. V2-1 does not falsify
-native chat prompting generally: its operation was appended inside the assistant
-turn, and its panel was not paired with v1.
-
-The only authorized execution is the development-only Stage-Q pair:
+Stage-A v1/v2 and Stage-Q are preserved negatives. The only authorized execution
+is RC0:
 
 ```text
-configs/stageq/real_lumi_legacy_chat.yaml
-configs/stageq/real_lumi_chat_turn.yaml
+configs/rate_compute/real_lumi_rc0.yaml
+configs/rate_compute/real_olivia_rc0.yaml
 ```
 
-Run `cache,validate` only. The workflow rejects `diagnose`, `train`, and `eval`
-for these configs. Do not access a fresh Stage-A test role.
+Run exactly `--stages audit`. A pass permits drafting one Stage-A v3 protocol;
+it never permits running it.
 
-## Mandatory Stage-Q workflow
+## Mandatory RC0 workflow
 
-1. Confirm both configs have identical checkpoints, panel seed, operation
-   registry construction, split, renderer count, branch mode, and template
-   kwargs.
-2. Confirm the candidate uses `prompt_format: chat_turn`.
-3. Verify exact token-prefix continuity during cache construction.
-4. Fetch and verify both caches.
-5. Run:
+1. Confirm exact Qwen3-4B and Qwen3-8B revisions.
+2. Confirm `chat_turn`, exclusive KV reuse, and no replay fallback.
+3. Confirm entity counts `{4,6}`, 96 development worlds each, two renderers,
+   and no held/test role.
+4. Confirm generated reasoning and fixed-pause budgets are both 32 tokens.
+5. Run local compile, lint, tests, `validate_repo.py`, and
+   `validate_rate_compute.py`.
+6. Dry-run the content-addressed cluster submission.
+7. Submit only `audit`.
+8. Fetch and run `scripts/verify_rate_compute_run.py`.
+9. Inspect aggregate and model/complexity/family strata.
+10. Adopt only a compact hash-verified evidence package.
 
-```bash
-python scripts/qualify_real_cache.py --cache <legacy> --out <legacy-out>
-python scripts/qualify_real_cache.py --cache <candidate> --out <candidate-out>
-python scripts/compare_stageq_caches.py \
-  --baseline-cache <legacy> \
-  --candidate-cache <candidate> \
-  --out <paired-out>
-```
+## Scientific invariants
 
-6. Check that every output reports zero test worlds, excludes the held sender,
-   and keeps all authorization fields false.
-7. Adopt only a small hash-verified evidence package.
+- Form the state before any operation or candidate answer is revealed.
+- Treat immediate answer-token probability as one compute/readout protocol, not
+  full model competence.
+- Separate model-local calibration from state information.
+- Compare generated reasoning against an equal-token pause control.
+- Use training worlds for calibration/protocol selection and validation worlds
+  for frozen scoring.
+- Bootstrap worlds, not response rows.
+- Public coordinates must have external semantics; do not introduce another
+  shared private gauge.
+- Runtime basis probing is an upper-bound diagnostic, not a latent interface.
+- Behavioral self-future and oracle semantic state are separate objects.
+- Report message/rate and downstream compute together.
+- Density/reciprocity global tags are controls and cannot promote the method.
+- Machine decisions and hashes outrank prose and W&B.
 
-## Stage-Q decisions
+## RC0 promotion logic
 
-The candidate source contract qualifies only if:
+Protocol drafting requires:
 
 ```text
-aggregate competence lower95 >= 0
-every individual founder competence lower95 >= 0
+every model x complexity basis Brier lower95 >= 0
+every basis balanced accuracy >= 0.60
+compiled hard-operation gain over prior lower95 >= 0
+compiled hard-operation gain over train-selected direct lower95 > 0
 ```
 
-This permits one fresh Stage-A protocol to be drafted, not run.
+Answer-channel and reasoning-over-pause effects are diagnostics only.
 
-The paired candidate-minus-legacy interval controls a separate prompt-effect
-claim. If its lower bound is negative, make no turn-placement claim; this does
-not invalidate an independently passing source competence gate.
+## After RC0
 
-## Causal and statistical invariants
+### Failure
 
-- Form state before any operation/query reveal.
-- A proper chat branch reveals the operation as a new user turn, never as
-  assistant content.
-- Prompt comparisons must use identical world/model/operation rows.
-- Average renderer/model views within world before bootstrap resampling.
-- Use training worlds to fit priors and validation worlds for qualification.
-- Require every founder to pass; do not let an aggregate mask one sender.
-- Keep test worlds and the held sender unopened during Stage Q.
-- Keep self-future behavior separate from oracle semantic correctness.
-- Do not treat renderer cosine as invariance without specificity and low model
-  leakage.
-- Do not treat explicitly printed density/reciprocity labels as a discovered
-  residual.
-- Do not mix KV-reuse and replay branches.
+Do not train a larger private latent. Follow the machine diagnosis:
 
-## After Stage Q
+- basis failure: stop or redesign the source/task contract;
+- compiler-prior failure: inspect structured calibration/dependence only;
+- no direct advantage: preserve as diagnostic, not constructive paper evidence.
 
-If source competence fails, qualify stronger models or a simpler task on
-development data. Do not revise the latent architecture first.
+### Pass
 
-If source competence passes, draft one fresh Stage-A registration using complete
-local compilers, separate behavioral/semantic channels, fresh worlds, and a
-frozen capture representation. Record a prompt-effect claim only if the paired
-interval also passes. Receiver execution remains locked.
+Draft one Stage-A v3 protocol with fresh worlds, a new unopened held sender,
+model-local token/slot compilers into the typed basis, separate behavioral and
+semantic channels, and strong text/token/direct/continuous/oracle baselines.
+Receiver execution remains locked.
+
+## Prohibited actions
+
+- Another model-scale screen under immediate A/B scoring.
+- Any RC0 stage other than `audit`.
+- Tuning gates after validation results.
+- Calling interactive tomography a one-shot latent interface.
+- Reusing RC0 worlds or exposed models for confirmation/held roles.
+- Resuming the shared-head oracle quotient.
+- Direct target-hidden reconstruction as the primary continuation.
+- Mixing replay and KV branches.
+- Committing generated caches, checkpoints, `.agents/state/`, secrets, or W&B
+  credentials.
 
 ## Validation
 
@@ -103,21 +112,13 @@ interval also passes. Receiver execution remains locked.
 python -m compileall -q src scripts olivia lumi
 ruff check src scripts tests
 pytest -q
+bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
+python scripts/validate_rate_compute.py
 ```
 
 ## Evidence standard
 
-Every adopted artifact set must include:
-
-```text
-frozen config/source identity
-causal cache validation
-machine qualification or decision
-grouped intervals and paired units
-compact verification summary
-SHA-256 manifest
-explicit authorization boundary
-```
-
-W&B is secondary telemetry and cannot authorize continuation.
+Every adopted result must include frozen config/source identity, causal branch
+validation, grouped metrics, machine decision, compact verification, SHA-256
+manifest, and an explicit authorization boundary.

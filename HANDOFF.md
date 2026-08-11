@@ -1,188 +1,200 @@
 # Frank-EQ handoff
 
-Snapshot: 2026-08-10
+Snapshot: 2026-08-11
 
 ## Current authority
 
 Synthetic Stage 0 passes as implementation evidence only.
 
-Two real Stage-A runs are adopted negatives:
+Two real Stage-A runs are adopted exact-pipeline negatives:
 
 ```text
 v1: frank-eq-stagea-devg-v2     LUMI 20942127   STOP_OR_REVISE_STAGE0
 v2: frank-eq-stagea-lumi-v2     LUMI 20952565   STOP_OR_REVISE_STAGE0
 ```
 
-Both workflows completed and their exact-pipeline negative decisions remain
-valid. Neither authorizes a scientific claim or receiver execution.
+Stage Q and the stronger-checkpoint screens are development-only negatives.
+None authorizes a scientific claim, another latent training run, or receiver
+execution.
 
-The current broad interpretation is narrower than the prose originally adopted
-with v2-1. Read, in order:
-
-1. `evidence/real_stagea_lumi_v2/REVIEW.md`
-2. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
-3. `docs/15_STAGEA_V2_REVIEW_AND_STAGEQ.md`
-4. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
-
-## What v2-1 establishes
-
-The following exact pipeline failed:
+The only authorized next execution is **Stage R / RC0**, using one of:
 
 ```text
-chat-formatted world prefix ending at assistant generation header
-→ operation appended as assistant content
-→ final-token residuals at depths 0.35 / 0.60 / 0.85
-→ model-local chart
-→ shared fact/residual heads
-→ frozen graph interrogator
+configs/rate_compute/real_lumi_rc0.yaml
+configs/rate_compute/real_olivia_rc0.yaml
 ```
 
-Key values:
+Run exactly `--stages audit`.
+
+## What the accumulated results establish
+
+### The shared private-code path is not working
+
+The v2 representation has high renderer cosine but negative wrong-world
+specificity, low cross-model retrieval, and near-perfect model identity leakage.
+The exact final-token, model-local-chart, shared-public-head architecture is
+falsified.
+
+### The source screens did not isolate state sufficiency
+
+The Stage-Q response was the immediate probability of one A/B token after the
+operation query. The branch used zero additional autoregressive scratchpad tokens.
+Its Brier score therefore confounds:
+
+- model-local answer-channel calibration;
+- available post-query computation;
+- information in the query-blind state.
+
+The operation pattern is the key clue. At 8B, inverse and reciprocity pass while
+mutual, composition, and out-degree comparison fail. This is consistent with a
+compute/composition wall, not only absent state information.
+
+### Earlier Frank branches point in the same direction
+
+Across SuperFrank, strict realization, SSCT, BaryFrank, Frank-Sol, and CTSI:
+
+- descriptive or predictable hidden structure is repeatedly positive;
+- direct receiver realization and autonomous continuation repeatedly fail;
+- model-local calibration is repeatedly load bearing;
+- structured receiver-native computation is the strongest positive endpoint;
+- learned rule/rendering layers are less reliable than grounded facts plus a
+  deterministic compiler.
+
+The next method must therefore fix the public gauge and expose downstream compute
+rather than add another continuous translator.
+
+## Current scientific hypothesis
+
+A useful cross-model interface is a **public separating operational basis** plus
+an explicit consumer-compute contract.
+
+For an operation bank `K`, basis `B` is separating when equal basis responses
+imply equality under every operation in `K`. A separating basis is a complete
+invariant of operational equivalence, so every target operation factors through
+it. In the controlled graph task, all non-diagonal directed edges are an exact
+basis.
+
+RC0 tests whether the frozen sources can expose that basis and whether a
+parameter-free public executor can compose it into the hard structural
+operations more reliably than direct model reasoning.
+
+## RC0 experiment
+
+Models:
 
 ```text
-native competence gain vs operation prior:  -0.0521
-held-out signature Brier:                     0.2065 (upper95 0.2421)
-fact accuracy:                                0.5509 (lower95 0.5120)
-cross-model retrieval:                        0.1528 (lower95 0.0972)
-wrong-world margin:                          -0.0607
-held-sender retention:                       -0.3445
-model-ID leakage over chance:                 0.6389
+Qwen3-4B  revision 1cfa9a7208912126459214e8b04321603b3df60c
+Qwen3-8B  revision b968826d9c46dd6066d109eabc6255188de91218
 ```
 
-The shared-head oracle quotient should not proceed to a receiver.
-
-## What v2-1 does not establish
-
-It does not isolate native chat prompting as the failure source.
-
-- `prompt_format: chat` ended the cache at the assistant-generation header;
-  the operation was appended inside the assistant turn rather than as a new
-  user message.
-- Changing `panel.seed` between v1 and v2 changed worlds, operation instances,
-  and split/holdout assignments. The two competence point estimates are not a
-  paired prompt comparison.
-- Native competence used a point estimate and was evaluated after training and
-  test-world scoring, so it did not function as a prerequisite.
-- KV reuse was internally consistent, but replay differed by as much as 0.1089;
-  the two execution paths are not interchangeable on this stack.
-
-The exact v2-1 negative is preserved. The statements that native chat was
-falsified, the prompt surface was not the bottleneck, or the values were
-unchanged within noise are withdrawn.
-
-## Current authorized action: Stage Q completed — candidate stopped
-
-Stage Q ran both development conditions on LUMI dev-g (panel seed 20260811,
-cache,validate only, both verified). Machine verdict `STOP_STAGEQ_CANDIDATE`:
+Development panels:
 
 ```text
-source competence (world-grouped 95% CI, founders, held-out ops):
-  legacy    aggregate -0.098  [-0.152, -0.040]   FAIL
-  chat_turn aggregate -0.118  [-0.162, -0.068]   FAIL
-  every founder and every operation family negative in both conditions
-prompt effect: paired improvement -0.020 [-0.107, 0.071] -> NOT identified
+entity counts:             4 and 6
+worlds per complexity:     96
+renderer views:            2
+registered targets:        32
+basis coordinates:         12 and 30 directed edges
+claim-bearing test worlds: 0
+held sender:               none
 ```
 
-The proper new-user-turn reveal is not better than the legacy
-assistant-continuation construction, and neither is oracle-competent. The
-prompt-surface question is now answered under correct paired methodology.
-
-Next per `docs/15` §6: screen stronger source checkpoints or a simpler formal
-task on development-only competence caches; freeze the first combination whose
-aggregate and every founder lower confidence bound are non-negative before any
-Stage-A representation training. This is a user decision (checkpoint roster
-and/or task change); the latent architecture is not modified. Stage-Q
-artifacts: `runs/stageq/` (ignored); record in `docs/13_STAGEA_V1_CORRECTION_LOG.md`.
-
-## Screening series: stopped without a passing combination
-
-Three development screens ran (Stage-Q pair plus qwen3-4b/qwen3-8b rosters);
-none passed the frozen aggregate + per-founder gate:
+Response protocols:
 
 ```text
-Stage-Q (0.6B+1.7B)      aggregate lower95 -0.162
-screen-strong (1.7B+4B)  aggregate lower95 -0.262   (qwen3-1.7b -0.454)
-screen-8b (4B+8B)        aggregate lower95 -0.129   (qwen3-8b -0.112)
+answer_token    historical immediate A/B readout
+sequence        semantic false/true candidate likelihood
+reason          32 generated scratchpad tokens + final cue
+pause           32 fixed pause tokens + final cue
 ```
 
-Wall: multi-edge structural operations fail even at 8B (mutual -0.758,
-compose -0.299) while single-edge/global ops pass at 8B (inverse +0.136,
-reciprocity +0.147). Scale helps slowly; the 6-entity task depth is the
-binding constraint. Series stopped by user decision; next options for a future
-decision: 4-entity task simplification, Qwen3-14B scale push, or query-contract
-revision — all must pass the same development qualification first. Staged on
-LUMI: Qwen3-1.7B/4B/8B (pinned revisions in `configs/stageq/real_lumi_screen_*.yaml`).
+All semantic scores receive train-only Platt calibration. Negative calibration
+slopes are legal because a stable answer-label inversion is local calibration,
+not missing information.
 
-## Decision after Stage Q
+The public executor composes calibrated edge probabilities into lookup, inverse,
+mutual, two-hop composition, out-degree comparison, and counterfactual
+composition. Exact binary basis inputs are required to reproduce the formal
+oracle.
 
-### Source competence fails
+## Promotion gate
 
-Do not revise the latent architecture. Screen stronger checkpoints or a simpler
-formal task on development-only competence caches. Freeze a source/task pair
-only after the aggregate and every founder lower confidence bound are
-non-negative.
+RC0 supports drafting a Stage-A v3 protocol only if:
 
-### Source competence passes but paired prompt improvement fails
+1. every model x complexity basis group has lower-95 Brier gain at least zero;
+2. every basis group has balanced accuracy at least 0.60;
+3. compiled hard operations beat the train-world operation prior;
+4. compiled hard operations beat the training-selected direct response protocol
+   for the aggregate and every model x complexity group.
 
-The candidate may be frozen as the source prerequisite for one Stage-A
-registration, but no prompt-mechanism claim is supported.
+Answer-channel and reasoning-over-pause effects are diagnostic only.
 
-### Source competence and paired prompt improvement pass
+A pass authorizes protocol drafting, not execution.
 
-Draft one fresh Stage-A registration and retain the paired prompt result as
-secondary evidence. The new registration should use:
+## Next command
 
-- fresh claim-bearing worlds never used by Stage Q;
-- complete model-local compilers (`public_head_scope: local`);
-- a behavioral self-future channel distinct from oracle semantic grounding;
-- a development-selected and then frozen capture representation;
-- no receiver experiment until the representation gate passes.
+LUMI dry run:
 
-## Implemented surfaces
+```bash
+python lumi/cli.py submit \
+  --job-name frank-eq-rc0-rate-compute \
+  --config configs/rate_compute/real_lumi_rc0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
+```
+
+Then remove `--dry-run` after checking the content-addressed source package.
+Olivia uses the same command pattern and `real_olivia_rc0.yaml`.
+
+Full operator instructions:
 
 ```text
-src/frank_eq/data/hf_backend.py       legacy chat + proper chat_turn capture
-src/frank_eq/qualification.py         aggregate and per-founder competence intervals
-src/frank_eq/stageq.py                paired identical-panel prompt comparison
-src/frank_eq/workflow.py              Stage-Q cache-only role enforcement
-scripts/qualify_real_cache.py         single-cache qualification CLI
-scripts/compare_stageq_caches.py      paired Stage-Q comparison CLI
+docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md
+docs/19_STAGE_R_CLUSTER_RUNBOOK.md
 ```
 
-Historical `prompt_format: chat` remains supported only to reproduce the legacy
-turn placement. Future chat competence work must use `chat_turn`.
+## Decision after RC0
 
-## Evidence boundary
+### Basis readout fails
 
-The adopted v2 package remains immutable:
+Stop the current graph/source contract. Do not train a larger latent model.
 
-```text
-evidence/real_stagea_lumi_v2/
-  AUDIT.md
-  decision.json
-  metrics.json
-  run_manifest.json
-  verification_summary.json
-  manifest.json
-```
+### Basis passes, composition fails against the prior
 
-The independent correction is supplemental:
+Investigate structured calibration/dependence on development data only. Do not
+change the private representation.
 
-```text
-evidence/real_stagea_lumi_v2/
-  REVIEW.md
-  review.json
-  review_manifest.json
-```
+### Composition beats the prior but not direct computation
 
-Generated caches, checkpoints, scheduler state, and source archives remain
-outside Git under `.agents/state/` and `runs/`.
+Retain the basis as a diagnostic; it is not yet the constructive paper result.
 
-## Prohibited next actions
+### Composition beats direct computation
 
-- Running Stage-Q configs through `diagnose`, `train`, or `eval`.
-- Reusing Stage-Q worlds as a Stage-A confirmation role.
-- Treating v1/v2 point differences as a prompt ablation.
-- Resuming the shared-head oracle quotient unchanged.
-- Selecting layers, tasks, checkpoints, or thresholds on a new Stage-A test set.
+Draft one Stage-A v3 registration using:
+
+- fresh claim-bearing worlds;
+- a new unopened held sender;
+- complete model-local token/slot compilers into typed public coordinates;
+- separate self-future behavioral and oracle-semantic channels;
+- text/token/direct/continuous/oracle baselines;
+- receiver execution still locked.
+
+The runtime basis probing in RC0 is an upper-bound diagnostic. Stage-A v3 must
+replace it with a one-shot source-local compiler before any communication claim.
+
+## Prohibited actions
+
+- Running another Stage-Q scale screen under the immediate A/B contract.
+- Treating RC0 interactive basis queries as a latent interface.
+- Reusing RC0 development worlds for Stage-A confirmation.
+- Reusing any development-exposed model as the future held sender.
+- Resuming the shared-head oracle quotient.
+- Selecting a Stage-A architecture on a fresh claim-bearing test split.
 - Starting receiver-native execution.
+
+## Evidence policy
+
+Generated RC0 responses and model caches remain outside Git. Adopt only a small,
+hash-verified package containing the frozen config/source identity, workflow
+verification, metrics, machine decision, and independent audit.
