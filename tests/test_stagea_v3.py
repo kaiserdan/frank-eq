@@ -80,6 +80,13 @@ def test_frozen_stagea_v3_config_loads_and_is_hash_bound() -> None:
         config.section("panel")
 
 
+def test_stagea_v3_datetime_usage_is_python310_compatible() -> None:
+    for path in (ROOT / "src/frank_eq/stagea_v3").glob("*.py"):
+        source = path.read_text()
+        assert "from datetime import UTC" not in source
+        assert "datetime.UTC" not in source
+
+
 def test_v3_panels_are_role_fresh_but_share_operations() -> None:
     config = load_stagea_v3_config(CONFIG_PATH)
     for entity_count in (4, 6):

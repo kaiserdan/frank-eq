@@ -182,3 +182,10 @@
 - **Implementation repair:** commit `29e2cc3` adds only the fetched-artifact archive exclusion and its regression; it changes no Stage-A estimand, model path, panel, compiler, baseline, gate, or access order.
 - **Replacement plan:** commit `8bc57fb` replaces the invalidated plan. The refreshed internal hash is `727348ba...34176`, the plan-file hash is `947e3dd5...9e320`, and the implementation-tree hash is `2ab50a10...15513` across the same 64 bound files.
 - **Inspection:** exact model revisions, config hash, complete stage order, 1,824 prefix forwards, 213,408 logical source queries, one delayed test access, and all protected authorization fields are unchanged. The plan still records `held_model_task_opened=false` and `test_panel_instantiated=false`.
+
+## 2026-08-12 — repair Stage-A import compatibility before model load
+
+- **Failed smoke:** task-blind held runtime smoke `1895356` failed in 18 seconds while importing `src/frank_eq/stagea_v3/access.py`; the pinned Python 3.10 container does not expose the Python 3.11 `datetime.UTC` alias.
+- **Exposure audit:** failure occurred during module import before tokenizer or model loading, neutral inference, registered worlds, operations, answers, panels, or test access. The held checkpoint remains task-unopened.
+- **Repair:** replace `datetime.UTC` with the Python 3.10-compatible `timezone.utc` spelling and add a source-level regression covering every Stage-A v3 module. Timestamps and all scientific behavior are unchanged.
+- **Plan consequence:** `access.py` is plan-bound. Plan `727348ba...34176` is therefore invalidated before outcome execution and must be regenerated, inspected, and committed again after the compatibility repair passes the full contract.
