@@ -1,0 +1,86 @@
+# Development-only RC0: localize answer-channel, compute, and composition walls.
+# Run with --stages audit only. No held sender and no claim-bearing test role.
+run_name: frank-eq-rate-compute-rc0-lumi
+output_dir: runs/rate-compute-rc0-lumi
+require_revision_pins: true
+
+models:
+  - model_id: qwen3-4b
+    hf_id: Qwen/Qwen3-4B
+    role: founder
+    revision: 1cfa9a7208912126459214e8b04321603b3df60c
+  - model_id: qwen3-8b
+    hf_id: Qwen/Qwen3-8B
+    role: founder
+    revision: b968826d9c46dd6066d109eabc6255188de91218
+
+capture:
+  normalized_depths: [0.35, 0.60, 0.85]
+  max_length: 2048
+  dtype: bfloat16
+  device: cuda
+  branch_mode: kv_reuse
+  allow_exact_replay_fallback: false
+  answer_token_pairs:
+    - [" A", " B"]
+    - ["A", "B"]
+    - [" No", " Yes"]
+  branch_seed: 1729
+  branch_batch_size: 8
+  local_files_only: true
+  prompt_format: chat_turn
+  chat_template_kwargs:
+    enable_thinking: false
+  parity_sample_size: 0
+  parity_max_abs_diff: 0.33
+
+panel:
+  entity_counts: [4, 6]
+  worlds_per_complexity: 96
+  n_target_operations: 32
+  n_renderers: 2
+  train_fraction: 0.70
+  oracle_smoothing: 0.02
+  min_operation_positive_fraction: 0.12
+  max_operation_positive_fraction: 0.88
+  max_generation_attempts: 512
+  seed: 20260820
+
+protocols:
+  candidate_false: " false"
+  candidate_true: " true"
+  basis_protocol: sequence
+  target_protocols: [answer_token, sequence, reason, pause]
+  compute_families: [mutual, compose, compare_outdegree, counterfactual_add]
+  rationale_budget: 32
+  pause_budget: 32
+  pause_text: " ..."
+  reasoning_instruction: >-
+    Work through the registered operation before answering. Use the following
+    scratchpad positions to reason, and do not give the final answer yet.
+  final_cue: "\nNow give only the final truth value."
+  sequence_cue: "\nGive only the final truth value. Answer:"
+  normalize_sequence_log_likelihood: true
+  max_saved_reasoning_characters: 512
+
+evaluation:
+  bootstrap_replicates: 2000
+  bootstrap_seed: 991
+  calibration_l2: 0.001
+  calibration_max_steps: 100
+  ece_bins: 10
+  basis_quantization_bits: [1, 2, 4, 8]
+
+logging:
+  wandb:
+    enabled: true
+    project: frank-eq-stagea
+    tags: [rate-compute, operational-basis, rc0, lumi, development-only]
+
+gates:
+  min_basis_brier_gain_lower95: 0.0
+  min_basis_balanced_accuracy: 0.60
+  min_compiled_prior_gain_lower95: 0.0
+  min_compiled_direct_gain_lower95: 0.0
+  min_answer_channel_gain_lower95: 0.0
+  min_reason_over_pause_gain_lower95: 0.0

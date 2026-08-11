@@ -24,16 +24,32 @@ import importlib.util
 missing = [name for name in ("torch", "transformers", "yaml", "numpy") if importlib.util.find_spec(name) is None]
 if missing:
     raise SystemExit(
-        "container is missing real Stage-A dependencies: " + ", ".join(missing)
+        "container is missing real Frank-EQ dependencies: " + ", ".join(missing)
         + ". Rebuild the image or set FRANK_EQ_ALLOW_PIP_INSTALL=1."
     )
 PY
 
+config_arg="${FRANK_EQ_CONFIG:?missing FRANK_EQ_CONFIG}"
 stages_arg="${FRANK_EQ_STAGES:-cache,validate,train,eval}"
-stages_arg="${stages_arg//+/ ,}"  # decoded from the sbatch-safe '+' encoding
+stages_arg="${stages_arg//+/ ,}"
 stages_arg="${stages_arg// /}"
-python -m frank_eq.cli validate-real-config --config "${FRANK_EQ_CONFIG:?missing FRANK_EQ_CONFIG}"
-python -m frank_eq.cli run-real-stagea \
-  --config "$FRANK_EQ_CONFIG" \
-  --out "${FRANK_EQ_RUN_ROOT:-runs}" \
-  --stages "$stages_arg"
+
+case "$config_arg" in
+    configs/rate_compute/*)
+        if [[ "$stages_arg" != "audit" ]]; then
+            echo "rate--compute configs require --stages audit; received: $stages_arg" >&2
+            exit 2
+        fi
+        python -m frank_eq.cli validate-rate-compute-config --config "$config_arg"
+        python -m frank_eq.cli run-rate-compute-audit \
+          --config "$config_arg" \
+          --out "${FRANK_EQ_RUN_ROOT:-runs}"
+        ;;
+    *)
+        python -m frank_eq.cli validate-real-config --config "$config_arg"
+        python -m frank_eq.cli run-real-stagea \
+          --config "$config_arg" \
+          --out "${FRANK_EQ_RUN_ROOT:-runs}" \
+          --stages "$stages_arg"
+        ;;
+esac

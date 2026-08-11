@@ -12,6 +12,7 @@ from frank_eq.data.real import build_real_cache, validate_real_cache
 from frank_eq.data.synthetic import SyntheticBundle, generate_synthetic_bundle
 from frank_eq.diagnostics import diagnose_real_cache
 from frank_eq.evaluation import Stage0Evaluator
+from frank_eq.rate_compute import load_rate_compute_config, run_rate_compute_audit
 from frank_eq.real_config import load_real_config
 from frank_eq.training import Stage0Trainer
 from frank_eq.utils import atomic_write_json
@@ -77,6 +78,19 @@ def _build_parser() -> argparse.ArgumentParser:
     run_real.add_argument("--config", required=True)
     run_real.add_argument("--out", default=None)
     run_real.add_argument("--stages", default=",".join(REAL_STAGE_ORDER))
+
+    validate_rate_compute = subparsers.add_parser(
+        "validate-rate-compute-config",
+        help="validate the development-only rate--compute operational-basis audit",
+    )
+    validate_rate_compute.add_argument("--config", required=True)
+
+    run_rate_compute = subparsers.add_parser(
+        "run-rate-compute-audit",
+        help="run the paired response-channel, compute, and public-basis audit",
+    )
+    run_rate_compute.add_argument("--config", required=True)
+    run_rate_compute.add_argument("--out", default=None)
     return parser
 
 
@@ -88,6 +102,21 @@ def main(argv: list[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
     try:
+        if args.command == "validate-rate-compute-config":
+            config = load_rate_compute_config(args.config)
+            _print({"status": "passed", "config": config.as_dict()})
+            return 0
+        if args.command == "run-rate-compute-audit":
+            config = load_rate_compute_config(args.config)
+            root = Path(args.out or config.output_dir)
+            _print(
+                run_rate_compute_audit(
+                    config,
+                    config_path=args.config,
+                    output_dir=root,
+                )
+            )
+            return 0
         if args.command == "validate-real-config":
             config = load_real_config(args.config)
             _print({"status": "passed", "config": config.as_dict()})
