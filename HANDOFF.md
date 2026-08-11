@@ -178,11 +178,20 @@ launcher dry run, and submit exactly one full v3-2 workflow. Do not instantiate
 the registered test panel locally.
 
 Those pre-launch freezes are now complete: implementation commit `e75952a`,
-archive-hygiene repair `29e2cc3`, refreshed plan commit `8bc57fb` with internal
-hash `727348ba...34176`, and task-blind Qwen3-14B staging job `1895307` with 18
-hashed files, eight weight shards, zero broken files, zero prompts, and no model
-inference. The immediate next action is to inspect the clean
-repository-launcher dry run and submit the one authorized workflow without
+archive-hygiene repair `29e2cc3`, Python 3.10 compatibility repair `f91f9d3`,
+and superseding inspected-plan commit `a9a6b74`. The current plan has internal
+hash `694408c6...505922`, plan-file hash `3f4f5740...af0b7`, and
+implementation-tree hash `2fe48197...1014` across 64 bound files. It preserves
+1,824 prefix forwards, 213,408 logical source queries, zero pre-run test access,
+and `held_model_task_opened=false`.
+
+Task-blind Qwen3-14B staging job `1895307` verified 18 hashed files, eight
+weight shards, zero broken files, zero prompts, and no model inference. The
+subsequent neutral-prefix runtime smoke `1895366` loaded the exact offline held
+revision, produced a 5,120-wide hidden state, cloned its KV cache, and verified
+chat-prefix continuity. Its receipt records zero registered worlds, operations,
+answers, and test accesses. The immediate next action is to inspect a fresh
+clean repository-launcher dry run and submit the one authorized workflow without
 changing the bound implementation.
 
 The primary compiler must make zero post-capture source queries. The graph text

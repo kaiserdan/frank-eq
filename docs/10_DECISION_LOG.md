@@ -189,3 +189,17 @@
 - **Exposure audit:** failure occurred during module import before tokenizer or model loading, neutral inference, registered worlds, operations, answers, panels, or test access. The held checkpoint remains task-unopened.
 - **Repair:** replace `datetime.UTC` with the Python 3.10-compatible `timezone.utc` spelling and add a source-level regression covering every Stage-A v3 module. Timestamps and all scientific behavior are unchanged.
 - **Plan consequence:** `access.py` is plan-bound. Plan `727348ba...34176` is therefore invalidated before outcome execution and must be regenerated, inspected, and committed again after the compatibility repair passes the full contract.
+
+## 2026-08-12 — refresh the plan after the Python 3.10 repair
+
+- **Replacement plan:** commit `a9a6b74` supersedes every earlier inspected plan. Its internal SHA-256 is `694408c6b9e6b63b68c393605da30c194b0feaad19fb737e93b091d5ff505922`, plan-file SHA-256 is `3f4f5740512fee3fb32169759e83ceec19bfec0b95877fe0a5de0d4f8edaf0b7`, and implementation-tree SHA-256 is `2fe48197d1ce513d21b95fbf87ecfbf9c69c481407b122298e4e330cc2141014` across 64 bound files.
+- **Inspection:** exact model revisions, config hash `92d7ede...f5b3`, complete stage order, 1,824 prefix forwards, 213,408 logical source queries, one delayed test access, and every protected authorization field remain frozen. The plan records `held_model_task_opened=false` and `test_panel_instantiated=false`.
+- **Boundary:** the compatibility change affects timestamp syntax only. No panel, task prompt, model response, test row, estimator, or gate was observed while replacing the plan.
+
+## 2026-08-12 — pass the task-blind held runtime smoke
+
+- **Execution:** immutable Olivia job `1895366` (source archive `f27a5fc6...22c05`) completed in 3 minutes 14 seconds on one GH200. It loaded `Qwen/Qwen3-14B` offline at exact revision `40c069824f4251a91eefaf281ebe4c544efd3e18` under the pinned image SHA-256 `a3ca46f0...aa3b1`.
+- **Runtime checks:** a neutral engineering-only prefix produced a 5,120-wide hidden state, all requested layer states, and a cloneable KV cache; the frozen `chat_turn` construction also passed exact token-prefix continuity. Peak CUDA allocation was 29,648,355,328 bytes and measured smoke inference time was 175.4 seconds.
+- **Exposure:** the receipt records `registered_worlds_loaded=0`, `registered_operations_scored=0`, `answers_scored=0`, `test_access_count=0`, and `inference_scope=neutral_prefix_only`. No registered panel or answer was constructed, and the held checkpoint remains task-unopened.
+- **Evidence:** the fetched compact receipt has SHA-256 `bee594ac852729881e6a4dc1b6eefe36347ac1573e181366a29e589080779902`. It is retained outside Git under ignored `.cluster-results`; this log records its immutable identifiers without committing generated cluster artifacts.
+- **Authority:** the smoke retires the known cache, image, Python-version, model-load, hidden-state, KV-clone, and chat-prefix runtime risks. It does not consume v3-2, open the official test role, authorize receiver execution, or change the frozen scientific contract.
