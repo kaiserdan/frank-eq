@@ -1,205 +1,88 @@
 # Implementation status
 
-Snapshot: 2026-08-10
+Snapshot: 2026-08-11
 
-## Completed
+## Completed evidence
 
-| Component | Status |
-|---|---|
-| Synthetic Stage-0 implementation and adopted reference | complete |
-| Real graph panel, causal cache records, validator, and frozen interrogator | complete |
-| Founder training and held-sender onboarding | complete |
-| Olivia/LUMI content-addressed workflows and W&B telemetry | complete |
-| Real Stage-A v1 outcome and independent audit | complete, valid negative |
-| Real Stage-A v2-1 outcome | complete, valid exact-pipeline negative |
-| Supplemental v2-1 interpretation review | complete |
-| Train/validation-only readability diagnostic | complete |
-| Complete model-local public-head option | implemented, dormant |
-| Proper new-user-turn `chat_turn` capture | implemented |
-| Aggregate and per-founder native-competence qualification | implemented |
-| Paired identical-panel prompt/capture comparison | implemented |
-| Stage-Q cache-only workflow enforcement | implemented |
-| Stage-Q LUMI development configs | frozen, not run |
+- Synthetic Stage 0: implementation evidence only.
+- Real Stage-A v1 and v2: completed exact-pipeline negatives.
+- Corrected Stage-Q prompt comparison: completed negative.
+- Stronger-checkpoint Stage-Q screens through Qwen3-8B: completed negative.
+- Model-local public-head option: implemented but dormant.
 
-## Adopted real outcomes
+The v2 shared public code failed with held-out Brier `0.2065`, fact accuracy
+`0.5509`, cross-model retrieval `0.1528`, wrong-world margin `-0.0607`,
+held-sender retention `-0.3445`, and model-ID leakage over chance `0.6389`.
+The final-token, private-chart, shared-head architecture must not be resumed.
 
-### Stage-A v1
+At 8B, the immediate answer-token source screen passed inverse and reciprocity
+but failed mutual, lookup, composition, and out-degree comparison. The completed
+screen therefore exposes a structured wall, but it does not identify whether the
+wall is answer calibration, post-query computation, or missing state information.
+The branch allowed no additional autoregressive scratchpad tokens.
 
-`frank-eq-stagea-devg-v2` returned `STOP_OR_REVISE_STAGE0` for final-token
-residual capture, local charts, shared public heads, and the frozen graph
-interrogator. Its exact-pipeline negative remains valid.
+## Current implementation: Stage R / RC0
 
-### Stage-A v2-1
-
-`frank-eq-stagea-lumi-v2` returned `STOP_OR_REVISE_STAGE0`:
-
-| Metric | Value |
-|---|---:|
-| Native competence gain versus prior | -0.0521 |
-| Held-out signature Brier | 0.2065; upper95 0.2421 |
-| Fact accuracy | 0.5509; lower95 0.5120 |
-| Cross-model retrieval | 0.1528; lower95 0.0972 |
-| Wrong-world margin | -0.0607 |
-| Held-sender retention | -0.3445 |
-| Model-ID leakage over chance | 0.6389 |
-| Renderer cosine | 0.9793 |
-
-This is a decisive negative for the exact v2-1 shared-head oracle quotient.
-Receiver execution remains blocked.
-
-## v2-1 interpretation correction
-
-The original adoption text overreached in calling native chat prompting
-falsified.
-
-Historical `prompt_format: chat` produced a cache ending at an assistant
--generation header. The operation string was appended after that header and was
-therefore assistant content, not a new user turn. In addition, v1 and v2 used
-different panel seeds, which changed worlds, operations, and split assignments.
-No paired prompt contrast or interval for the v1/v2 difference existed.
-
-The correct conclusion is:
-
-> v2-1 falsifies the exact legacy chat-assistant-continuation pipeline, not all
-> native chat prompting.
-
-The competence gate also used a point estimate and ran during final evaluation,
-so it did not stop training/test use as a true prerequisite.
-
-See:
+RC0 is development-only and has not yet run. It evaluates:
 
 ```text
-evidence/real_stagea_lumi_v2/REVIEW.md
-docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md
-docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md
+answer_token    historical immediate A/B probability
+sequence        semantic false/true sequence likelihood
+reason          32 generated scratchpad tokens
+pause           32 fixed matched-control tokens
 ```
 
-## Stage-Q implementation
+It also probes a public separating basis containing every directed edge: 12
+slots for four entities and 30 for six. A parameter-free executor composes the
+calibrated basis into lookup, inverse, mutual, two-hop composition, out-degree
+comparison, and counterfactual composition. Exact binary basis inputs reproduce
+the formal oracle and are covered by tests.
 
-Stage Q corrects these deficiencies before another Stage-A registration.
-
-### Proper conversation contract
-
-`capture.prompt_format` now accepts:
-
-- `raw`: historical raw text;
-- `chat`: historical v2-1 assistant-continuation path, retained for reproduction;
-- `chat_turn`: complete system/user/assistant prefix followed by a new user
-  operation turn after capture.
-
-For `chat_turn`, the backend tokenizes the full conversation and fails closed if
-the cached prefix is not an exact token prefix of the branch conversation.
-Optional `capture.chat_template_kwargs` are passed to the model template; Stage Q
-freezes `enable_thinking: false`.
-
-### Development competence qualifier
-
-`src/frank_eq/qualification.py` computes founder competence on train/validation
-worlds only:
+Implemented surfaces:
 
 ```text
-operation-prior Brier - frozen-source Brier
+src/frank_eq/rate_compute/
+configs/rate_compute/real_lumi_rc0.yaml
+configs/rate_compute/real_olivia_rc0.yaml
+scripts/verify_rate_compute_run.py
+scripts/validate_rate_compute.py
+docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md
+docs/19_STAGE_R_CLUSTER_RUNBOOK.md
 ```
 
-Model/renderer rows are averaged within world before a 2,000-replicate grouped
-bootstrap. The held sender and test worlds are excluded. Both aggregate and
-every individual founder lower confidence bound must be non-negative. The
-output authorizes nothing beyond protocol design.
+Both cluster configs use pinned Qwen3-4B and Qwen3-8B revisions, corrected
+`chat_turn`, exclusive KV reuse, no replay fallback, world-grouped intervals,
+and no held or claim-bearing test role. Quickstart scripts accept only the
+`audit` stage for these configs.
 
-CLI:
+## RC0 promotion boundary
 
-```bash
-python scripts/qualify_real_cache.py --cache <cache> --out <out>
-```
+RC0 supports drafting one Stage-A v3 protocol only if every model/complexity
+basis group passes prior-relative Brier and balanced-accuracy gates, and compiled
+hard operations beat both the prior and the training-selected direct protocol.
+Answer-channel and reasoning-versus-pause findings are diagnostic only.
 
-### Paired Stage-Q comparison
+A pass does not authorize a Stage-A run, hidden-state compiler training,
+claim-bearing test access, receiver execution, or a scientific claim.
 
-`src/frank_eq/stageq.py` rejects caches unless their models, world IDs,
-renderers, labels, operation registry, descriptors, and split manifest are
-identical. It then bootstraps the paired candidate-minus-baseline Brier
-improvement by world.
-
-The paired result is a prompt-attribution diagnostic, not a source-qualification
-prerequisite. It reports `prompt_effect_identified` separately from
-`source_contract_qualified`.
-
-CLI:
-
-```bash
-python scripts/compare_stageq_caches.py \
-  --baseline-cache <legacy> \
-  --candidate-cache <chat-turn> \
-  --out <out>
-```
-
-### Frozen development configs
+## Intended architecture after a pass
 
 ```text
-configs/stageq/real_lumi_legacy_chat.yaml
-configs/stageq/real_lumi_chat_turn.yaml
+frozen query-blind token/layer state
+        -> complete model-local token/slot compiler
+        -> public typed operational basis
+        -> frozen deterministic or receiver-native executor
 ```
 
-They share panel seed `20260811` and differ only in `prompt_format` plus run
-identity/telemetry tags. They are for `cache,validate` only; their worlds are
-permanently development-only. `src/frank_eq/workflow.py` rejects `diagnose`,
-`train`, and `eval` for Stage-Q identities.
-
-## Current continuation gate
-
-The source contract qualifies only when:
-
-```text
-aggregate candidate competence lower95 >= 0
-every individual founder competence lower95 >= 0
-```
-
-This permits drafting one fresh Stage-A registration. It does not authorize
-running that registration, a receiver experiment, or a scientific claim.
-
-The paired candidate improvement controls only a claim that corrected turn
-placement helped. If it fails while source competence passes, the candidate may
-still be frozen as the source prerequisite without a prompt-mechanism claim.
-
-**Stage-Q result (2026-08-11):** both development conditions failed the gate
-with fully negative world-grouped intervals (legacy −0.152 lower95, chat_turn
-−0.162 lower95; all founders and families negative), and the paired prompt
-effect was not identified (−0.020, lower95 −0.107). Machine decision
-`STOP_STAGEQ_CANDIDATE`; artifacts under `runs/stageq/`; record in
-`docs/13_STAGEA_V1_CORRECTION_LOG.md`.
-
-Since source competence fails, the next work is development-only
-checkpoint/task qualification (stronger checkpoints or a simpler formal task).
-Do not modify the quotient architecture until a source/task pair passes both
-aggregate and per-founder gates.
-
-**Screening series (2026-08-11, stopped by user decision):** three development
-screens ran under the chat_turn contract — Stage-Q (0.6B/1.7B, lower95 −0.162),
-screen-strong (qwen3-1.7b/qwen3-4b, lower95 −0.262), screen-8b (qwen3-4b/
-qwen3-8b, lower95 −0.129) — none passed. Multi-edge structural operations are
-the wall (mutual −0.758, compose −0.299 at 8B); single-edge/global ops pass at
-8B (inverse +0.136, reciprocity +0.147). Record: `docs/13_STAGEA_V1_CORRECTION_LOG.md`;
-configs `configs/stageq/real_lumi_screen_*.yaml`; artifacts `runs/stageq/`
-(ignored). Future options (4-entity task, Qwen3-14B, query-contract revision)
-all require a passing development qualification before Stage-A representation
-training.
-
-## Dormant future architecture
-
-`model.public_head_scope: local` provides one complete compiler per source model
-(chart plus fact/residual heads) while retaining externally fixed public
-coordinates and a frozen interrogator. It should be considered only after
-source competence passes.
-
-A later Stage-A registration should separate:
-
-- behavioral self-future prediction;
-- oracle semantic grounding.
+Stage-A v3 must use fresh worlds, a new unopened held sender, separate behavioral
+and oracle-semantic channels, and strong token/text/direct/continuous/oracle
+baselines. Runtime basis probing in RC0 is an upper-bound diagnostic, not a
+latent interface.
 
 ## Not authorized
 
-- Stage-Q `diagnose`, training, or evaluation stages;
-- reuse of Stage-Q worlds for confirmation;
-- another Stage-A test run before Stage-Q source qualification;
-- shared-head oracle-quotient rescue variants;
-- receiver-native execution;
-- rate-matched communication, confirmation, safety, or harm-tail claims.
+- another scale-only Stage-Q screen under immediate A/B readout;
+- treating interactive basis probing as communication;
+- reusing RC0 worlds or exposed models for held/confirmation roles;
+- restarting the shared-head quotient;
+- receiver execution.
