@@ -8,18 +8,28 @@ export TOKENIZERS_PARALLELISM=false
 export TRANSFORMERS_OFFLINE="${TRANSFORMERS_OFFLINE:-1}"
 export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
 
+if command -v python >/dev/null 2>&1; then
+    python_bin="python"
+elif command -v python3 >/dev/null 2>&1; then
+    python_bin="python3"
+else
+    echo "container exposes neither python nor python3" >&2
+    exit 2
+fi
+
 if [[ "${FRANK_EQ_ALLOW_PIP_INSTALL:-0}" == "1" ]]; then
     runtime_root="${TMPDIR:-/tmp}/frank-eq-runtime-${SLURM_JOB_ID:-local}"
-    python -m venv --system-site-packages "$runtime_root"
+    "$python_bin" -m venv --system-site-packages "$runtime_root"
     source "$runtime_root/bin/activate"
+    python_bin="python"
     pip_extra=()
     if [[ -n "${FRANK_EQ_PIP_FIND_LINKS:-}" ]]; then
         pip_extra=(--no-index --find-links "$FRANK_EQ_PIP_FIND_LINKS")
     fi
-    python -m pip install -e '.[real]' --no-build-isolation "${pip_extra[@]}"
+    "$python_bin" -m pip install -e '.[real]' --no-build-isolation "${pip_extra[@]}"
 fi
 
-python - <<'PY'
+"$python_bin" - <<'PY'
 import importlib.util
 missing = [name for name in ("torch", "transformers", "yaml", "numpy") if importlib.util.find_spec(name) is None]
 if missing:
@@ -40,14 +50,25 @@ case "$config_arg" in
             echo "rate--compute configs require --stages audit; received: $stages_arg" >&2
             exit 2
         fi
-        python -m frank_eq.cli validate-rate-compute-config --config "$config_arg"
-        python -m frank_eq.cli run-rate-compute-audit \
-          --config "$config_arg" \
-          --out "${FRANK_EQ_RUN_ROOT:-runs}"
+        "$python_bin" -m frank_eq.cli validate-rate-compute-config --config "$config_arg"
+        if [[ -n "${FRANK_EQ_RECOVERY_SOURCE_RUN:-}" ]]; then
+            : "${FRANK_EQ_RECOVERY_MANIFEST:?recovery requires a manifest path}"
+            : "${FRANK_EQ_RECOVERY_MANIFEST_SHA256:?recovery requires a manifest SHA-256}"
+            "$python_bin" -m frank_eq.cli recover-rate-compute-audit \
+              --config "$config_arg" \
+              --source-run "$FRANK_EQ_RECOVERY_SOURCE_RUN" \
+              --recovery-manifest "$FRANK_EQ_RECOVERY_MANIFEST" \
+              --recovery-manifest-sha256 "$FRANK_EQ_RECOVERY_MANIFEST_SHA256" \
+              --out "${FRANK_EQ_RUN_ROOT:-runs}"
+        else
+            "$python_bin" -m frank_eq.cli run-rate-compute-audit \
+              --config "$config_arg" \
+              --out "${FRANK_EQ_RUN_ROOT:-runs}"
+        fi
         ;;
     *)
-        python -m frank_eq.cli validate-real-config --config "$config_arg"
-        python -m frank_eq.cli run-real-stagea \
+        "$python_bin" -m frank_eq.cli validate-real-config --config "$config_arg"
+        "$python_bin" -m frank_eq.cli run-real-stagea \
           --config "$config_arg" \
           --out "${FRANK_EQ_RUN_ROOT:-runs}" \
           --stages "$stages_arg"

@@ -1,8 +1,28 @@
 # Stage R / RC0: rate--compute operational-basis audit
 
-Status: **frozen development protocol; not yet executed**.  
-Authority: development-only. No claim-bearing test role, latent compiler training,
-receiver execution, or scientific claim is authorized.
+Status: **completed development pass; adopted evidence**.
+Authority: drafting one fresh Stage-A v3 registration only. No RC0 rerun,
+claim-bearing test access, v3 launch, latent compiler training, receiver execution,
+or scientific claim is authorized.
+
+## 0. Outcome
+
+The frozen Olivia audit returned `PUBLIC_BASIS_COMPOSITION_SUPPORTED`. Across
+3,712 hard-family validation predictions, compiled Brier is `0.0408`, versus
+`0.2035` for the training-selected direct protocol and `0.2181` for the prior;
+the lower-95 gains are `0.1542` and `0.1661`. Every model/complexity basis and
+composition group passes, every hard family is positive over both baselines, and
+the independent executor audit has zero hard-oracle mismatches.
+
+The original capture completed all response rows and failed before outcomes due
+to a mechanical aggregation API regression. A fresh, hash-bound artifact-only
+recovery executed no model inference. Both verifiers and an independent
+recomputation pass. See `evidence/real_stage_r_olivia_rc0/AUDIT.md`.
+
+Semantic sequence likelihood improves over immediate answer-token scoring, but
+generated reasoning is worse than the matched 32-token pause control. Runtime
+basis probing therefore remains an information-and-composition upper bound, not
+a one-shot compiler or communication result.
 
 ## 1. Why the completed screening does not localize the scientific wall
 
@@ -25,8 +45,8 @@ strongly negative. That is compatible with an insufficient public state, but it 
 also exactly the pattern expected when a one-step readout is asked to perform
 increasingly compositional Boolean computation.
 
-RC0 changes no latent architecture. It localizes these three factors before another
-shared-state experiment is permitted.
+RC0 changed no latent architecture. It localized these three factors before another
+shared-state protocol could be drafted.
 
 ## 2. Revised mathematical object
 
@@ -135,6 +155,8 @@ rendered global tags.
 - corrected `chat_turn` prefix;
 - exact token-prefix continuity;
 - exclusive cloned-KV branching;
+- query-exclusive cache slots grouped only by protocol and token length in the
+  frozen batches of eight; batching changes scheduling, not causal access;
 - no exact-replay fallback;
 - operation revealed only after the prefix state has formed.
 
@@ -149,6 +171,13 @@ The basis probes use semantic sequence likelihood. Target operations evaluate al
 four protocols. Calibration and direct-protocol selection use training worlds only.
 Validation worlds are untouched until the frozen calibrators and protocol choices
 are fixed.
+
+Basis calibration is model-local and coordinate-specific: each
+`model x complexity x directed-edge slot` receives one affine log-odds map fitted
+across training worlds and both renderers. Direct target-response calibration is
+pooled by `model x complexity x operation family x response protocol`. This keeps
+the typed public coordinates identifiable while preventing validation outcomes or
+renderer identity from selecting a readout map.
 
 ## 5. Public executor
 
@@ -245,7 +274,7 @@ is:
 
 The accumulated Frank results motivate this thesis: high representation prediction
 has repeatedly failed execution, while receiver-native structured computation is the
-strongest positive endpoint. RC0 is the first prospective experiment that isolates
+strongest positive endpoint. RC0 was the first prospective experiment to isolate
 that synthesis rather than adding another translator.
 
 The nearest current work, *Hidden APIs in Language Models* (arXiv:2607.27617), tests

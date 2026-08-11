@@ -17,8 +17,7 @@ import numpy as np  # noqa: E402
 from frank_eq.data.real_panel import evaluate_operation  # noqa: E402
 from frank_eq.rate_compute.config import load_rate_compute_config  # noqa: E402
 from frank_eq.rate_compute.logic import edge_vector_to_matrix, execute_public_basis  # noqa: E402
-from frank_eq.rate_compute.records import build_panels  # noqa: E402
-
+from frank_eq.rate_compute.workflow import build_rate_compute_panels  # noqa: E402
 
 REQUIRED = (
     "docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md",
@@ -63,7 +62,7 @@ def main() -> int:
     if lumi.protocols.basis_protocol != "sequence":
         raise SystemExit("RC0 basis protocol must remain semantic sequence likelihood")
 
-    panels = build_panels(lumi)
+    panels = build_rate_compute_panels(lumi)
     exact_checks = 0
     for n_entities, panel in panels.items():
         expected_basis = n_entities * (n_entities - 1)

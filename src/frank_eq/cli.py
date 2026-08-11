@@ -12,7 +12,11 @@ from frank_eq.data.real import build_real_cache, validate_real_cache
 from frank_eq.data.synthetic import SyntheticBundle, generate_synthetic_bundle
 from frank_eq.diagnostics import diagnose_real_cache
 from frank_eq.evaluation import Stage0Evaluator
-from frank_eq.rate_compute import load_rate_compute_config, run_rate_compute_audit
+from frank_eq.rate_compute import (
+    load_rate_compute_config,
+    recover_rate_compute_audit,
+    run_rate_compute_audit,
+)
 from frank_eq.real_config import load_real_config
 from frank_eq.training import Stage0Trainer
 from frank_eq.utils import atomic_write_json
@@ -91,6 +95,16 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     run_rate_compute.add_argument("--config", required=True)
     run_rate_compute.add_argument("--out", default=None)
+
+    recover_rate_compute = subparsers.add_parser(
+        "recover-rate-compute-audit",
+        help="finish RC0 scoring from a hash-frozen completed capture",
+    )
+    recover_rate_compute.add_argument("--config", required=True)
+    recover_rate_compute.add_argument("--source-run", required=True)
+    recover_rate_compute.add_argument("--recovery-manifest", required=True)
+    recover_rate_compute.add_argument("--recovery-manifest-sha256", required=True)
+    recover_rate_compute.add_argument("--out", required=True)
     return parser
 
 
@@ -114,6 +128,19 @@ def main(argv: list[str] | None = None) -> int:
                     config,
                     config_path=args.config,
                     output_dir=root,
+                )
+            )
+            return 0
+        if args.command == "recover-rate-compute-audit":
+            config = load_rate_compute_config(args.config)
+            _print(
+                recover_rate_compute_audit(
+                    config,
+                    config_path=args.config,
+                    source_run=args.source_run,
+                    recovery_manifest_path=args.recovery_manifest,
+                    recovery_manifest_sha256=args.recovery_manifest_sha256,
+                    output_dir=args.out,
                 )
             )
             return 0

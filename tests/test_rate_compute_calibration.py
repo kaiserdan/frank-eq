@@ -1,6 +1,7 @@
 import numpy as np
 
 from frank_eq.rate_compute.calibration import (
+    aggregate_by_world,
     balanced_accuracy,
     brier_score,
     fit_platt_calibrator,
@@ -30,3 +31,13 @@ def test_platt_calibration_accepts_smoothed_binary_targets() -> None:
     assert prediction.shape == targets.shape
     assert np.all(np.isfinite(prediction))
     assert np.all((prediction > 0.0) & (prediction < 1.0))
+
+
+def test_aggregate_by_world_preserves_ids_for_more_than_two_worlds() -> None:
+    values = np.asarray([1.0, 3.0, 10.0, 14.0, -2.0, 4.0], dtype=np.float64)
+    world_ids = np.asarray([7, 7, 3, 3, 11, 11], dtype=np.int64)
+
+    observed_worlds, observed_values = aggregate_by_world(values, world_ids)
+
+    np.testing.assert_array_equal(observed_worlds, np.asarray([3, 7, 11]))
+    np.testing.assert_allclose(observed_values, np.asarray([12.0, 2.0, 1.0]))

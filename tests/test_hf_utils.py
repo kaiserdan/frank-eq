@@ -6,6 +6,7 @@ from frank_eq.data.hf_backend import (
     CHAT_SYSTEM_CONTRACT,
     HFModelAdapter,
     choose_answer_token_pair,
+    repeat_past_key_values,
     resolve_layer_indices,
 )
 
@@ -25,6 +26,23 @@ def test_hf_backend_utility_contracts() -> None:
     assert ids == (1, 2)
     with pytest.raises(ValueError):
         resolve_layer_indices(2, [0.49, 0.51])
+
+
+def test_repeat_past_key_values_creates_independent_legacy_batch_slots() -> None:
+    source = ((torch.tensor([[[[1.0]]]]), torch.tensor([[[[2.0]]]])),)
+    repeated = repeat_past_key_values(source, 3)
+
+    assert repeated[0][0].shape[0] == 3
+    assert repeated[0][1].shape[0] == 3
+    repeated[0][0][0, 0, 0, 0] = 9.0
+    assert source[0][0][0, 0, 0, 0].item() == 1.0
+    assert repeated[0][0][1, 0, 0, 0].item() == 1.0
+
+
+def test_repeat_past_key_values_rejects_nonexclusive_legacy_shape() -> None:
+    source = ((torch.ones((2, 1, 1, 1)), torch.ones((2, 1, 1, 1))),)
+    with pytest.raises(RuntimeError, match="singleton batch dimension"):
+        repeat_past_key_values(source, 2)
 
 
 class StubTokenizer:
@@ -52,8 +70,7 @@ class StubTokenizer:
         self.last_messages = [dict(message) for message in messages]
         self.last_kwargs = dict(kwargs)
         rendered = "".join(
-            f"<{message['role']}>{message['content']}</{message['role']}>"
-            for message in messages
+            f"<{message['role']}>{message['content']}</{message['role']}>" for message in messages
         )
         if add_generation_prompt:
             rendered += "<assistant>"

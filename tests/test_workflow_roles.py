@@ -1,11 +1,20 @@
+import datetime as dt
 from pathlib import Path
 
 import pytest
 
+from frank_eq.rate_compute.workflow import _timestamp as rate_compute_timestamp
 from frank_eq.real_config import load_real_config
+from frank_eq.workflow import _timestamp as real_workflow_timestamp
 from frank_eq.workflow import infer_protocol_role, validate_real_stage_role
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+@pytest.mark.parametrize("timestamp", [real_workflow_timestamp, rate_compute_timestamp])
+def test_workflow_timestamp_uses_python310_compatible_utc(timestamp) -> None:
+    parsed = dt.datetime.fromisoformat(timestamp())
+    assert parsed.utcoffset() == dt.timedelta(0)
 
 
 def test_stageq_role_allows_only_cache_and_validate() -> None:

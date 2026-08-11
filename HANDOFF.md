@@ -17,14 +17,17 @@ Stage Q and the stronger-checkpoint screens are development-only negatives.
 None authorizes a scientific claim, another latent training run, or receiver
 execution.
 
-The only authorized next execution is **Stage R / RC0**, using one of:
+Stage R / RC0 is now a completed development pass. The frozen scientific
+capture and its artifact-only recovery were:
 
 ```text
-configs/rate_compute/real_lumi_rc0.yaml
-configs/rate_compute/real_olivia_rc0.yaml
+capture:  frank-eq-rc0-rate-compute-olivia-20260811c  Slurm 1874736
+recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
 ```
 
-Run exactly `--stages audit`.
+The only newly authorized work is drafting exactly one fresh Stage-A v3
+registration. No RC0 rerun, v3 launch, claim-bearing test access, receiver
+execution, or scientific claim is authorized.
 
 ## What the accumulated results establish
 
@@ -74,7 +77,7 @@ invariant of operational equivalence, so every target operation factors through
 it. In the controlled graph task, all non-diagonal directed edges are an exact
 basis.
 
-RC0 tests whether the frozen sources can expose that basis and whether a
+RC0 tested whether the frozen sources can expose that basis and whether a
 parameter-free public executor can compose it into the hard structural
 operations more reliably than direct model reasoning.
 
@@ -108,14 +111,35 @@ reason          32 generated scratchpad tokens + final cue
 pause           32 fixed pause tokens + final cue
 ```
 
-All semantic scores receive train-only Platt calibration. Negative calibration
-slopes are legal because a stable answer-label inversion is local calibration,
-not missing information.
+All semantic scores receive train-only Platt calibration. Basis calibration is
+coordinate-specific within each model and complexity; direct target calibration
+is family/protocol-specific. Negative calibration slopes are legal because a
+stable answer-label inversion is local calibration, not missing information.
 
 The public executor composes calibrated edge probabilities into lookup, inverse,
 mutual, two-hop composition, out-degree comparison, and counterfactual
 composition. Exact binary basis inputs are required to reproduce the formal
 oracle.
+
+## RC0 result
+
+The original job completed both pinned models and all 89,856 raw and calibrated
+response rows before a mechanical aggregation API regression failed the first
+metric. The recovery restored the historical two-output helper contract, bound
+every reused artifact by SHA-256, copied rather than modified the capture, and
+executed no model inference. The original failed job remains immutable.
+
+The machine diagnosis is `PUBLIC_BASIS_COMPOSITION_SUPPORTED`, independently
+recomputed with no failures and zero hard-oracle executor mismatches. Across
+3,712 hard-family validation predictions, compiled Brier is `0.0408`, versus
+`0.2035` for the training-selected direct baseline and `0.2181` for the prior.
+The lower-95 gains are `0.1542` and `0.1661`; every model/complexity and hard
+family stratum is positive over both baselines.
+
+Semantic sequence likelihood improves over the historical answer-token channel.
+Generated reasoning is worse than the matched fixed-pause condition: the
+reasoning-minus-pause interval is `[-0.00540, -0.00029]`. Preserve this negative
+diagnostic.
 
 ## Promotion gate
 
@@ -131,21 +155,12 @@ Answer-channel and reasoning-over-pause effects are diagnostic only.
 
 A pass authorizes protocol drafting, not execution.
 
-## Next command
+## Next action
 
-LUMI dry run:
-
-```bash
-python lumi/cli.py submit \
-  --job-name frank-eq-rc0-rate-compute \
-  --config configs/rate_compute/real_lumi_rc0.yaml \
-  --profile full \
-  --stages audit \
-  --dry-run --json
-```
-
-Then remove `--dry-run` after checking the content-addressed source package.
-Olivia uses the same command pattern and `real_olivia_rc0.yaml`.
+Draft one Stage-A v3 registration from the observed
+`PUBLIC_BASIS_COMPOSITION_SUPPORTED` branch. Do not submit a cluster job. Freeze
+the complete protocol and its information, rate, compute, split, calibration,
+baseline, and stop-rule contracts before seeking separate launch authority.
 
 Full operator instructions:
 
@@ -171,7 +186,7 @@ Retain the basis as a diagnostic; it is not yet the constructive paper result.
 
 ### Composition beats direct computation
 
-Draft one Stage-A v3 registration using:
+This is the observed RC0 branch. Draft one Stage-A v3 registration using:
 
 - fresh claim-bearing worlds;
 - a new unopened held sender;
@@ -197,4 +212,5 @@ replace it with a one-shot source-local compiler before any communication claim.
 
 Generated RC0 responses and model caches remain outside Git. Adopt only a small,
 hash-verified package containing the frozen config/source identity, workflow
-verification, metrics, machine decision, and independent audit.
+verification, metrics, machine decision, and independent audit. The adopted
+package is `evidence/real_stage_r_olivia_rc0/`.

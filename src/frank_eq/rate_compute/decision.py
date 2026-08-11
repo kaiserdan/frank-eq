@@ -116,6 +116,25 @@ def _stratified_compiled_summary(
     return result
 
 
+def _compiled_gate_status(
+    group_summaries: list[dict[str, Any]],
+    aggregate: dict[str, Any],
+) -> tuple[bool, bool]:
+    """Reduce prior and direct composition gates without conflating diagnoses."""
+
+    if not group_summaries:
+        return False, False
+    prior_passed = all(
+        bool(summary["compiled_over_prior_passed"])
+        for summary in group_summaries
+    ) and bool(aggregate["compiled_over_prior_passed"])
+    direct_passed = all(
+        bool(summary["compiled_over_direct_passed"])
+        for summary in group_summaries
+    ) and bool(aggregate["compiled_over_direct_passed"])
+    return prior_passed, direct_passed
+
+
 def evaluate_rate_compute(
     records: list[dict[str, Any]],
     panels: dict[int, RealPanel],
@@ -134,7 +153,7 @@ def evaluate_rate_compute(
     seed = config.evaluation.bootstrap_seed
     aggregate = _compiled_group_summary(hard, seed=seed + 30_000, config=config)
     by_model: dict[str, Any] = {}
-    group_checks: list[bool] = []
+    group_summaries: list[dict[str, Any]] = []
     for model_offset, model in enumerate(config.models):
         by_model[model.model_id] = {}
         for complexity_offset, n_entities in enumerate(config.panel.entity_counts):
@@ -149,10 +168,7 @@ def evaluate_rate_compute(
                 seed=seed + 31_000 + 100 * model_offset + complexity_offset,
                 config=config,
             )
-            group_checks.append(
-                bool(summary["compiled_over_direct_passed"])
-                and bool(summary["compiled_over_prior_passed"])
-            )
+            group_summaries.append(summary)
             by_model[model.model_id][str(n_entities)] = summary
 
     by_family = _stratified_compiled_summary(
@@ -204,15 +220,9 @@ def evaluate_rate_compute(
     }
 
     basis_passed = bool(basis_checks) and all(basis_checks)
-    compiled_prior_passed = (
-        bool(group_checks)
-        and all(group_checks)
-        and bool(aggregate["compiled_over_prior_passed"])
-    )
-    compiled_direct_passed = (
-        bool(group_checks)
-        and all(group_checks)
-        and bool(aggregate["compiled_over_direct_passed"])
+    compiled_prior_passed, compiled_direct_passed = _compiled_gate_status(
+        group_summaries,
+        aggregate,
     )
     answer_channel_passed = bool(answer_channel) and (
         float(answer_channel["lower"])

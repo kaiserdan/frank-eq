@@ -90,9 +90,7 @@ def choose_answer_token_pair(
         true_ids = tokenizer.encode(pair[1], add_special_tokens=False)
         if len(false_ids) == 1 and len(true_ids) == 1 and false_ids[0] != true_ids[0]:
             return (str(pair[0]), str(pair[1])), (int(false_ids[0]), int(true_ids[0]))
-    raise RuntimeError(
-        "no registered false/true answer pair is single-token under this tokenizer"
-    )
+    raise RuntimeError("no registered false/true answer pair is single-token under this tokenizer")
 
 
 def _clone_tensor_tree(value: Any) -> Any:
@@ -121,6 +119,45 @@ def clone_past_key_values(cache: Any) -> Any:
             return factory(legacy)
         return legacy
     return copy.deepcopy(cache)
+
+
+def _repeat_tensor_tree(value: Any, repeats: int) -> Any:
+    if isinstance(value, torch.Tensor):
+        if value.ndim < 1 or value.shape[0] != 1:
+            raise RuntimeError("legacy KV tensors must have a singleton batch dimension")
+        return value.repeat_interleave(repeats, dim=0)
+    if isinstance(value, tuple):
+        return tuple(_repeat_tensor_tree(item, repeats) for item in value)
+    if isinstance(value, list):
+        return [_repeat_tensor_tree(item, repeats) for item in value]
+    if isinstance(value, dict):
+        return {key: _repeat_tensor_tree(item, repeats) for key, item in value.items()}
+    return copy.deepcopy(value)
+
+
+def repeat_past_key_values(cache: Any, repeats: int) -> Any:
+    """Clone one prefix cache into independent batch slots.
+
+    Modern Transformers caches expose ``batch_repeat_interleave``. Legacy tuple
+    caches are repeated tensor-by-tensor along their batch dimension. In both
+    cases the source cache remains untouched and every returned batch slot is a
+    query-exclusive copy of the same pre-reveal prefix state.
+    """
+
+    if repeats < 1:
+        raise ValueError("KV cache repeat count must be positive")
+    cloned = clone_past_key_values(cache)
+    if repeats == 1:
+        return cloned
+    repeat = getattr(cloned, "batch_repeat_interleave", None)
+    if callable(repeat):
+        repeat(repeats)
+        return cloned
+    if isinstance(cloned, (tuple, list, dict)):
+        return _repeat_tensor_tree(cloned, repeats)
+    raise RuntimeError(
+        f"KV cache type {type(cloned).__name__} cannot create exclusive batch branches"
+    )
 
 
 def _safe_model_slug(value: str) -> str:
@@ -277,7 +314,9 @@ class HFModelAdapter:
             return encoded.to(self.device)
 
         if world_statement is None or prefix_ids is None:
-            raise ValueError("chat_turn suffix construction requires world_statement and prefix_ids")
+            raise ValueError(
+                "chat_turn suffix construction requires world_statement and prefix_ids"
+            )
         messages = self._chat_turn_messages(world_statement)
         messages.append({"role": "user", "content": query})
         full_text = self._apply_chat_template(messages, add_generation_prompt=True)
@@ -357,10 +396,15 @@ class HFModelAdapter:
                     )
                 if prefix_output.hidden_states is None:
                     raise RuntimeError("checkpoint did not return hidden states")
-                selected = torch.stack(
-                    [prefix_output.hidden_states[index][0, -1] for index in self.layer_indices],
-                    dim=0,
-                ).float().cpu().numpy()
+                selected = (
+                    torch.stack(
+                        [prefix_output.hidden_states[index][0, -1] for index in self.layer_indices],
+                        dim=0,
+                    )
+                    .float()
+                    .cpu()
+                    .numpy()
+                )
                 hidden_dim = int(selected.shape[1])
                 state_id = f"w{world.world_id:06d}-{model_slug}-r{renderer_id}"
                 hidden_digest = sha256_bytes(np.asarray(selected, dtype=np.float32).tobytes())

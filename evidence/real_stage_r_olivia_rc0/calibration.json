@@ -1,0 +1,1914 @@
+{
+  "fit_split": "train",
+  "groups": {
+    "qwen3-4b|4|basis|edge|sequence|0": {
+      "calibrator": {
+        "alpha": 0.24312771009645093,
+        "beta": 1.8433407778400923,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|1": {
+      "calibrator": {
+        "alpha": 0.2791330089501979,
+        "beta": 1.6972245085313047,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|10": {
+      "calibrator": {
+        "alpha": 0.2785692724969872,
+        "beta": 2.3706873767624086,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|11": {
+      "calibrator": {
+        "alpha": 0.24947685564643787,
+        "beta": 1.4007061443638384,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|2": {
+      "calibrator": {
+        "alpha": 0.37845197695552174,
+        "beta": 4.149372643750432,
+        "converged": true,
+        "steps": 10
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|3": {
+      "calibrator": {
+        "alpha": 0.2861497868913908,
+        "beta": 1.7381264390454196,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|4": {
+      "calibrator": {
+        "alpha": 0.33488810800030355,
+        "beta": 3.0913097651388535,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|5": {
+      "calibrator": {
+        "alpha": 0.23137533645050587,
+        "beta": 1.358984377710743,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|6": {
+      "calibrator": {
+        "alpha": 0.26754529261313537,
+        "beta": 2.7578692623909835,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|7": {
+      "calibrator": {
+        "alpha": 0.2695544423731042,
+        "beta": 1.3544213168402637,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|8": {
+      "calibrator": {
+        "alpha": 0.28242183681347666,
+        "beta": 1.4669415561221746,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|basis|edge|sequence|9": {
+      "calibrator": {
+        "alpha": 0.21123706038741716,
+        "beta": 0.7130255623240788,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|4|target|compare_outdegree|answer_token|None": {
+      "calibrator": {
+        "alpha": -0.03870757813724282,
+        "beta": 0.13951967092907247,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|compare_outdegree|pause|None": {
+      "calibrator": {
+        "alpha": 0.09728303184079366,
+        "beta": -0.19556343201482032,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|compare_outdegree|reason|None": {
+      "calibrator": {
+        "alpha": 0.09837141540668475,
+        "beta": -0.36559616362176106,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|compare_outdegree|sequence|None": {
+      "calibrator": {
+        "alpha": 0.12004466148178265,
+        "beta": -1.256718051662309,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|compose|answer_token|None": {
+      "calibrator": {
+        "alpha": -0.04341286947692017,
+        "beta": -0.12742481631559546,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|compose|pause|None": {
+      "calibrator": {
+        "alpha": 0.0580664917634964,
+        "beta": 0.050747682702534574,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|compose|reason|None": {
+      "calibrator": {
+        "alpha": 0.09212606937377872,
+        "beta": 0.07542522296554637,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|compose|sequence|None": {
+      "calibrator": {
+        "alpha": 0.046904873576363554,
+        "beta": -0.07191381639494226,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|counterfactual_add|answer_token|None": {
+      "calibrator": {
+        "alpha": -0.06200299275994093,
+        "beta": -0.2371843256890064,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|counterfactual_add|pause|None": {
+      "calibrator": {
+        "alpha": 0.023822360941464372,
+        "beta": -0.0790435207672864,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|counterfactual_add|reason|None": {
+      "calibrator": {
+        "alpha": -0.0599916650280235,
+        "beta": 0.07575133878640898,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|counterfactual_add|sequence|None": {
+      "calibrator": {
+        "alpha": 0.09144565930290185,
+        "beta": -0.3392726638468167,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|density|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.21681722731125164,
+        "beta": 0.5947381804284302,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|density|sequence|None": {
+      "calibrator": {
+        "alpha": 0.24151707434795566,
+        "beta": -1.0380865769349386,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|inverse|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.13207656016164385,
+        "beta": 0.6723416331140531,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|inverse|sequence|None": {
+      "calibrator": {
+        "alpha": 0.2589159546692317,
+        "beta": -0.2725528712764961,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|lookup|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.096063123352484,
+        "beta": 0.5448544836750231,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|lookup|sequence|None": {
+      "calibrator": {
+        "alpha": 0.2601371345674553,
+        "beta": 0.04368306446314157,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|mutual|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.01830756057945101,
+        "beta": 0.05218456190047363,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|mutual|pause|None": {
+      "calibrator": {
+        "alpha": 0.27674881073456215,
+        "beta": 1.0289538596022632,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|mutual|reason|None": {
+      "calibrator": {
+        "alpha": 0.31016480776024175,
+        "beta": 0.25537113509028136,
+        "converged": true,
+        "steps": 4
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|mutual|sequence|None": {
+      "calibrator": {
+        "alpha": 0.19904024182416985,
+        "beta": -0.23820144421407116,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|reciprocity|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.1999360979171107,
+        "beta": -0.6174358343709164,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|4|target|reciprocity|sequence|None": {
+      "calibrator": {
+        "alpha": 0.3556883235407587,
+        "beta": -2.559073145079591,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|basis|edge|sequence|0": {
+      "calibrator": {
+        "alpha": 0.2295300156591414,
+        "beta": 1.2237498670777411,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|1": {
+      "calibrator": {
+        "alpha": 0.3150394577458774,
+        "beta": 2.7991981092842506,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|10": {
+      "calibrator": {
+        "alpha": 0.2861370808813069,
+        "beta": 2.5679021766756707,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|11": {
+      "calibrator": {
+        "alpha": 0.24959586061269354,
+        "beta": 2.3411789084113828,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|12": {
+      "calibrator": {
+        "alpha": 0.18721474689122075,
+        "beta": 0.44996968878493426,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|13": {
+      "calibrator": {
+        "alpha": 0.2541046937673118,
+        "beta": 1.3304746051838885,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|14": {
+      "calibrator": {
+        "alpha": 0.26704688418163147,
+        "beta": 1.869023802355234,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|15": {
+      "calibrator": {
+        "alpha": 0.36088341776085925,
+        "beta": 4.016447913251811,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|16": {
+      "calibrator": {
+        "alpha": 0.252775685034609,
+        "beta": 2.0288061777567807,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|17": {
+      "calibrator": {
+        "alpha": 0.32932721213380906,
+        "beta": 4.016337684671098,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|18": {
+      "calibrator": {
+        "alpha": 0.368886037377701,
+        "beta": 4.2236518620456565,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|19": {
+      "calibrator": {
+        "alpha": 0.2245179120404043,
+        "beta": 1.8467691454739463,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|2": {
+      "calibrator": {
+        "alpha": 0.3148150107552103,
+        "beta": 2.8168921058376792,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|20": {
+      "calibrator": {
+        "alpha": 0.3242171720813201,
+        "beta": 2.138219160063877,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|21": {
+      "calibrator": {
+        "alpha": 0.2636036413172707,
+        "beta": 1.763548311699508,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|22": {
+      "calibrator": {
+        "alpha": 0.3364351818916084,
+        "beta": 3.1130065485709784,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|23": {
+      "calibrator": {
+        "alpha": 0.2705061605099799,
+        "beta": 1.7263453353101175,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|24": {
+      "calibrator": {
+        "alpha": 0.303584817442452,
+        "beta": 2.099583464137232,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|25": {
+      "calibrator": {
+        "alpha": 0.26441306735259407,
+        "beta": 1.7191650822713744,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|26": {
+      "calibrator": {
+        "alpha": 0.21225492993066794,
+        "beta": 1.8639271153188715,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|27": {
+      "calibrator": {
+        "alpha": 0.4309908268155752,
+        "beta": 5.719170995086873,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|28": {
+      "calibrator": {
+        "alpha": 0.25160103857850097,
+        "beta": 2.0253550989128297,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|29": {
+      "calibrator": {
+        "alpha": 0.33927632422491055,
+        "beta": 3.0339719957262297,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|3": {
+      "calibrator": {
+        "alpha": 0.2939507994731065,
+        "beta": 2.250160502939634,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|4": {
+      "calibrator": {
+        "alpha": 0.43214231196520264,
+        "beta": 5.12465767055692,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|5": {
+      "calibrator": {
+        "alpha": 0.3381138830384648,
+        "beta": 3.2546773301387586,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|6": {
+      "calibrator": {
+        "alpha": 0.20986254082913264,
+        "beta": 0.9398697094489373,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|7": {
+      "calibrator": {
+        "alpha": 0.1996187757541846,
+        "beta": 0.6814784470824246,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|8": {
+      "calibrator": {
+        "alpha": 0.23457456428486223,
+        "beta": 0.7839565992424806,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|basis|edge|sequence|9": {
+      "calibrator": {
+        "alpha": 0.2031708073324808,
+        "beta": 0.39432949782671084,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-4b|6|target|compare_outdegree|answer_token|None": {
+      "calibrator": {
+        "alpha": -0.036160674716799665,
+        "beta": -0.03963559923320011,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|compare_outdegree|pause|None": {
+      "calibrator": {
+        "alpha": 0.00460226639860384,
+        "beta": 0.00357833147119544,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|compare_outdegree|reason|None": {
+      "calibrator": {
+        "alpha": 0.09374332582205852,
+        "beta": -0.5066154561829311,
+        "converged": true,
+        "steps": 4
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|compare_outdegree|sequence|None": {
+      "calibrator": {
+        "alpha": -0.021797776654885265,
+        "beta": 0.3185530506159134,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|compose|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.09116430429596034,
+        "beta": 0.07917559519162905,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|compose|pause|None": {
+      "calibrator": {
+        "alpha": 0.17796329580109724,
+        "beta": 0.4770114131171267,
+        "converged": true,
+        "steps": 4
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|compose|reason|None": {
+      "calibrator": {
+        "alpha": 0.14315649666823127,
+        "beta": 0.26072816194371495,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|compose|sequence|None": {
+      "calibrator": {
+        "alpha": 0.08261938067031775,
+        "beta": 0.08410805120963712,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|counterfactual_add|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.10921950219854791,
+        "beta": 0.14011028231052639,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|counterfactual_add|pause|None": {
+      "calibrator": {
+        "alpha": 0.15534823616833413,
+        "beta": -0.2930648235765989,
+        "converged": true,
+        "steps": 4
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|counterfactual_add|reason|None": {
+      "calibrator": {
+        "alpha": 0.14450291999526388,
+        "beta": -0.433846205993502,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|counterfactual_add|sequence|None": {
+      "calibrator": {
+        "alpha": 0.1074205468788636,
+        "beta": -0.5622274671575241,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|density|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.1930116522288261,
+        "beta": 0.6009411722829666,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|density|sequence|None": {
+      "calibrator": {
+        "alpha": 0.22848717480692227,
+        "beta": -1.143344151127253,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|inverse|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.05895125794520996,
+        "beta": 0.08789777380424042,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|inverse|sequence|None": {
+      "calibrator": {
+        "alpha": 0.2699872609672375,
+        "beta": 0.9137738043864397,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|lookup|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.08473749123066594,
+        "beta": 0.23406696999683227,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|lookup|sequence|None": {
+      "calibrator": {
+        "alpha": 0.24889091006837183,
+        "beta": 0.3788501476104636,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|mutual|answer_token|None": {
+      "calibrator": {
+        "alpha": -0.07621966175953146,
+        "beta": -0.6129663719609748,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|mutual|pause|None": {
+      "calibrator": {
+        "alpha": 0.2846960516241426,
+        "beta": 1.0555328990025379,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|mutual|reason|None": {
+      "calibrator": {
+        "alpha": 0.25391261906498663,
+        "beta": 0.29760736882963834,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|mutual|sequence|None": {
+      "calibrator": {
+        "alpha": 0.17318979179697966,
+        "beta": -0.04533053262620051,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|reciprocity|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.16414209713897213,
+        "beta": -0.2713076938583619,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-4b|6|target|reciprocity|sequence|None": {
+      "calibrator": {
+        "alpha": 0.36784721700287365,
+        "beta": -2.6943221734102583,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|basis|edge|sequence|0": {
+      "calibrator": {
+        "alpha": 0.17398069949996295,
+        "beta": -0.20637996474888357,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|1": {
+      "calibrator": {
+        "alpha": 0.16943884406035292,
+        "beta": -0.06252722224846068,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|10": {
+      "calibrator": {
+        "alpha": 0.17497978106348688,
+        "beta": -0.23526238680997014,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|11": {
+      "calibrator": {
+        "alpha": 0.1661747365196218,
+        "beta": 0.011824774710176891,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|2": {
+      "calibrator": {
+        "alpha": 0.16349515051202315,
+        "beta": -0.3097680536697671,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|3": {
+      "calibrator": {
+        "alpha": 0.1798521104611975,
+        "beta": -1.283139680352497,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|4": {
+      "calibrator": {
+        "alpha": 0.1885294183331178,
+        "beta": 0.08901761250270497,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|5": {
+      "calibrator": {
+        "alpha": 0.16583338852665772,
+        "beta": -0.23867898778761434,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|6": {
+      "calibrator": {
+        "alpha": 0.19679811987615942,
+        "beta": 0.20653601966989418,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|7": {
+      "calibrator": {
+        "alpha": 0.18888728506752359,
+        "beta": -0.40343828732590364,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|8": {
+      "calibrator": {
+        "alpha": 0.17683574627464574,
+        "beta": -0.25821940314144587,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|basis|edge|sequence|9": {
+      "calibrator": {
+        "alpha": 0.16075674642978072,
+        "beta": -0.41228616932406503,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|4|target|compare_outdegree|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.19077671678841673,
+        "beta": -0.44341822468104847,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|compare_outdegree|pause|None": {
+      "calibrator": {
+        "alpha": 0.2086852429283992,
+        "beta": -0.705185486012933,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|compare_outdegree|reason|None": {
+      "calibrator": {
+        "alpha": 0.16424430396126652,
+        "beta": -0.7863098853141713,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|compare_outdegree|sequence|None": {
+      "calibrator": {
+        "alpha": 0.17019079508788662,
+        "beta": -1.8604411487913761,
+        "converged": true,
+        "steps": 10
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|compose|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.07484046940072117,
+        "beta": 0.008021542765022155,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|compose|pause|None": {
+      "calibrator": {
+        "alpha": 0.07178516523355596,
+        "beta": 0.04847818833640301,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|compose|reason|None": {
+      "calibrator": {
+        "alpha": 0.07972470616734788,
+        "beta": -0.09985709983511881,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|compose|sequence|None": {
+      "calibrator": {
+        "alpha": 0.08022196275782006,
+        "beta": -0.31266825449593755,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|counterfactual_add|answer_token|None": {
+      "calibrator": {
+        "alpha": -0.03198179201210431,
+        "beta": -0.033133610461854625,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|counterfactual_add|pause|None": {
+      "calibrator": {
+        "alpha": -0.035606353702088415,
+        "beta": -0.09074732264515901,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|counterfactual_add|reason|None": {
+      "calibrator": {
+        "alpha": -0.06319732872710761,
+        "beta": -0.04810044530838619,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|counterfactual_add|sequence|None": {
+      "calibrator": {
+        "alpha": 0.02802764509326636,
+        "beta": -0.20857789128457527,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|density|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.362941613296364,
+        "beta": -1.4019114275941609,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|density|sequence|None": {
+      "calibrator": {
+        "alpha": 0.242336920422797,
+        "beta": -0.7408760489490913,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|inverse|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.2850537493142072,
+        "beta": 2.0050710485451124,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|inverse|sequence|None": {
+      "calibrator": {
+        "alpha": 0.24522270273954763,
+        "beta": -1.7164838204039226,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|lookup|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.40877469530709576,
+        "beta": 3.7012210887730093,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|lookup|sequence|None": {
+      "calibrator": {
+        "alpha": 0.2171665411950614,
+        "beta": -1.2418287842240041,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|mutual|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.25181372144760833,
+        "beta": 0.8177146235384551,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|mutual|pause|None": {
+      "calibrator": {
+        "alpha": 0.25239411986291144,
+        "beta": 0.5907398695564716,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|mutual|reason|None": {
+      "calibrator": {
+        "alpha": 0.25324123960474276,
+        "beta": 0.06419007506332684,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|mutual|sequence|None": {
+      "calibrator": {
+        "alpha": 0.18067352539043477,
+        "beta": -0.6850228577098776,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|reciprocity|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.48609233888396763,
+        "beta": -2.877991169921634,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|4|target|reciprocity|sequence|None": {
+      "calibrator": {
+        "alpha": 0.3369679280989669,
+        "beta": -2.46876081541843,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|basis|edge|sequence|0": {
+      "calibrator": {
+        "alpha": 0.1885353426740137,
+        "beta": -0.7775798942204298,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|1": {
+      "calibrator": {
+        "alpha": 0.18781562861875034,
+        "beta": -0.43733212614181094,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|10": {
+      "calibrator": {
+        "alpha": 0.18524904973020107,
+        "beta": -0.6154026207241277,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|11": {
+      "calibrator": {
+        "alpha": 0.19725587394863173,
+        "beta": -1.3014380364259883,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|12": {
+      "calibrator": {
+        "alpha": 0.18734703563884997,
+        "beta": -1.2186045927408642,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|13": {
+      "calibrator": {
+        "alpha": 0.16395449728831005,
+        "beta": -0.8084863020020754,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|14": {
+      "calibrator": {
+        "alpha": 0.21352626347868675,
+        "beta": 0.48595236883537934,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|15": {
+      "calibrator": {
+        "alpha": 0.1757289641848161,
+        "beta": -1.0921404523131348,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|16": {
+      "calibrator": {
+        "alpha": 0.18383461390354536,
+        "beta": -2.053775756027263,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|17": {
+      "calibrator": {
+        "alpha": 0.2230187293307615,
+        "beta": -2.2901929706118698,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|18": {
+      "calibrator": {
+        "alpha": 0.19274781543798214,
+        "beta": -1.096583152626439,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|19": {
+      "calibrator": {
+        "alpha": 0.18194583054177477,
+        "beta": -0.5311471221224574,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|2": {
+      "calibrator": {
+        "alpha": 0.17974568262248647,
+        "beta": 0.17302092404484723,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|20": {
+      "calibrator": {
+        "alpha": 0.2007441522028355,
+        "beta": -1.2830722897204774,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|21": {
+      "calibrator": {
+        "alpha": 0.20635153175997858,
+        "beta": -1.2460598248992987,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|22": {
+      "calibrator": {
+        "alpha": 0.2082960734266388,
+        "beta": -1.34308071438112,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|23": {
+      "calibrator": {
+        "alpha": 0.18325220183457722,
+        "beta": -1.7927643762153347,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|24": {
+      "calibrator": {
+        "alpha": 0.1975729004850773,
+        "beta": -1.0663296551895878,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|25": {
+      "calibrator": {
+        "alpha": 0.1730340256859835,
+        "beta": -1.2473584761134624,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|26": {
+      "calibrator": {
+        "alpha": 0.20061897039334878,
+        "beta": -0.911619247827388,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|27": {
+      "calibrator": {
+        "alpha": 0.18687839834752012,
+        "beta": -0.6390310946511683,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|28": {
+      "calibrator": {
+        "alpha": 0.17403370608769936,
+        "beta": -0.7752816280686965,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|29": {
+      "calibrator": {
+        "alpha": 0.20386365650747543,
+        "beta": -0.277742673541387,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|3": {
+      "calibrator": {
+        "alpha": 0.18394736691808167,
+        "beta": 0.4004968098143205,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|4": {
+      "calibrator": {
+        "alpha": 0.22772958577936642,
+        "beta": 1.5677451872280768,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|5": {
+      "calibrator": {
+        "alpha": 0.19454193349511945,
+        "beta": -0.7195277774880042,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|6": {
+      "calibrator": {
+        "alpha": 0.19580960441898074,
+        "beta": -0.8795663200645155,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|7": {
+      "calibrator": {
+        "alpha": 0.1812305812203483,
+        "beta": -0.4090640545401787,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|8": {
+      "calibrator": {
+        "alpha": 0.1642765517287971,
+        "beta": -0.43878184181301333,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|basis|edge|sequence|9": {
+      "calibrator": {
+        "alpha": 0.17939187671609721,
+        "beta": 0.07966046569998682,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 192,
+      "train_rows": 134
+    },
+    "qwen3-8b|6|target|compare_outdegree|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.06936587620890558,
+        "beta": -0.2575100808345639,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|compare_outdegree|pause|None": {
+      "calibrator": {
+        "alpha": 0.12289625929826027,
+        "beta": -0.4869504371167768,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|compare_outdegree|reason|None": {
+      "calibrator": {
+        "alpha": 0.09520233111556782,
+        "beta": -0.4103406092118522,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|compare_outdegree|sequence|None": {
+      "calibrator": {
+        "alpha": 0.10741503266755963,
+        "beta": -1.2165310179638607,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|compose|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.22152425886196714,
+        "beta": 0.16765208980364132,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|compose|pause|None": {
+      "calibrator": {
+        "alpha": 0.2075864845545136,
+        "beta": 0.3766295922353071,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|compose|reason|None": {
+      "calibrator": {
+        "alpha": 0.23915949902333744,
+        "beta": -0.12198366344545217,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|compose|sequence|None": {
+      "calibrator": {
+        "alpha": 0.16930037988895108,
+        "beta": -0.6018453812646744,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|counterfactual_add|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.21605703650195912,
+        "beta": -0.5726349429518622,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|counterfactual_add|pause|None": {
+      "calibrator": {
+        "alpha": 0.11902101507964788,
+        "beta": -0.12444613625133699,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|counterfactual_add|reason|None": {
+      "calibrator": {
+        "alpha": 0.11162783913482113,
+        "beta": -0.14479877227195279,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|counterfactual_add|sequence|None": {
+      "calibrator": {
+        "alpha": 0.12823762030640548,
+        "beta": -0.8955502385049149,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|density|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.39090641046255803,
+        "beta": -1.9174563565611595,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|density|sequence|None": {
+      "calibrator": {
+        "alpha": 0.24203502833956764,
+        "beta": -1.0198715050807867,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|inverse|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.1628002206859802,
+        "beta": 0.7086226260748808,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|inverse|sequence|None": {
+      "calibrator": {
+        "alpha": 0.16284994943363038,
+        "beta": -0.34479849506130666,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|lookup|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.20165138970956592,
+        "beta": 1.148732406238832,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|lookup|sequence|None": {
+      "calibrator": {
+        "alpha": 0.21470659657186308,
+        "beta": -1.1158635874396383,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|mutual|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.23729390700551825,
+        "beta": 1.234647076691294,
+        "converged": true,
+        "steps": 7
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|mutual|pause|None": {
+      "calibrator": {
+        "alpha": 0.22686590311035731,
+        "beta": 0.40168518236896333,
+        "converged": true,
+        "steps": 5
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|mutual|reason|None": {
+      "calibrator": {
+        "alpha": 0.19735425732437686,
+        "beta": -0.023456790542634616,
+        "converged": true,
+        "steps": 4
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|mutual|sequence|None": {
+      "calibrator": {
+        "alpha": 0.17589775079928757,
+        "beta": -0.5678299048864918,
+        "converged": true,
+        "steps": 6
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|reciprocity|answer_token|None": {
+      "calibrator": {
+        "alpha": 0.48120184163698837,
+        "beta": -2.876418000717673,
+        "converged": true,
+        "steps": 8
+      },
+      "rows": 768,
+      "train_rows": 536
+    },
+    "qwen3-8b|6|target|reciprocity|sequence|None": {
+      "calibrator": {
+        "alpha": 0.35989750077908644,
+        "beta": -2.7929723847648718,
+        "converged": true,
+        "steps": 9
+      },
+      "rows": 768,
+      "train_rows": 536
+    }
+  },
+  "operation_priors": {
+    "4|basis|edge|0": 0.5214925373134328,
+    "4|basis|edge|1": 0.4785074626865672,
+    "4|basis|edge|10": 0.40686567164179105,
+    "4|basis|edge|11": 0.4498507462686567,
+    "4|basis|edge|2": 0.5214925373134328,
+    "4|basis|edge|3": 0.4498507462686566,
+    "4|basis|edge|4": 0.5071641791044776,
+    "4|basis|edge|5": 0.4641791044776119,
+    "4|basis|edge|6": 0.5788059701492537,
+    "4|basis|edge|7": 0.34955223880597014,
+    "4|basis|edge|8": 0.36388059701492537,
+    "4|basis|edge|9": 0.4211940298507463,
+    "4|target|compare_outdegree|16": 0.4355223702628221,
+    "4|target|compare_outdegree|17": 0.7220895224765166,
+    "4|target|compare_outdegree|18": 0.4355223702628221,
+    "4|target|compare_outdegree|19": 0.5644775887589846,
+    "4|target|compose|12": 0.2779104365452902,
+    "4|target|compose|13": 0.6361193768124083,
+    "4|target|compose|14": 0.39253729743076793,
+    "4|target|compose|15": 0.593134303980354,
+    "4|target|counterfactual_add|20": 0.34955222459871377,
+    "4|target|counterfactual_add|21": 0.5644775887589846,
+    "4|target|counterfactual_add|22": 0.37820893982008325,
+    "4|target|counterfactual_add|23": 0.6361193768124083,
+    "4|target|density|24": 0.29223879415597487,
+    "4|target|density|25": 0.7077611648658318,
+    "4|target|density|26": 0.29223879415597487,
+    "4|target|density|27": 0.7077611648658318,
+    "4|target|inverse|4": 0.5214925159269305,
+    "4|target|inverse|5": 0.47850744309487625,
+    "4|target|inverse|6": 0.47850744309487625,
+    "4|target|inverse|7": 0.4211940126521374,
+    "4|target|lookup|0": 0.34955222459871377,
+    "4|target|lookup|1": 0.593134303980354,
+    "4|target|lookup|2": 0.34955222459871377,
+    "4|target|lookup|3": 0.5788059463696693,
+    "4|target|mutual|10": 0.20626864849186655,
+    "4|target|mutual|11": 0.7364178800872013,
+    "4|target|mutual|8": 0.26358207893460545,
+    "4|target|mutual|9": 0.7364178800872013,
+    "4|target|reciprocity|28": 0.40686565504145267,
+    "4|target|reciprocity|29": 0.593134303980354,
+    "4|target|reciprocity|30": 0.40686565504145267,
+    "4|target|reciprocity|31": 0.593134303980354,
+    "6|basis|edge|0": 0.4928358208955224,
+    "6|basis|edge|1": 0.4928358208955223,
+    "6|basis|edge|10": 0.39253731343283577,
+    "6|basis|edge|11": 0.5071641791044776,
+    "6|basis|edge|12": 0.4641791044776119,
+    "6|basis|edge|13": 0.44985074626865673,
+    "6|basis|edge|14": 0.4641791044776119,
+    "6|basis|edge|15": 0.43552238805970145,
+    "6|basis|edge|16": 0.3638805970149254,
+    "6|basis|edge|17": 0.4928358208955223,
+    "6|basis|edge|18": 0.4785074626865672,
+    "6|basis|edge|19": 0.4928358208955223,
+    "6|basis|edge|2": 0.4785074626865672,
+    "6|basis|edge|20": 0.4785074626865672,
+    "6|basis|edge|21": 0.406865671641791,
+    "6|basis|edge|22": 0.44985074626865673,
+    "6|basis|edge|23": 0.36388059701492537,
+    "6|basis|edge|24": 0.406865671641791,
+    "6|basis|edge|25": 0.4211940298507463,
+    "6|basis|edge|26": 0.46417910447761185,
+    "6|basis|edge|27": 0.535820895522388,
+    "6|basis|edge|28": 0.4498507462686566,
+    "6|basis|edge|29": 0.4498507462686567,
+    "6|basis|edge|3": 0.4928358208955223,
+    "6|basis|edge|4": 0.535820895522388,
+    "6|basis|edge|5": 0.46417910447761196,
+    "6|basis|edge|6": 0.37820895522388054,
+    "6|basis|edge|7": 0.4641791044776119,
+    "6|basis|edge|8": 0.36388059701492537,
+    "6|basis|edge|9": 0.4355223880597015,
+    "6|target|compare_outdegree|16": 0.34955222459871377,
+    "6|target|compare_outdegree|17": 0.6647760920337776,
+    "6|target|compare_outdegree|18": 0.4355223702628221,
+    "6|target|compare_outdegree|19": 0.5788059463696693,
+    "6|target|compose|12": 0.6934328072551471,
+    "6|target|compose|13": 0.44985072787350683,
+    "6|target|compose|14": 0.6647760920337776,
+    "6|target|compose|15": 0.39253729743076793,
+    "6|target|counterfactual_add|20": 0.6361193768124083,
+    "6|target|counterfactual_add|21": 0.40686565504145267,
+    "6|target|counterfactual_add|22": 0.5644775887589846,
+    "6|target|counterfactual_add|23": 0.3638805822093985,
+    "6|target|density|24": 0.34955222459871377,
+    "6|target|density|25": 0.6504477344230929,
+    "6|target|density|26": 0.34955222459871377,
+    "6|target|density|27": 0.6504477344230929,
+    "6|target|inverse|4": 0.47850744309487625,
+    "6|target|inverse|5": 0.5214925159269305,
+    "6|target|inverse|6": 0.3638805822093985,
+    "6|target|inverse|7": 0.5358208735376152,
+    "6|target|lookup|0": 0.492835800705561,
+    "6|target|lookup|1": 0.5501492311482998,
+    "6|target|lookup|2": 0.47850744309487625,
+    "6|target|lookup|3": 0.5214925159269305,
+    "6|target|mutual|10": 0.20626864849186655,
+    "6|target|mutual|11": 0.7650745953085707,
+    "6|target|mutual|8": 0.1776119332704971,
+    "6|target|mutual|9": 0.7794029529192554,
+    "6|target|reciprocity|28": 0.40686565504145267,
+    "6|target|reciprocity|29": 0.593134303980354,
+    "6|target|reciprocity|30": 0.40686565504145267,
+    "6|target|reciprocity|31": 0.593134303980354
+  },
+  "schema": "frank_eq_rate_compute_calibration_v1"
+}

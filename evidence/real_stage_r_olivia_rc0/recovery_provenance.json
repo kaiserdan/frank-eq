@@ -1,0 +1,33 @@
+{
+  "calibration_reused": true,
+  "capture_executed_in_recovery": false,
+  "capture_reused": true,
+  "post_calibration_outcomes_preexisting": false,
+  "recovery_input_sha256": "c7caddb4b2f86ed0b13fd3d4a579da5f5cd437082099083266d37721c9f42ecb",
+  "schema": "frank_eq_rate_compute_recovery_provenance_v1",
+  "source_archive_sha256": "c24ae1eb86ae4957d0bf54bbc7458c07a2a70e91a39f8e6371259260a3d6de48",
+  "source_cluster": "olivia",
+  "source_config_sha256": "f5edfb7fd3e98f47eb65d0add3eaf8ed2d820ac223972e05e1d0cd4daeb31268",
+  "source_failure": {
+    "message": "too many values to unpack (expected 2)",
+    "stage": "audit",
+    "type": "ValueError"
+  },
+  "source_files": {
+    "calibration.json": "d22d950e27003a8c3ed3482aba3630a7bf73af00f698dbd1fd615aa27d8d0a99",
+    "config.yaml": "f5edfb7fd3e98f47eb65d0add3eaf8ed2d820ac223972e05e1d0cd4daeb31268",
+    "development_splits.json": "fe6b9336e05bf7a11b517954ca55e6d50fcfaeb092130b866dea497721825055",
+    "models.json": "abc10c4200f7e760b3442d42d4c11471e2ac1e188e2b70c431a741f3628f3a20",
+    "panels/n4.json": "0f19e2a6ecbed7547d8f9beb1428a0776e8652ebf32e150698efaab683b703a2",
+    "panels/n6.json": "b9d942c07c4ee335f88b4ff3373222e225cdcc246fa1b5d6f7a34a952e759d6c",
+    "records_calibrated.jsonl": "932f561a3be37fcbc08243076981789f56495fdc56bbeec71ecedf5c290bb3cc",
+    "records_raw.jsonl": "7374f94f24db2ce8bdc4cf32b0e7dafcc63c69e546832f24820433540d864782",
+    "run_manifest.json": "1ccdcf417b7d8a2ac59b3313752a3bcb67fc2c3777ed549303180b80c1c6c6c1",
+    "workflow_status.json": "6a18431e0ef1848b8860e18a7f1b0892b59b1f3868ea93a6ab896f97972b6f70"
+  },
+  "source_job_name": "frank-eq-rc0-rate-compute-olivia-20260811c",
+  "source_remote_run_root": "/cluster/work/projects/nn12027k/dakai5365/frank-eq/jobs/frank-eq-rc0-rate-compute-olivia-20260811c/source/runs",
+  "source_run_manifest_schema": "frank_eq_rate_compute_run_manifest_v1",
+  "source_slurm_job_id": "1874736",
+  "source_workflow_state": "failed"
+}

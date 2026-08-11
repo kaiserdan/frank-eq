@@ -13,14 +13,15 @@ frozen question, preserve information boundaries, and fail closed.
 2. `HANDOFF.md`
 3. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
 4. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
-5. `evidence/real_stagea_lumi_v2/REVIEW.md`
-6. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
-7. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
-8. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
-9. `docs/05_GATES_AND_STOP_RULES.md`
-10. `docs/09_IMPLEMENTATION_STATUS.md`
-11. `docs/10_DECISION_LOG.md`
-12. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
+5. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
+6. `evidence/real_stagea_lumi_v2/REVIEW.md`
+7. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
+8. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
+9. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
+10. `docs/05_GATES_AND_STOP_RULES.md`
+11. `docs/09_IMPLEMENTATION_STATUS.md`
+12. `docs/10_DECISION_LOG.md`
+13. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
 
 For cluster work, also read the matching runner skill under `.agents/skills/`.
 
@@ -28,23 +29,17 @@ For cluster work, also read the matching runner skill under `.agents/skills/`.
 
 Synthetic Stage 0 passes as implementation evidence only. Real Stage-A v1 and
 v2 are exact-pipeline negatives. Stage Q and its scale screens are development
-negatives. None authorizes another latent run, receiver execution, or a claim.
-
-The only authorized next execution is **Stage R / RC0**:
+negatives. Stage R / RC0 is an adopted development pass:
 
 ```text
-configs/rate_compute/real_lumi_rc0.yaml
-configs/rate_compute/real_olivia_rc0.yaml
+capture:  frank-eq-rc0-rate-compute-olivia-20260811c  Slurm 1874736
+recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
+result:   PUBLIC_BASIS_COMPOSITION_SUPPORTED
 ```
 
-Run exactly:
-
-```text
---stages audit
-```
-
-RC0 is development-only. A passing machine decision permits drafting one
-Stage-A v3 protocol; it never permits launching that protocol.
+The only authorized next work is drafting exactly one fresh Stage-A v3 protocol.
+No RC0 rerun, v3 launch, another latent run, claim-bearing test access, receiver
+execution, or scientific claim is authorized.
 
 ## Scientific invariants
 
@@ -140,16 +135,17 @@ Use evidence in this order:
 6. W&B telemetry;
 7. prose.
 
-## RC0 execution procedure
+## Completed RC0 execution record
 
-1. Run local compile, lint, tests, and both repository validators.
-2. Inspect the content-addressed dry-run plan.
-3. Launch one frozen config with `--stages audit`.
-4. Fetch and verify the run.
-5. Run `scripts/verify_rate_compute_run.py`.
-6. Audit the basis, compiled, answer-channel, and reasoning/pause strata.
-7. Adopt only a compact hash-verified evidence package.
-8. Do not launch Stage-A v3 merely because RC0 passes.
+1. Local compile, lint, tests, shell checks, and both repository validators passed.
+2. The content-addressed Olivia plan ran only the frozen audit stage.
+3. A post-capture aggregation failure was recovered artifact-only under a fresh
+   source and job, with no model inference and no prior outcome artifacts.
+4. Repository and RC0-specific verification passed.
+5. An independent audit reproduced the metrics, strata, and decision.
+6. The compact hash-verified package is under
+   `evidence/real_stage_r_olivia_rc0/`.
+7. Do not launch Stage-A v3 merely because RC0 passes.
 
 ## RC0 decision tree
 

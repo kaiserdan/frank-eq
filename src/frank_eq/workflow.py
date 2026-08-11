@@ -27,7 +27,8 @@ STAGEQ_ALLOWED_STAGES = frozenset({"cache", "validate"})
 
 
 def _timestamp() -> str:
-    return dt.datetime.now(dt.UTC).isoformat()
+    # ``datetime.UTC`` is unavailable in the Python 3.10 cluster runtimes.
+    return dt.datetime.now(dt.timezone.utc).isoformat()  # noqa: UP017
 
 
 def _environment() -> dict[str, Any]:

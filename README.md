@@ -70,12 +70,37 @@ The screens used an immediate single-token A/B readout. They therefore do not
 separate answer-token calibration, post-query computation, and information
 stored in the query-blind state.
 
-## Current next step: Stage R / RC0
+## Stage R / RC0: completed development pass
 
-RC0 is a development-only rate--compute and public-basis audit. It makes no
-latent-space claim and opens no new held sender or claim-bearing test role.
+RC0 was a development-only rate--compute and public-basis audit. The original
+Olivia capture completed all 89,856 response rows, then failed before its first
+metric because a grouped-aggregation helper no longer matched its callers. A
+fresh, hash-bound artifact-only recovery restored the historical helper API and
+executed no model inference:
 
-It compares:
+```text
+capture   frank-eq-rc0-rate-compute-olivia-20260811c  Slurm 1874736
+recovery  frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
+```
+
+Both repository verifiers and a separate recomputation audit pass. The machine
+diagnosis is `PUBLIC_BASIS_COMPOSITION_SUPPORTED`:
+
+```text
+compiled hard-family Brier:                0.0408
+training-selected direct Brier:            0.2035
+training-world prior Brier:                0.2181
+lower95 gain over direct / prior:          0.1542 / 0.1661
+basis balanced accuracy, weakest group:    0.9246
+hard-oracle executor mismatches:            0
+```
+
+Semantic sequence likelihood improved over the historical answer-token channel.
+Generated reasoning did not: the reasoning-minus-pause Brier-gain interval was
+`[-0.00540, -0.00029]`. The positive result is therefore public-basis recovery
+and deterministic composition, not a reasoning-token effect.
+
+RC0 compared:
 
 1. historical immediate A/B token probability;
 2. semantic false/true sequence likelihood;
@@ -84,7 +109,7 @@ It compares:
 5. a public separating basis containing every directed edge;
 6. a parameter-free executor that composes the basis into complex operations.
 
-The key distinction is:
+The key distinction was:
 
 ```text
 answer-channel calibration
@@ -95,6 +120,11 @@ vs state/basis sufficiency
 The public basis is gauge fixed by semantics: slot `(i,j)` always means the
 same directed edge. For a closed directed graph, all `n(n-1)` edge slots form a
 separating basis, so every registered structural operation factors through it.
+
+The adopted, hash-verified evidence is in
+`evidence/real_stage_r_olivia_rc0/`. Runtime basis interrogation remains
+interactive tomography, not a one-shot hidden-state compiler or communication
+result.
 
 Read:
 
@@ -112,20 +142,18 @@ configs/rate_compute/real_lumi_rc0.yaml
 configs/rate_compute/real_olivia_rc0.yaml
 ```
 
-LUMI dry run:
+No RC0 rerun is authorized.
 
-```bash
-python lumi/cli.py submit \
-  --job-name frank-eq-rc0-rate-compute \
-  --config configs/rate_compute/real_lumi_rc0.yaml \
-  --profile full \
-  --stages audit \
-  --dry-run --json
-```
+## Current next step: one Stage-A v3 registration draft
 
-The same command surface is available through `olivia/cli.py`.
+The RC0 pass authorizes drafting exactly one fresh protocol. It does not
+authorize launching it. The registration must freeze fresh claim-bearing worlds,
+a new unopened held sender, complete model-local token/slot compilers into the
+typed public basis, separate behavioral and oracle-semantic channels, and the
+registered token/text/direct/continuous/oracle baselines. Receiver execution
+remains locked.
 
-## Decision after RC0
+## Frozen RC0 decision tree
 
 ### Basis readout fails
 
@@ -142,7 +170,7 @@ The basis is a valid diagnostic but not yet a constructive paper result.
 
 ### Public composition beats the training-selected direct baseline
 
-Draft exactly one Stage-A v3 registration with:
+This is the observed branch. Draft exactly one Stage-A v3 registration with:
 
 - fresh claim-bearing worlds;
 - a new unopened held sender;
@@ -192,8 +220,10 @@ RC0 commands:
 
 ```text
 frank-eq validate-rate-compute-config
-frank-eq run-rate-compute
+frank-eq run-rate-compute-audit
+frank-eq recover-rate-compute-audit
 python scripts/verify_rate_compute_run.py
+python scripts/audit_rate_compute_result.py
 ```
 
 ## Local validation
@@ -233,9 +263,10 @@ Frank-EQ currently establishes only:
 - functioning synthetic and cluster infrastructure;
 - two valid negative results for narrow shared-code architectures;
 - a corrected source-qualification methodology;
-- a prospective audit that can distinguish calibration, computation, and public
-  basis sufficiency.
+- development evidence that an interactively queried, typed edge basis is
+  recoverable from the tested sources and composes better than their
+  training-selected direct protocols under the frozen RC0 contract.
 
 It does not yet establish a cross-model public interface, a hidden-state
-advantage over text/tokens, held-sender establishment, receiver execution, or a
-positive ICLR claim.
+advantage over text/tokens, a one-shot compiler, held-sender establishment,
+receiver execution, or a positive ICLR claim.

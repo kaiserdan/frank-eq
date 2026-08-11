@@ -1,0 +1,53 @@
+{
+  "access_contract": {
+    "claim_bearing_role": false,
+    "exact_replay_fallback": false,
+    "held_sender_loaded": false,
+    "literal_kv_reuse": true,
+    "receiver_tensors_available": false,
+    "state_precedes_operation_reveal": true,
+    "test_worlds_available": false
+  },
+  "config_path": "configs/rate_compute/real_olivia_rc0.yaml",
+  "config_sha256": "f5edfb7fd3e98f47eb65d0add3eaf8ed2d820ac223972e05e1d0cd4daeb31268",
+  "config_snapshot": "config.yaml",
+  "created_at": "2026-08-11T21:28:40.898817+00:00",
+  "development_only": true,
+  "environment": {
+    "accelerators": [
+      "NVIDIA GH200 120GB"
+    ],
+    "cluster": "olivia",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "git_commit": "ea6d9548ba1d39ac52d0bd4ec328b55ac14ec829",
+    "git_dirty": "true",
+    "hf_home": "/cluster/projects/nn12027k/hf-cache",
+    "hostname": "gpu-1-19",
+    "numpy": "2.2.6",
+    "platform": "Linux-6.4.0-150700.53.31-64kb-aarch64-with-glibc2.35",
+    "python": "3.10.12",
+    "runtime_image": "/cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif",
+    "runtime_image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "slurm_job_id": "1891471",
+    "source_sha256": "84ea411228c3df35bcf198d0ca1e83f116d1fe921b6e10cef26106a1fb26c0b7",
+    "torch": "2.12.0.dev20260309+cu126"
+  },
+  "output_dir": "runs",
+  "protocol_role": "rate_compute_development",
+  "recovery": {
+    "artifact_only": true,
+    "model_capture_executed": false,
+    "recovery_input_sha256": "c7caddb4b2f86ed0b13fd3d4a579da5f5cd437082099083266d37721c9f42ecb",
+    "recovery_provenance": "recovery_provenance.json",
+    "recovery_provenance_sha256": "18b0a3117a75d10099d7c0dcd6c1521465709df9fd01be459e510510b289d8ff",
+    "source_archive_sha256": "c24ae1eb86ae4957d0bf54bbc7458c07a2a70e91a39f8e6371259260a3d6de48",
+    "source_job_name": "frank-eq-rc0-rate-compute-olivia-20260811c",
+    "source_slurm_job_id": "1874736"
+  },
+  "run_name": "frank-eq-rate-compute-rc0-olivia",
+  "schema": "frank_eq_rate_compute_run_manifest_v1",
+  "stages": [
+    "audit"
+  ]
+}

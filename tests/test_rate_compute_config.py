@@ -6,7 +6,6 @@ import pytest
 
 from frank_eq.rate_compute.config import load_rate_compute_config
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -19,6 +18,7 @@ def test_frozen_rate_compute_configs_load() -> None:
     assert lumi.capture.prompt_format == "chat_turn"
     assert lumi.capture.branch_mode == "kv_reuse"
     assert lumi.capture.allow_exact_replay_fallback is False
+    assert lumi.capture.branch_batch_size == 8
     assert lumi.protocols.rationale_budget == lumi.protocols.pause_budget == 32
     assert lumi.protocols.basis_protocol == "sequence"
 
@@ -40,5 +40,13 @@ def test_rate_compute_config_rejects_mixed_branch_execution(tmp_path: Path) -> N
             "allow_exact_replay_fallback: true",
         )
     )
-    with pytest.raises(ValueError, match="forbids replay fallback"):
+    with pytest.raises(ValueError, match="forbids exact-replay fallback"):
+        load_rate_compute_config(path)
+
+
+def test_rate_compute_config_rejects_disabled_branch_batching(tmp_path: Path) -> None:
+    source = (ROOT / "configs/rate_compute/real_lumi_rc0.yaml").read_text()
+    path = tmp_path / "bad.yaml"
+    path.write_text(source.replace("branch_batch_size: 8", "branch_batch_size: 0"))
+    with pytest.raises(ValueError, match="branch_batch_size must be positive"):
         load_rate_compute_config(path)

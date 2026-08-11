@@ -212,13 +212,22 @@ def expected_calibration_error(
     return value
 
 
-def aggregate_by_world(values: np.ndarray, world_ids: np.ndarray) -> np.ndarray:
+def aggregate_by_world(
+    values: np.ndarray,
+    world_ids: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Average renderer, operation, and protocol rows within each world."""
+
     array = np.asarray(values, dtype=np.float64)
-    worlds = np.asarray(world_ids, dtype=np.int64)
-    return np.asarray(
-        [array[worlds == world].mean(axis=0) for world in np.unique(worlds)],
+    worlds = np.asarray(world_ids, dtype=np.int64).reshape(-1)
+    if array.shape[0] != worlds.shape[0]:
+        raise ValueError("world IDs and values have different row counts")
+    unique_worlds = np.unique(worlds)
+    grouped_values = np.asarray(
+        [array[worlds == world].mean(axis=0) for world in unique_worlds],
         dtype=np.float64,
     )
+    return unique_worlds, grouped_values
 
 
 def interval(

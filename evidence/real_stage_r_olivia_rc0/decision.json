@@ -1,0 +1,38 @@
+{
+  "authorization": {
+    "claim_bearing_test_access_authorized": false,
+    "receiver_execution_authorized": false,
+    "scientific_claim_authorized": false,
+    "stagea_outcome_run_authorized": false,
+    "stagea_registration_draft_authorized": true
+  },
+  "checks": {
+    "answer_channel_effect": {
+      "diagnostic_only": true,
+      "observed": 0.04135389116806189,
+      "passed": true
+    },
+    "basis_contract": {
+      "passed": true
+    },
+    "compiled_over_prior": {
+      "observed": 0.16606239971156217,
+      "passed": true,
+      "required": "lower_95 >= 0.0"
+    },
+    "compiled_over_train_selected_direct": {
+      "observed": 0.15415783556807988,
+      "passed": true,
+      "required": "lower_95 > 0.0"
+    },
+    "contentful_compute_effect": {
+      "diagnostic_only": true,
+      "observed": -0.005396974464804973,
+      "passed": false
+    }
+  },
+  "decision": "OPERATIONAL_BASIS_CANDIDATE_FOR_STAGEA_REGISTRATION",
+  "diagnosis": "PUBLIC_BASIS_COMPOSITION_SUPPORTED",
+  "schema": "frank_eq_rate_compute_decision_v1",
+  "status": "pass"
+}

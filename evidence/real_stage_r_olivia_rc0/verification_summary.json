@@ -1,0 +1,88 @@
+{
+  "artifacts_verified": [
+    "config.yaml",
+    "run_manifest.json",
+    "workflow_status.json",
+    "recovery_provenance.json",
+    "models.json",
+    "records_raw.jsonl",
+    "calibration.json",
+    "records_calibrated.jsonl",
+    "compiled_predictions.jsonl",
+    "direct_protocol_selection.json",
+    "metrics.json",
+    "decision.json",
+    "artifact_manifest.json",
+    "run_summary.json"
+  ],
+  "authorization": {
+    "claim_bearing_test_access_authorized": false,
+    "receiver_execution_authorized": false,
+    "scientific_claim_authorized": false,
+    "stagea_outcome_run_authorized": false,
+    "stagea_registration_draft_authorized": true
+  },
+  "cluster": "olivia",
+  "config_sha256": "f5edfb7fd3e98f47eb65d0add3eaf8ed2d820ac223972e05e1d0cd4daeb31268",
+  "decision": {
+    "decision": "OPERATIONAL_BASIS_CANDIDATE_FOR_STAGEA_REGISTRATION",
+    "diagnosis": "PUBLIC_BASIS_COMPOSITION_SUPPORTED",
+    "status": "pass"
+  },
+  "fatal_log_signatures": [],
+  "independent_audit": {
+    "failures": [],
+    "oracle_hard_mismatches": 0,
+    "overall": "passed"
+  },
+  "job_name": "frank-eq-rc0-rate-compute-olivia-20260811d-recovery",
+  "original_capture": {
+    "failure": {
+      "message": "too many values to unpack (expected 2)",
+      "stage": "audit",
+      "type": "ValueError"
+    },
+    "job_name": "frank-eq-rc0-rate-compute-olivia-20260811c",
+    "records": 89856,
+    "slurm_job_id": "1874736",
+    "source_archive_sha256": "c24ae1eb86ae4957d0bf54bbc7458c07a2a70e91a39f8e6371259260a3d6de48",
+    "workflow_state": "failed"
+  },
+  "overall": "passed",
+  "records": 89856,
+  "recovery": {
+    "artifact_only": true,
+    "input_manifest_sha256": "c7caddb4b2f86ed0b13fd3d4a579da5f5cd437082099083266d37721c9f42ecb",
+    "model_capture_executed": false,
+    "source_archive_sha256": "84ea411228c3df35bcf198d0ca1e83f116d1fe921b6e10cef26106a1fb26c0b7"
+  },
+  "repository_verifier": {
+    "failures": [],
+    "overall": "passed"
+  },
+  "runtime_image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+  "schema": "frank_eq_rate_compute_adopted_verification_summary_v1",
+  "slurm": {
+    "elapsed": "00:00:45",
+    "exit_code": "0:0",
+    "job_id": "1891471",
+    "state": "COMPLETED"
+  },
+  "specialized_verifier": {
+    "failures": [],
+    "overall": "passed",
+    "panels": [
+      4,
+      6
+    ]
+  },
+  "workflow": {
+    "completed_stages": [
+      "audit"
+    ],
+    "elapsed_seconds": 24.674394607543945,
+    "failure": null,
+    "recovery": true,
+    "state": "completed"
+  }
+}

@@ -53,6 +53,7 @@ REQUIRED = (
     "configs/stageq/real_lumi_screen_8b.yaml",
     "scripts/qualify_real_cache.py",
     "scripts/compare_stageq_caches.py",
+    "scripts/audit_rate_compute_result.py",
     "olivia/cli.py",
     "olivia/run.slurm",
     "olivia/quickstart.sh",
@@ -80,6 +81,21 @@ REQUIRED = (
     "evidence/real_stagea_lumi_v2/REVIEW.md",
     "evidence/real_stagea_lumi_v2/review.json",
     "evidence/real_stagea_lumi_v2/review_manifest.json",
+    "evidence/real_stage_r_olivia_rc0/AUDIT.md",
+    "evidence/real_stage_r_olivia_rc0/artifact_manifest.json",
+    "evidence/real_stage_r_olivia_rc0/calibration.json",
+    "evidence/real_stage_r_olivia_rc0/config.yaml",
+    "evidence/real_stage_r_olivia_rc0/decision.json",
+    "evidence/real_stage_r_olivia_rc0/direct_protocol_selection.json",
+    "evidence/real_stage_r_olivia_rc0/independent_audit.json",
+    "evidence/real_stage_r_olivia_rc0/metrics.json",
+    "evidence/real_stage_r_olivia_rc0/models.json",
+    "evidence/real_stage_r_olivia_rc0/recovery_provenance.json",
+    "evidence/real_stage_r_olivia_rc0/run_manifest.json",
+    "evidence/real_stage_r_olivia_rc0/run_summary.json",
+    "evidence/real_stage_r_olivia_rc0/verification_summary.json",
+    "evidence/real_stage_r_olivia_rc0/workflow_status.json",
+    "evidence/real_stage_r_olivia_rc0/manifest.json",
 )
 
 
@@ -233,6 +249,66 @@ def main() -> int:
     if any(review.get("authorization", {}).values()):
         raise SystemExit("supplemental review improperly authorizes continuation")
 
+    rc0_dir = ROOT / "evidence/real_stage_r_olivia_rc0"
+    rc0_manifest = _validate_hash_manifest(rc0_dir)
+    rc0_artifact_manifest = json.loads((rc0_dir / "artifact_manifest.json").read_text())
+    rc0_decision = json.loads((rc0_dir / "decision.json").read_text())
+    rc0_verification = json.loads((rc0_dir / "verification_summary.json").read_text())
+    rc0_audit = json.loads((rc0_dir / "independent_audit.json").read_text())
+    rc0_run_manifest = json.loads((rc0_dir / "run_manifest.json").read_text())
+    if rc0_manifest.get("schema") != "frank_eq_rate_compute_evidence_manifest_v1":
+        raise SystemExit("Stage R / RC0 evidence manifest has the wrong schema")
+    if rc0_artifact_manifest.get("schema") != "frank_eq_rate_compute_artifact_manifest_v1":
+        raise SystemExit("Stage R / RC0 run artifact manifest has the wrong schema")
+    adopted_hashes = rc0_manifest.get("files", {})
+    run_hashes = rc0_artifact_manifest.get("files", {})
+    for name in (
+        "calibration.json",
+        "config.yaml",
+        "decision.json",
+        "direct_protocol_selection.json",
+        "metrics.json",
+        "models.json",
+        "recovery_provenance.json",
+        "run_manifest.json",
+        "run_summary.json",
+        "workflow_status.json",
+    ):
+        if adopted_hashes.get(name) != run_hashes.get(name):
+            raise SystemExit(f"adopted RC0 artifact differs from verified run: {name}")
+    if (
+        rc0_decision.get("status") != "pass"
+        or rc0_decision.get("diagnosis") != "PUBLIC_BASIS_COMPOSITION_SUPPORTED"
+    ):
+        raise SystemExit("adopted Stage R / RC0 decision changed")
+    authorization = rc0_decision.get("authorization", {})
+    if authorization.get("stagea_registration_draft_authorized") is not True:
+        raise SystemExit("RC0 pass must authorize exactly one registration draft")
+    if any(
+        authorization.get(key) is not False
+        for key in (
+            "stagea_outcome_run_authorized",
+            "claim_bearing_test_access_authorized",
+            "receiver_execution_authorized",
+            "scientific_claim_authorized",
+        )
+    ):
+        raise SystemExit("RC0 evidence improperly opens a protected authorization")
+    if rc0_verification.get("overall") != "passed":
+        raise SystemExit("Stage R / RC0 workflow verification did not pass")
+    if rc0_audit.get("overall") != "passed" or rc0_audit.get("failures") != []:
+        raise SystemExit("Stage R / RC0 independent recomputation audit did not pass")
+    if rc0_audit.get("independent_gate_reduction", {}).get("diagnosis") != (
+        rc0_decision["diagnosis"]
+    ):
+        raise SystemExit("RC0 machine and independent diagnoses differ")
+    recovery = rc0_run_manifest.get("recovery", {})
+    if (
+        recovery.get("artifact_only") is not True
+        or recovery.get("model_capture_executed") is not False
+    ):
+        raise SystemExit("RC0 evidence does not preserve artifact-only recovery provenance")
+
     gitignore = (ROOT / ".gitignore").read_text()
     if ".agents/state/" not in gitignore:
         raise SystemExit(".agents/state/ must remain ignored")
@@ -248,6 +324,8 @@ def main() -> int:
                 "synthetic_decision": synthetic_decision["decision"],
                 "real_stagea_v1_decision": v1_decision["decision"],
                 "real_stagea_v2_decision": v2_decision["decision"],
+                "stage_r_rc0_diagnosis": rc0_decision["diagnosis"],
+                "stage_r_rc0_recovery": "artifact_only",
                 "stageq_pair_registered": True,
                 "stageq_cache_only_enforced": True,
             },

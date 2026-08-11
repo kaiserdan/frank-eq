@@ -1,0 +1,278 @@
+{
+  "authorization": {
+    "claim_bearing_test_access_authorized": false,
+    "receiver_execution_authorized": false,
+    "scientific_claim_authorized": false,
+    "stagea_outcome_run_authorized": false,
+    "stagea_registration_draft_authorized": true
+  },
+  "basis": {
+    "qwen3-4b|4": {
+      "balanced_accuracy": 0.938887420718816,
+      "calibrated_brier": 0.04241430783780622,
+      "gain_over_prior_ci": {
+        "estimate": 0.2008554043321725,
+        "lower": 0.19231958260164944,
+        "replicates": 2000,
+        "upper": 0.2087767154115332
+      },
+      "passed": true,
+      "rows": 696,
+      "worlds": 29
+    },
+    "qwen3-4b|6": {
+      "balanced_accuracy": 0.9245756172839507,
+      "calibrated_brier": 0.046821534279907866,
+      "gain_over_prior_ci": {
+        "estimate": 0.183068160836891,
+        "lower": 0.17699340993415558,
+        "replicates": 2000,
+        "upper": 0.18915139097362116
+      },
+      "passed": true,
+      "rows": 1740,
+      "worlds": 29
+    },
+    "qwen3-8b|4": {
+      "balanced_accuracy": 0.9957056025369979,
+      "calibrated_brier": 0.004072433873660818,
+      "gain_over_prior_ci": {
+        "estimate": 0.23919727829631793,
+        "lower": 0.23089031404758092,
+        "replicates": 2000,
+        "upper": 0.24785111705584337
+      },
+      "passed": true,
+      "rows": 696,
+      "worlds": 29
+    },
+    "qwen3-8b|6": {
+      "balanced_accuracy": 0.977856545781893,
+      "calibrated_brier": 0.01452412936582539,
+      "gain_over_prior_ci": {
+        "estimate": 0.21536556575097346,
+        "lower": 0.2112094325788332,
+        "replicates": 2000,
+        "upper": 0.21942915380824327
+      },
+      "passed": true,
+      "rows": 1740,
+      "worlds": 29
+    }
+  },
+  "calibration": {
+    "groups": 180,
+    "negative_slopes": 10,
+    "not_converged": 0
+  },
+  "compiled_aggregate": {
+    "compiled_brier": 0.04080845620729113,
+    "compiled_over_direct_brier_gain_ci": {
+      "estimate": 0.16266253245475687,
+      "lower": 0.15415783556807988,
+      "replicates": 2000,
+      "upper": 0.17079193486973476
+    },
+    "compiled_over_prior_brier_gain_ci": {
+      "estimate": 0.1772700961868166,
+      "lower": 0.16606239971156217,
+      "replicates": 2000,
+      "upper": 0.1879477099485993
+    },
+    "direct_brier": 0.20347098866204802,
+    "prior_brier": 0.21807855239410778,
+    "rows": 3712,
+    "worlds": 58
+  },
+  "compiled_by_family": {
+    "compare_outdegree": {
+      "compiled_brier": 0.04423033002190543,
+      "compiled_over_direct_brier_gain_ci": {
+        "estimate": 0.1747188811997278,
+        "lower": 0.157255618634264,
+        "replicates": 2000,
+        "upper": 0.19157510965657434
+      },
+      "compiled_over_prior_brier_gain_ci": {
+        "estimate": 0.1728356507297038,
+        "lower": 0.1568497792940953,
+        "replicates": 2000,
+        "upper": 0.18833175047255227
+      },
+      "direct_brier": 0.21894921122163327,
+      "prior_brier": 0.21706598075160927,
+      "rows": 928,
+      "worlds": 58
+    },
+    "compose": {
+      "compiled_brier": 0.046505642927730274,
+      "compiled_over_direct_brier_gain_ci": {
+        "estimate": 0.17365009172101592,
+        "lower": 0.1561647295314851,
+        "replicates": 2000,
+        "upper": 0.1895052674588968
+      },
+      "compiled_over_prior_brier_gain_ci": {
+        "estimate": 0.19660977757937698,
+        "lower": 0.17638812923963304,
+        "replicates": 2000,
+        "upper": 0.21665558028924434
+      },
+      "direct_brier": 0.22015573464874616,
+      "prior_brier": 0.24311542050710722,
+      "rows": 928,
+      "worlds": 58
+    },
+    "counterfactual_add": {
+      "compiled_brier": 0.04392617934380448,
+      "compiled_over_direct_brier_gain_ci": {
+        "estimate": 0.18079630170319122,
+        "lower": 0.16554318918639266,
+        "replicates": 2000,
+        "upper": 0.19541829644528735
+      },
+      "compiled_over_prior_brier_gain_ci": {
+        "estimate": 0.19062408413665385,
+        "lower": 0.1737418049331619,
+        "replicates": 2000,
+        "upper": 0.2064255712467008
+      },
+      "direct_brier": 0.2247224810469957,
+      "prior_brier": 0.23455026348045832,
+      "rows": 928,
+      "worlds": 58
+    },
+    "mutual": {
+      "compiled_brier": 0.028571672535724315,
+      "compiled_over_direct_brier_gain_ci": {
+        "estimate": 0.12148485519509264,
+        "lower": 0.10051278279789065,
+        "replicates": 2000,
+        "upper": 0.14502036164118318
+      },
+      "compiled_over_prior_brier_gain_ci": {
+        "estimate": 0.14901087230153195,
+        "lower": 0.12240904191388012,
+        "replicates": 2000,
+        "upper": 0.17723103022174883
+      },
+      "direct_brier": 0.15005652773081693,
+      "prior_brier": 0.17758254483725627,
+      "rows": 928,
+      "worlds": 58
+    }
+  },
+  "compiled_by_model_and_complexity": {
+    "qwen3-4b|4": {
+      "compiled_brier": 0.06225587012167684,
+      "compiled_over_direct_brier_gain_ci": {
+        "estimate": 0.14197562455964216,
+        "lower": 0.12656565366156558,
+        "replicates": 2000,
+        "upper": 0.15824184953359596
+      },
+      "compiled_over_prior_brier_gain_ci": {
+        "estimate": 0.15732992513901214,
+        "lower": 0.14137637538380238,
+        "replicates": 2000,
+        "upper": 0.17372126985589947
+      },
+      "direct_brier": 0.20423149468131901,
+      "prior_brier": 0.21958579526068903,
+      "rows": 928,
+      "worlds": 29
+    },
+    "qwen3-4b|6": {
+      "compiled_brier": 0.07214215511967828,
+      "compiled_over_direct_brier_gain_ci": {
+        "estimate": 0.13592483073476644,
+        "lower": 0.12151584821198949,
+        "replicates": 2000,
+        "upper": 0.1495695203124036
+      },
+      "compiled_over_prior_brier_gain_ci": {
+        "estimate": 0.14442915440784826,
+        "lower": 0.12617256589806283,
+        "replicates": 2000,
+        "upper": 0.16191835636974847
+      },
+      "direct_brier": 0.20806698585444472,
+      "prior_brier": 0.21657130952752654,
+      "rows": 928,
+      "worlds": 29
+    },
+    "qwen3-8b|4": {
+      "compiled_brier": 0.004868751222186295,
+      "compiled_over_direct_brier_gain_ci": {
+        "estimate": 0.19172337732422048,
+        "lower": 0.1794153120347432,
+        "replicates": 2000,
+        "upper": 0.204384565562634
+      },
+      "compiled_over_prior_brier_gain_ci": {
+        "estimate": 0.2147170440385027,
+        "lower": 0.19873922661282234,
+        "replicates": 2000,
+        "upper": 0.2306200864883472
+      },
+      "direct_brier": 0.19659212854640684,
+      "prior_brier": 0.21958579526068903,
+      "rows": 928,
+      "worlds": 29
+    },
+    "qwen3-8b|6": {
+      "compiled_brier": 0.02396704836562308,
+      "compiled_over_direct_brier_gain_ci": {
+        "estimate": 0.18102629720039848,
+        "lower": 0.16866386782604728,
+        "replicates": 2000,
+        "upper": 0.193304120664794
+      },
+      "compiled_over_prior_brier_gain_ci": {
+        "estimate": 0.1926042611619034,
+        "lower": 0.17509956784626232,
+        "replicates": 2000,
+        "upper": 0.20955608010909002
+      },
+      "direct_brier": 0.20499334556602153,
+      "prior_brier": 0.21657130952752654,
+      "rows": 928,
+      "worlds": 29
+    }
+  },
+  "compiled_predictions": 5568,
+  "contrasts": {
+    "reason_over_pause_hard_family_brier_gain_ci": {
+      "estimate": -0.0029386774196383217,
+      "lower": -0.005396974464804973,
+      "replicates": 2000,
+      "upper": -0.0002902048605318681
+    },
+    "reason_over_sequence_hard_family_brier_gain_ci": {
+      "estimate": -0.013957026107033907,
+      "lower": -0.018458397383789713,
+      "replicates": 2000,
+      "upper": -0.009491401463820512
+    },
+    "sequence_over_answer_token_brier_gain_ci": {
+      "estimate": 0.04690987802951979,
+      "lower": 0.04135389116806189,
+      "replicates": 2000,
+      "upper": 0.05201267483427993
+    }
+  },
+  "direct_selection_groups": 24,
+  "failures": [],
+  "hard_family_predictions": 3712,
+  "independent_gate_reduction": {
+    "basis_passed": true,
+    "compiled_over_direct_passed": true,
+    "compiled_over_prior_passed": true,
+    "diagnosis": "PUBLIC_BASIS_COMPOSITION_SUPPORTED",
+    "status": "pass"
+  },
+  "oracle_hard_mismatches": 0,
+  "overall": "passed",
+  "records": 89856,
+  "schema": "frank_eq_rate_compute_independent_audit_v1"
+}

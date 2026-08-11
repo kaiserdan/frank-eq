@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
@@ -17,6 +18,7 @@ from frank_eq.data.real_panel import (
 from frank_eq.telemetry import WandbTelemetry
 
 from .backend import (
+    ProtocolScore,
     RateComputeModelAdapter,
     render_deliberation_query,
     render_sequence_query,
@@ -45,6 +47,91 @@ def _basis_query(
     return render_basis_query(source, target, n_entities, final_cue=cue)
 
 
+@dataclass(slots=True)
+class _PendingBranch:
+    row: dict[str, Any]
+    protocol: str
+    query_ids: torch.Tensor
+
+
+@dataclass(slots=True)
+class _BatchExecutionStats:
+    response_batches: int = 0
+    max_observed_batch_size: int = 0
+
+    def add(self, other: _BatchExecutionStats) -> None:
+        self.response_batches += other.response_batches
+        self.max_observed_batch_size = max(
+            self.max_observed_batch_size,
+            other.max_observed_batch_size,
+        )
+
+
+def _score_pending_branches(
+    adapter: RateComputeModelAdapter,
+    prefix_ids: torch.Tensor,
+    prefix_cache: Any,
+    pending: list[_PendingBranch],
+    config: RateComputeRunConfig,
+) -> tuple[list[dict[str, Any]], _BatchExecutionStats]:
+    """Score query-exclusive cache branches in uniform-length GPU batches."""
+
+    batch_limit = int(config.capture.branch_batch_size)
+    if batch_limit < 1:
+        raise ValueError("capture.branch_batch_size must be positive")
+    grouped: dict[tuple[str, int], list[int]] = defaultdict(list)
+    for index, branch in enumerate(pending):
+        grouped[(branch.protocol, int(branch.query_ids.shape[1]))].append(index)
+
+    scores: list[ProtocolScore | None] = [None] * len(pending)
+    stats = _BatchExecutionStats()
+    for (protocol, _), indices in grouped.items():
+        for offset in range(0, len(indices), batch_limit):
+            batch_indices = indices[offset : offset + batch_limit]
+            query_batch = [pending[index].query_ids for index in batch_indices]
+            if protocol == "answer_token":
+                batch_scores = adapter.score_answer_token_batch(
+                    prefix_ids,
+                    prefix_cache,
+                    query_batch,
+                )
+            elif protocol == "sequence":
+                batch_scores = adapter.score_sequence_batch(
+                    prefix_ids,
+                    prefix_cache,
+                    query_batch,
+                    config.protocols,
+                )
+            elif protocol in {"reason", "pause"}:
+                batch_scores = adapter.score_with_compute_batch(
+                    prefix_ids,
+                    prefix_cache,
+                    query_batch,
+                    config.protocols,
+                    mode=protocol,
+                )
+            else:
+                raise ValueError(f"unsupported protocol: {protocol}")
+            if len(batch_scores) != len(batch_indices):
+                raise RuntimeError("response batch returned the wrong number of scores")
+            for index, score in zip(batch_indices, batch_scores, strict=True):
+                scores[index] = score
+            stats.response_batches += 1
+            stats.max_observed_batch_size = max(
+                stats.max_observed_batch_size,
+                len(batch_indices),
+            )
+
+    if any(score is None for score in scores):
+        raise RuntimeError("one or more response branches were not scored")
+    rows = [
+        {**branch.row, **score.to_dict()}
+        for branch, score in zip(pending, scores, strict=True)
+        if score is not None
+    ]
+    return rows, stats
+
+
 def capture_records(
     config: RateComputeRunConfig,
     panels: dict[int, RealPanel],
@@ -59,6 +146,8 @@ def capture_records(
         adapter = RateComputeModelAdapter(spec, config.capture)
         observed_revision = getattr(adapter.model.config, "_commit_hash", None) or spec.revision
         model_rows_before = len(records)
+        model_batch_stats = _BatchExecutionStats()
+        completed_prefixes = 0
         for n_entities, panel in panels.items():
             split = splits[n_entities]
             smooth = config.panel.oracle_smoothing
@@ -81,6 +170,7 @@ def capture_records(
                     if prefix_output.past_key_values is None:
                         raise RuntimeError(f"{spec.model_id} did not return a KV cache")
 
+                    pending: list[_PendingBranch] = []
                     for source, target in ordered_edges(n_entities):
                         query = _basis_query(source, target, n_entities, config)
                         query_ids = adapter._query_ids(
@@ -88,43 +178,31 @@ def capture_records(
                             world_statement=world_statement,
                             prefix_ids=prefix_ids,
                         )
-                        if config.protocols.basis_protocol == "sequence":
-                            score = adapter.score_sequence(
-                                prefix_ids,
-                                prefix_output.past_key_values,
-                                query_ids,
-                                config.protocols,
-                            )
-                        else:
-                            score = adapter.score_with_compute(
-                                prefix_ids,
-                                prefix_output.past_key_values,
-                                query_ids,
-                                config.protocols,
-                                mode=config.protocols.basis_protocol,
-                            )
                         truth_hard = int(edge[source, target])
                         truth = float(smooth + truth_hard * (1.0 - 2.0 * smooth))
-                        records.append(
-                            {
-                                "schema": "frank_eq_rate_compute_record_v1",
-                                "world_id": public_world_id,
-                                "panel_world_id": world.world_id,
-                                "entity_count": n_entities,
-                                "split": split[world.world_id],
-                                "model_id": spec.model_id,
-                                "model_index": model_index,
-                                "renderer_id": renderer_id,
-                                "kind": "basis",
-                                "family": "edge",
-                                "item_id": edge_fact_index(n_entities, source, target),
-                                "source": source,
-                                "target": target,
-                                "protocol": config.protocols.basis_protocol,
-                                "truth": truth,
-                                "truth_hard": truth_hard,
-                                **score.to_dict(),
-                            }
+                        pending.append(
+                            _PendingBranch(
+                                row={
+                                    "schema": "frank_eq_rate_compute_record_v1",
+                                    "world_id": public_world_id,
+                                    "panel_world_id": world.world_id,
+                                    "entity_count": n_entities,
+                                    "split": split[world.world_id],
+                                    "model_id": spec.model_id,
+                                    "model_index": model_index,
+                                    "renderer_id": renderer_id,
+                                    "kind": "basis",
+                                    "family": "edge",
+                                    "item_id": edge_fact_index(n_entities, source, target),
+                                    "source": source,
+                                    "target": target,
+                                    "protocol": config.protocols.basis_protocol,
+                                    "truth": truth,
+                                    "truth_hard": truth_hard,
+                                },
+                                protocol=config.protocols.basis_protocol,
+                                query_ids=query_ids,
+                            )
                         )
 
                     for operation_index, frozen_operation in enumerate(panel.operations):
@@ -149,11 +227,6 @@ def capture_records(
                                     world_statement=world_statement,
                                     prefix_ids=prefix_ids,
                                 )
-                                score = adapter.score_answer_token(
-                                    prefix_ids,
-                                    prefix_output.past_key_values,
-                                    query_ids,
-                                )
                             elif protocol == "sequence":
                                 query = render_sequence_query(
                                     operation, n_entities, config.protocols
@@ -162,12 +235,6 @@ def capture_records(
                                     query,
                                     world_statement=world_statement,
                                     prefix_ids=prefix_ids,
-                                )
-                                score = adapter.score_sequence(
-                                    prefix_ids,
-                                    prefix_output.past_key_values,
-                                    query_ids,
-                                    config.protocols,
                                 )
                             elif protocol in {"reason", "pause"}:
                                 query = render_deliberation_query(
@@ -178,41 +245,62 @@ def capture_records(
                                     world_statement=world_statement,
                                     prefix_ids=prefix_ids,
                                 )
-                                score = adapter.score_with_compute(
-                                    prefix_ids,
-                                    prefix_output.past_key_values,
-                                    query_ids,
-                                    config.protocols,
-                                    mode=protocol,
-                                )
                             else:
                                 raise ValueError(f"unsupported protocol: {protocol}")
-                            records.append(
-                                {
-                                    "schema": "frank_eq_rate_compute_record_v1",
-                                    "world_id": public_world_id,
-                                    "panel_world_id": world.world_id,
-                                    "entity_count": n_entities,
-                                    "split": split[world.world_id],
-                                    "model_id": spec.model_id,
-                                    "model_index": model_index,
-                                    "renderer_id": renderer_id,
-                                    "kind": "target",
-                                    "family": operation.family,
-                                    "item_id": operation.operation_id,
-                                    "operation_id": operation.operation_id,
-                                    "polarity": float(operation.polarity),
-                                    "fact_args": list(operation.fact_args),
-                                    "residual_args": list(operation.residual_args),
-                                    "structural_support_size": operation_support_size(
-                                        operation, n_entities
-                                    ),
-                                    "protocol": protocol,
-                                    "truth": truth,
-                                    "truth_hard": truth_hard,
-                                    **score.to_dict(),
-                                }
+                            pending.append(
+                                _PendingBranch(
+                                    row={
+                                        "schema": "frank_eq_rate_compute_record_v1",
+                                        "world_id": public_world_id,
+                                        "panel_world_id": world.world_id,
+                                        "entity_count": n_entities,
+                                        "split": split[world.world_id],
+                                        "model_id": spec.model_id,
+                                        "model_index": model_index,
+                                        "renderer_id": renderer_id,
+                                        "kind": "target",
+                                        "family": operation.family,
+                                        "item_id": operation.operation_id,
+                                        "operation_id": operation.operation_id,
+                                        "polarity": float(operation.polarity),
+                                        "fact_args": list(operation.fact_args),
+                                        "residual_args": list(operation.residual_args),
+                                        "structural_support_size": operation_support_size(
+                                            operation, n_entities
+                                        ),
+                                        "protocol": protocol,
+                                        "truth": truth,
+                                        "truth_hard": truth_hard,
+                                    },
+                                    protocol=protocol,
+                                    query_ids=query_ids,
+                                )
                             )
+                    prefix_records, prefix_batch_stats = _score_pending_branches(
+                        adapter,
+                        prefix_ids,
+                        prefix_output.past_key_values,
+                        pending,
+                        config,
+                    )
+                    records.extend(prefix_records)
+                    model_batch_stats.add(prefix_batch_stats)
+                    completed_prefixes += 1
+                    if completed_prefixes % 16 == 0:
+                        progress = {
+                            "model_id": spec.model_id,
+                            "completed_prefixes": completed_prefixes,
+                            "records": len(records) - model_rows_before,
+                            "response_batches": model_batch_stats.response_batches,
+                        }
+                        telemetry.log({"capture_progress": progress})
+                        print(
+                            "capture progress "
+                            f"model={spec.model_id} prefixes={completed_prefixes} "
+                            f"records={progress['records']} "
+                            f"batches={progress['response_batches']}",
+                            flush=True,
+                        )
         model_metadata.append(
             {
                 "model_index": model_index,
@@ -221,7 +309,20 @@ def capture_records(
                 "revision_requested": spec.revision,
                 "revision_observed": observed_revision,
                 "answer_labels": list(adapter.answer_labels),
+                "answer_token_ids": [int(value) for value in adapter.answer_ids],
+                "semantic_candidates": adapter.candidate_metadata(config.protocols),
                 "records": len(records) - model_rows_before,
+                "branch_execution": {
+                    "mode": "kv_reuse",
+                    "kv_cloned_response_branches": len(records) - model_rows_before,
+                    "exact_replay_response_branches": 0,
+                    "exact_prefix_continuity_checks": len(records) - model_rows_before,
+                    "allow_exact_replay_fallback": False,
+                    "configured_branch_batch_size": config.capture.branch_batch_size,
+                    "response_batches": model_batch_stats.response_batches,
+                    "max_observed_batch_size": model_batch_stats.max_observed_batch_size,
+                    "exclusive_cache_batching": True,
+                },
             }
         )
         telemetry.log(
@@ -238,13 +339,24 @@ def capture_records(
     return records, model_metadata
 
 
-def _calibration_key(row: dict[str, Any]) -> tuple[str, int, str, str, str]:
+def _calibration_key(
+    row: dict[str, Any],
+) -> tuple[str, int, str, str, str, int | None]:
+    """Return the frozen model-local calibration scope.
+
+    Public-basis coordinates receive independent calibrators because each typed
+    edge slot can have a distinct stable answer-channel orientation. Direct
+    target responses remain pooled within operation family and protocol.
+    """
+
+    kind = str(row["kind"])
     return (
         str(row["model_id"]),
         int(row["entity_count"]),
-        str(row["kind"]),
+        kind,
         str(row["family"]),
         str(row["protocol"]),
+        int(row["item_id"]) if kind == "basis" else None,
     )
 
 
@@ -253,7 +365,7 @@ def calibrate_records(
 ) -> dict[str, Any]:
     """Fit model-local affine readout calibration on training worlds only."""
 
-    groups: dict[tuple[str, int, str, str, str], list[int]] = defaultdict(list)
+    groups: dict[tuple[str, int, str, str, str, int | None], list[int]] = defaultdict(list)
     for index, row in enumerate(records):
         groups[_calibration_key(row)].append(index)
     artifact: dict[str, Any] = {
@@ -273,9 +385,7 @@ def calibrate_records(
         )
         group_scores = np.asarray([records[index]["log_odds_score"] for index in indices])
         for index, probability in zip(indices, calibrator.predict(group_scores), strict=True):
-            records[index]["calibrated_probability"] = float(
-                np.clip(probability, 1e-7, 1.0 - 1e-7)
-            )
+            records[index]["calibrated_probability"] = float(np.clip(probability, 1e-7, 1.0 - 1e-7))
         artifact["groups"]["|".join(map(str, key))] = {
             "rows": len(indices),
             "train_rows": len(train_indices),
@@ -304,7 +414,5 @@ def calibrate_records(
             int(row["item_id"]),
         )
         row["prior_probability"] = priors[key]
-    artifact["operation_priors"] = {
-        "|".join(map(str, key)): value for key, value in priors.items()
-    }
+    artifact["operation_priors"] = {"|".join(map(str, key)): value for key, value in priors.items()}
     return artifact

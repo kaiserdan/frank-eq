@@ -1,0 +1,23 @@
+{
+  "capture_job": "frank-eq-rc0-rate-compute-olivia-20260811c",
+  "capture_source_archive_sha256": "c24ae1eb86ae4957d0bf54bbc7458c07a2a70e91a39f8e6371259260a3d6de48",
+  "files": {
+    "AUDIT.md": "5aaed75f409c34cd37475cf6509284957a3c6940d55fef33e08b6e4f251c88e0",
+    "artifact_manifest.json": "66e3bd8a0b498100c6870fbb6c074dbf8842167933be21fbe0c634d928a438e7",
+    "calibration.json": "d22d950e27003a8c3ed3482aba3630a7bf73af00f698dbd1fd615aa27d8d0a99",
+    "config.yaml": "f5edfb7fd3e98f47eb65d0add3eaf8ed2d820ac223972e05e1d0cd4daeb31268",
+    "decision.json": "85105b44a5cfb40bfa28910dbf0cb3dc455a6d69c3d5b84994e333f1d5bf5c2d",
+    "direct_protocol_selection.json": "68c2da7b30df2c6a541799aeabb25040137fa607a0effcd518f7990ef14c46e6",
+    "independent_audit.json": "aec2fb1fe44ab7d39f2cae7cb6e5380e355e261c8e913ae1bf3b923d1f4944fe",
+    "metrics.json": "1029d1717fbd1a7b47ec3b7c099929c52b2be3841bdf73c6ee3c8f7cee70d07a",
+    "models.json": "abc10c4200f7e760b3442d42d4c11471e2ac1e188e2b70c431a741f3628f3a20",
+    "recovery_provenance.json": "18b0a3117a75d10099d7c0dcd6c1521465709df9fd01be459e510510b289d8ff",
+    "run_manifest.json": "3588a6ac2f2823569321e3a44f16c507622d36b6e06a25cf7653e8c9a71e7ab7",
+    "run_summary.json": "cfda9eba9f402cd82b32fc7b39928504975a738e844ab751dd20b6ca8e3a7312",
+    "verification_summary.json": "45d470b4a986f8baa1fda5323548146fa4548407fbf21c534a427a40bbb99607",
+    "workflow_status.json": "4ddca86ab904b095690cd41d4e8f7c73e5aadf48e0112db8e4c5212552d14f42"
+  },
+  "recovery_job": "frank-eq-rc0-rate-compute-olivia-20260811d-recovery",
+  "recovery_source_archive_sha256": "84ea411228c3df35bcf198d0ca1e83f116d1fe921b6e10cef26106a1fb26c0b7",
+  "schema": "frank_eq_rate_compute_evidence_manifest_v1"
+}

@@ -134,6 +134,8 @@ class RateComputeRunConfig:
             raise ValueError("rate--compute audit requires literal kv_reuse branching")
         if self.capture.allow_exact_replay_fallback:
             raise ValueError("rate--compute audit forbids exact-replay fallback")
+        if self.capture.branch_batch_size < 1:
+            raise ValueError("capture.branch_batch_size must be positive")
         if self.capture.max_length < 256:
             raise ValueError("capture.max_length must be at least 256")
 
@@ -231,9 +233,7 @@ def load_rate_compute_config(path: str | Path) -> RateComputeRunConfig:
     config = RateComputeRunConfig(
         run_name=raw.get("run_name", defaults.run_name),
         output_dir=raw.get("output_dir", defaults.output_dir),
-        require_revision_pins=raw.get(
-            "require_revision_pins", defaults.require_revision_pins
-        ),
+        require_revision_pins=raw.get("require_revision_pins", defaults.require_revision_pins),
         models=[_construct(RealModelSpec, item) for item in raw.get("models", [])],
         capture=_construct(CaptureConfig, raw.get("capture")),
         panel=_construct(RateComputePanelConfig, raw.get("panel")),
