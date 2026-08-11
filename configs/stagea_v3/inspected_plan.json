@@ -60,7 +60,7 @@
     "src/frank_eq/real_config.py": "8f2e1fd9e66dc735909fa6bc8ecce1e6c09d66913b7e53b03017c1083e4e1d71",
     "src/frank_eq/schemas.py": "70bb8144ba70088cd875f48464570604d0ee9eff4d4b5f6fd3c6ff6400735e80",
     "src/frank_eq/stagea_v3/__init__.py": "f485a683cf4fef4ec8953398aca5aa66aa7578883354ac207945b12ff668df40",
-    "src/frank_eq/stagea_v3/access.py": "cc7e80411a063c9cee4ca4a143fb2fb761fca30eb1de8be1b8283ec668e51691",
+    "src/frank_eq/stagea_v3/access.py": "cd6350ffd851bb9c57e388f5504a1f3a1f7559818a8dcabfbc5d468cc7b1cdda",
     "src/frank_eq/stagea_v3/baselines.py": "0ced0ca21dd015a1c960e0c845ce6a3ec68bbe9fe87819807d7a6d91ce3bef92",
     "src/frank_eq/stagea_v3/capture.py": "ff9da649bae217a12ed1bfa212c92f78d7bbaca8c593560984509ac16f1b11fe",
     "src/frank_eq/stagea_v3/compiler.py": "64e14f43d38e6c18fa7f77bc4fd7e4a76a48615bd0c4e4286dd7ec34c0329ee0",
@@ -81,7 +81,7 @@
     "src/frank_eq/utils.py": "0f1ef6d5fb615e57c184c099c70af2f758f2825b476310517484b5f837909fba",
     "src/frank_eq/workflow.py": "ec3518799e51de3c3b661e55733b31647931f6b3ec47dc4b0b9150ddf5fde255"
   },
-  "implementation_tree_sha256": "2ab50a10d985ee5fc83e36deea3d50ad044d7719212c1f5a744eedc368815513",
+  "implementation_tree_sha256": "2fe48197d1ce513d21b95fbf87ecfbf9c69c481407b122298e4e330cc2141014",
   "model_order": [
     "qwen3-4b",
     "qwen3-8b",
@@ -92,7 +92,7 @@
     "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
     "qwen3-8b": "b968826d9c46dd6066d109eabc6255188de91218"
   },
-  "plan_sha256": "727348ba7b5be57ea3b566054ae0e5597ec8342a615f550fa8432ef7fcc34176",
+  "plan_sha256": "694408c6b9e6b63b68c393605da30c194b0feaad19fb737e93b091d5ff505922",
   "protected_authorization": {
     "human_sequence_authorized_on": "2026-08-12",
     "new_receiver_world_access_authorized": false,
