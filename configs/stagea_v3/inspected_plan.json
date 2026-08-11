@@ -1,0 +1,175 @@
+{
+  "compiler": {
+    "attention_blocks": 2,
+    "channels": [
+      "semantic",
+      "behavioral"
+    ],
+    "model_dim": 192,
+    "seeds": [
+      211,
+      223,
+      227
+    ]
+  },
+  "config_path": "configs/stagea_v3/real_olivia_v3.yaml",
+  "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+  "held_model_task_opened": false,
+  "implementation_files": {
+    "configs/stagea_v3/real_olivia_v3.yaml": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+    "configs/stagea_v3/registration.json": "a6aaffd600569ce04fb0be179f1638b93044f2a8e027605b5981b613df4edc27",
+    "docs/20_STAGEA_V3_PROTOCOL.md": "5fca0b0bb34a812d05a3ba753ddbaa91e96c78f78f3b2a5ae2a401fca9f7ccef",
+    "olivia/quickstart.sh": "aa72ec2c066f067ccfc86faa10dd1c3398ab040f582dfa4e191f1c6841421f1c",
+    "olivia/stagea_v3.slurm": "89c735ffc891a18743b59349da63d38160bbf8202cd20337736ef782ce7b23e3",
+    "src/frank_eq/__init__.py": "ebd5d278994bf8d2b97c3c70956ee161472ceeb5067add9488f36abbc766fba0",
+    "src/frank_eq/cli.py": "1aeaaa34f7d843ab7f8567ebe537b00cf63922e52a3ba35f9d8dd10f6349d607",
+    "src/frank_eq/cluster.py": "838d053551cb4ee4534dbd5dad422272e90bc2b3c31912ed77ee8228b3ad5ab6",
+    "src/frank_eq/config.py": "5e830ed265de34cf9fbf951832836fde07907b20d7c72069e85c61a1b35ed86c",
+    "src/frank_eq/contracts.py": "c111c21554489e1f69cbec3d3ae01818fe03a659770b90527e3e4137c166ff88",
+    "src/frank_eq/data/__init__.py": "722c94b6882cad03949318dbe1f5144778643eae71670f19b6bbf8a65b8fa0a7",
+    "src/frank_eq/data/hf_backend.py": "e70a8b7a3efd67f60e45a529b83543f367e08a047874c475f48c25a84df39172",
+    "src/frank_eq/data/real.py": "4443f429d7ff11d568007255d88a297a6bf2880048ec4adac6c9c2317e4c96f6",
+    "src/frank_eq/data/real_panel.py": "f32aec789522ee68f6a2bbbd7410973b970672ebefdb17cf6136ae37bcfed206",
+    "src/frank_eq/data/split.py": "a07481a3504defb3dd1b41538cf053235a4e5e8e6faf40c7ce2212f32492fe05",
+    "src/frank_eq/data/synthetic.py": "810e5b59d54e6a4da7f2bd6c74630e18a04d3516f89831822acf72d4e05e93cd",
+    "src/frank_eq/diagnostics.py": "56046d13e2236217cc7fcca7623970fb73294d42428b7d4967ad5a17e1f3e096",
+    "src/frank_eq/evaluation/__init__.py": "68c04661b369981b21c3ecf1bdc49c96e6492324a914fe3dff11664da2e46093",
+    "src/frank_eq/evaluation/bootstrap.py": "a7340c015a9b4c18e1e784507c7bb67275c65f1f8319fd4b49f09c47062a787e",
+    "src/frank_eq/evaluation/evaluator.py": "180be70a2d9503aa27326749ec50bd0beeb6b3804c64fcb05ff0bfe3e98d26b6",
+    "src/frank_eq/evaluation/gates.py": "727ccb4b609f909cc281e20908e6b3b309190e9a33392e29d07df0ca59485285",
+    "src/frank_eq/evaluation/metrics.py": "65551c84dc4e86f40466ce7dd0e1ad1485753ba12edc36f3265c7d6c01453886",
+    "src/frank_eq/models/__init__.py": "1d0cc6f79af71b71c4b7d646c150ebe8591e3a79483d930238cfb501ab8f879b",
+    "src/frank_eq/models/baselines.py": "74f6cf020caf30e69f14b6eea3070fbc0ad4092d9a59205de069333d1bdae03a",
+    "src/frank_eq/models/encoder.py": "711ad622ae8523136abeb03fe6a4603276c04a570ded56cf314d68f783d67080",
+    "src/frank_eq/models/layers.py": "6ae5663c0d4ffaaefc72e9b27daf9217defa135d8b3fd56364154b6b6c2d3b8c",
+    "src/frank_eq/packet/__init__.py": "1484d1adf50523a5ec715a1731df8967c9e6a1793e86eea10f074d6b06b1889a",
+    "src/frank_eq/packet/quantization.py": "f1e0cf3d63bf2c60ee1b8a1fce2234be58f4e7490531637dcaee2287d6fa904b",
+    "src/frank_eq/packet/schema.py": "056d27b5f2f057cc56ec38a5fb9b9c05a22fc35d981d9cf0689cd1ebbdb13ab8",
+    "src/frank_eq/packet/selector.py": "a327bfbc845fa2f57e999aecf08c15df794b6b459060ad7b740173a7e5c9845c",
+    "src/frank_eq/qualification.py": "8f0dc1543705ad25532c4c3483961b19070449e8504a5cb96c60dc11f344ec11",
+    "src/frank_eq/rate_compute/__init__.py": "fee565dfcc56dbb128a7c678837ad4754e01d1263f25cf4a8db0f10860f0a245",
+    "src/frank_eq/rate_compute/backend.py": "3b8abdd908f3beee5664eb7d21f94368d2308d58b5d003d5751106a654eaf3b7",
+    "src/frank_eq/rate_compute/calibration.py": "3a7eedb14eb151824d4b91f3162c381cd925389d86ad92bc7419de21089cfaf6",
+    "src/frank_eq/rate_compute/compile.py": "b92a71a1affe3d76969e007793e3ef94da340f93b2bf8aa4c101687a373678bb",
+    "src/frank_eq/rate_compute/config.py": "e4c3ad7702a8a9dc6c9a5addff6b6b94822184207b8efb40a93717dd3a376a3e",
+    "src/frank_eq/rate_compute/decision.py": "6faf0f65648695bdebc2c450295ed16bd7e87b7b90b7a107516048c26cc67993",
+    "src/frank_eq/rate_compute/logic.py": "586019ba174f9537cf516c7787371d9fef54ed368ce391cb48d667d3b4570765",
+    "src/frank_eq/rate_compute/metrics.py": "556e0a59dea8c0694e408e2e01c08d7dc65ed05836d3c7dc6cdbd61187e41c7a",
+    "src/frank_eq/rate_compute/records.py": "c786641f9e0d535c7c6115ad3f8c35c99919e10f03458d7145309e78373a1261",
+    "src/frank_eq/rate_compute/workflow.py": "17ae6617b3ce87f9c780eee4a2f9c785580f5a0c03ba65437216ecac30342c3b",
+    "src/frank_eq/real_config.py": "8f2e1fd9e66dc735909fa6bc8ecce1e6c09d66913b7e53b03017c1083e4e1d71",
+    "src/frank_eq/schemas.py": "70bb8144ba70088cd875f48464570604d0ee9eff4d4b5f6fd3c6ff6400735e80",
+    "src/frank_eq/stagea_v3/__init__.py": "f485a683cf4fef4ec8953398aca5aa66aa7578883354ac207945b12ff668df40",
+    "src/frank_eq/stagea_v3/access.py": "cc7e80411a063c9cee4ca4a143fb2fb761fca30eb1de8be1b8283ec668e51691",
+    "src/frank_eq/stagea_v3/baselines.py": "0ced0ca21dd015a1c960e0c845ce6a3ec68bbe9fe87819807d7a6d91ce3bef92",
+    "src/frank_eq/stagea_v3/capture.py": "ff9da649bae217a12ed1bfa212c92f78d7bbaca8c593560984509ac16f1b11fe",
+    "src/frank_eq/stagea_v3/compiler.py": "64e14f43d38e6c18fa7f77bc4fd7e4a76a48615bd0c4e4286dd7ec34c0329ee0",
+    "src/frank_eq/stagea_v3/config.py": "0bf4ba564bb99fe4241c1d8840ac288b5443f0a9dc35e79bc6b171ba93604fe4",
+    "src/frank_eq/stagea_v3/controls.py": "d34978dceff16d86306aba352ad7b47b916ff41970a93e7f4a088d670673d039",
+    "src/frank_eq/stagea_v3/evaluation.py": "6db15d8975a379b9278f2f40ff6874048cc7917eb9604e76e8279457f673bd91",
+    "src/frank_eq/stagea_v3/packet.py": "4c9d5925a8ace85ac348e3345478c3f86ec76fef2fb5f667d56a8708f001e156",
+    "src/frank_eq/stagea_v3/panel.py": "3ad63b78b67ccae30b3ad8c29410ae2b44debee64a8fc38aeb3c19a80d07b49c",
+    "src/frank_eq/stagea_v3/predictions.py": "86a5132a2a67980375564b3e6bb5ab908ec6889d7d46af67b6312de110fdafaa",
+    "src/frank_eq/stagea_v3/training.py": "ed51705d18614619850aaa3062a527cf8fe971ebffd0614aef37b905173c8c52",
+    "src/frank_eq/stagea_v3/verify.py": "26e05dfe638587d4fd4c66c35cec1e49107935759e48c530e5aca09bf054dc4e",
+    "src/frank_eq/stagea_v3/workflow.py": "4f60df03d0b1026723a2b0b4a87bdd16bfa47f12fd21a9e266a420a9ca88d6d9",
+    "src/frank_eq/stageq.py": "c37c976839858bbab72257875e7475cc1341b347a793cb1b7a3fb8add3bafb5f",
+    "src/frank_eq/telemetry.py": "032206c41433cc5392b6a8b3d05b91a777a4ec90821b3bd21f69069c7131c4bd",
+    "src/frank_eq/training/__init__.py": "ac6bc77a25317490778953b3adb791f44076739a0d567e15e8bf3e3facf5cca4",
+    "src/frank_eq/training/objectives.py": "95c6ec7c51a8913cd4f7d69a88e6c44bf41fb891808bf101e66ecb975ee200fa",
+    "src/frank_eq/training/trainer.py": "143e5d4cf79f897af5d832c9e9302dd4341b4076ad211eedfc7006b5c316abc7",
+    "src/frank_eq/utils.py": "0f1ef6d5fb615e57c184c099c70af2f758f2825b476310517484b5f837909fba",
+    "src/frank_eq/workflow.py": "ec3518799e51de3c3b661e55733b31647931f6b3ec47dc4b0b9150ddf5fde255"
+  },
+  "implementation_tree_sha256": "ce8a0db1e2363d8ff35883eb43fd5cba607ffc5f1a66bc2b761177e09b4ed63d",
+  "model_order": [
+    "qwen3-4b",
+    "qwen3-8b",
+    "qwen3-14b-held"
+  ],
+  "model_revisions": {
+    "qwen3-14b-held": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+    "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "qwen3-8b": "b968826d9c46dd6066d109eabc6255188de91218"
+  },
+  "plan_sha256": "c71c1b26840324f14159ae1afbe04b176d4edb8e93887f0af0d4a1dcea11d0af",
+  "protected_authorization": {
+    "human_sequence_authorized_on": "2026-08-12",
+    "new_receiver_world_access_authorized": false,
+    "one_representation_run_authorized_after_protocol_and_implementation_commits": true,
+    "paper_claim_authorized": false,
+    "receiver_execution_authorized": false,
+    "receiver_protocol_draft_requires_machine_pass": true,
+    "scientific_claim_authorized": false
+  },
+  "protocol_version": "stagea-v3-2",
+  "rows": {
+    "test": {
+      "4": {
+        "logical_queries_per_model": 10368,
+        "logical_queries_per_prefix": 108,
+        "prefixes_per_model": 96,
+        "renderers": 3,
+        "worlds": 32
+      },
+      "6": {
+        "logical_queries_per_model": 12096,
+        "logical_queries_per_prefix": 126,
+        "prefixes_per_model": 96,
+        "renderers": 3,
+        "worlds": 32
+      }
+    },
+    "train": {
+      "4": {
+        "logical_queries_per_model": 17280,
+        "logical_queries_per_prefix": 108,
+        "prefixes_per_model": 160,
+        "renderers": 2,
+        "worlds": 80
+      },
+      "6": {
+        "logical_queries_per_model": 20160,
+        "logical_queries_per_prefix": 126,
+        "prefixes_per_model": 160,
+        "renderers": 2,
+        "worlds": 80
+      }
+    },
+    "validation": {
+      "4": {
+        "logical_queries_per_model": 5184,
+        "logical_queries_per_prefix": 108,
+        "prefixes_per_model": 48,
+        "renderers": 2,
+        "worlds": 24
+      },
+      "6": {
+        "logical_queries_per_model": 6048,
+        "logical_queries_per_prefix": 126,
+        "prefixes_per_model": 48,
+        "renderers": 2,
+        "worlds": 24
+      }
+    }
+  },
+  "run_name": "frank-eq-stagea-v3-olivia",
+  "schema": "frank_eq_stagea_v3_dry_run_plan_v1",
+  "stage_order": [
+    "prepare",
+    "founder_fit",
+    "freeze",
+    "held_onboard",
+    "evaluate"
+  ],
+  "test_access": {
+    "count": 1,
+    "requires_founder_freeze": true,
+    "requires_held_freeze": true
+  },
+  "test_panel_instantiated": false,
+  "totals": {
+    "logical_source_queries": 213408,
+    "prefix_forwards": 1824
+  }
+}
