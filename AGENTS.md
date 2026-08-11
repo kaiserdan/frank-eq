@@ -3,227 +3,188 @@
 ## Mission
 
 Frank-EQ studies whether an LLM state formed before an operation is revealed can
-be compiled into a public, future-defined operational state. The project is not
-an unrestricted hidden-state architecture search. Every experiment must answer
-a frozen question, preserve information boundaries, and fail closed.
+be compiled into a public operational interface. The project is not an
+unrestricted hidden-state architecture search. Every experiment must answer a
+frozen question, preserve information boundaries, and fail closed.
 
 ## Reading order
 
 1. `README.md`
 2. `HANDOFF.md`
-3. `evidence/real_stagea_lumi_v2/REVIEW.md`
-4. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
-5. `docs/15_STAGEA_V2_REVIEW_AND_STAGEQ.md`
-6. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
-7. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
-8. `docs/05_GATES_AND_STOP_RULES.md`
-9. `docs/12_STAGEA_V1_AUDIT_AND_V2_PROTOCOL.md`
+3. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
+4. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
+5. `evidence/real_stagea_lumi_v2/REVIEW.md`
+6. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
+7. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
+8. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
+9. `docs/05_GATES_AND_STOP_RULES.md`
 10. `docs/09_IMPLEMENTATION_STATUS.md`
 11. `docs/10_DECISION_LOG.md`
+12. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
 
-For cluster work, also read
-`.agents/skills/lumi-cluster-runner/SKILL.md` or
-`.agents/skills/olivia-cluster-runner/SKILL.md`.
+For cluster work, also read the matching runner skill under `.agents/skills/`.
 
 ## Current authority
 
-Synthetic Stage 0 passes as implementation evidence.
+Synthetic Stage 0 passes as implementation evidence only. Real Stage-A v1 and
+v2 are exact-pipeline negatives. Stage Q and its scale screens are development
+negatives. None authorizes another latent run, receiver execution, or a claim.
 
-Real Stage-A v1 and v2-1 are adopted exact-pipeline negatives. Their machine
-`STOP_OR_REVISE_STAGE0` decisions remain authoritative. Neither permits receiver
-execution or a scientific claim.
-
-The only authorized next execution is **Stage Q**, a development-only paired
-source-competence qualification:
+The only authorized next execution is **Stage R / RC0**:
 
 ```text
-configs/stageq/real_lumi_legacy_chat.yaml
-configs/stageq/real_lumi_chat_turn.yaml
+configs/rate_compute/real_lumi_rc0.yaml
+configs/rate_compute/real_olivia_rc0.yaml
 ```
 
-Run `cache,validate` only. Then use:
+Run exactly:
 
-```bash
-python scripts/qualify_real_cache.py --cache <cache> --out <out>
-python scripts/compare_stageq_caches.py \
-  --baseline-cache <legacy-cache> \
-  --candidate-cache <chat-turn-cache> \
-  --out <out>
+```text
+--stages audit
 ```
 
-Stage-Q worlds are permanently development-only. Source qualification permits
-one Stage-A protocol to be drafted, not run. Prompt-effect identification is a
-separate secondary conclusion.
+RC0 is development-only. A passing machine decision permits drafting one
+Stage-A v3 protocol; it never permits launching that protocol.
 
-## Interpretation invariants
+## Scientific invariants
 
 ### Preserve exact negatives without broadening them
 
-V2-1 failed under a legacy chat construction where the cached prefix ended at
-an assistant-generation marker and the operation was appended as assistant
-content. Do not call this a general native-chat falsification.
+The completed shared-head, final-token architectures failed. Do not generalize
+those results to the full KV/runtime state or to all possible operational
+interfaces.
 
-V1 and v2 used different panel seeds. Their point estimates are not a paired
-prompt ablation and must not be described as unchanged within noise.
+### A future signature includes an explicit compute contract
+
+Use:
+
+```text
+Sigma_M(h; k, c) = p_M(y | h, k, c)
+```
+
+where `c` records the answer/readout protocol and any post-reveal token budget.
+Do not call immediate next-token A/B probability the model's full future
+computational competence.
+
+### Separate calibration, computation, and information
+
+RC0 distinguishes:
+
+- historical A/B answer-token logits;
+- semantic candidate-sequence likelihood;
+- generated reasoning tokens;
+- matched fixed pause tokens;
+- public-basis sufficiency.
+
+A train-only local calibration map may reverse a stable answer-label inversion.
+That is a readout correction, not evidence that the state was absent.
 
 ### State formation precedes operation reveal
 
-No operation, query, target, or future label may affect the captured state.
+No operation, query, target, candidate answer, or future label may influence the
+captured prefix state. `chat_turn` must verify exact token-prefix continuity.
 
-For `prompt_format: chat_turn`, the legal prefix is:
+### Use exclusive KV branching
 
-```text
-system contract
-user world statement
-assistant fixed acknowledgement
-```
+KV reuse and replay differed materially on the LUMI stack. RC0 requires cloned
+KV branches and forbids replay fallback or mixed caches.
 
-The operation is revealed afterward as a new user turn. The backend must verify
-that the cached token IDs are an exact prefix of the full branch conversation.
+### Public coordinates must be identifiable
 
-Historical `prompt_format: chat` is reproduction-only.
+A shared private vector is not a public interface. RC0's directed-edge basis is
+gauge fixed by semantics: coordinate `(i,j)` always means the same fact.
 
-### Competence is a prerequisite, not an evaluator side metric
+A future Stage-A compiler may be completely model local. Only typed coordinate
+meaning, packet schema, and executor are shared.
 
-Before representation training or claim-bearing test access, frozen founder
-branches must beat an operation-wise training prior on validation worlds. The
-paired unit is a world. Both the aggregate and every individual founder must
-have a non-negative lower grouped 95% bound.
+### A separating basis is an upper-bound diagnostic, not yet a latent interface
 
-A point estimate computed after test evaluation does not satisfy this rule.
+RC0 queries the source model for every basis coordinate after capture. This
+interactive tomography tests information and composition. It is not a one-shot
+hidden-state compiler and cannot support a communication claim.
 
-### Prompt attribution is secondary to source qualification
+Stage-A v3, only after RC0 passes, must learn a source-local token/slot compiler
+that emits the same typed coordinates without runtime basis interrogation.
 
-The paired chat-turn-minus-legacy interval tests whether corrected turn
-placement improved competence. It controls only a prompt-effect claim. A source
-contract can qualify without this effect if aggregate and every founder
-competence gate pass; in that case no prompt-mechanism claim is allowed.
+### Behavioral and semantic channels are distinct
 
-### Paired comparisons require identical panels
+`model_signatures` describe what the frozen source will do. Oracle facts describe
+external correctness. Do not merge them into one unnamed loss or claim.
 
-A prompt/capture contrast is valid only when the two caches have identical:
+### Consumer compute is part of the interface
 
-- model roster and revisions;
-- world IDs and renderer IDs;
-- fact, residual, and oracle labels;
-- operation registry and descriptors;
-- split manifest;
-- branch execution mode.
+A message can be useful only relative to an executor and compute budget. Report
+both message/rate and downstream computation; do not compare a reusable basis
+against a single direct answer without the amortization boundary.
 
-`src/frank_eq/stageq.py` fails closed on any mismatch.
+### World is the paired independent unit
 
-### Self-future state and oracle semantics are distinct
-
-`model_signatures` describe what the frozen source model will do.
-`signatures` describe externally correct outcomes. They require separate metric
-namespaces and may support different conclusions.
-
-Do not call an oracle-supervised world decoder a pure operational quotient.
-
-### The complete causal state is not the final-token residual
-
-V1/v2 captured only final-token residual vectors at three depths while literal
-branching used the complete KV cache. Negative results cannot be generalized to
-the full runtime state.
-
-Any future capture census must be selected on development worlds and frozen
-before fresh Stage-A test access.
-
-### KV reuse and exact replay are non-equivalent on the current stack
-
-The observed branch-probability differences reached approximately 0.11. A pure
-KV cache is internally valid; exact replay must not be substituted or mixed.
-The 0.33 stack threshold is an alarm, not an equivalence claim.
-
-### Complete local compilers, public semantics
-
-Only public coordinate meaning and the interrogator need to be shared.
-`model.public_head_scope: local` gives each model a complete local compiler.
-It remains dormant until source competence passes and one fresh Stage-A
-registration is frozen.
-
-### Invariance requires specificity
-
-Renderer cosine cannot pass alone. Positive world retrieval/wrong-world margin
-and low model identity leakage are required to rule out collapse.
+All model, renderer, operation, basis, and protocol rows for a world remain in
+one development split. Calibration and protocol selection use training worlds;
+validation worlds are scored only after those choices are frozen.
 
 ### Declared controls are not discoveries
 
-Density and reciprocity are printed in the current prefixes. Their residual
-readability is a declared-global control, not evidence for hidden irreducible
-operational state.
+Density and reciprocity labels are printed in the historical graph prefixes.
+They remain controls and cannot promote RC0.
 
 ### Machine artifacts outrank prose
 
 Use evidence in this order:
 
-1. frozen protocol/config and source identity;
-2. causal cache validation;
-3. machine qualification or decision;
-4. grouped metric artifact;
-5. predictions/training history;
+1. frozen config and source identity;
+2. causal branch and cache validation;
+3. machine decision;
+4. world-grouped metrics;
+5. response artifacts and calibration state;
 6. W&B telemetry;
 7. prose.
 
-## Stage-Q operating procedure
+## RC0 execution procedure
 
-1. Confirm the two Stage-Q configs differ only in run identity, telemetry tags,
-   and `capture.prompt_format`.
-2. Submit `cache,validate` for the legacy condition.
-3. Submit `cache,validate` for the `chat_turn` condition.
-4. Fetch and verify both caches.
-5. Run single-cache qualification on each.
-6. Run the paired cache comparison.
-7. Adopt a small hash-verified evidence package before drawing a conclusion.
-8. Do not run quotient training or evaluation for either Stage-Q config.
+1. Run local compile, lint, tests, and both repository validators.
+2. Inspect the content-addressed dry-run plan.
+3. Launch one frozen config with `--stages audit`.
+4. Fetch and verify the run.
+5. Run `scripts/verify_rate_compute_run.py`.
+6. Audit the basis, compiled, answer-channel, and reasoning/pause strata.
+7. Adopt only a compact hash-verified evidence package.
+8. Do not launch Stage-A v3 merely because RC0 passes.
 
-The source contract qualifies only if:
+## RC0 decision tree
 
-```text
-aggregate chat-turn competence lower95 >= 0
-every founder chat-turn competence lower95 >= 0
-```
+### `BASIS_READOUT_NOT_QUALIFIED`
 
-A prompt-placement effect is identified separately only if:
+Stop the current source/task contract. Do not enlarge the latent architecture.
 
-```text
-paired chat-turn-minus-legacy improvement lower95 >= 0
-```
+### `PUBLIC_BASIS_NOT_SUFFICIENT`
 
-Every Stage-Q output must keep test, receiver, new-outcome, and claim
-authorization false.
+Inspect only structured calibration or executor assumptions on development data.
 
-## Decision tree
+### `NO_COMPOSITION_ADVANTAGE_OVER_TRAIN_SELECTED_DIRECT_BASELINE`
 
-### Source competence fails
+The basis is a diagnostic, not the constructive paper result.
 
-Screen stronger checkpoints or a simpler task on development-only caches. Do
-not change the quotient architecture yet.
+### `PUBLIC_BASIS_COMPOSITION_SUPPORTED`
 
-### Source competence passes, prompt effect does not
+Draft exactly one fresh Stage-A v3 protocol using:
 
-The candidate may be frozen as the source prerequisite for one Stage-A protocol.
-Make no prompt-mechanism claim.
-
-### Source competence and prompt effect both pass
-
-Draft exactly one fresh Stage-A registration and record the prompt-effect result
-as secondary evidence. The registration must use:
-
-- fresh claim-bearing worlds;
-- complete model-local compilers;
-- behavioral self-future and oracle semantic channels separated;
-- a development-selected, frozen capture stream;
+- new claim-bearing worlds;
+- a new unopened held sender;
+- complete model-local token/slot compilers;
+- separate behavioral and oracle-semantic channels;
+- token/text/direct/continuous/oracle baselines;
 - receiver work still locked.
 
 ## Prohibited shortcuts
 
-- Running `diagnose`, `train`, or `eval` with Stage-Q configs.
-- Reusing Stage-Q worlds as confirmation worlds.
-- Calling legacy `chat` a proper user-operation turn.
-- Comparing unpaired v1/v2 estimates as a prompt ablation.
-- Selecting models, tasks, layers, or thresholds on a new Stage-A test role.
-- Rescuing the shared-head oracle quotient with unregistered variants.
+- Another scale-only Stage-Q screen under immediate A/B readout.
+- Running RC0 with anything other than `audit`.
+- Tuning RC0 thresholds after validation outcomes are read.
+- Treating runtime basis probing as latent communication.
+- Reusing RC0 worlds or exposed models as future held/confirmation roles.
+- Resuming the shared-head oracle quotient.
+- Mapping directly into a receiver hidden state as the primary method.
 - Mixing replay and KV branches.
 - Jointly training sender and receiver in the primary condition.
 - Committing generated caches, checkpoints, `.agents/state/`, API keys, or W&B
@@ -237,7 +198,8 @@ ruff check src scripts tests
 pytest -q
 bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
+python scripts/validate_rate_compute.py
 ```
 
-For any behavioral change, add a focused test and update the relevant protocol
-before running an outcome-bearing job.
+For any behavioral change, add a focused test and update the frozen protocol
+before an experiment is launched.
