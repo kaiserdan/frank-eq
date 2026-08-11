@@ -143,6 +143,11 @@ Density and reciprocity remain printed controls and cannot promote the method.
 The hard composition families are `mutual`, `compose`, `compare_outdegree`, and
 `counterfactual_add`.
 
+Operation sampling uses the independent frozen seed `2026081213` plus entity
+count and is identical across train, validation, and test roles. Role seeds vary
+worlds only. This binding was added in a pre-implementation completeness
+amendment before any panel or model outcome existed.
+
 ## 7. Causal capture contract
 
 - `chat_turn` state formation with `enable_thinking: false`;

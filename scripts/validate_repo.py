@@ -334,6 +334,8 @@ def main() -> int:
     if observed_v3_models != expected_v3_models:
         raise SystemExit("Stage-A v3 model roles or revisions changed")
     panel_roles = v3_registration.get("panel", {}).get("roles", {})
+    if v3_registration.get("panel", {}).get("operation_seed") != 2026081213:
+        raise SystemExit("Stage-A v3 operation registry seed changed")
     observed_v3_seeds = [
         panel_roles.get(role, {}).get("seed") for role in ("train", "validation", "test")
     ]

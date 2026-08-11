@@ -34,6 +34,7 @@ access:
 panel:
   entity_counts: [4, 6]
   n_target_operations: 32
+  operation_seed: 2026081213
   operation_families:
     [lookup, inverse, mutual, compose, compare_outdegree, counterfactual_add, density, reciprocity]
   hard_families: [mutual, compose, compare_outdegree, counterfactual_add]

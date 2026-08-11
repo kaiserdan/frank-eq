@@ -1,7 +1,7 @@
 {
   "files": {
-    "configs/stagea_v3/real_olivia_v3.yaml": "7867c71377246273797e0b20c814f744393e46da8ae1ceb2811280824e0f80d9",
-    "docs/20_STAGEA_V3_PROTOCOL.md": "5787223c52bfd7c342c0602deb04078ab771293e0899b86c868ab09ae83f796f"
+    "configs/stagea_v3/real_olivia_v3.yaml": "dbe976b39dc5995ab571e056c44dbeec69a5e0865553b3b544438f961721b8d7",
+    "docs/20_STAGEA_V3_PROTOCOL.md": "347deefdf7ece6cdff634932837b8bb5e65e21fcc8b7a0136e6d2a3179587956"
   },
   "frozen_on": "2026-08-12",
   "protocol_version": "stagea-v3-1",
