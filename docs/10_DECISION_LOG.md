@@ -170,3 +170,9 @@
 - **Receipt:** hash all 18 resolved snapshot files totaling `29,552,613,776` bytes. An independent filesystem check finds eight referenced weight shards and zero missing or broken files.
 - **Exposure:** the receipt records `task_prompts_executed=0` and `model_inference_executed=false`. The checkpoint is staged but remains task-unopened; only the ordered v3 workflow may expose it to registered train worlds after the founder freeze.
 - **Plan:** the inspected plan remains byte-exact at internal SHA-256 `c71c1b26...11d0af`; cache staging changed none of its 64 bound implementation files.
+
+## 2026-08-12 — reject a source archive containing fetched cluster artifacts
+
+- **Detected in dry run:** the first v3 launcher plan produced deterministic source archive `f6103904...28b53`, but inspection found five ignored `.cluster-results/` receipt/log files inside it. No remote outcome job was created, no model was loaded, and no panel or test access existed.
+- **Disposition:** reject that dry run and source archive. They are not eligible for submission even though the fetched files contain no credential or scientific outcome.
+- **Repair:** add `.cluster-results` to the launcher's explicit archive exclusion set and a regression test. Because `src/frank_eq/cluster.py` is bound by the inspected plan, this pre-outcome engineering repair invalidates plan `c71c1b26...11d0af` and requires a freshly generated, inspected, separately committed plan.

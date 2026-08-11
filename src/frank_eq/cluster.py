@@ -87,6 +87,7 @@ _EXCLUDED_PARTS = {
     ".pytest_cache",
     ".ruff_cache",
     ".mypy_cache",
+    ".cluster-results",
 }
 _EXCLUDED_SUFFIXES = {".pt", ".pth", ".ckpt", ".pyc", ".pyo"}
 

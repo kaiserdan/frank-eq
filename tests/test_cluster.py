@@ -156,6 +156,17 @@ def test_source_archive_ignores_local_agent_state(tmp_path: Path) -> None:
     assert first["file_count"] == 1
 
 
+def test_source_archive_ignores_fetched_cluster_results(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    (root / "src").mkdir(parents=True)
+    (root / "src" / "x.py").write_text("x = 1\n")
+    fetched = root / ".cluster-results" / "olivia" / "receipt.json"
+    fetched.parent.mkdir(parents=True)
+    fetched.write_text('{"generated": true}\n')
+    archive = build_source_archive(root, tmp_path / "archives")
+    assert archive["file_count"] == 1
+
+
 def test_olivia_recovery_plan_hashes_only_a_failed_predecision_audit(
     tmp_path: Path,
 ) -> None:
