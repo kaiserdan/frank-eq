@@ -84,10 +84,25 @@ claim-bearing test access, receiver execution, or a scientific claim.
 
 ## Current implementation boundary
 
-Stage-A v3-1 is frozen but not yet implemented. Its protocol and machine-readable
-config define an all-token residual compiler, separate semantic and behavioral
-channels, fresh panels, an unopened Qwen3-14B held sender, delayed test creation,
-and the full baseline/rate/compute contract.
+Stage-A v3-1 is frozen and its causal core is now implemented. The first
+implementation checkpoint adds:
+
+- hash-bound config loading for the exact registration;
+- deterministic role-fresh panels with one complexity-specific operation
+  registry shared across train, validation, and test;
+- a canonical six-entity coordinate registry whose four-entity condition uses
+  the correct 12-coordinate induced subgraph;
+- model-local all-token cross-attention compilers with independent semantic and
+  behavioral parameter sets; and
+- a process-locked access ledger that refuses test creation until founder and
+  held manifests both exist and verify, then consumes the registered access
+  exactly once.
+
+Focused tests cover deterministic panels, renderer completeness, padding
+isolation, coordinate masking, channel disjointness, manifest hash drift, and
+early or repeated test access. Capture, fitting, baselines, grouped reduction,
+the machine decision, and cluster entrypoints remain to be completed before the
+implementation freeze and dry run.
 
 The user authorized implementation and one representation run after the
 registration and implementation are separately committed and validated. No

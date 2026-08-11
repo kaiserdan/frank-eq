@@ -115,3 +115,11 @@
 - **Interpretation boundary:** because a deterministic parser can recover the explicit controlled graph, the text and oracle controls are ceilings. A pass can establish one-shot public compilation and held onboarding, not hidden-over-text information or receiver utility.
 - **Next gate:** only `STAGEA_V3_REPRESENTATION_QUALIFIED` may authorize drafting a receiver protocol. Receiver execution, receiver-world access, and scientific claims remain locked.
 - **Pre-implementation completeness amendment:** before any v3 panel or model outcome existed, bind operation sampling to independent seed `2026081213` plus entity count so train, validation, and test share the same frozen operation registry. Role seeds vary worlds only; this restores the protocol's stated operation-holdout contract and does not change the hypothesis or gate.
+
+## 2026-08-12 — implement the Stage-A v3 causal core
+
+- **Panels:** implement independent role-specific world panels while deriving all roles' operation instances from the frozen complexity-specific operation seed. Public world IDs cannot collide across roles or complexities.
+- **Compiler:** implement one model-local all-token token/slot resampler per channel. Four-entity rows activate the canonical induced 12-coordinate subset of the fixed 30-coordinate six-entity registry; the compiler API contains no operation input.
+- **Channel separation:** semantic and behavioral modules are constructed independently, expose disjoint parameter identities, and retain separate forward namespaces.
+- **Access:** add an OS-locked, hash-bound stage ledger. Test-panel creation is rejected until both founder and held freeze manifests validate, consumes exactly one access, and records every sanctioned test-file open.
+- **Verification:** focused tests pass for panel determinism/freshness, unseen-renderer completeness, coordinate selection, padding isolation, channel disjointness, early/repeated access rejection, and artifact-hash drift. This is an implementation checkpoint, not permission to stage the held model or inspect test data.

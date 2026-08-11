@@ -163,11 +163,13 @@ A pass authorizes protocol drafting, not execution.
 
 ## Next action
 
-Implement the frozen v3-1 config without changing its scientific fields. Add
-focused tests for causal access, delayed test creation, the independent channel
-compilers, all baselines, grouped gates, and protected authorization fields.
-Commit and validate that implementation before staging the unopened held model
-or launching the representation workflow.
+Complete the frozen v3-1 implementation without changing its scientific fields.
+The causal core now includes fresh panels, canonical typed-coordinate masking,
+independent semantic and behavioral token/slot compilers, and process-locked
+one-time test access. Capture, fitting, all registered baselines, grouped gates,
+protected decision fields, and cluster entrypoints still require implementation
+and focused tests. Commit and validate the complete implementation before
+staging the unopened held model or launching the representation workflow.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every
