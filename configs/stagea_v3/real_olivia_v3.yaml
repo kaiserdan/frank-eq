@@ -1,0 +1,185 @@
+# Frozen Stage-A v3-1 representation registration.
+# Protocol: docs/20_STAGEA_V3_PROTOCOL.md
+# Any scientific change after this file is committed creates a new registration.
+schema: frank_eq_stagea_v3_registration_v1
+protocol_version: stagea-v3-1
+run_name: frank-eq-stagea-v3-olivia
+output_dir: runs/stagea-v3-olivia
+require_revision_pins: true
+
+models:
+  - model_id: qwen3-4b
+    hf_id: Qwen/Qwen3-4B
+    role: founder
+    revision: 1cfa9a7208912126459214e8b04321603b3df60c
+    task_exposure: rc0_development
+  - model_id: qwen3-8b
+    hf_id: Qwen/Qwen3-8B
+    role: founder
+    revision: b968826d9c46dd6066d109eabc6255188de91218
+    task_exposure: rc0_development
+  - model_id: qwen3-14b-held
+    hf_id: Qwen/Qwen3-14B
+    role: held
+    revision: 40c069824f4251a91eefaf281ebe4c544efd3e18
+    task_exposure: unopened
+
+access:
+  allowed_stage_sequence: [prepare, founder_fit, freeze, held_onboard, evaluate]
+  test_creation_after_freeze: true
+  test_access_count: 1
+  receiver_access: false
+  prior_world_seeds_forbidden: [1729, 20260809, 20260810, 20260811, 20260812, 20260813, 20260820]
+
+panel:
+  entity_counts: [4, 6]
+  n_target_operations: 32
+  operation_families:
+    [lookup, inverse, mutual, compose, compare_outdegree, counterfactual_add, density, reciprocity]
+  hard_families: [mutual, compose, compare_outdegree, counterfactual_add]
+  oracle_smoothing: 0.02
+  min_operation_positive_fraction: 0.12
+  max_operation_positive_fraction: 0.88
+  max_generation_attempts: 1024
+  roles:
+    train: {worlds_per_complexity: 80, seed: 2026081201}
+    validation: {worlds_per_complexity: 24, seed: 2026081202}
+    test: {worlds_per_complexity: 32, seed: 2026081203}
+  renderers:
+    fit: [natural, adjacency]
+    test_seen: [natural, adjacency]
+    test_unseen: [canonical_edge_list]
+
+capture:
+  prompt_format: chat_turn
+  chat_template_kwargs: {enable_thinking: false}
+  normalized_depths: [0.25, 0.50, 0.75, 1.00]
+  sequence_scope: all_unpadded_prefix_tokens
+  max_length: 2048
+  compiler_max_tokens: 512
+  dtype: bfloat16
+  serialized_dtype: float32
+  device: cuda
+  branch_mode: kv_reuse
+  allow_exact_replay_fallback: false
+  branch_batch_size: 8
+  local_files_only: true
+  answer_token_pairs:
+    - [" A", " B"]
+    - ["A", "B"]
+    - [" No", " Yes"]
+  branch_seed: 1729
+
+teacher_protocol:
+  candidate_false: " false"
+  candidate_true: " true"
+  basis_protocol: sequence
+  direct_protocols: [sequence, reason, pause]
+  rationale_budget: 32
+  pause_budget: 32
+  pause_text: " ..."
+  reasoning_instruction: >-
+    Work through the registered operation before answering. Use the following
+    scratchpad positions to reason, and do not give the final answer yet.
+  final_cue: "\nNow give only the final truth value."
+  sequence_cue: "\nGive only the final truth value. Answer:"
+  normalize_sequence_log_likelihood: true
+
+compiler:
+  channels: [semantic, behavioral]
+  share_trainable_parameters_across_channels: false
+  share_trainable_parameters_across_models: false
+  model_dim: 192
+  attention_heads: 6
+  attention_blocks: 2
+  feedforward_dim: 384
+  dropout: 0.10
+  coordinate_order: row_major_non_diagonal
+  use_depth_embeddings: true
+  use_normalized_position_embeddings: true
+  semantic_loss: binary_cross_entropy
+  behavioral_loss: soft_label_brier
+  renderer_consistency_weight: 0.10
+  seeds: [211, 223, 227]
+  primary_aggregation: equal_weight_mean_logit
+
+training:
+  epochs: 120
+  onboarding_epochs: 120
+  worlds_per_batch: 4
+  learning_rate: 0.0003
+  onboarding_learning_rate: 0.0003
+  weight_decay: 0.0001
+  gradient_clip: 1.0
+  patience: 20
+  early_stop_metric: channel_brier_plus_0.10_renderer_variance
+  calibrate_primary_compiler: false
+  direct_calibration_scope: train_only_model_complexity_family_protocol
+  direct_protocol_selection_scope: train_only
+
+baselines:
+  required:
+    - train_edge_prior
+    - token_id_resampler
+    - final_token_public_mlp
+    - historical_continuous_quotient
+    - train_selected_direct_protocol
+    - interactive_basis
+    - deterministic_text_parser
+    - rate_matched_canonical_text
+    - oracle_basis
+    - shuffled_world_packet
+    - wrong_world_packet
+    - zero_packet
+  learned_parameter_tolerance_fraction: 0.05
+
+packet:
+  schema: FRANK-EQ/TYPED-EDGE-PACKET/1
+  primary_quantization_bits: 4
+  quantization_frontier_bits: [1, 2, 4, 8]
+  count_framing_separately: true
+  checksum: sha256
+
+evaluation:
+  bootstrap_replicates: 2000
+  bootstrap_seed: 2026081291
+  world_grouped: true
+  ece_bins: 10
+  amortized_operation_counts: [1, 4, 16, 32]
+  report_compiler_seeds_individually: true
+  report_model_complexity_renderer_strata: true
+  report_hard_family_strata: true
+
+gates:
+  semantic_basis_brier_gain_lower95_strict_gt: 0.0
+  max_semantic_basis_brier: 0.10
+  min_semantic_balanced_accuracy_lower95: 0.75
+  unseen_renderer_brier_gain_lower95_strict_gt: 0.0
+  behavioral_brier_gain_lower95_strict_gt: 0.0
+  compiled_prior_gain_lower95_strict_gt: 0.0
+  compiled_direct_gain_lower95_strict_gt: 0.0
+  hard_family_gain_lower95_strict_gt: 0.0
+  activation_over_token_gain_lower95_strict_gt: 0.0
+  activation_over_final_token_gain_lower95_strict_gt: 0.0
+  activation_over_continuous_gain_lower95_min: 0.0
+  min_cross_model_retrieval_lower95: 0.75
+  min_wrong_world_margin_lower95: 0.05
+  max_model_identity_accuracy_over_chance: 0.20
+  min_held_sender_gain_retention: 0.70
+  min_four_bit_compiled_gain_retention: 0.95
+  max_oracle_hard_mismatches: 0
+
+authorization:
+  human_sequence_authorized_on: "2026-08-12"
+  one_representation_run_authorized_after_protocol_and_implementation_commits: true
+  receiver_protocol_draft_requires_machine_pass: true
+  receiver_execution_authorized: false
+  new_receiver_world_access_authorized: false
+  scientific_claim_authorized: false
+  paper_claim_authorized: false
+
+logging:
+  wandb:
+    enabled: true
+    project: frank-eq-stagea
+    tags: [real-stagea, stagea-v3, one-shot-compiler, typed-basis, olivia]

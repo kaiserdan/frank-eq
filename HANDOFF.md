@@ -1,6 +1,6 @@
 # Frank-EQ handoff
 
-Snapshot: 2026-08-11
+Snapshot: 2026-08-12
 
 ## Current authority
 
@@ -25,9 +25,15 @@ capture:  frank-eq-rc0-rate-compute-olivia-20260811c  Slurm 1874736
 recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
 ```
 
-The only newly authorized work is drafting exactly one fresh Stage-A v3
-registration. No RC0 rerun, v3 launch, claim-bearing test access, receiver
-execution, or scientific claim is authorized.
+Stage-A v3-1 is now frozen in `docs/20_STAGEA_V3_PROTOCOL.md` and
+`configs/stagea_v3/real_olivia_v3.yaml`. The user explicitly authorized the
+sequential next steps on 2026-08-12. Implementation and exactly one
+outcome-bearing representation run may proceed only after separate protocol and
+implementation commits, a green repository validation, and an inspected
+content-addressed dry run.
+
+Receiver execution, receiver-world access, and scientific-claim authorization
+remain false. A v3 pass may authorize drafting a receiver protocol only.
 
 ## What the accumulated results establish
 
@@ -157,16 +163,22 @@ A pass authorizes protocol drafting, not execution.
 
 ## Next action
 
-Draft one Stage-A v3 registration from the observed
-`PUBLIC_BASIS_COMPOSITION_SUPPORTED` branch. Do not submit a cluster job. Freeze
-the complete protocol and its information, rate, compute, split, calibration,
-baseline, and stop-rule contracts before seeking separate launch authority.
+Implement the frozen v3-1 config without changing its scientific fields. Add
+focused tests for causal access, delayed test creation, the independent channel
+compilers, all baselines, grouped gates, and protected authorization fields.
+Commit and validate that implementation before staging the unopened held model
+or launching the representation workflow.
+
+The primary compiler must make zero post-capture source queries. The graph text
+parser is an oracle-like ceiling because the controlled prefix states every
+edge; a pass cannot support a hidden-over-text claim.
 
 Full operator instructions:
 
 ```text
 docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md
 docs/19_STAGE_R_CLUSTER_RUNBOOK.md
+docs/20_STAGEA_V3_PROTOCOL.md
 ```
 
 ## Decision after RC0

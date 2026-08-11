@@ -11,17 +11,18 @@ frozen question, preserve information boundaries, and fail closed.
 
 1. `README.md`
 2. `HANDOFF.md`
-3. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
-4. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
-5. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
-6. `evidence/real_stagea_lumi_v2/REVIEW.md`
-7. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
-8. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
-9. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
-10. `docs/05_GATES_AND_STOP_RULES.md`
-11. `docs/09_IMPLEMENTATION_STATUS.md`
-12. `docs/10_DECISION_LOG.md`
-13. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
+3. `docs/20_STAGEA_V3_PROTOCOL.md`
+4. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
+5. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
+6. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
+7. `evidence/real_stagea_lumi_v2/REVIEW.md`
+8. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
+9. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
+10. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
+11. `docs/05_GATES_AND_STOP_RULES.md`
+12. `docs/09_IMPLEMENTATION_STATUS.md`
+13. `docs/10_DECISION_LOG.md`
+14. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
 
 For cluster work, also read the matching runner skill under `.agents/skills/`.
 
@@ -37,9 +38,34 @@ recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
 result:   PUBLIC_BASIS_COMPOSITION_SUPPORTED
 ```
 
-The only authorized next work is drafting exactly one fresh Stage-A v3 protocol.
-No RC0 rerun, v3 launch, another latent run, claim-bearing test access, receiver
-execution, or scientific claim is authorized.
+Stage-A v3-1 is frozen in `docs/20_STAGEA_V3_PROTOCOL.md` and
+`configs/stagea_v3/real_olivia_v3.yaml`. On 2026-08-12 the user explicitly
+authorized the sequential next steps, with documented results and regular
+commits. Exactly one v3 representation run is authorized only after:
+
+1. this registration is committed;
+2. its implementation is separately committed;
+3. compile, lint, tests, shell checks, and all repository validators pass;
+4. the content-addressed dry run matches the frozen config.
+
+Receiver execution, receiver-world access, and a scientific claim remain locked.
+A v3 machine pass may authorize drafting, not running, a receiver protocol.
+
+## Stage-A v3 execution boundary
+
+- Use fresh train/validation/test seeds `2026081201/02/03` only.
+- The held `Qwen/Qwen3-14B` revision
+  `40c069824f4251a91eefaf281ebe4c544efd3e18` remains task-unopened until
+  founder compilers and the public executor are hash-frozen.
+- Test panels must not exist before founder and held freeze manifests.
+- The primary compiler consumes all prefix-token residuals at four frozen depths
+  and makes zero post-capture source queries.
+- Semantic and behavioral compilers have separate model-local parameters,
+  losses, checkpoints, and metrics.
+- Run every registered token/text/direct/continuous/interactive/oracle control.
+- World-group all intervals and report message rate with source and consumer
+  compute.
+- A valid gate miss is terminal for v3-1.
 
 ## Scientific invariants
 
@@ -185,6 +211,9 @@ Draft exactly one fresh Stage-A v3 protocol using:
 - Jointly training sender and receiver in the primary condition.
 - Committing generated caches, checkpoints, `.agents/state/`, API keys, or W&B
   credentials.
+- Creating or opening Stage-A v3 test panels before both compiler freeze steps.
+- Selecting a compiler seed, baseline, calibrator, threshold, renderer, or
+  checkpoint after v3 test access.
 
 ## Development validation
 

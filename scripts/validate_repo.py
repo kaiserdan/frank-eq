@@ -8,6 +8,8 @@ import json
 import sys
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 sys.path.insert(0, str(SRC))
@@ -39,6 +41,9 @@ REQUIRED = (
     "docs/15_STAGEA_V2_REVIEW_AND_STAGEQ.md",
     "docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md",
     "docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md",
+    "docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md",
+    "docs/19_STAGE_R_CLUSTER_RUNBOOK.md",
+    "docs/20_STAGEA_V3_PROTOCOL.md",
     "docs/OLIVIA.md",
     "docs/LUMI.md",
     "configs/stage0/synthetic_smoke.yaml",
@@ -51,6 +56,8 @@ REQUIRED = (
     "configs/stageq/real_lumi_chat_turn.yaml",
     "configs/stageq/real_lumi_screen_strong.yaml",
     "configs/stageq/real_lumi_screen_8b.yaml",
+    "configs/stagea_v3/real_olivia_v3.yaml",
+    "configs/stagea_v3/registration.json",
     "scripts/qualify_real_cache.py",
     "scripts/compare_stageq_caches.py",
     "scripts/audit_rate_compute_result.py",
@@ -309,6 +316,63 @@ def main() -> int:
     ):
         raise SystemExit("RC0 evidence does not preserve artifact-only recovery provenance")
 
+    v3_path = ROOT / "configs/stagea_v3/real_olivia_v3.yaml"
+    v3_registration = yaml.safe_load(v3_path.read_text())
+    if v3_registration.get("schema") != "frank_eq_stagea_v3_registration_v1":
+        raise SystemExit("Stage-A v3 registration has the wrong schema")
+    if v3_registration.get("protocol_version") != "stagea-v3-1":
+        raise SystemExit("Stage-A v3 protocol version changed")
+    expected_v3_models = {
+        "qwen3-4b": ("founder", "1cfa9a7208912126459214e8b04321603b3df60c"),
+        "qwen3-8b": ("founder", "b968826d9c46dd6066d109eabc6255188de91218"),
+        "qwen3-14b-held": ("held", "40c069824f4251a91eefaf281ebe4c544efd3e18"),
+    }
+    observed_v3_models = {
+        row["model_id"]: (row["role"], row["revision"])
+        for row in v3_registration.get("models", [])
+    }
+    if observed_v3_models != expected_v3_models:
+        raise SystemExit("Stage-A v3 model roles or revisions changed")
+    panel_roles = v3_registration.get("panel", {}).get("roles", {})
+    observed_v3_seeds = [
+        panel_roles.get(role, {}).get("seed") for role in ("train", "validation", "test")
+    ]
+    if observed_v3_seeds != [2026081201, 2026081202, 2026081203]:
+        raise SystemExit("Stage-A v3 fresh panel seeds changed")
+    access = v3_registration.get("access", {})
+    if access.get("test_creation_after_freeze") is not True or access.get(
+        "test_access_count"
+    ) != 1:
+        raise SystemExit("Stage-A v3 delayed one-time test access changed")
+    v3_authorization = v3_registration.get("authorization", {})
+    if v3_authorization.get(
+        "one_representation_run_authorized_after_protocol_and_implementation_commits"
+    ) is not True:
+        raise SystemExit("Stage-A v3 representation authorization changed")
+    if any(
+        v3_authorization.get(key) is not False
+        for key in (
+            "receiver_execution_authorized",
+            "new_receiver_world_access_authorized",
+            "scientific_claim_authorized",
+            "paper_claim_authorized",
+        )
+    ):
+        raise SystemExit("Stage-A v3 registration opens a protected authorization")
+
+    v3_manifest = json.loads((ROOT / "configs/stagea_v3/registration.json").read_text())
+    if v3_manifest.get("schema") != "frank_eq_stagea_v3_registration_manifest_v1":
+        raise SystemExit("Stage-A v3 registration manifest has the wrong schema")
+    v3_registered_files = v3_manifest.get("files", {})
+    if set(v3_registered_files) != {
+        "configs/stagea_v3/real_olivia_v3.yaml",
+        "docs/20_STAGEA_V3_PROTOCOL.md",
+    }:
+        raise SystemExit("Stage-A v3 registration manifest file set changed")
+    for relative_path, expected_hash in v3_registered_files.items():
+        if sha256_file(ROOT / relative_path) != expected_hash:
+            raise SystemExit(f"Stage-A v3 registration hash changed: {relative_path}")
+
     gitignore = (ROOT / ".gitignore").read_text()
     if ".agents/state/" not in gitignore:
         raise SystemExit(".agents/state/ must remain ignored")
@@ -326,6 +390,7 @@ def main() -> int:
                 "real_stagea_v2_decision": v2_decision["decision"],
                 "stage_r_rc0_diagnosis": rc0_decision["diagnosis"],
                 "stage_r_rc0_recovery": "artifact_only",
+                "stagea_v3_protocol": v3_registration["protocol_version"],
                 "stageq_pair_registered": True,
                 "stageq_cache_only_enforced": True,
             },

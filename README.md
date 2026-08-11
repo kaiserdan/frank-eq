@@ -144,14 +144,20 @@ configs/rate_compute/real_olivia_rc0.yaml
 
 No RC0 rerun is authorized.
 
-## Current next step: one Stage-A v3 registration draft
+## Current next step: implement frozen Stage-A v3-1
 
-The RC0 pass authorizes drafting exactly one fresh protocol. It does not
-authorize launching it. The registration must freeze fresh claim-bearing worlds,
-a new unopened held sender, complete model-local token/slot compilers into the
-typed public basis, separate behavioral and oracle-semantic channels, and the
-registered token/text/direct/continuous/oracle baselines. Receiver execution
-remains locked.
+The one-shot compiler protocol is now frozen in
+`docs/20_STAGEA_V3_PROTOCOL.md` and
+`configs/stagea_v3/real_olivia_v3.yaml`. It uses fresh train/validation/test
+panels, Qwen3-4B and Qwen3-8B founders, an unopened Qwen3-14B held sender,
+separate semantic and behavioral token/slot compilers, and the complete
+token/text/direct/continuous/interactive/oracle baseline set.
+
+The user authorized sequential implementation and one representation run on
+2026-08-12. The registration and implementation must be committed separately,
+all validators must pass, and both compiler freeze manifests must exist before
+the test panel is created. Receiver execution remains locked behind a v3 machine
+pass and a separate frozen receiver protocol.
 
 ## Frozen RC0 decision tree
 

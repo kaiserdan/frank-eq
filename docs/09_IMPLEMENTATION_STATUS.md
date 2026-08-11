@@ -1,6 +1,6 @@
 # Implementation status
 
-Snapshot: 2026-08-11
+Snapshot: 2026-08-12
 
 ## Completed evidence
 
@@ -84,10 +84,15 @@ claim-bearing test access, receiver execution, or a scientific claim.
 
 ## Current implementation boundary
 
-The only authorized continuation is drafting one fresh Stage-A v3 registration.
-No cluster execution is authorized. The registration must freeze the compiler,
-new worlds, unopened held sender, channels, baselines, rate/compute accounting,
-world-grouped analysis, and hard stop rules before launch authority is considered.
+Stage-A v3-1 is frozen but not yet implemented. Its protocol and machine-readable
+config define an all-token residual compiler, separate semantic and behavioral
+channels, fresh panels, an unopened Qwen3-14B held sender, delayed test creation,
+and the full baseline/rate/compute contract.
+
+The user authorized implementation and one representation run after the
+registration and implementation are separately committed and validated. No
+receiver execution is authorized. A v3 pass may authorize drafting one receiver
+protocol; a miss is terminal for v3-1.
 
 ## Intended architecture after a pass
 

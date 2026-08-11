@@ -19,16 +19,19 @@ Read `AGENTS.md`, `HANDOFF.md`,
 `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`, and
 `docs/19_STAGE_R_CLUSTER_RUNBOOK.md` before acting.
 
-Stage-A v1/v2 and Stage-Q are preserved negatives. The only authorized execution
-is RC0:
+Stage-A v1/v2 and Stage-Q are preserved negatives. RC0 is an adopted development
+pass. Stage-A v3-1 is frozen in:
 
 ```text
-configs/rate_compute/real_lumi_rc0.yaml
-configs/rate_compute/real_olivia_rc0.yaml
+docs/20_STAGEA_V3_PROTOCOL.md
+configs/stagea_v3/real_olivia_v3.yaml
 ```
 
-Run exactly `--stages audit`. A pass permits drafting one Stage-A v3 protocol;
-it never permits running it.
+The user authorized sequential implementation and one representation run on
+2026-08-12. The registration and implementation must be separately committed,
+all local validators must pass, and the content-addressed plan must be inspected
+before launch. Receiver execution remains locked behind a v3 machine pass and a
+separate frozen protocol.
 
 ## Mandatory RC0 workflow
 
@@ -92,6 +95,17 @@ Draft one Stage-A v3 protocol with fresh worlds, a new unopened held sender,
 model-local token/slot compilers into the typed basis, separate behavioral and
 semantic channels, and strong text/token/direct/continuous/oracle baselines.
 Receiver execution remains locked.
+
+## Stage-A v3-1 sequencing
+
+1. Commit the frozen registration.
+2. Implement without changing scientific fields; add focused tests.
+3. Commit the green implementation.
+4. Stage the exact unopened held checkpoint without task queries.
+5. Dry-run and launch the registered representation stages.
+6. Require founder and held freeze manifests before test-panel creation.
+7. Fetch, verify, independently recompute, document, and commit the outcome.
+8. Follow the machine decision; never skip directly to receiver execution.
 
 ## Prohibited actions
 

@@ -10,9 +10,14 @@ recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
 result:   PUBLIC_BASIS_COMPOSITION_SUPPORTED
 ```
 
-No new scientific execution is authorized. RC0 permits drafting exactly one
-Stage-A v3 protocol; it does not permit an RC0 rerun, v3 launch, receiver
-execution, claim-bearing test access, or a paper claim.
+Stage-A v3-1 is now frozen and the user authorized one sequential representation
+run after separate registration and implementation commits, full validation,
+held-checkpoint staging, and an inspected content-addressed dry run. See
+`docs/20_STAGEA_V3_PROTOCOL.md`.
+
+This does not authorize an RC0 rerun, receiver execution, receiver-world access,
+or a paper claim. V3 test panels must not be created before founder and held
+compiler freeze manifests.
 
 ## Runtime contract
 
