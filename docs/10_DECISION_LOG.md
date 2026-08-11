@@ -176,3 +176,9 @@
 - **Detected in dry run:** the first v3 launcher plan produced deterministic source archive `f6103904...28b53`, but inspection found five ignored `.cluster-results/` receipt/log files inside it. No remote outcome job was created, no model was loaded, and no panel or test access existed.
 - **Disposition:** reject that dry run and source archive. They are not eligible for submission even though the fetched files contain no credential or scientific outcome.
 - **Repair:** add `.cluster-results` to the launcher's explicit archive exclusion set and a regression test. Because `src/frank_eq/cluster.py` is bound by the inspected plan, this pre-outcome engineering repair invalidates plan `c71c1b26...11d0af` and requires a freshly generated, inspected, separately committed plan.
+
+## 2026-08-12 — refresh the plan after archive hygiene repair
+
+- **Implementation repair:** commit `29e2cc3` adds only the fetched-artifact archive exclusion and its regression; it changes no Stage-A estimand, model path, panel, compiler, baseline, gate, or access order.
+- **Replacement plan:** commit `8bc57fb` replaces the invalidated plan. The refreshed internal hash is `727348ba...34176`, the plan-file hash is `947e3dd5...9e320`, and the implementation-tree hash is `2ab50a10...15513` across the same 64 bound files.
+- **Inspection:** exact model revisions, config hash, complete stage order, 1,824 prefix forwards, 213,408 logical source queries, one delayed test access, and all protected authorization fields are unchanged. The plan still records `held_model_task_opened=false` and `test_panel_instantiated=false`.
