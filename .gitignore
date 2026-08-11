@@ -19,6 +19,7 @@ checkpoints/
 
 # Local agent/cluster operational state
 .agents/state/
+.cluster-results/
 
 # Secrets and local environment
 .env
