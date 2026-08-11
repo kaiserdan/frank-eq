@@ -163,17 +163,19 @@ A pass authorizes protocol drafting, not execution.
 
 ## Next action
 
-Complete the frozen v3-2 implementation without changing its scientific fields.
-The causal core now includes fresh panels, canonical typed-coordinate masking,
-independent semantic and behavioral token/slot compilers, and process-locked
-one-time test access. All-token capture, cloned-KV teacher branches,
-world-balanced compiler fitting, parameter-matched token/final-token controls,
-deterministic text parsing, the historical continuous quotient, train-only
-direct selection, packet/executor records, grouped gates, protected decisions,
-and rate/compute tables are implemented and tested. Complete workflow and
-freeze-manifest orchestration, independent verification/recomputation, CLI, and
-Olivia entrypoints. Validate and commit the complete implementation before
-staging the unopened held model or launching the representation workflow.
+The frozen v3-2 implementation is complete without changing its scientific
+fields. It includes fresh panels, typed coordinates, independent semantic and
+behavioral compilers, process-locked one-time test access, all-token capture,
+cloned-KV teachers, world-balanced fitting, every registered control, packet
+and executor records, grouped gates, protected decisions, measured and
+estimated rate/compute accounting, hash-bound founder/held freezes, an
+independent recomputation verifier, CLI, and the Olivia entrypoint.
+
+Run the full local contract and commit the green implementation. Then generate,
+inspect, and separately commit `configs/stagea_v3/inspected_plan.json`, stage the
+exact unopened Qwen3-14B revision without task queries, inspect the repository
+launcher dry run, and submit exactly one full v3-2 workflow. Do not instantiate
+the registered test panel locally.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every

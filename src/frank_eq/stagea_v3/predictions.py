@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -336,6 +337,7 @@ def assemble_prediction_bundle(
     )
     packet_records.extend(records)
 
+    parser_started = time.perf_counter()
     parsed = np.stack(
         [
             parse_v3_world_prefix(
@@ -348,6 +350,7 @@ def assemble_prediction_bundle(
     oracle = shard.semantic_targets.numpy().astype(np.float64)
     if not np.array_equal(parsed, oracle):
         raise RuntimeError("deterministic text parser does not reproduce the test oracle")
+    parser_wall_seconds = time.perf_counter() - parser_started
     text_q4 = np.empty_like(parsed)
     for index, row in enumerate(parsed):
         packet = encode_rate_matched_text_basis(
@@ -391,28 +394,24 @@ def assemble_prediction_bundle(
         renderer_ids,
         seed=int(config.section("evaluation")["bootstrap_seed"]) + shard.entity_count,
     )
-    semantic_basis["wrong_world_packet"] = _hardest_wrong_rows(
-        primary_q4, world_ids, renderer_ids
-    )
+    semantic_basis["wrong_world_packet"] = _hardest_wrong_rows(primary_q4, world_ids, renderer_ids)
     behavioral_basis["train_edge_prior"] = np.asarray(
         controls["behavioral_edge_prior"], dtype=np.float64
     )
 
-    operations = {
-        condition: _execute_rows(values, panel)
-        for condition, values in semantic_basis.items()
-    }
+    operations: dict[str, np.ndarray] = {}
+    executor_wall_seconds: dict[str, float] = {}
+    for condition, values in semantic_basis.items():
+        executor_started = time.perf_counter()
+        operations[condition] = _execute_rows(values, panel)
+        executor_wall_seconds[condition] = time.perf_counter() - executor_started
     operations.update(
         {
-            "historical_continuous_quotient": np.asarray(
-                continuous_primary, dtype=np.float64
-            ),
+            "historical_continuous_quotient": np.asarray(continuous_primary, dtype=np.float64),
             "train_selected_direct_protocol": np.asarray(
                 controls["direct_probability"], dtype=np.float64
             ),
-            "train_operation_prior": np.asarray(
-                controls["operation_prior"], dtype=np.float64
-            ),
+            "train_operation_prior": np.asarray(controls["operation_prior"], dtype=np.float64),
         }
     )
     seed_count = len(config.section("compiler")["seeds"])
@@ -421,15 +420,26 @@ def assemble_prediction_bundle(
     token_seeds = _as_probability_seed_tensor(token_seed_logits, basis_shape)
     final_seeds = _as_probability_seed_tensor(final_token_seed_logits, basis_shape)
     continuous_seeds = _as_probability_seed_tensor(continuous_seed_logits, operation_shape)
-    if any(values.shape[0] != seed_count for values in (
-        semantic_seeds,
-        behavioral_seeds,
-        token_seeds,
-        final_seeds,
-        continuous_seeds,
-    )):
+    if any(
+        values.shape[0] != seed_count
+        for values in (
+            semantic_seeds,
+            behavioral_seeds,
+            token_seeds,
+            final_seeds,
+            continuous_seeds,
+        )
+    ):
         raise ValueError("prediction bundle does not contain every registered seed")
 
+    direct_protocols = [str(value) for value in controls["direct_protocols"]]
+    direct_tokens = np.asarray(controls["direct_generated_tokens"], dtype=np.int64)
+    generated_reasoning_tokens = int(
+        direct_tokens[:, [value == "reason" for value in direct_protocols]].sum()
+    )
+    fixed_pause_tokens = int(
+        direct_tokens[:, [value == "pause" for value in direct_protocols]].sum()
+    )
     compute = {
         **compiler_compute,
         "primary": {
@@ -444,19 +454,22 @@ def assemble_prediction_bundle(
         },
         "train_selected_direct_protocol": {
             "post_capture_source_queries_per_operation": 1,
-            "generated_tokens": int(
-                np.asarray(controls["direct_generated_tokens"], dtype=np.int64).sum()
-            ),
+            "generated_reasoning_tokens": generated_reasoning_tokens,
+            "fixed_pause_tokens": fixed_pause_tokens,
+            "selected_sequence_operations": direct_protocols.count("sequence"),
+            "selected_reason_operations": direct_protocols.count("reason"),
+            "selected_pause_operations": direct_protocols.count("pause"),
         },
         "text_parser": {
             "prefix_bytes_read": sum(
                 len(bytes.fromhex(row["prefix_utf8_hex"])) for row in shard.prefix_metadata
             ),
             "post_capture_source_queries": 0,
+            "wall_seconds": parser_wall_seconds,
         },
-        "amortized_operation_counts": config.section("evaluation")[
-            "amortized_operation_counts"
-        ],
+        "executor_wall_seconds": executor_wall_seconds,
+        "executor_operations_per_condition": int(shard.rows * len(panel.panel.operations)),
+        "amortized_operation_counts": config.section("evaluation")["amortized_operation_counts"],
     }
     bundle = V3PredictionBundle(
         model_id=shard.model_id,
@@ -475,9 +488,7 @@ def assemble_prediction_bundle(
         token_seed_probabilities=token_seeds,
         final_token_seed_probabilities=final_seeds,
         continuous_seed_probabilities=continuous_seeds,
-        direct_generated_tokens=np.asarray(
-            controls["direct_generated_tokens"], dtype=np.int64
-        ),
+        direct_generated_tokens=np.asarray(controls["direct_generated_tokens"], dtype=np.int64),
         direct_protocols=tuple(str(value) for value in controls["direct_protocols"]),
         packet_records=packet_records,
         compute=compute,

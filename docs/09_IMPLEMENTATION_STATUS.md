@@ -82,7 +82,7 @@ Answer-channel and reasoning-versus-pause findings are diagnostic only.
 A pass does not authorize a Stage-A run, hidden-state compiler training,
 claim-bearing test access, receiver execution, or a scientific claim.
 
-## Current implementation boundary
+## Completed implementation: Stage-A v3-2
 
 Stage-A v3-2 is frozen and its causal core is now implemented. The first
 implementation checkpoint adds:
@@ -117,14 +117,21 @@ and identity probes, held-sender retention, rate/compute accounting, and the
 seven-way machine reducer. Payload, framing, checksum, source queries, generated
 tokens, and consumer work remain separate quantities.
 
-Workflow orchestration, freeze-manifest construction, independent artifact
-verification/recomputation, CLI and Olivia entrypoints remain to be completed
-before the implementation freeze and content-addressed dry run.
+The final implementation checkpoint adds the complete ordered workflow,
+hash-bound founder and held freeze manifests, an exact one-access test-file
+registry, immutable plan comparison, separate generated-reasoning/pause-token
+accounting, compiler FLOP estimates and measured inference/executor wall time,
+an independent hash and metric recomputation audit, CLI commands, and a
+seven-day one-GH200 Olivia entrypoint. The repository launcher rejects partial
+stage sequences, stale plans, dirty source, wrong image provenance, and any
+same-registration recovery after test access.
 
 The user authorized implementation and one representation run after the
-registration and implementation are separately committed and validated. No
-receiver execution is authorized. A v3 pass may authorize drafting one receiver
-protocol; a miss is terminal for v3-2.
+registration and implementation are separately committed and validated. The
+remaining operational sequence is a green full local validation, the separate
+inspected-plan commit, task-blind held-checkpoint staging, immutable Olivia dry
+run, and one submission. No receiver execution is authorized. A v3 pass may
+authorize drafting one receiver protocol; a miss is terminal for v3-2.
 
 ## Intended architecture after a pass
 

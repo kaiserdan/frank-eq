@@ -534,6 +534,17 @@ def capture_panel_shard(
                 basis_stats["max_observed_batch_size"],
                 direct_stats["max_observed_batch_size"],
             )
+            if len(token_rows) % 8 == 0 or len(token_rows) == len(panel.panel.worlds) * len(
+                renderer_registry
+            ):
+                print(
+                    "stagea-v3 capture progress "
+                    f"model={model_spec.model_id} role={panel.role} "
+                    f"n={panel.entity_count} rows={len(token_rows)}/"
+                    f"{len(panel.panel.worlds) * len(renderer_registry)} "
+                    f"logical_queries={logical_queries}",
+                    flush=True,
+                )
 
     max_tokens = max(int(row.shape[0]) for row in token_rows)
     rows = len(token_rows)

@@ -13,15 +13,16 @@ protocol first.
 
 ```text
 config: configs/stagea_v3/real_olivia_v3.yaml
-protocol: stagea-v3-1
+protocol: stagea-v3-2
 role: outcome-bearing representation qualification
 ```
 
 The user authorized exactly one sequential representation run on 2026-08-12,
 but only after the frozen registration and implementation are separately
 committed, all validators pass, and the content-addressed dry run is inspected.
-The repository launcher does not support v3 until that implementation lands.
-Do not improvise an ad-hoc command. RC0 is complete and must not be rerun.
+The repository launcher supports v3 only through `olivia/stagea_v3.slurm`, the
+committed inspected plan, and the exact full stage sequence. Do not improvise
+an ad-hoc command. RC0 is complete and must not be rerun.
 
 Local validation:
 
@@ -40,10 +41,14 @@ task-unopened during staging and engineering smoke tests.
 ## Operator commands
 
 ```bash
-python olivia/cli.py status --job-name frank-eq-rc0-rate-compute --json
-python olivia/cli.py fetch  --job-name frank-eq-rc0-rate-compute --json
-python olivia/cli.py verify --job-name frank-eq-rc0-rate-compute --json
-python scripts/verify_rate_compute_run.py --run <fetched-run-root>
+python olivia/cli.py submit --job-name <v3-job> \
+  --config configs/stagea_v3/real_olivia_v3.yaml --profile full \
+  --stages prepare,founder_fit,freeze,held_onboard,evaluate --dry-run --json
+python olivia/cli.py status --job-name <v3-job> --json
+python olivia/cli.py fetch  --job-name <v3-job> --json
+python olivia/cli.py verify --job-name <v3-job> --json
+python scripts/verify_stagea_v3_run.py \
+  --config configs/stagea_v3/real_olivia_v3.yaml --run <fetched-run-root>
 ```
 
 ## Invariants

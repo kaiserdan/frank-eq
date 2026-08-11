@@ -38,7 +38,7 @@ recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
 result:   PUBLIC_BASIS_COMPOSITION_SUPPORTED
 ```
 
-Stage-A v3-1 is frozen in `docs/20_STAGEA_V3_PROTOCOL.md` and
+Stage-A v3-2 is frozen in `docs/20_STAGEA_V3_PROTOCOL.md` and
 `configs/stagea_v3/real_olivia_v3.yaml`. On 2026-08-12 the user explicitly
 authorized the sequential next steps, with documented results and regular
 commits. Exactly one v3 representation run is authorized only after:
@@ -53,7 +53,8 @@ A v3 machine pass may authorize drafting, not running, a receiver protocol.
 
 ## Stage-A v3 execution boundary
 
-- Use fresh train/validation/test seeds `2026081201/02/03` only.
+- Use fresh train/validation/test seeds `2026081201/02/1297` only. The exposed
+  v3-1 test seed `2026081203` is permanently void.
 - The held `Qwen/Qwen3-14B` revision
   `40c069824f4251a91eefaf281ebe4c544efd3e18` remains task-unopened until
   founder compilers and the public executor are hash-frozen.
@@ -65,7 +66,7 @@ A v3 machine pass may authorize drafting, not running, a receiver protocol.
 - Run every registered token/text/direct/continuous/interactive/oracle control.
 - World-group all intervals and report message rate with source and consumer
   compute.
-- A valid gate miss is terminal for v3-1.
+- A valid gate miss is terminal for v3-2.
 
 ## Scientific invariants
 

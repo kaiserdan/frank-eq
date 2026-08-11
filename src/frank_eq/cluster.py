@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from frank_eq.utils import atomic_write_json, sha256_file
+from frank_eq.utils import atomic_write_json, canonical_json_bytes, sha256_file
 
 _JOB_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{2,96}$")
 _DEPENDENCY_PATTERN = re.compile(r"^afterok:[1-9][0-9]*$")
@@ -38,6 +38,41 @@ _RATE_COMPUTE_RECOVERY_FORBIDDEN = (
     "decision.json",
     "artifact_manifest.json",
     "run_summary.json",
+)
+_STAGEA_V3_CONFIG = "configs/stagea_v3/real_olivia_v3.yaml"
+_STAGEA_V3_STAGES = "prepare,founder_fit,freeze,held_onboard,evaluate"
+_STAGEA_V3_PLAN = "configs/stagea_v3/inspected_plan.json"
+_STAGEA_V3_RUNTIME_IMAGE = "/cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif"
+_STAGEA_V3_RUNTIME_IMAGE_SHA256 = "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1"
+_STAGEA_V3_REQUIRED_ARTIFACTS = (
+    "config.yaml",
+    "protocol.md",
+    "registration.json",
+    "dry_run_plan.json",
+    "implementation_manifest.json",
+    "run_manifest.json",
+    "workflow_status.json",
+    "access_ledger.json",
+    "train_panel_manifest.json",
+    "validation_panel_manifest.json",
+    "freeze_manifest.json",
+    "founder_checkpoints_manifest.json",
+    "held_onboarding_manifest.json",
+    "held_checkpoints_manifest.json",
+    "test_panel_manifest.json",
+    "models.json",
+    "capture_validation.json",
+    "compiler_checkpoints_manifest.json",
+    "training_summary.json",
+    "baseline_manifest.json",
+    "predictions_manifest.json",
+    "identity_train_basis_manifest.json",
+    "rate_compute.json",
+    "metrics.json",
+    "decision.json",
+    "run_summary.json",
+    "artifact_manifest.json",
+    "independent_audit.json",
 )
 _EXCLUDED_PARTS = {
     ".git",
@@ -176,9 +211,7 @@ def _git_identity(root: Path) -> dict[str, Any]:
     status = _run(["git", "-C", str(root), "status", "--porcelain"], check=False)
     return {
         "commit": commit.stdout.strip() if getattr(commit, "returncode", 0) == 0 else None,
-        "dirty": (
-            bool(status.stdout.strip()) if getattr(status, "returncode", 0) == 0 else None
-        ),
+        "dirty": (bool(status.stdout.strip()) if getattr(status, "returncode", 0) == 0 else None),
     }
 
 
@@ -189,9 +222,7 @@ class ClusterClient:
         except KeyError as error:
             raise ValueError(f"unsupported cluster: {cluster_name}") from error
         self.root = (root or repository_root()).resolve()
-        self.host = os.environ.get(
-            self.profile.host_environment, self.profile.default_host
-        )
+        self.host = os.environ.get(self.profile.host_environment, self.profile.default_host)
         self.remote_root = os.environ.get(
             self.profile.remote_root_environment, self.profile.default_remote_root
         ).rstrip("/")
@@ -308,6 +339,39 @@ class ClusterClient:
             config_relative = config.relative_to(self.root).as_posix()
         except ValueError as error:
             raise ValueError("config must be inside the repository source tree") from error
+        is_stagea_v3 = config_relative == _STAGEA_V3_CONFIG
+        stagea_v3_plan: dict[str, Any] | None = None
+        if is_stagea_v3:
+            if self.profile.name != "olivia":
+                raise ValueError("Stage-A v3-2 is registered only on Olivia")
+            if profile != "full" or stages != _STAGEA_V3_STAGES:
+                raise ValueError(
+                    "Stage-A v3-2 requires --profile full and the complete frozen stage sequence"
+                )
+            if recover_from_job is not None:
+                raise ValueError("Stage-A v3 has no same-registration recovery path")
+            from frank_eq.stagea_v3.config import load_stagea_v3_config
+            from frank_eq.stagea_v3.workflow import build_stagea_v3_plan
+
+            inspected_path = self.root / _STAGEA_V3_PLAN
+            if not inspected_path.is_file():
+                raise FileNotFoundError(
+                    "Stage-A v3 requires the separately committed inspected plan"
+                )
+            inspected = json.loads(inspected_path.read_text())
+            expected = build_stagea_v3_plan(
+                load_stagea_v3_config(config),
+                config_path=config,
+            )
+            if canonical_json_bytes(inspected) != canonical_json_bytes(expected):
+                raise ValueError(
+                    "committed Stage-A v3 inspected plan differs from current implementation"
+                )
+            stagea_v3_plan = {
+                "path": _STAGEA_V3_PLAN,
+                "file_sha256": sha256_file(inspected_path),
+                "plan_sha256": inspected["plan_sha256"],
+            }
         recovery = None
         if recover_from_job is not None:
             recovery = self._plan_rate_compute_recovery(
@@ -363,6 +427,21 @@ class ClusterClient:
                     "/cluster/projects/nn12027k/hf-cache",
                 ),
             }
+        if is_stagea_v3:
+            runtime.update(
+                {
+                    "account": "nn12027k",
+                    "partition": "accel",
+                    "time": "7-00:00:00",
+                    "nodes": 1,
+                    "gpus_per_node": 1,
+                    "cpus_per_task": 32,
+                    "memory": "192G",
+                    "image": _STAGEA_V3_RUNTIME_IMAGE,
+                    "image_sha256": _STAGEA_V3_RUNTIME_IMAGE_SHA256,
+                    "hf_home": "/cluster/projects/nn12027k/hf-cache",
+                }
+            )
         return {
             "schema": "frank_eq_cluster_submission_plan_v1",
             "cluster": self.profile.name,
@@ -378,11 +457,14 @@ class ClusterClient:
             "remote_root": self.remote_root,
             "remote_job": remote_job,
             "remote_source": f"{self.remote_root}/sources/{archive['sha256']}",
-            "slurm_script": self.profile.slurm_script,
+            "slurm_script": (
+                "olivia/stagea_v3.slurm" if is_stagea_v3 else self.profile.slurm_script
+            ),
             "slurm_partition": runtime["partition"],
             "slurm_time": runtime["time"],
             "slurm_dependency": dependency,
             "recovery": recovery,
+            "stagea_v3_plan": stagea_v3_plan,
         }
 
     def submit(
@@ -404,6 +486,8 @@ class ClusterClient:
         )
         if dry_run:
             return {**plan, "dry_run": True}
+        if plan.get("stagea_v3_plan") is not None and plan["git"].get("dirty") is not False:
+            raise RuntimeError("Stage-A v3 submission requires a clean committed source tree")
         if (self._state_dir(job_name) / "submission.json").exists():
             raise RuntimeError(
                 f"submission state already exists for {job_name}; choose a fresh job name"
@@ -448,16 +532,19 @@ class ClusterClient:
             "FRANK_EQ_GIT_COMMIT": plan["git"]["commit"] or "unknown",
             "FRANK_EQ_GIT_DIRTY": str(plan["git"]["dirty"]).lower(),
         }
+        if plan.get("stagea_v3_plan") is not None:
+            exports.update(
+                {
+                    "PROJECT_VERSION": job_name,
+                    "FRANK_EQ_STAGEA_V3_PLAN": _STAGEA_V3_PLAN,
+                }
+            )
         if plan["recovery"] is not None:
             exports.update(
                 {
-                    "FRANK_EQ_RECOVERY_SOURCE_RUN": plan["recovery"][
-                        "source_remote_run_root"
-                    ],
+                    "FRANK_EQ_RECOVERY_SOURCE_RUN": plan["recovery"]["source_remote_run_root"],
                     "FRANK_EQ_RECOVERY_MANIFEST": "recovery_input.json",
-                    "FRANK_EQ_RECOVERY_MANIFEST_SHA256": plan["recovery"][
-                        "input_manifest_sha256"
-                    ],
+                    "FRANK_EQ_RECOVERY_MANIFEST_SHA256": plan["recovery"]["input_manifest_sha256"],
                 }
             )
         for key in (
@@ -471,13 +558,12 @@ class ClusterClient:
             "FRANK_EQ_HF_HOME",
             "FRANK_EQ_ALLOW_PIP_INSTALL",
             "FRANK_EQ_PIP_FIND_LINKS",
+            "FRANK_EQ_STAGEA_V3_PLAN",
         ):
             value = os.environ.get(key)
             if value:
                 exports[key] = value
-        export_argument = "ALL," + ",".join(
-            f"{key}={value}" for key, value in exports.items()
-        )
+        export_argument = "ALL," + ",".join(f"{key}={value}" for key, value in exports.items())
         submit_parts = [
             "sbatch",
             "--parsable",
@@ -626,22 +712,41 @@ class ClusterClient:
         if submission.get("recovery") is not None:
             expected["audit"].append("recovery_provenance.json")
         artifacts: dict[str, bool] = {}
-        for stage in stages:
-            for relative in expected.get(stage, []):
-                present = (cache_dir / relative).is_file()
-                artifacts[relative] = present
-                if not present:
-                    failures.append(f"missing runs/{relative}")
+        expected_paths = (
+            _STAGEA_V3_REQUIRED_ARTIFACTS
+            if submission.get("stagea_v3_plan") is not None
+            else tuple(relative for stage in stages for relative in expected.get(stage, []))
+        )
+        for relative in expected_paths:
+            present = (cache_dir / relative).is_file()
+            artifacts[relative] = present
+            if not present:
+                failures.append(f"missing runs/{relative}")
         scientific_decision = None
         decision_path = (
             cache_dir / "decision.json"
-            if stages == ("audit",)
+            if (stages == ("audit",) or submission.get("stagea_v3_plan") is not None)
             else cache_dir / "eval" / "decision.json"
         )
         if decision_path.is_file():
             scientific_decision = json.loads(decision_path.read_text())
             if scientific_decision.get("status") != "pass":
                 warnings.append("scientific gate failed; workflow may still be valid")
+        independent_verification = None
+        if submission.get("stagea_v3_plan") is not None and not failures:
+            try:
+                from frank_eq.stagea_v3.verify import verify_stagea_v3_run
+
+                independent_verification = verify_stagea_v3_run(
+                    cache_dir,
+                    config_path=self.root / _STAGEA_V3_CONFIG,
+                    write_audit=False,
+                    require_existing_audit=True,
+                )
+                if not independent_verification["passed"]:
+                    failures.append("independent Stage-A v3 verification failed")
+            except (FileNotFoundError, ValueError, RuntimeError) as error:
+                failures.append(f"independent Stage-A v3 verification error: {error}")
         overall = "passed" if not failures else "failed"
         payload = {
             "schema": "frank_eq_cluster_verify_v1",
@@ -654,6 +759,7 @@ class ClusterClient:
             "failures": failures,
             "warnings": warnings,
             "scientific_decision": scientific_decision,
+            "independent_verification": independent_verification,
             "root_cause": failures[0] if failures else None,
         }
         atomic_write_json(self._state_dir(job_name) / "verify.json", payload)

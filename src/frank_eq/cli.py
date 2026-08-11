@@ -18,6 +18,13 @@ from frank_eq.rate_compute import (
     run_rate_compute_audit,
 )
 from frank_eq.real_config import load_real_config
+from frank_eq.stagea_v3.config import load_stagea_v3_config
+from frank_eq.stagea_v3.workflow import (
+    STAGEA_V3_STAGE_ORDER,
+    build_stagea_v3_plan,
+    run_stagea_v3,
+    write_stagea_v3_plan,
+)
 from frank_eq.training import Stage0Trainer
 from frank_eq.utils import atomic_write_json
 from frank_eq.workflow import REAL_STAGE_ORDER, run_real_stagea
@@ -105,6 +112,36 @@ def _build_parser() -> argparse.ArgumentParser:
     recover_rate_compute.add_argument("--recovery-manifest", required=True)
     recover_rate_compute.add_argument("--recovery-manifest-sha256", required=True)
     recover_rate_compute.add_argument("--out", required=True)
+
+    validate_v3 = subparsers.add_parser(
+        "validate-stagea-v3-config",
+        help="validate the frozen Stage-A v3 representation registration",
+    )
+    validate_v3.add_argument("--config", required=True)
+
+    plan_v3 = subparsers.add_parser(
+        "plan-stagea-v3",
+        help="build a content-addressed Stage-A v3 plan without panels or models",
+    )
+    plan_v3.add_argument("--config", required=True)
+    plan_v3.add_argument("--out", default=None)
+
+    run_v3 = subparsers.add_parser(
+        "run-stagea-v3",
+        help="run the complete frozen Stage-A v3 representation workflow",
+    )
+    run_v3.add_argument("--config", required=True)
+    run_v3.add_argument("--out", default=None)
+    run_v3.add_argument("--stages", default=",".join(STAGEA_V3_STAGE_ORDER))
+    run_v3.add_argument("--plan", default=None)
+    run_v3.add_argument("--inspected-plan-sha256", required=True)
+
+    verify_v3 = subparsers.add_parser(
+        "verify-stagea-v3",
+        help="hash-verify and independently recompute a Stage-A v3 run",
+    )
+    verify_v3.add_argument("--config", required=True)
+    verify_v3.add_argument("--run", required=True)
     return parser
 
 
@@ -116,6 +153,45 @@ def main(argv: list[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
     try:
+        if args.command == "validate-stagea-v3-config":
+            config = load_stagea_v3_config(args.config)
+            _print({"status": "passed", "config": config.as_dict()})
+            return 0
+        if args.command == "plan-stagea-v3":
+            config = load_stagea_v3_config(args.config)
+            plan = build_stagea_v3_plan(config, config_path=args.config)
+            if args.out is not None:
+                write_stagea_v3_plan(args.out, plan)
+            _print(plan)
+            return 0
+        if args.command == "run-stagea-v3":
+            config = load_stagea_v3_config(args.config)
+            plan = None
+            if args.plan is not None:
+                plan = json.loads(Path(args.plan).read_text())
+            root = Path(args.out or config.output_dir)
+            _print(
+                run_stagea_v3(
+                    config,
+                    config_path=args.config,
+                    output_dir=root,
+                    stages=args.stages,
+                    dry_run_plan=plan,
+                    inspected_plan_sha256=args.inspected_plan_sha256,
+                )
+            )
+            return 0
+        if args.command == "verify-stagea-v3":
+            from frank_eq.stagea_v3.verify import verify_stagea_v3_run
+
+            result = verify_stagea_v3_run(
+                args.run,
+                config_path=args.config,
+                write_audit=False,
+                require_existing_audit=True,
+            )
+            _print(result)
+            return 0 if result["passed"] else 1
         if args.command == "validate-rate-compute-config":
             config = load_rate_compute_config(args.config)
             _print({"status": "passed", "config": config.as_dict()})

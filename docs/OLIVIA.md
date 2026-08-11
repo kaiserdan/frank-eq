@@ -42,77 +42,58 @@ submission record.
 
 ## Checkpoint preflight
 
-Both exact revisions must already be present in the shared offline cache:
+All exact revisions must be present in the shared offline cache:
 
 ```text
-Qwen/Qwen3-4B  1cfa9a7208912126459214e8b04321603b3df60c
-Qwen/Qwen3-8B  b968826d9c46dd6066d109eabc6255188de91218
+Qwen/Qwen3-4B   1cfa9a7208912126459214e8b04321603b3df60c
+Qwen/Qwen3-8B   b968826d9c46dd6066d109eabc6255188de91218
+Qwen/Qwen3-14B  40c069824f4251a91eefaf281ebe4c544efd3e18
 ```
 
-No unpinned head or network fallback is allowed.
+The 14B snapshot may be downloaded, hashed, and loaded for a tokenizer/model
+engineering check without any graph prompt. That does not expose the task. It
+must not see a registered train prefix until the workflow has frozen both
+founder checkpoints, and it must not see test data before its own freeze. No
+unpinned head or network fallback is allowed during the outcome run.
 
-## Immutable development smoke
+## V3 implementation and plan freeze
 
-After local validation, create a fresh immutable deployment with the generic
-Olivia runner. Record the returned version and archive SHA-256:
+Run the full local contract and commit the complete implementation. Only then
+generate the outcome-blind plan; this command does not create a panel or load a
+model:
 
 ```bash
-~/.codex/skills/run-on-olivia/scripts/deploy_version.sh \
-  --project frank-eq \
-  --account nn12027k \
-  --source "$PWD"
+python -m frank_eq.cli plan-stagea-v3 \
+  --config configs/stagea_v3/real_olivia_v3.yaml \
+  --out configs/stagea_v3/inspected_plan.json
 ```
 
-Then run the engineering-only `devel` smoke. It loads both frozen models and
-exercises exact chat-prefix continuity, cloned-KV semantic sequence scoring,
-32 generated reasoning tokens, and 32 matched pause tokens. It does not open an
-RC0 panel or produce a scientific result.
+Inspect its config hash, all implementation hashes, exact model revisions,
+stage order, expected `1,824` prefix forwards and `213,408` logical source
+queries, and the explicit false values for held-task opening and test-panel
+instantiation. Commit this plan separately. Any later change to the bound code,
+launcher, protocol, registration, or config invalidates it.
+
+## V3 dry run and submission
+
+The repository launcher creates a deterministic source archive under
+`.agents/state/`, deploys it into a fresh immutable Olivia job root, and uses
+`olivia/stagea_v3.slurm`. The job requests one GH200, 32 CPUs, 192 GiB host
+memory, and Olivia's seven-day maximum walltime.
 
 ```bash
-~/.codex/skills/run-on-olivia/scripts/submit.sh \
-  --project frank-eq \
-  --account nn12027k \
-  --version <immutable-version> \
-  --job-file olivia/rc0_runtime_smoke.slurm \
-  -- --qos=devel
-```
-
-Do not launch RC0 unless the smoke job is `COMPLETED` and its `smoke.json`
-reports `status: passed`, the exact two revisions, one visible CUDA device, and
-matching source/config/image provenance.
-
-## RC0 dry run and submission
-
-Keep the local source unchanged between the inspected dry run and submission:
-
-```bash
-export FRANK_EQ_OLIVIA_HOST=olivia
-export FRANK_EQ_OLIVIA_ROOT=/cluster/work/projects/nn12027k/dakai5365/frank-eq
-export FRANK_EQ_OLIVIA_IMAGE=/cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif
-export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
-export FRANK_EQ_HF_HOME=/cluster/projects/nn12027k/hf-cache
-
 python olivia/cli.py submit \
-  --job-name <fresh-job-name> \
-  --config configs/rate_compute/real_olivia_rc0.yaml \
+  --job-name <fresh-v3-job-name> \
+  --config configs/stagea_v3/real_olivia_v3.yaml \
   --profile full \
-  --stages audit \
+  --stages prepare,founder_fit,freeze,held_onboard,evaluate \
   --dry-run --json
 ```
 
-Audit the content-addressed source archive, then remove only `--dry-run` and
-submit the same frozen plan.
-
-If the exact-source `devel` smoke is queued behind the per-user QoS cap, the
-full job may itself be queued with a recorded fail-closed dependency:
-
-```bash
-export FRANK_EQ_SLURM_DEPENDENCY=afterok:<smoke-job-id>
-```
-
-Only this single numeric `afterok` form is accepted. Slurm must report the
-dependency as unfulfilled until the smoke completes successfully; a failed or
-canceled smoke prevents the audit from starting.
+Require a clean Git tree. Inspect the deterministic source archive SHA-256,
+config and plan hashes, exact runtime image hash, resources, remote paths, and
+stage sequence. Submit by removing only `--dry-run`; do not modify the tree in
+between.
 
 ## Status, fetch, and verify
 
@@ -120,20 +101,19 @@ canceled smoke prevents the audit from starting.
 python olivia/cli.py status --job-name <job> --json
 python olivia/cli.py fetch  --job-name <job> --json
 python olivia/cli.py verify --job-name <job> --json
-python scripts/verify_rate_compute_run.py \
-  --run .agents/state/olivia/<job>/remote/runs/<run-directory>
+python scripts/verify_stagea_v3_run.py \
+  --config configs/stagea_v3/real_olivia_v3.yaml \
+  --run .agents/state/olivia/<job>/remote/runs
 ```
 
-Local launcher state remains under `.agents/state/olivia/<job>/` and must never
-be committed. Adopt only a compact, hash-verified evidence package after the
-machine decision and response strata have been independently audited.
-
-If an audit fails only after writing the complete raw and calibrated capture,
-and no compiled prediction, metric, or decision exists, preserve that job and use
-the fail-closed artifact-only recovery procedure in
-`docs/19_STAGE_R_CLUSTER_RUNBOOK.md`. The recovery must use a fresh job name, the
-same frozen config, exact `--stages audit`, and `--recover-from-job <failed-job>`.
-It must not load either model or overwrite the failed run.
+The fetch includes the large generated captures and checkpoints so the local
+verifier can validate every artifact hash. Never commit them. Adopt only a
+compact hash-verified evidence package after the machine decision, every
+model/complexity/renderer/family stratum, rate/compute tables, access ledger,
+and independent recomputation have been audited.
 
 Slurm `COMPLETED` means engineering completion, not scientific success. A
-well-formed negative machine decision is a valid RC0 result.
+well-formed negative machine decision is a valid terminal v3-2 result. An
+engineering failure before test access may be repaired under a new immutable
+source and job while preserving the failure. Once the ledger consumes test
+access, v3-2 cannot be retried or recovered under the same registration.

@@ -144,7 +144,7 @@ configs/rate_compute/real_olivia_rc0.yaml
 
 No RC0 rerun is authorized.
 
-## Current next step: complete frozen Stage-A v3-2
+## Current next step: execute frozen Stage-A v3-2 once
 
 The one-shot compiler protocol is now frozen in
 `docs/20_STAGEA_V3_PROTOCOL.md` and
@@ -153,11 +153,13 @@ panels, Qwen3-4B and Qwen3-8B founders, an unopened Qwen3-14B held sender,
 separate semantic and behavioral token/slot compilers, and the complete
 token/text/direct/continuous/interactive/oracle baseline set.
 
-The user authorized sequential implementation and one representation run on
-2026-08-12. The registration and implementation must be committed separately,
-all validators must pass, and both compiler freeze manifests must exist before
-the test panel is created. Receiver execution remains locked behind a v3 machine
-pass and a separate frozen receiver protocol.
+The complete representation workflow, access controller, independent verifier,
+and Olivia entrypoint are implemented. The user authorized one sequential
+representation run on 2026-08-12. The registration and implementation are
+committed separately; all validators and the committed content-addressed plan
+must pass before submission. Both compiler freeze manifests must exist before
+the test panel is created. Receiver execution remains locked behind a v3
+machine pass and a separate frozen receiver protocol.
 
 ## Frozen RC0 decision tree
 
@@ -230,6 +232,16 @@ frank-eq run-rate-compute-audit
 frank-eq recover-rate-compute-audit
 python scripts/verify_rate_compute_run.py
 python scripts/audit_rate_compute_result.py
+```
+
+Stage-A v3 commands:
+
+```text
+frank-eq validate-stagea-v3-config
+frank-eq plan-stagea-v3
+frank-eq run-stagea-v3
+frank-eq verify-stagea-v3
+python scripts/verify_stagea_v3_run.py
 ```
 
 ## Local validation

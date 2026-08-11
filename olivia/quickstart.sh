@@ -45,6 +45,33 @@ stages_arg="${stages_arg//+/ ,}"
 stages_arg="${stages_arg// /}"
 
 case "$config_arg" in
+    configs/stagea_v3/*)
+        expected_stages="prepare,founder_fit,freeze,held_onboard,evaluate"
+        if [[ "$stages_arg" != "$expected_stages" ]]; then
+            echo "Stage-A v3 requires the complete frozen sequence; received: $stages_arg" >&2
+            exit 2
+        fi
+        plan_file="${FRANK_EQ_STAGEA_V3_PLAN:-configs/stagea_v3/inspected_plan.json}"
+        if [[ ! -f "$plan_file" ]]; then
+            echo "missing inspected Stage-A v3 plan: $plan_file" >&2
+            exit 2
+        fi
+        plan_sha256="$($python_bin -c 'import json,sys; print(json.load(open(sys.argv[1]))["plan_sha256"])' "$plan_file")"
+        [[ "$plan_sha256" =~ ^[0-9a-f]{64}$ ]] || {
+            echo "inspected Stage-A v3 plan has no valid internal SHA-256" >&2
+            exit 2
+        }
+        "$python_bin" -m frank_eq.cli validate-stagea-v3-config --config "$config_arg"
+        "$python_bin" -m frank_eq.cli run-stagea-v3 \
+          --config "$config_arg" \
+          --out "${FRANK_EQ_RUN_ROOT:?missing FRANK_EQ_RUN_ROOT}" \
+          --stages "$stages_arg" \
+          --plan "$plan_file" \
+          --inspected-plan-sha256 "$plan_sha256"
+        "$python_bin" -m frank_eq.cli verify-stagea-v3 \
+          --config "$config_arg" \
+          --run "$FRANK_EQ_RUN_ROOT"
+        ;;
     configs/rate_compute/*)
         if [[ "$stages_arg" != "audit" ]]; then
             echo "rate--compute configs require --stages audit; received: $stages_arg" >&2

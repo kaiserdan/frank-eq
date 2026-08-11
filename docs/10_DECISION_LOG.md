@@ -147,3 +147,12 @@
 - **V3-2 repair:** change only the test-world seed to previously uninstantiated `2026081297`; keep train/validation worlds, operation registry, models, architecture, losses, baselines, gates, and bootstrap contract fixed.
 - **Enforcement:** the panel generator now rejects the registered test role unless it receives a config-matching access ledger already advanced to `evaluate` with its one access consumed. Tests use train/validation panels or synthetic role wrappers and assert that an ungranted test request fails before generation.
 - **Authority:** this is a pre-outcome causal-access repair. The unopened held model remains unstaged and no Stage-A v3 model result exists.
+
+## 2026-08-12 — complete the Stage-A v3-2 implementation surface
+
+- **Workflow:** implement the exact `prepare -> founder_fit -> freeze -> held_onboard -> evaluate` sequence. The run refuses partial stages, a stale or uninspected plan, a nonempty output root, dirty source, wrong Olivia/image provenance, or any test artifact existing before the two freezes.
+- **Freeze and access:** founder and held manifests bind config, protocol, implementation, panels, captures, checkpoints, calibrators, operation descriptors, and protocol selection by SHA-256. Only a validated held freeze can atomically consume the single test grant; the registered test file set and first-open hashes must be exact.
+- **Accounting:** retain source query, prefix-forward, generated-reasoning, fixed-pause, packet payload/framing, compiler parameter/FLOP/wall-time, and deterministic executor operation/wall-time fields separately. Training wall time remains in checkpoint metadata.
+- **Verification:** independently reload every prediction group, revalidate freeze/checkpoint/access/provenance hashes, recompute all world-grouped metrics, rate tables, and the machine decision, and require protected authorization fields to remain false.
+- **Olivia:** add a repository-native one-GH200, 192-GiB, seven-day entrypoint. The launcher permits only v3-2 `full` with the complete stage sequence and a separately committed implementation-matching inspected plan. Any failure after test access consumes v3-2; there is no artifact-only same-registration retry.
+- **Boundary:** no registered test world has been instantiated and the Qwen3-14B held revision remains task-unopened at this checkpoint.

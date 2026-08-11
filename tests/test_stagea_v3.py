@@ -53,7 +53,17 @@ from frank_eq.stagea_v3.training import (
     train_basis_predictor,
     train_continuous_quotient,
 )
-from frank_eq.utils import atomic_write_json, sha256_file
+from frank_eq.stagea_v3.workflow import (
+    STAGEA_V3_STAGE_ORDER,
+    build_stagea_v3_plan,
+    parse_stagea_v3_stages,
+)
+from frank_eq.utils import (
+    atomic_write_json,
+    canonical_json_bytes,
+    sha256_bytes,
+    sha256_file,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "configs/stagea_v3/real_olivia_v3.yaml"
@@ -83,6 +93,24 @@ def test_v3_panels_are_role_fresh_but_share_operations() -> None:
         assert train.public_world_id(0) != validation.public_world_id(0)
         with pytest.raises(RuntimeError, match="access-ledger grant"):
             generate_v3_panel(config, "test", entity_count)
+
+
+def test_v3_plan_is_stable_content_addressed_and_outcome_blind() -> None:
+    config = load_stagea_v3_config(CONFIG_PATH)
+    first = build_stagea_v3_plan(config, config_path=CONFIG_PATH)
+    second = build_stagea_v3_plan(config, config_path=CONFIG_PATH.resolve())
+    assert first == second
+    assert first["config_path"] == "configs/stagea_v3/real_olivia_v3.yaml"
+    assert first["stage_order"] == list(STAGEA_V3_STAGE_ORDER)
+    assert first["held_model_task_opened"] is False
+    assert first["test_panel_instantiated"] is False
+    without_hash = dict(first)
+    observed_hash = without_hash.pop("plan_sha256")
+    assert observed_hash == sha256_bytes(canonical_json_bytes(without_hash))
+    assert "olivia/stagea_v3.slurm" in first["implementation_files"]
+    assert "docs/20_STAGEA_V3_PROTOCOL.md" in first["implementation_files"]
+    with pytest.raises(ValueError, match="complete frozen sequence"):
+        parse_stagea_v3_stages("prepare,founder_fit")
 
 
 def test_unseen_renderer_is_query_blind_and_coordinate_complete() -> None:
@@ -169,13 +197,9 @@ def test_prediction_bundle_requires_every_registered_control(tmp_path: Path) -> 
     world_ids: list[int] = []
     renderer_ids: list[int] = []
     for world in worlds:
-        for renderer_id, renderer in enumerate(
-            ("natural", "adjacency", "canonical_edge_list")
-        ):
+        for renderer_id, renderer in enumerate(("natural", "adjacency", "canonical_edge_list")):
             semantic_rows.append(world.fact_vector())
-            operation_rows.append(
-                np.asarray(source_panel.panel.oracle_signatures[world.world_id])
-            )
+            operation_rows.append(np.asarray(source_panel.panel.oracle_signatures[world.world_id]))
             text = render_v3_world_prefix(world, renderer)
             prefix_metadata.append({"prefix_utf8_hex": text.encode().hex()})
             world_ids.append(world.world_id)
@@ -217,14 +241,20 @@ def test_prediction_bundle_requires_every_registered_control(tmp_path: Path) -> 
         return np.log(value) - np.log1p(-value)
 
     seeds = 3
+    direct_tokens = np.zeros((rows, 32), dtype=np.int64)
+    direct_tokens[:, 0] = 7
+    direct_tokens[:, 1] = 32
+    direct_protocols = ["sequence"] * 32
+    direct_protocols[0] = "reason"
+    direct_protocols[1] = "pause"
     controls: dict[str, np.ndarray | list[str]] = {
         "semantic_edge_prior": np.full((rows, coordinates), 0.5),
         "behavioral_edge_prior": np.full((rows, coordinates), 0.5),
         "operation_prior": np.full((rows, 32), 0.5),
         "interactive_basis": semantic_prediction,
         "direct_probability": continuous,
-        "direct_generated_tokens": np.zeros((rows, 32), dtype=np.int64),
-        "direct_protocols": ["sequence"] * 32,
+        "direct_generated_tokens": direct_tokens,
+        "direct_protocols": direct_protocols,
     }
     bundle = assemble_prediction_bundle(
         config,
@@ -258,6 +288,15 @@ def test_prediction_bundle_requires_every_registered_control(tmp_path: Path) -> 
         bundle.operations["oracle_basis"] >= 0.5,
         bundle.operation_truth_hard.astype(bool),
     )
+    assert bundle.compute["train_selected_direct_protocol"] == {
+        "post_capture_source_queries_per_operation": 1,
+        "generated_reasoning_tokens": rows * 7,
+        "fixed_pause_tokens": rows * 32,
+        "selected_sequence_operations": 30,
+        "selected_reason_operations": 1,
+        "selected_pause_operations": 1,
+    }
+    assert set(bundle.compute["executor_wall_seconds"]) == set(bundle.semantic_basis)
     artifacts = write_prediction_bundle_artifacts(
         tmp_path / "predictions.npz",
         tmp_path / "predictions.json",
@@ -342,7 +381,9 @@ def test_compiler_uses_canonical_subgraph_slots_and_masks_padding() -> None:
     assert torch.allclose(n4[0], n4_perturbed[0], atol=1e-5)
     coordinates = canonical_coordinates(6)
     selected = [coordinates[index] for index in active_coordinate_indices(4)]
-    assert selected == [(source, target) for source in range(4) for target in range(4) if source != target]
+    assert selected == [
+        (source, target) for source in range(4) for target in range(4) if source != target
+    ]
 
 
 def test_compiler_api_is_query_blind_and_channels_are_disjoint() -> None:
@@ -388,7 +429,11 @@ def test_activation_controls_match_primary_parameter_budget() -> None:
     assert isinstance(token, TokenIDResampler)
     assert isinstance(final, FinalTokenPublicMLP)
     assert sum(parameter.numel() for parameter in token.parameters()) == primary_count
-    assert abs(sum(parameter.numel() for parameter in final.parameters()) - primary_count) / primary_count < 0.05
+    assert (
+        abs(sum(parameter.numel() for parameter in final.parameters()) - primary_count)
+        / primary_count
+        < 0.05
+    )
 
 
 def _write_bound_manifest(
@@ -496,8 +541,7 @@ class _FakeModel:
     def __call__(self, *, input_ids: torch.Tensor, **_: object) -> object:
         tokens = int(input_ids.shape[1])
         hidden_states = tuple(
-            torch.full((1, tokens, 8), float(layer), dtype=torch.float32)
-            for layer in range(5)
+            torch.full((1, tokens, 8), float(layer), dtype=torch.float32) for layer in range(5)
         )
         return type(
             "Output",
@@ -682,9 +726,7 @@ def _tiny_shard(role: str, entity_count: int) -> V3CaptureShard:
 def test_basis_trainer_world_groups_and_restores_frozen_checkpoint(tmp_path: Path) -> None:
     config = _TinyTrainingConfig()
     train = {entity_count: _tiny_shard("train", entity_count) for entity_count in (4, 6)}
-    validation = {
-        entity_count: _tiny_shard("validation", entity_count) for entity_count in (4, 6)
-    }
+    validation = {entity_count: _tiny_shard("validation", entity_count) for entity_count in (4, 6)}
     checkpoint = tmp_path / "semantic-211.pt"
     summary = train_basis_predictor(
         config,  # type: ignore[arg-type]
@@ -701,7 +743,9 @@ def test_basis_trainer_world_groups_and_restores_frozen_checkpoint(tmp_path: Pat
     assert summary["best_epoch"] in {0, 1}
     assert summary["channel"] == "semantic"
     model, metadata = load_basis_predictor(
-        config, checkpoint, device_name="cpu"  # type: ignore[arg-type]
+        config,
+        checkpoint,
+        device_name="cpu",  # type: ignore[arg-type]
     )
     logits = predict_basis_logits(
         model,
@@ -731,7 +775,9 @@ def test_basis_trainer_world_groups_and_restores_frozen_checkpoint(tmp_path: Pat
     )
     assert continuous_summary["kind"] == "historical_continuous_quotient"
     continuous, continuous_metadata = load_continuous_quotient(
-        config, continuous_path, device_name="cpu"  # type: ignore[arg-type]
+        config,
+        continuous_path,
+        device_name="cpu",  # type: ignore[arg-type]
     )
     continuous_logits = predict_continuous_logits(
         continuous,
@@ -748,8 +794,7 @@ def test_train_controls_fit_only_train_and_apply_frozen_selection() -> None:
     config = load_stagea_v3_config(CONFIG_PATH)
     model_id = config.founder_models[0].model_id
     train_panels = {
-        entity_count: generate_v3_panel(config, "train", entity_count)
-        for entity_count in (4, 6)
+        entity_count: generate_v3_panel(config, "train", entity_count) for entity_count in (4, 6)
     }
     train_shards: dict[int, V3CaptureShard] = {}
     for entity_count, panel in train_panels.items():

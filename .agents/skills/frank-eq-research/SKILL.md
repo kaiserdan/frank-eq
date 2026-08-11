@@ -20,7 +20,7 @@ Read `AGENTS.md`, `HANDOFF.md`,
 `docs/19_STAGE_R_CLUSTER_RUNBOOK.md` before acting.
 
 Stage-A v1/v2 and Stage-Q are preserved negatives. RC0 is an adopted development
-pass. Stage-A v3-1 is frozen in:
+pass. Stage-A v3-2 is frozen in:
 
 ```text
 docs/20_STAGEA_V3_PROTOCOL.md
@@ -96,16 +96,19 @@ model-local token/slot compilers into the typed basis, separate behavioral and
 semantic channels, and strong text/token/direct/continuous/oracle baselines.
 Receiver execution remains locked.
 
-## Stage-A v3-1 sequencing
+## Stage-A v3-2 sequencing
 
 1. Commit the frozen registration.
 2. Implement without changing scientific fields; add focused tests.
 3. Commit the green implementation.
-4. Stage the exact unopened held checkpoint without task queries.
-5. Dry-run and launch the registered representation stages.
-6. Require founder and held freeze manifests before test-panel creation.
-7. Fetch, verify, independently recompute, document, and commit the outcome.
-8. Follow the machine decision; never skip directly to receiver execution.
+4. Commit and inspect `configs/stagea_v3/inspected_plan.json` without creating
+   any panel or loading any model.
+5. Stage the exact unopened held checkpoint without task queries.
+6. Dry-run and launch the registered representation stages through
+   `olivia/cli.py`.
+7. Require founder and held freeze manifests before test-panel creation.
+8. Fetch, verify, independently recompute, document, and commit the outcome.
+9. Follow the machine decision; never skip directly to receiver execution.
 
 ## Prohibited actions
 
