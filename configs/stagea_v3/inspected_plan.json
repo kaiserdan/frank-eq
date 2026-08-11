@@ -23,7 +23,7 @@
     "olivia/stagea_v3.slurm": "89c735ffc891a18743b59349da63d38160bbf8202cd20337736ef782ce7b23e3",
     "src/frank_eq/__init__.py": "ebd5d278994bf8d2b97c3c70956ee161472ceeb5067add9488f36abbc766fba0",
     "src/frank_eq/cli.py": "1aeaaa34f7d843ab7f8567ebe537b00cf63922e52a3ba35f9d8dd10f6349d607",
-    "src/frank_eq/cluster.py": "838d053551cb4ee4534dbd5dad422272e90bc2b3c31912ed77ee8228b3ad5ab6",
+    "src/frank_eq/cluster.py": "6e527f961bfadbc9fa94100324854bc4fb0246d891af18a3eef045736f43772e",
     "src/frank_eq/config.py": "5e830ed265de34cf9fbf951832836fde07907b20d7c72069e85c61a1b35ed86c",
     "src/frank_eq/contracts.py": "c111c21554489e1f69cbec3d3ae01818fe03a659770b90527e3e4137c166ff88",
     "src/frank_eq/data/__init__.py": "722c94b6882cad03949318dbe1f5144778643eae71670f19b6bbf8a65b8fa0a7",
@@ -81,7 +81,7 @@
     "src/frank_eq/utils.py": "0f1ef6d5fb615e57c184c099c70af2f758f2825b476310517484b5f837909fba",
     "src/frank_eq/workflow.py": "ec3518799e51de3c3b661e55733b31647931f6b3ec47dc4b0b9150ddf5fde255"
   },
-  "implementation_tree_sha256": "ce8a0db1e2363d8ff35883eb43fd5cba607ffc5f1a66bc2b761177e09b4ed63d",
+  "implementation_tree_sha256": "2ab50a10d985ee5fc83e36deea3d50ad044d7719212c1f5a744eedc368815513",
   "model_order": [
     "qwen3-4b",
     "qwen3-8b",
@@ -92,7 +92,7 @@
     "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
     "qwen3-8b": "b968826d9c46dd6066d109eabc6255188de91218"
   },
-  "plan_sha256": "c71c1b26840324f14159ae1afbe04b176d4edb8e93887f0af0d4a1dcea11d0af",
+  "plan_sha256": "727348ba7b5be57ea3b566054ae0e5597ec8342a615f550fa8432ef7fcc34176",
   "protected_authorization": {
     "human_sequence_authorized_on": "2026-08-12",
     "new_receiver_world_access_authorized": false,
