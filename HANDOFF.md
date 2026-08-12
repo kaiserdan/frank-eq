@@ -206,10 +206,14 @@ not a scientific v3-2 outcome. The minimal repair retains raw log-odds, clamps
 only the serialized float32 behavioral probability view to
 `[1e-7, 1-1e-7]`, records the per-shard clamp count, and makes workflow and
 independent verification require that storage contract. A focused endpoint
-round-trip regression passes. The old inspected plan is invalid; the immediate
-next action is full validation and a freshly generated, inspected, separately
-committed plan before one fresh immutable retry. Once test access is consumed,
-no retry is permitted.
+round-trip regression passes. The repair is committed as `d40cdf5`; the complete
+local contract passes with 110 tests. The replacement inspected plan has
+internal hash `7b509858...a113c`, plan-file hash `9a728f19...0cbf8`, and
+implementation-tree hash `bf8c87fa...812fc` across the same 64 bound files. It
+preserves the exact config, models, 1,824 prefix forwards, 213,408 logical
+queries, and closed pre-run access flags. The immediate next action is to inspect
+a fresh deterministic launcher archive and submit one fresh immutable retry.
+Once test access is consumed, no retry is permitted.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every

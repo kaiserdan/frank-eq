@@ -17,8 +17,8 @@
   "held_model_task_opened": false,
   "implementation_files": {
     "configs/stagea_v3/real_olivia_v3.yaml": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
-    "configs/stagea_v3/registration.json": "a6aaffd600569ce04fb0be179f1638b93044f2a8e027605b5981b613df4edc27",
-    "docs/20_STAGEA_V3_PROTOCOL.md": "5fca0b0bb34a812d05a3ba753ddbaa91e96c78f78f3b2a5ae2a401fca9f7ccef",
+    "configs/stagea_v3/registration.json": "7fc1f10f0f51bd5e8358aab59473e6df9fde36cd8bbec5500eaf38a1e7b525ae",
+    "docs/20_STAGEA_V3_PROTOCOL.md": "250f4e1d65d06c4b0ff86db165f958c11d6ab216f2a6f53db3f42799e8fda8fc",
     "olivia/quickstart.sh": "aa72ec2c066f067ccfc86faa10dd1c3398ab040f582dfa4e191f1c6841421f1c",
     "olivia/stagea_v3.slurm": "89c735ffc891a18743b59349da63d38160bbf8202cd20337736ef782ce7b23e3",
     "src/frank_eq/__init__.py": "ebd5d278994bf8d2b97c3c70956ee161472ceeb5067add9488f36abbc766fba0",
@@ -62,7 +62,7 @@
     "src/frank_eq/stagea_v3/__init__.py": "f485a683cf4fef4ec8953398aca5aa66aa7578883354ac207945b12ff668df40",
     "src/frank_eq/stagea_v3/access.py": "cd6350ffd851bb9c57e388f5504a1f3a1f7559818a8dcabfbc5d468cc7b1cdda",
     "src/frank_eq/stagea_v3/baselines.py": "0ced0ca21dd015a1c960e0c845ce6a3ec68bbe9fe87819807d7a6d91ce3bef92",
-    "src/frank_eq/stagea_v3/capture.py": "ff9da649bae217a12ed1bfa212c92f78d7bbaca8c593560984509ac16f1b11fe",
+    "src/frank_eq/stagea_v3/capture.py": "62f7aa0d2ee3819ebacec34cbbfa271b796cbf0e7634c81c3b910515a49bb662",
     "src/frank_eq/stagea_v3/compiler.py": "64e14f43d38e6c18fa7f77bc4fd7e4a76a48615bd0c4e4286dd7ec34c0329ee0",
     "src/frank_eq/stagea_v3/config.py": "0bf4ba564bb99fe4241c1d8840ac288b5443f0a9dc35e79bc6b171ba93604fe4",
     "src/frank_eq/stagea_v3/controls.py": "d34978dceff16d86306aba352ad7b47b916ff41970a93e7f4a088d670673d039",
@@ -71,8 +71,8 @@
     "src/frank_eq/stagea_v3/panel.py": "3ad63b78b67ccae30b3ad8c29410ae2b44debee64a8fc38aeb3c19a80d07b49c",
     "src/frank_eq/stagea_v3/predictions.py": "86a5132a2a67980375564b3e6bb5ab908ec6889d7d46af67b6312de110fdafaa",
     "src/frank_eq/stagea_v3/training.py": "ed51705d18614619850aaa3062a527cf8fe971ebffd0614aef37b905173c8c52",
-    "src/frank_eq/stagea_v3/verify.py": "26e05dfe638587d4fd4c66c35cec1e49107935759e48c530e5aca09bf054dc4e",
-    "src/frank_eq/stagea_v3/workflow.py": "4f60df03d0b1026723a2b0b4a87bdd16bfa47f12fd21a9e266a420a9ca88d6d9",
+    "src/frank_eq/stagea_v3/verify.py": "cb267cfd0f1b1827cc94ae0a9f2aefd512a1dd67b3e5f884048ac2e59d1469e0",
+    "src/frank_eq/stagea_v3/workflow.py": "827584ddddb20d5ff69e4dd9831d9a57ed1d52273ce4e69ade59cfad05401eb0",
     "src/frank_eq/stageq.py": "c37c976839858bbab72257875e7475cc1341b347a793cb1b7a3fb8add3bafb5f",
     "src/frank_eq/telemetry.py": "032206c41433cc5392b6a8b3d05b91a777a4ec90821b3bd21f69069c7131c4bd",
     "src/frank_eq/training/__init__.py": "ac6bc77a25317490778953b3adb791f44076739a0d567e15e8bf3e3facf5cca4",
@@ -81,7 +81,7 @@
     "src/frank_eq/utils.py": "0f1ef6d5fb615e57c184c099c70af2f758f2825b476310517484b5f837909fba",
     "src/frank_eq/workflow.py": "ec3518799e51de3c3b661e55733b31647931f6b3ec47dc4b0b9150ddf5fde255"
   },
-  "implementation_tree_sha256": "2fe48197d1ce513d21b95fbf87ecfbf9c69c481407b122298e4e330cc2141014",
+  "implementation_tree_sha256": "bf8c87fa98116abff8d872b7fea0b6120d9337856d82f7d29778ccc3617812fc",
   "model_order": [
     "qwen3-4b",
     "qwen3-8b",
@@ -92,7 +92,7 @@
     "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
     "qwen3-8b": "b968826d9c46dd6066d109eabc6255188de91218"
   },
-  "plan_sha256": "694408c6b9e6b63b68c393605da30c194b0feaad19fb737e93b091d5ff505922",
+  "plan_sha256": "7b5098588c9368b64694eaf248713810ebc714a2d7f7e6891f93cb7cd16a113c",
   "protected_authorization": {
     "human_sequence_authorized_on": "2026-08-12",
     "new_receiver_world_access_authorized": false,

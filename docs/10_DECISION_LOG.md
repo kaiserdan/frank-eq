@@ -228,3 +228,11 @@
 - **Regression:** drive the capture path with exact `0.0` and `1.0` teacher probabilities plus retained `-80/+80` log-odds; require strict open-interval targets, an exact clamp count, unchanged scores, successful validation, atomic serialization, and hash-checked reload.
 - **Scientific boundary:** model revisions, panels, seeds, queries, response protocols, raw scores, architecture, training, baselines, gates, bootstrap, and access order are unchanged. No held task prompt or test artifact was accessed while making this repair.
 - **Plan consequence:** `capture.py`, `workflow.py`, `verify.py`, and the protocol are plan-bound. Inspected plan `694408c6...505922` is invalidated and cannot authorize a retry; generate, inspect, and separately commit a new plan only after the repair commit.
+
+## 2026-08-12 — rebind and freeze the numeric-repair plan
+
+- **Registration binding:** update only the frozen protocol content hash in `configs/stagea_v3/registration.json` to `250f4e1d65d06c4b0ff86db165f958c11d6ab216f2a6f53db3f42799e8fda8fc`; the config hash and protocol version remain unchanged.
+- **Validation:** compile, Ruff, 110 tests, shell syntax, repository validation, and rate--compute validation all pass after repair commit `d40cdf5` and the registration rebind.
+- **Replacement plan:** internal SHA-256 `7b5098588c9368b64694eaf248713810ebc714a2d7f7e6891f93cb7cd16a113c`, plan-file SHA-256 `9a728f192b04035281e616822e9a468615a4969c8111a488ec58f28cd240cbf8`, and implementation-tree SHA-256 `bf8c87fa98116abff8d872b7fea0b6120d9337856d82f7d29778ccc3617812fc` across 64 bound files.
+- **Inspection:** model revisions, config SHA-256 `92d7ede...f5b3`, stage order, 1,824 prefix forwards, 213,408 logical source queries, one delayed test grant, and every protected authorization are unchanged. The plan records `held_model_task_opened=false` and `test_panel_instantiated=false`.
+- **Authority:** this plan supersedes all earlier v3-2 plans and may authorize only one fresh immutable retry after a clean deterministic source archive is independently inspected. Job `1895410` remains immutable failure evidence.
