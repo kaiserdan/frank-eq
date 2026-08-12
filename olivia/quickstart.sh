@@ -45,6 +45,20 @@ stages_arg="${stages_arg//+/ ,}"
 stages_arg="${stages_arg// /}"
 
 case "$config_arg" in
+    configs/moment_compute/*)
+        if [[ "$stages_arg" != "audit" ]]; then
+            echo "moment-compute configs require --stages audit; received: $stages_arg" >&2
+            exit 2
+        fi
+        "$python_bin" -m frank_eq.moment_compute.cli validate --config "$config_arg"
+        "$python_bin" -m frank_eq.moment_compute.cli run \
+          --config "$config_arg" \
+          --out "${FRANK_EQ_RUN_ROOT:-runs}" \
+          --stages "$stages_arg"
+        "$python_bin" -m frank_eq.moment_compute.cli verify \
+          --config "$config_arg" \
+          --run "${FRANK_EQ_RUN_ROOT:-runs}"
+        ;;
     configs/stagea_v3/*)
         expected_stages="prepare,founder_fit,freeze,held_onboard,evaluate"
         if [[ "$stages_arg" != "$expected_stages" ]]; then
