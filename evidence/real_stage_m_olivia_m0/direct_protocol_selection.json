@@ -1,0 +1,342 @@
+{
+  "groups": {
+    "qwen3-4b|4|compare_outdegree": {
+      "candidates": [
+        {
+          "brier": 0.19666497474916628,
+          "protocol": "pause",
+          "rows": 104
+        },
+        {
+          "brier": 0.19864809357035634,
+          "protocol": "reason",
+          "rows": 104
+        },
+        {
+          "brier": 0.22916198164299997,
+          "protocol": "answer_token",
+          "rows": 104
+        },
+        {
+          "brier": 0.2401893573691297,
+          "protocol": "sequence",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "pause",
+      "selection_brier": 0.19666497474916628
+    },
+    "qwen3-4b|4|compose": {
+      "candidates": [
+        {
+          "brier": 0.20525420357836108,
+          "protocol": "pause",
+          "rows": 104
+        },
+        {
+          "brier": 0.2130752474634145,
+          "protocol": "reason",
+          "rows": 104
+        },
+        {
+          "brier": 0.21565444993495514,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.2370742106229418,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "pause",
+      "selection_brier": 0.20525420357836108
+    },
+    "qwen3-4b|4|counterfactual_add": {
+      "candidates": [
+        {
+          "brier": 0.2188741647946581,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.2234031669571637,
+          "protocol": "answer_token",
+          "rows": 104
+        },
+        {
+          "brier": 0.22480480302056538,
+          "protocol": "reason",
+          "rows": 104
+        },
+        {
+          "brier": 0.23064292604195918,
+          "protocol": "pause",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.2188741647946581
+    },
+    "qwen3-4b|4|density": {
+      "candidates": [
+        {
+          "brier": 0.009445232226382837,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.09343810619304858,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.009445232226382837
+    },
+    "qwen3-4b|4|inverse": {
+      "candidates": [
+        {
+          "brier": 0.05743283100115017,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.17468392779600286,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.05743283100115017
+    },
+    "qwen3-4b|4|lookup": {
+      "candidates": [
+        {
+          "brier": 0.027667242521716782,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.14826190723938013,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.027667242521716782
+    },
+    "qwen3-4b|4|mutual": {
+      "candidates": [
+        {
+          "brier": 0.0980399970886011,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.1035838241386009,
+          "protocol": "reason",
+          "rows": 104
+        },
+        {
+          "brier": 0.10422103575020987,
+          "protocol": "pause",
+          "rows": 104
+        },
+        {
+          "brier": 0.2296264758339908,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.0980399970886011
+    },
+    "qwen3-4b|4|reciprocity": {
+      "candidates": [
+        {
+          "brier": 0.004490719654968187,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.16709882149064337,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.004490719654968187
+    },
+    "qwen3-8b|4|compare_outdegree": {
+      "candidates": [
+        {
+          "brier": 0.19293428798090548,
+          "protocol": "reason",
+          "rows": 104
+        },
+        {
+          "brier": 0.1950765431266561,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.20026182995204422,
+          "protocol": "pause",
+          "rows": 104
+        },
+        {
+          "brier": 0.20915473738121404,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "reason",
+      "selection_brier": 0.19293428798090548
+    },
+    "qwen3-8b|4|compose": {
+      "candidates": [
+        {
+          "brier": 0.17731394878001938,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.19190172497079902,
+          "protocol": "pause",
+          "rows": 104
+        },
+        {
+          "brier": 0.19356872498343622,
+          "protocol": "reason",
+          "rows": 104
+        },
+        {
+          "brier": 0.20414301783771632,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.17731394878001938
+    },
+    "qwen3-8b|4|counterfactual_add": {
+      "candidates": [
+        {
+          "brier": 0.21501288999290272,
+          "protocol": "answer_token",
+          "rows": 104
+        },
+        {
+          "brier": 0.21967762009983996,
+          "protocol": "pause",
+          "rows": 104
+        },
+        {
+          "brier": 0.21976482901552405,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.2232086819337182,
+          "protocol": "reason",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "answer_token",
+      "selection_brier": 0.21501288999290272
+    },
+    "qwen3-8b|4|density": {
+      "candidates": [
+        {
+          "brier": 0.0063987523147985715,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.017310392337273793,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.0063987523147985715
+    },
+    "qwen3-8b|4|inverse": {
+      "candidates": [
+        {
+          "brier": 0.031707464023920454,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.130057027711363,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.031707464023920454
+    },
+    "qwen3-8b|4|lookup": {
+      "candidates": [
+        {
+          "brier": 0.024500922663069826,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.1191840838527045,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.024500922663069826
+    },
+    "qwen3-8b|4|mutual": {
+      "candidates": [
+        {
+          "brier": 0.09876129663916391,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.10299936678984299,
+          "protocol": "pause",
+          "rows": 104
+        },
+        {
+          "brier": 0.10551234128216005,
+          "protocol": "answer_token",
+          "rows": 104
+        },
+        {
+          "brier": 0.10766499977886715,
+          "protocol": "reason",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.09876129663916391
+    },
+    "qwen3-8b|4|reciprocity": {
+      "candidates": [
+        {
+          "brier": 0.015143813446300836,
+          "protocol": "sequence",
+          "rows": 104
+        },
+        {
+          "brier": 0.02532813399945213,
+          "protocol": "answer_token",
+          "rows": 104
+        }
+      ],
+      "selected_protocol": "sequence",
+      "selection_brier": 0.015143813446300836
+    }
+  },
+  "schema": "frank_eq_moment_compute_direct_selection_v1",
+  "selection_role": "selection"
+}

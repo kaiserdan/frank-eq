@@ -1,0 +1,21 @@
+{
+  "files": {
+    "calibration.json": "3fa89a7bbf936a88ff180fb12d976319e67ca0bdda63141ce033cb7f9cdbfc2a",
+    "compiled_predictions.jsonl": "3082cdeaec8d301474e2c08aae839837da0a5759f800847becfc1e74f228ad8e",
+    "config.yaml": "f181fece5f47078c9aae3a04195fd44156efa917648f6f0591192e948d80d51d",
+    "decision.json": "0fcd628feb454492ad94222089db27bc01cc6f40cd8509b0cf576618d42c4f31",
+    "development_splits.json": "5526876e9ddd78c4a91e73d0e4fdb928cee43463ed73abda3a56c5d876a8f48e",
+    "direct_protocol_selection.json": "8edf3afd592fab18e8c6dfac8ebb77c882a150e0194f7d305b59e2f08f9e17e8",
+    "event_registry.json": "79341ebab71410d36bad02dcf9b54c8358b20235a434daf0e50d9485179d293e",
+    "metrics.json": "854a5494354d6f76b5596f0b27685f2ada87a05d64b56cbb2cc91065a70b4ba4",
+    "models.json": "be1ea7fc5fe5959c1eee642215faec9a47c1c5f2d611f3c9ca24f6462e47766e",
+    "panels/n4.json": "3867bc0f7be13515451be98935c09fe4bd32717691a02eed6ba20229a446441f",
+    "panels/n6.json": "dd343ab4cf2626e8fecba5c0ca8729165a1ed6ff6f7a571e4a2876ab8639bc6d",
+    "records_calibrated.jsonl": "84eae2a5d251375633e6bb15ba2cb52d9af862923a4ab2da7f7ad10ff62f7373",
+    "records_raw.jsonl": "534b20764364074f26e90370fc46782e55649121d1f7f7bb08bc234d84efd691",
+    "run_manifest.json": "82b71026dce3e7d0783da623f1d75cb329534049bd13e569315fdc82ee8aac3e",
+    "run_summary.json": "782d7e3d4cb1696ab377769c7b85418ab6f4ddf56d1838c9c8a071b43fb50e41",
+    "workflow_status.json": "4774f2a795685c3a1d51f9e6c87f1211f0bd1dae77c1a5c946e25c01f795c3b3"
+  },
+  "schema": "frank_eq_moment_compute_artifact_manifest_v1"
+}

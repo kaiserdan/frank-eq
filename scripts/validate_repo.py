@@ -44,6 +44,9 @@ REQUIRED = (
     "docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md",
     "docs/19_STAGE_R_CLUSTER_RUNBOOK.md",
     "docs/20_STAGEA_V3_PROTOCOL.md",
+    "docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md",
+    "docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md",
+    "docs/24_STAGE_M_OLIVIA_RUNBOOK.md",
     "docs/OLIVIA.md",
     "docs/LUMI.md",
     "configs/stage0/synthetic_smoke.yaml",
@@ -58,11 +61,14 @@ REQUIRED = (
     "configs/stageq/real_lumi_screen_8b.yaml",
     "configs/stagea_v3/real_olivia_v3.yaml",
     "configs/stagea_v3/registration.json",
+    "configs/moment_compute/real_olivia_m0.yaml",
     "scripts/qualify_real_cache.py",
     "scripts/compare_stageq_caches.py",
     "scripts/audit_rate_compute_result.py",
     "scripts/verify_stagea_v3_run.py",
     "scripts/smoke_stagea_v3_held_runtime.py",
+    "scripts/validate_moment_compute.py",
+    "scripts/verify_moment_compute_run.py",
     "olivia/cli.py",
     "olivia/run.slurm",
     "olivia/quickstart.sh",
@@ -74,6 +80,7 @@ REQUIRED = (
     "lumi/quickstart.sh",
     ".agents/skills/olivia-cluster-runner/SKILL.md",
     ".agents/skills/lumi-cluster-runner/SKILL.md",
+    ".agents/skills/moment-compute-runner/SKILL.md",
     "evidence/reference_stage0/metrics.json",
     "evidence/reference_stage0/decision.json",
     "evidence/reference_stage0/manifest.json",
@@ -135,6 +142,22 @@ REQUIRED = (
     "evidence/real_stagea_v3_olivia/verification_summary.json",
     "evidence/real_stagea_v3_olivia/verifier_order_diagnostic.json",
     "evidence/real_stagea_v3_olivia/workflow_status.json",
+    "evidence/real_stage_m_olivia_m0/AUDIT.md",
+    "evidence/real_stage_m_olivia_m0/artifact_manifest.json",
+    "evidence/real_stage_m_olivia_m0/calibration.json",
+    "evidence/real_stage_m_olivia_m0/config.yaml",
+    "evidence/real_stage_m_olivia_m0/decision.json",
+    "evidence/real_stage_m_olivia_m0/development_splits.json",
+    "evidence/real_stage_m_olivia_m0/direct_protocol_selection.json",
+    "evidence/real_stage_m_olivia_m0/independent_verification.json",
+    "evidence/real_stage_m_olivia_m0/manifest.json",
+    "evidence/real_stage_m_olivia_m0/metrics.json",
+    "evidence/real_stage_m_olivia_m0/models.json",
+    "evidence/real_stage_m_olivia_m0/numpy_runtime_diagnostic.json",
+    "evidence/real_stage_m_olivia_m0/run_manifest.json",
+    "evidence/real_stage_m_olivia_m0/run_summary.json",
+    "evidence/real_stage_m_olivia_m0/verification_summary.json",
+    "evidence/real_stage_m_olivia_m0/workflow_status.json",
 )
 
 
@@ -584,6 +607,178 @@ def main() -> int:
     ):
         raise SystemExit("Stage-A v3 compact evidence contains generated tensor payloads")
 
+    stage_m_dir = ROOT / "evidence/real_stage_m_olivia_m0"
+    stage_m_manifest = _validate_hash_manifest(stage_m_dir)
+    stage_m_artifact_manifest = json.loads(
+        (stage_m_dir / "artifact_manifest.json").read_text()
+    )
+    stage_m_decision = json.loads((stage_m_dir / "decision.json").read_text())
+    stage_m_metrics = json.loads((stage_m_dir / "metrics.json").read_text())
+    stage_m_models = json.loads((stage_m_dir / "models.json").read_text())
+    stage_m_roles = json.loads((stage_m_dir / "development_splits.json").read_text())
+    stage_m_run_manifest = json.loads((stage_m_dir / "run_manifest.json").read_text())
+    stage_m_workflow = json.loads((stage_m_dir / "workflow_status.json").read_text())
+    stage_m_verification = json.loads(
+        (stage_m_dir / "verification_summary.json").read_text()
+    )
+    stage_m_independent = json.loads(
+        (stage_m_dir / "independent_verification.json").read_text()
+    )
+    stage_m_runtime_diagnostic = json.loads(
+        (stage_m_dir / "numpy_runtime_diagnostic.json").read_text()
+    )
+    if stage_m_manifest.get("schema") != "frank_eq_moment_compute_evidence_manifest_v1":
+        raise SystemExit("Stage M0 evidence manifest has the wrong schema")
+    expected_stage_m_files = set(stage_m_manifest.get("files", {})) | {"manifest.json"}
+    observed_stage_m_files = {
+        path.name for path in stage_m_dir.iterdir() if path.is_file()
+    }
+    if observed_stage_m_files != expected_stage_m_files:
+        raise SystemExit("Stage M0 compact evidence file set changed")
+    stage_m_environment = stage_m_run_manifest.get("environment", {})
+    if (
+        stage_m_manifest.get("source_archive_sha256")
+        != stage_m_environment.get("source_sha256")
+        or stage_m_manifest.get("runtime_image_sha256")
+        != stage_m_environment.get("runtime_image_sha256")
+        or stage_m_manifest.get("slurm_job_id")
+        != stage_m_environment.get("slurm_job_id")
+    ):
+        raise SystemExit("Stage M0 evidence source lineage changed")
+    stage_m_config = ROOT / "configs/moment_compute/real_olivia_m0.yaml"
+    if sha256_file(stage_m_dir / "config.yaml") != sha256_file(stage_m_config):
+        raise SystemExit("adopted Stage M0 config differs from the frozen registration")
+    if stage_m_artifact_manifest.get("schema") != (
+        "frank_eq_moment_compute_artifact_manifest_v1"
+    ):
+        raise SystemExit("Stage M0 run artifact manifest has the wrong schema")
+    adopted_stage_m_hashes = stage_m_manifest.get("files", {})
+    run_stage_m_hashes = stage_m_artifact_manifest.get("files", {})
+    for name in (
+        "calibration.json",
+        "config.yaml",
+        "decision.json",
+        "development_splits.json",
+        "direct_protocol_selection.json",
+        "metrics.json",
+        "models.json",
+        "run_manifest.json",
+        "run_summary.json",
+        "workflow_status.json",
+    ):
+        if adopted_stage_m_hashes.get(name) != run_stage_m_hashes.get(name):
+            raise SystemExit(f"adopted Stage M0 artifact differs from verified run: {name}")
+    expected_stage_m_checks = {
+        "atomic_retention": True,
+        "event_algebra_exact": True,
+        "moment_advantage_robust_by_model": False,
+        "moment_over_direct_aggregate": True,
+        "moment_over_marginal_aggregate": False,
+        "operation_closed_events_readable": False,
+    }
+    if (
+        stage_m_decision.get("status") != "fail"
+        or stage_m_decision.get("diagnosis") != "OPERATION_CLOSED_EVENTS_NOT_READABLE"
+        or stage_m_decision.get("checks") != expected_stage_m_checks
+    ):
+        raise SystemExit("adopted Stage M0 negative decision changed")
+    if not stage_m_decision.get("authorization") or any(
+        stage_m_decision["authorization"].values()
+    ):
+        raise SystemExit("Stage M0 negative improperly opens an authorization")
+    if (
+        stage_m_workflow.get("state") != "completed"
+        or stage_m_workflow.get("completed_stages") != ["audit"]
+        or stage_m_workflow.get("failure") is not None
+        or stage_m_workflow.get("scientific_decision") != stage_m_decision
+    ):
+        raise SystemExit("Stage M0 workflow completion record changed")
+    if (
+        len(stage_m_roles.get("calibration_world_ids", [])) != 32
+        or len(stage_m_roles.get("selection_world_ids", [])) != 13
+        or len(stage_m_roles.get("validation_world_ids", [])) != 19
+        or stage_m_roles.get("test_world_ids") != []
+    ):
+        raise SystemExit("Stage M0 development split changed")
+    if any(
+        not row.get("branch_execution", {}).get("exclusive_cache_batching")
+        or row.get("branch_execution", {}).get("exact_replay_response_branches") != 0
+        or row.get("prefixes") != 128
+        or row.get("records") != 52992
+        for row in stage_m_models
+    ):
+        raise SystemExit("Stage M0 causal branch record changed")
+    failed_event_groups = {
+        name for name, row in stage_m_metrics.get("event_groups", {}).items()
+        if row.get("passed") is not True
+    }
+    if failed_event_groups != {
+        "qwen3-4b|4|joint_outdegree|6",
+        "qwen3-4b|4|two_path_intersection|4",
+        "qwen3-8b|4|joint_outdegree|6",
+        "qwen3-8b|4|two_path_intersection|4",
+    }:
+        raise SystemExit("Stage M0 failed event-group set changed")
+    stage_m_composition = stage_m_metrics.get("composition", {})
+    if (
+        stage_m_metrics.get("executor_mismatches") != 0
+        or stage_m_metrics.get("event_registry_sha256")
+        != "70ce5d31d22e814b91ca0f1f6ac29567e2ef4447b472c426a979166471ca6d55"
+        or stage_m_composition.get("aggregate_over_marginal", {})
+        .get("brier_gain_ci", {})
+        .get("upper", 0.0)
+        >= 0.0
+        or stage_m_composition.get("aggregate_over_crossfitted_direct", {})
+        .get("brier_gain_ci", {})
+        .get("lower", 0.0)
+        <= 0.0
+    ):
+        raise SystemExit("Stage M0 registered metric conclusions changed")
+    if (
+        stage_m_independent.get("passed") is not True
+        or not all(stage_m_independent.get("checks", {}).values())
+        or stage_m_independent.get("decision") != stage_m_decision
+    ):
+        raise SystemExit("Stage M0 in-job independent verification changed")
+    if (
+        stage_m_verification.get("schema")
+        != "frank_eq_moment_compute_adopted_verification_summary_v1"
+        or stage_m_verification.get("overall")
+        != "adopted_valid_development_negative"
+        or stage_m_verification.get("repository_verifier", {}).get("overall")
+        != "passed"
+        or stage_m_verification.get("specialized_verifier", {}).get(
+            "exact_runtime_overall"
+        )
+        != "passed"
+    ):
+        raise SystemExit("Stage M0 adopted verification summary changed")
+    if (
+        stage_m_runtime_diagnostic.get("schema")
+        != "frank_eq_moment_compute_numpy_runtime_diagnostic_v1"
+        or stage_m_runtime_diagnostic.get("exact_runtime_reverification", {}).get(
+            "passed"
+        )
+        is not True
+        or stage_m_runtime_diagnostic.get("newer_runtime", {}).get(
+            "prediction_rows_with_any_difference"
+        )
+        != 96
+        or stage_m_runtime_diagnostic.get("newer_runtime", {}).get(
+            "scientific_prediction_field_differences"
+        )
+        != 0
+        or stage_m_runtime_diagnostic.get("result", {}).get("gate_or_decision_difference")
+        is not False
+    ):
+        raise SystemExit("Stage M0 NumPy runtime diagnostic changed")
+    if any(
+        path.suffix in forbidden_evidence_suffixes
+        for path in stage_m_dir.rglob("*")
+        if path.is_file()
+    ):
+        raise SystemExit("Stage M0 compact evidence contains generated tensor payloads")
+
     gitignore = (ROOT / ".gitignore").read_text()
     if ".agents/state/" not in gitignore:
         raise SystemExit(".agents/state/ must remain ignored")
@@ -604,6 +799,8 @@ def main() -> int:
                 "stagea_v3_protocol": v3_registration["protocol_version"],
                 "stagea_v3_diagnosis": v3_evidence_decision["diagnosis"],
                 "stagea_v3_evidence": v3_evidence_verification["overall"],
+                "stage_m_diagnosis": stage_m_decision["diagnosis"],
+                "stage_m_evidence": stage_m_verification["overall"],
                 "stageq_pair_registered": True,
                 "stageq_cache_only_enforced": True,
             },

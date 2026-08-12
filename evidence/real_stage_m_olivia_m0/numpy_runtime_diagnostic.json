@@ -1,0 +1,45 @@
+{
+  "classification": "cross_runtime_projection_diagnostic_reduction_sensitivity",
+  "exact_runtime_reverification": {
+    "decision_recomputed_exactly": true,
+    "metrics_recomputed_exactly": true,
+    "numpy": "2.2.6",
+    "passed": true,
+    "predictions_recomputed_exactly": true,
+    "python": "3.10.20",
+    "runtime_scope": "temporary local environment"
+  },
+  "fetched_run_unchanged": true,
+  "newer_runtime": {
+    "decision_recomputed_exactly": true,
+    "differing_fields": {
+      "projection_max_absolute_adjustment": {
+        "instances": 48,
+        "maximum_absolute_difference": 4.440892098500626e-16
+      },
+      "projection_mean_absolute_adjustment": {
+        "instances": 48,
+        "maximum_absolute_difference": 6.938893903907228e-18
+      }
+    },
+    "metrics_recomputed_exactly": true,
+    "numpy": "2.5.2",
+    "passed": false,
+    "prediction_rows": 1824,
+    "prediction_rows_with_any_difference": 96,
+    "python": "3.14.6",
+    "scientific_prediction_field_differences": 0
+  },
+  "original_runtime": {
+    "independent_verifier_passed": true,
+    "numpy": "2.2.6",
+    "platform": "Linux-6.4.0-150700.53.31-64kb-aarch64-with-glibc2.35",
+    "python": "3.10.12"
+  },
+  "result": {
+    "gate_or_decision_difference": false,
+    "original_artifacts_mutated": false,
+    "successor_authorized": false
+  },
+  "schema": "frank_eq_moment_compute_numpy_runtime_diagnostic_v1"
+}

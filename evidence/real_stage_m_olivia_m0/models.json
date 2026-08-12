@@ -1,0 +1,80 @@
+[
+  {
+    "answer_labels": [
+      " A",
+      " B"
+    ],
+    "answer_token_ids": [
+      362,
+      425
+    ],
+    "branch_execution": {
+      "allow_exact_replay_fallback": false,
+      "exact_replay_response_branches": 0,
+      "exclusive_cache_batching": true,
+      "max_observed_batch_size": 8,
+      "mode": "kv_reuse",
+      "response_batches": 11520
+    },
+    "hf_id": "Qwen/Qwen3-4B",
+    "model_id": "qwen3-4b",
+    "model_index": 0,
+    "prefixes": 128,
+    "records": 52992,
+    "revision_observed": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "revision_requested": "1cfa9a7208912126459214e8b04321603b3df60c",
+    "semantic_candidates": {
+      "false": {
+        "text": " false",
+        "token_ids": [
+          895
+        ]
+      },
+      "true": {
+        "text": " true",
+        "token_ids": [
+          830
+        ]
+      }
+    }
+  },
+  {
+    "answer_labels": [
+      " A",
+      " B"
+    ],
+    "answer_token_ids": [
+      362,
+      425
+    ],
+    "branch_execution": {
+      "allow_exact_replay_fallback": false,
+      "exact_replay_response_branches": 0,
+      "exclusive_cache_batching": true,
+      "max_observed_batch_size": 8,
+      "mode": "kv_reuse",
+      "response_batches": 11520
+    },
+    "hf_id": "Qwen/Qwen3-8B",
+    "model_id": "qwen3-8b",
+    "model_index": 1,
+    "prefixes": 128,
+    "records": 52992,
+    "revision_observed": "b968826d9c46dd6066d109eabc6255188de91218",
+    "revision_requested": "b968826d9c46dd6066d109eabc6255188de91218",
+    "semantic_candidates": {
+      "false": {
+        "text": " false",
+        "token_ids": [
+          895
+        ]
+      },
+      "true": {
+        "text": " true",
+        "token_ids": [
+          830
+        ]
+      }
+    }
+  }
+]

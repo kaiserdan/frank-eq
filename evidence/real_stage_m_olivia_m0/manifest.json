@@ -1,0 +1,24 @@
+{
+  "files": {
+    "AUDIT.md": "fd474e35251157fbbb4f411e90abb70a07f78619cf55f5b348513c0c016579b2",
+    "artifact_manifest.json": "0be3d0760d3b648056dd27f2350fd69dbac1aef9a4229b960ad4eee0eb127237",
+    "calibration.json": "3fa89a7bbf936a88ff180fb12d976319e67ca0bdda63141ce033cb7f9cdbfc2a",
+    "config.yaml": "f181fece5f47078c9aae3a04195fd44156efa917648f6f0591192e948d80d51d",
+    "decision.json": "0fcd628feb454492ad94222089db27bc01cc6f40cd8509b0cf576618d42c4f31",
+    "development_splits.json": "5526876e9ddd78c4a91e73d0e4fdb928cee43463ed73abda3a56c5d876a8f48e",
+    "direct_protocol_selection.json": "8edf3afd592fab18e8c6dfac8ebb77c882a150e0194f7d305b59e2f08f9e17e8",
+    "independent_verification.json": "2e2ac7d10b8429b0b5d8a8880eb5bcfd108ae3bbadfe58870ddd0291fd49240d",
+    "metrics.json": "854a5494354d6f76b5596f0b27685f2ada87a05d64b56cbb2cc91065a70b4ba4",
+    "models.json": "be1ea7fc5fe5959c1eee642215faec9a47c1c5f2d611f3c9ca24f6462e47766e",
+    "numpy_runtime_diagnostic.json": "530fe64ebdaf4b8e9da4a94bf0748a0aceaec3bc8f998134f2638b67a8724a76",
+    "run_manifest.json": "82b71026dce3e7d0783da623f1d75cb329534049bd13e569315fdc82ee8aac3e",
+    "run_summary.json": "782d7e3d4cb1696ab377769c7b85418ab6f4ddf56d1838c9c8a071b43fb50e41",
+    "verification_summary.json": "c96fcce60aadbbc6be428e77826a55110c293c87b8db79f71c5a5e66d937ef50",
+    "workflow_status.json": "4774f2a795685c3a1d51f9e6c87f1211f0bd1dae77c1a5c946e25c01f795c3b3"
+  },
+  "job_name": "frank-eq-moment-compute-m0",
+  "runtime_image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+  "schema": "frank_eq_moment_compute_evidence_manifest_v1",
+  "slurm_job_id": "1970800",
+  "source_archive_sha256": "352215a620e2b9147140a719c8c4ad8666a3cacf51d5d73d1454b5c2ccc27668"
+}

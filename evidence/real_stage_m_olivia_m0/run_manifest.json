@@ -1,0 +1,47 @@
+{
+  "access_contract": {
+    "claim_bearing_test_worlds_available": false,
+    "exact_replay_fallback": false,
+    "held_sender_loaded": false,
+    "interactive_event_tomography": true,
+    "literal_kv_reuse": true,
+    "one_shot_interface_claim": false,
+    "receiver_tensors_available": false,
+    "roles": [
+      "calibration",
+      "selection",
+      "validation"
+    ],
+    "state_precedes_operation_reveal": true
+  },
+  "config_path": "configs/moment_compute/real_olivia_m0.yaml",
+  "config_sha256": "f181fece5f47078c9aae3a04195fd44156efa917648f6f0591192e948d80d51d",
+  "created_at": "2026-08-12T19:27:15.635175+00:00",
+  "development_only": true,
+  "environment": {
+    "accelerators": [
+      "NVIDIA GH200 120GB"
+    ],
+    "cluster": "olivia",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "git_commit": "d4e64bb78b6cce8740a0856bb971a9492fa662e1",
+    "git_dirty": "false",
+    "hf_home": "/cluster/projects/nn12027k/hf-cache",
+    "hostname": "gpu-1-58",
+    "numpy": "2.2.6",
+    "platform": "Linux-6.4.0-150700.53.31-64kb-aarch64-with-glibc2.35",
+    "python": "3.10.12",
+    "runtime_image": "/cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif",
+    "runtime_image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "slurm_job_id": "1970800",
+    "source_sha256": "352215a620e2b9147140a719c8c4ad8666a3cacf51d5d73d1454b5c2ccc27668",
+    "torch": "2.12.0.dev20260309+cu126"
+  },
+  "protocol_version": "stage-m0-operation-closed-basis",
+  "run_name": "frank-eq-moment-compute-m0",
+  "schema": "frank_eq_moment_compute_run_manifest_v1",
+  "stages": [
+    "audit"
+  ]
+}

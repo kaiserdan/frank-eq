@@ -1,0 +1,35 @@
+{
+  "completed_at": "2026-08-12T21:02:15.279973+00:00",
+  "completed_stages": [
+    "audit"
+  ],
+  "current_stage": null,
+  "elapsed_seconds": 5699.639677524567,
+  "failure": null,
+  "schema": "frank_eq_moment_compute_status_v1",
+  "scientific_decision": {
+    "authorization": {
+      "claim_bearing_test_authorized": false,
+      "held_sender_authorized": false,
+      "one_shot_compiler_run_authorized": false,
+      "paper_claim_authorized": false,
+      "receiver_execution_authorized": false,
+      "receiver_protocol_draft_authorized": false,
+      "scientific_claim_authorized": false,
+      "successor_protocol_draft_authorized": false
+    },
+    "checks": {
+      "atomic_retention": true,
+      "event_algebra_exact": true,
+      "moment_advantage_robust_by_model": false,
+      "moment_over_direct_aggregate": true,
+      "moment_over_marginal_aggregate": false,
+      "operation_closed_events_readable": false
+    },
+    "diagnosis": "OPERATION_CLOSED_EVENTS_NOT_READABLE",
+    "schema": "frank_eq_moment_compute_decision_v1",
+    "status": "fail"
+  },
+  "started_at": "2026-08-12T19:27:15.638779+00:00",
+  "state": "completed"
+}

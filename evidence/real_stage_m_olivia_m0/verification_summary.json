@@ -1,0 +1,84 @@
+{
+  "artifact_manifest": {
+    "entries": 16,
+    "hashes_valid": true,
+    "sha256": "0be3d0760d3b648056dd27f2350fd69dbac1aef9a4229b960ad4eee0eb127237"
+  },
+  "authorization": {
+    "claim_bearing_test_authorized": false,
+    "held_sender_authorized": false,
+    "one_shot_compiler_run_authorized": false,
+    "paper_claim_authorized": false,
+    "receiver_execution_authorized": false,
+    "receiver_protocol_draft_authorized": false,
+    "scientific_claim_authorized": false,
+    "successor_protocol_draft_authorized": false
+  },
+  "cluster": "olivia",
+  "decision": {
+    "diagnosis": "OPERATION_CLOSED_EVENTS_NOT_READABLE",
+    "file_sha256": "0fcd628feb454492ad94222089db27bc01cc6f40cd8509b0cf576618d42c4f31",
+    "status": "fail"
+  },
+  "fetch": {
+    "byte_exact_remote_local_checksum_comparison": true,
+    "fetched": [
+      "runs",
+      "logs"
+    ],
+    "local_cache": ".agents/state/olivia/frank-eq-moment-compute-m0/remote"
+  },
+  "lineage": {
+    "config_sha256": "f181fece5f47078c9aae3a04195fd44156efa917648f6f0591192e948d80d51d",
+    "git_commit": "d4e64bb78b6cce8740a0856bb971a9492fa662e1",
+    "runtime_image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "source_archive_sha256": "352215a620e2b9147140a719c8c4ad8666a3cacf51d5d73d1454b5c2ccc27668"
+  },
+  "logs": {
+    "fatal_infrastructure_signatures": [],
+    "stderr_sha256": "fe9aa5a3f4205d7a69f74a00f496316544122faf1b181e22bf25a2467e590995",
+    "stdout_sha256": "0e7d91a77f76a271f40d2a81d5e11bb7f183838a58daae156a9a5af4bfe0e41b"
+  },
+  "overall": "adopted_valid_development_negative",
+  "repository_verifier": {
+    "failures": [],
+    "overall": "passed",
+    "warning": "scientific gate failed; workflow may still be valid"
+  },
+  "runtime_diagnostic": {
+    "exact_numpy_2_2_6_verifier_passed": true,
+    "gate_or_decision_difference": false,
+    "newer_numpy_differing_diagnostic_instances": 96,
+    "newer_numpy_maximum_absolute_difference": 4.440892098500626e-16,
+    "scientific_prediction_field_differences": 0
+  },
+  "schema": "frank_eq_moment_compute_adopted_verification_summary_v1",
+  "slurm": {
+    "elapsed": "01:37:52",
+    "exit_code": "0:0",
+    "gpu_hours": 1.6,
+    "job_id": "1970800",
+    "node": "gpu-1-58",
+    "state": "COMPLETED"
+  },
+  "specialized_verifier": {
+    "artifact_files_checked": 16,
+    "compiled_predictions": 1824,
+    "exact_runtime_overall": "passed",
+    "in_job_overall": "passed",
+    "records": 105984
+  },
+  "wandb": {
+    "failures": 0,
+    "project": "frank-eq-moment-compute",
+    "run_id": "3fby9wlq"
+  },
+  "workflow": {
+    "completed_stages": [
+      "audit"
+    ],
+    "elapsed_seconds": 5699.639677524567,
+    "failure": null,
+    "state": "completed"
+  }
+}
