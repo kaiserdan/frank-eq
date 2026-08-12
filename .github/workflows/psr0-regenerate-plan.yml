@@ -23,6 +23,7 @@ jobs:
       - name: Install plan dependencies
         run: |
           python -m pip install numpy PyYAML
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
           python -m pip install -e . --no-deps
       - name: Regenerate exact inspected plan and references
         run: |
