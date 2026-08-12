@@ -27,7 +27,11 @@ algebra. It does not assume that first-order edge marginals are independent.
 ## Event registry
 
 The four-entity registry is generated from the complete operation-family grammar,
-not from the sampled target instances. It contains:
+not from the sampled target instances. Stage M also repairs a discovered defect in
+the historical counterfactual generator: four distinct arguments made the added
+edge impossible to use in the queried two-hop path. The prospective contract adds
+`u->v` and asks about reachability from `u` to a distinct `w`, so the intervention
+is genuinely load-bearing. It contains:
 
 - every directed edge event;
 - every reciprocal-edge conjunction;
