@@ -11,18 +11,19 @@ frozen question, preserve information boundaries, and fail closed.
 
 1. `README.md`
 2. `HANDOFF.md`
-3. `docs/20_STAGEA_V3_PROTOCOL.md`
-4. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
-5. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
-6. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
-7. `evidence/real_stagea_lumi_v2/REVIEW.md`
-8. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
-9. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
-10. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
-11. `docs/05_GATES_AND_STOP_RULES.md`
-12. `docs/09_IMPLEMENTATION_STATUS.md`
-13. `docs/10_DECISION_LOG.md`
-14. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
+3. `evidence/real_stagea_v3_olivia/AUDIT.md`
+4. `docs/20_STAGEA_V3_PROTOCOL.md`
+5. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
+6. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
+7. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
+8. `evidence/real_stagea_lumi_v2/REVIEW.md`
+9. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
+10. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
+11. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
+12. `docs/05_GATES_AND_STOP_RULES.md`
+13. `docs/09_IMPLEMENTATION_STATUS.md`
+14. `docs/10_DECISION_LOG.md`
+15. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
 
 For cluster work, also read the matching runner skill under `.agents/skills/`.
 
@@ -38,26 +39,36 @@ recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
 result:   PUBLIC_BASIS_COMPOSITION_SUPPORTED
 ```
 
-Stage-A v3-2 is frozen in `docs/20_STAGEA_V3_PROTOCOL.md` and
-`configs/stagea_v3/real_olivia_v3.yaml`. On 2026-08-12 the user explicitly
-authorized the sequential next steps, with documented results and regular
-commits. Exactly one v3 representation run is authorized only after:
+Stage-A v3-2 completed on Olivia as job `1899057`. It is an adopted
+exact-pipeline negative:
 
-1. this registration is committed;
-2. its implementation is separately committed;
-3. compile, lint, tests, shell checks, and all repository validators pass;
-4. the content-addressed dry run matches the frozen config.
+```text
+decision:  ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
+evidence:  evidence/real_stagea_v3_olivia/
+```
 
-Receiver execution, receiver-world access, and a scientific claim remain locked.
-A v3 machine pass may authorize drafting, not running, a receiver protocol.
+Every integrity check passes and the test grant was consumed once. Behavioral
+basis, public alignment, held-sender retention, quantization, and oracle
+execution pass. Semantic basis, unseen-renderer transfer, activation
+specificity, and conjunctive composition fail.
 
-## Stage-A v3 execution boundary
+The terminal job failure is a fail-closed verifier bundle-order refusal. An
+exact-runtime reducer diagnostic reproduces stored metrics bit-for-bit in
+workflow/config order and the same machine decision in either order. Preserve
+the original failed audit; do not relabel it as a pass.
 
-- Use fresh train/validation/test seeds `2026081201/02/1297` only. The exposed
-  v3-1 test seed `2026081203` is permanently void.
+There is no authorized next execution. Stage-A v3-2 cannot be retried,
+recovered, or tuned. Receiver-protocol drafting, receiver execution, new
+receiver-world access, scientific claims, and paper claims remain locked.
+
+## Completed Stage-A v3 execution boundary
+
+- Fresh train/validation/test seeds `2026081201/02/1297` are now exposed and
+  cannot be reused for confirmation. The v3-1 test seed `2026081203` remains
+  permanently void.
 - The held `Qwen/Qwen3-14B` revision
-  `40c069824f4251a91eefaf281ebe4c544efd3e18` remains task-unopened until
-  founder compilers and the public executor are hash-frozen.
+  `40c069824f4251a91eefaf281ebe4c544efd3e18` is task-exposed under v3-2 and
+  cannot serve as a future unopened sender.
 - Test panels must not exist before founder and held freeze manifests.
 - The primary compiler consumes all prefix-token residuals at four frozen depths
   and makes zero post-capture source queries.
@@ -174,6 +185,24 @@ Use evidence in this order:
    `evidence/real_stage_r_olivia_rc0/`.
 7. Do not launch Stage-A v3 merely because RC0 passes.
 
+## Completed Stage-A v3-2 execution record
+
+1. The frozen registration, implementation, numeric storage repair, and
+   content-addressed plan passed the full local contract.
+2. The immutable Olivia outcome job preserved founder freeze, held onboarding,
+   held freeze, one-time test access, and evaluation order.
+3. All six test captures and all 12 prediction files completed with no capture
+   error; all eleven integrity checks pass.
+4. The machine decision is `ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`.
+5. The original independent audit fails only byte-exact metric recomputation;
+   decision and rate/compute recompute exactly.
+6. Exact-runtime diagnostic job `1953471` localizes the refusal to bundle-order
+   roundoff no larger than `5.55e-17`, with no gate or decision change.
+7. The complete fetched tree matches Olivia byte-for-byte, and the compact
+   package is adopted under `evidence/real_stagea_v3_olivia/`.
+8. Stop this compiler/task contract. Do not launch receiver work or another
+   v3-2 run.
+
 ## RC0 decision tree
 
 ### `BASIS_READOUT_NOT_QUALIFIED`
@@ -215,6 +244,9 @@ Draft exactly one fresh Stage-A v3 protocol using:
 - Creating or opening Stage-A v3 test panels before both compiler freeze steps.
 - Selecting a compiler seed, baseline, calibrator, threshold, renderer, or
   checkpoint after v3 test access.
+- Retrying or recovering Stage-A v3-2 after its consumed test access.
+- Using v3-2 test metrics to tune or select a successor registration.
+- Drafting a receiver protocol from the negative v3-2 decision.
 
 ## Development validation
 

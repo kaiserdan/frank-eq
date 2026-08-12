@@ -1,0 +1,12 @@
+{
+  "files": {
+    "identity_train_basis/qwen3-14b-held-n4.npz": "7990abe32a7842217a1ecca78cfe78cce4e1cfc80f75d86790f6441425cf6ffc",
+    "identity_train_basis/qwen3-14b-held-n6.npz": "b19a5c2fee9adffb0b0fed794a93a296a41fb35c3cf0b3835f6341b02d7c2579",
+    "identity_train_basis/qwen3-4b-n4.npz": "dff9e8d48c04cb5c3a29187dfd4dabf0d84a40768e14beec0c4c0902ef9a41a7",
+    "identity_train_basis/qwen3-4b-n6.npz": "0b316f65913453c26e7e0e73c29723386b5338834d52b82a8434c67becb0b946",
+    "identity_train_basis/qwen3-8b-n4.npz": "aee09a3386146ee99620d3262aca6066b71700ea415489d0efb65b38b3c8ad9f",
+    "identity_train_basis/qwen3-8b-n6.npz": "da1f6f24a174a3d9f45fee305d8215c3ca2a2885c62c545cb5523d899e293c35"
+  },
+  "fit_role": "train",
+  "schema": "frank_eq_stagea_v3_identity_train_basis_v1"
+}

@@ -10,14 +10,17 @@ recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
 result:   PUBLIC_BASIS_COMPOSITION_SUPPORTED
 ```
 
-Stage-A v3-2 is now frozen and the user authorized one sequential representation
-run after separate registration and implementation commits, full validation,
-held-checkpoint staging, and an inspected content-addressed dry run. See
-`docs/20_STAGEA_V3_PROTOCOL.md`.
+Stage-A v3-2 then completed on Olivia:
 
-This does not authorize an RC0 rerun, receiver execution, receiver-world access,
-or a paper claim. V3 test panels must not be created before founder and held
-compiler freeze manifests.
+```text
+job:       frank-eq-stagea-v3-2-olivia-20260812b  Slurm 1899057
+result:    ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
+evidence:  evidence/real_stagea_v3_olivia/
+```
+
+The registration is consumed. Do not submit, recover, or tune it again. No RC0
+rerun, receiver protocol, receiver execution, receiver-world access,
+scientific claim, or paper claim is authorized.
 
 ## Runtime contract
 
@@ -40,7 +43,7 @@ W&B remains fail-open telemetry. Its credential is sourced from
 credential itself must never enter the repository, source archive, or Slurm
 submission record.
 
-## Checkpoint preflight
+## Preserved checkpoint preflight
 
 All exact revisions must be present in the shared offline cache:
 
@@ -68,10 +71,10 @@ one neutral prefix forward, KV clone, and tokenizer-only chat-prefix continuity
 check. Its receipt must report zero registered worlds, operations, answers, and
 test accesses. It must not generate text or score a task response.
 
-## V3 implementation and plan freeze
+## Preserved V3 implementation and plan freeze
 
-Run the full local contract and commit the complete implementation. Only then
-generate the outcome-blind plan; this command does not create a panel or load a
+The outcome was launched from a separately committed implementation and
+outcome-blind plan. This historical command did not create a panel or load a
 model:
 
 ```bash
@@ -80,42 +83,31 @@ python -m frank_eq.cli plan-stagea-v3 \
   --out configs/stagea_v3/inspected_plan.json
 ```
 
-Inspect its config hash, all implementation hashes, exact model revisions,
-stage order, expected `1,824` prefix forwards and `213,408` logical source
-queries, and the explicit false values for held-task opening and test-panel
-instantiation. Commit this plan separately. Any later change to the bound code,
-launcher, protocol, registration, or config invalidates it.
+The final plan binds config `92d7ede...f5b3`, internal plan
+`7b509858...a113c`, plan file `9a728f19...0cbf8`, implementation tree
+`bf8c87fa...812fc`, 1,824 prefix forwards, 213,408 logical source queries,
+and explicit false values for held-task opening and test-panel instantiation.
 
-## V3 dry run and submission
+## Frozen V3 submission record
 
-The repository launcher creates a deterministic source archive under
-`.agents/state/`, deploys it into a fresh immutable Olivia job root, and uses
-`olivia/stagea_v3.slurm`. The job requests one GH200, 32 CPUs, 192 GiB host
-memory, and Olivia's seven-day maximum walltime.
+The repository launcher created source archive `b6203d03...a44e0` under ignored
+`.agents/state/`, deployed it into a fresh immutable Olivia job root, and used
+`olivia/stagea_v3.slurm`. Job `1899057` requested one GH200, 32 CPUs, 192 GiB
+host memory, and seven days. It ran on `gpu-1-85` for 12:31:24.
 
-```bash
-python olivia/cli.py submit \
-  --job-name <fresh-v3-job-name> \
-  --config configs/stagea_v3/real_olivia_v3.yaml \
-  --profile full \
-  --stages prepare,founder_fit,freeze,held_onboard,evaluate \
-  --dry-run --json
-```
-
-Require a clean Git tree. Inspect the deterministic source archive SHA-256,
-config and plan hashes, exact runtime image hash, resources, remote paths, and
-stage sequence. Submit by removing only `--dry-run`; do not modify the tree in
-between.
+The command is intentionally omitted here now that the one registered launch is
+consumed. Repository launcher support remains for provenance and tests, not as
+authorization to submit v3-2 again.
 
 ## Status, fetch, and verify
 
 ```bash
-python olivia/cli.py status --job-name <job> --json
-python olivia/cli.py fetch  --job-name <job> --json
-python olivia/cli.py verify --job-name <job> --json
+python olivia/cli.py status --job-name frank-eq-stagea-v3-2-olivia-20260812b --json
+python olivia/cli.py fetch  --job-name frank-eq-stagea-v3-2-olivia-20260812b --json
+python olivia/cli.py verify --job-name frank-eq-stagea-v3-2-olivia-20260812b --json
 python scripts/verify_stagea_v3_run.py \
   --config configs/stagea_v3/real_olivia_v3.yaml \
-  --run .agents/state/olivia/<job>/remote/runs
+  --run .agents/state/olivia/frank-eq-stagea-v3-2-olivia-20260812b/remote/runs
 ```
 
 The fetch includes the large generated captures and checkpoints so the local
@@ -124,8 +116,8 @@ compact hash-verified evidence package after the machine decision, every
 model/complexity/renderer/family stratum, rate/compute tables, access ledger,
 and independent recomputation have been audited.
 
-Slurm `COMPLETED` means engineering completion, not scientific success. A
-well-formed negative machine decision is a valid terminal v3-2 result. An
-engineering failure before test access may be repaired under a new immutable
-source and job while preserving the failure. Once the ledger consumes test
-access, v3-2 cannot be retried or recovered under the same registration.
+Both verification commands return nonzero for this preserved outcome. The
+runner reports terminal workflow state `failed`; the specialized verifier
+reproduces the original order-sensitive metric refusal. The adopted audit
+explains why the machine decision is nevertheless an integrity-valid negative.
+Do not reinterpret either nonzero exit as permission to repair or rerun v3-2.

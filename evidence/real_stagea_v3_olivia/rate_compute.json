@@ -1,0 +1,711 @@
+{
+  "amortized": {
+    "4": {
+      "1": {
+        "direct": {
+          "source_queries_per_operation": 1,
+          "total_source_queries": 1
+        },
+        "interactive_basis": {
+          "basis_source_queries_per_operation": 12.0,
+          "executor_operations": 1
+        },
+        "primary": {
+          "executor_operations": 1,
+          "payload_bits_per_operation": 48.0,
+          "post_capture_source_queries": 0
+        }
+      },
+      "16": {
+        "direct": {
+          "source_queries_per_operation": 1,
+          "total_source_queries": 16
+        },
+        "interactive_basis": {
+          "basis_source_queries_per_operation": 0.75,
+          "executor_operations": 16
+        },
+        "primary": {
+          "executor_operations": 16,
+          "payload_bits_per_operation": 3.0,
+          "post_capture_source_queries": 0
+        }
+      },
+      "32": {
+        "direct": {
+          "source_queries_per_operation": 1,
+          "total_source_queries": 32
+        },
+        "interactive_basis": {
+          "basis_source_queries_per_operation": 0.375,
+          "executor_operations": 32
+        },
+        "primary": {
+          "executor_operations": 32,
+          "payload_bits_per_operation": 1.5,
+          "post_capture_source_queries": 0
+        }
+      },
+      "4": {
+        "direct": {
+          "source_queries_per_operation": 1,
+          "total_source_queries": 4
+        },
+        "interactive_basis": {
+          "basis_source_queries_per_operation": 3.0,
+          "executor_operations": 4
+        },
+        "primary": {
+          "executor_operations": 4,
+          "payload_bits_per_operation": 12.0,
+          "post_capture_source_queries": 0
+        }
+      }
+    },
+    "6": {
+      "1": {
+        "direct": {
+          "source_queries_per_operation": 1,
+          "total_source_queries": 1
+        },
+        "interactive_basis": {
+          "basis_source_queries_per_operation": 30.0,
+          "executor_operations": 1
+        },
+        "primary": {
+          "executor_operations": 1,
+          "payload_bits_per_operation": 120.0,
+          "post_capture_source_queries": 0
+        }
+      },
+      "16": {
+        "direct": {
+          "source_queries_per_operation": 1,
+          "total_source_queries": 16
+        },
+        "interactive_basis": {
+          "basis_source_queries_per_operation": 1.875,
+          "executor_operations": 16
+        },
+        "primary": {
+          "executor_operations": 16,
+          "payload_bits_per_operation": 7.5,
+          "post_capture_source_queries": 0
+        }
+      },
+      "32": {
+        "direct": {
+          "source_queries_per_operation": 1,
+          "total_source_queries": 32
+        },
+        "interactive_basis": {
+          "basis_source_queries_per_operation": 0.9375,
+          "executor_operations": 32
+        },
+        "primary": {
+          "executor_operations": 32,
+          "payload_bits_per_operation": 3.75,
+          "post_capture_source_queries": 0
+        }
+      },
+      "4": {
+        "direct": {
+          "source_queries_per_operation": 1,
+          "total_source_queries": 4
+        },
+        "interactive_basis": {
+          "basis_source_queries_per_operation": 7.5,
+          "executor_operations": 4
+        },
+        "primary": {
+          "executor_operations": 4,
+          "payload_bits_per_operation": 30.0,
+          "post_capture_source_queries": 0
+        }
+      }
+    }
+  },
+  "bundle_compute": {
+    "qwen3-14b-held|4": {
+      "amortized_operation_counts": [
+        1,
+        4,
+        16,
+        32
+      ],
+      "ensemble_size": 3,
+      "executor_operations_per_condition": 3072,
+      "executor_wall_seconds": {
+        "deterministic_text_parser": 0.08050998207181692,
+        "final_token_q4": 0.08058031462132931,
+        "interactive_basis": 0.08038272336125374,
+        "oracle_basis": 0.08048348687589169,
+        "primary_float": 0.08187847770750523,
+        "primary_q1": 0.08107844181358814,
+        "primary_q2": 0.08076667692512274,
+        "primary_q4": 0.0809715986251831,
+        "primary_q8": 0.08090443164110184,
+        "rate_matched_canonical_text": 0.0805045748129487,
+        "shuffled_world_packet": 0.08019233029335737,
+        "token_id_q4": 0.08051993418484926,
+        "train_edge_prior": 0.08074997365474701,
+        "wrong_world_packet": 0.08045184053480625,
+        "zero_packet": 0.08047113474458456
+      },
+      "flops_convention": "multiply_add_equals_two; token-slot estimate follows dense projection/attention/feedforward tensor shapes including padded tokens; final-token and continuous controls use a declared dense parameter-application proxy",
+      "flops_estimate": {
+        "behavioral": 523030493952,
+        "continuous": 62226266112,
+        "final_token": 2634578496,
+        "semantic": 523030493952,
+        "token_id": 523030493952
+      },
+      "inference_wall_seconds": {
+        "behavioral": 0.21935775689780712,
+        "continuous": 0.13773015141487122,
+        "final_token": 0.14231632184237242,
+        "semantic": 0.22436567209661007,
+        "semantic_train_identity": 0.3145123301073909,
+        "token_id": 0.18766863364726305,
+        "train_controls": 0.002234351821243763
+      },
+      "interactive_basis": {
+        "post_capture_source_queries_per_prefix": 12
+      },
+      "parameter_count": {
+        "behavioral": 4577886,
+        "continuous": 3375991,
+        "final_token": 4573921,
+        "semantic": 4577886,
+        "token_id": 4577886
+      },
+      "primary": {
+        "executor_operations_per_world": 32,
+        "generated_tokens": 0,
+        "pause_tokens": 0,
+        "post_capture_source_queries": 0,
+        "prefix_forwards": 96
+      },
+      "text_parser": {
+        "post_capture_source_queries": 0,
+        "prefix_bytes_read": 61091,
+        "wall_seconds": 0.0020300699397921562
+      },
+      "train_selected_direct_protocol": {
+        "fixed_pause_tokens": 0,
+        "generated_reasoning_tokens": 0,
+        "post_capture_source_queries_per_operation": 1,
+        "selected_pause_operations": 0,
+        "selected_reason_operations": 0,
+        "selected_sequence_operations": 32
+      }
+    },
+    "qwen3-14b-held|6": {
+      "amortized_operation_counts": [
+        1,
+        4,
+        16,
+        32
+      ],
+      "ensemble_size": 3,
+      "executor_operations_per_condition": 3072,
+      "executor_wall_seconds": {
+        "deterministic_text_parser": 0.14755926840007305,
+        "final_token_q4": 0.14742144849151373,
+        "interactive_basis": 0.14767836686223745,
+        "oracle_basis": 0.1475628837943077,
+        "primary_float": 0.14893073868006468,
+        "primary_q1": 0.14830336812883615,
+        "primary_q2": 0.1480506733059883,
+        "primary_q4": 0.1479823887348175,
+        "primary_q8": 0.14782636240124702,
+        "rate_matched_canonical_text": 0.14745629485696554,
+        "shuffled_world_packet": 0.14729121327400208,
+        "token_id_q4": 0.1475401958450675,
+        "train_edge_prior": 0.14773241337388754,
+        "wrong_world_packet": 0.14728206116706133,
+        "zero_packet": 0.1474408721551299
+      },
+      "flops_convention": "multiply_add_equals_two; token-slot estimate follows dense projection/attention/feedforward tensor shapes including padded tokens; final-token and continuous controls use a declared dense parameter-application proxy",
+      "flops_estimate": {
+        "behavioral": 951226531200,
+        "continuous": 62226266112,
+        "final_token": 2634578496,
+        "semantic": 951226531200,
+        "token_id": 951226531200
+      },
+      "inference_wall_seconds": {
+        "behavioral": 0.2497453298419714,
+        "continuous": 0.15481372456997633,
+        "final_token": 0.15976525750011206,
+        "semantic": 0.25248180516064167,
+        "semantic_train_identity": 0.34344139508903027,
+        "token_id": 0.19063582085072994,
+        "train_controls": 0.0025181490927934647
+      },
+      "interactive_basis": {
+        "post_capture_source_queries_per_prefix": 30
+      },
+      "parameter_count": {
+        "behavioral": 4577886,
+        "continuous": 3375991,
+        "final_token": 4573921,
+        "semantic": 4577886,
+        "token_id": 4577886
+      },
+      "primary": {
+        "executor_operations_per_world": 32,
+        "generated_tokens": 0,
+        "pause_tokens": 0,
+        "post_capture_source_queries": 0,
+        "prefix_forwards": 96
+      },
+      "text_parser": {
+        "post_capture_source_queries": 0,
+        "prefix_bytes_read": 77121,
+        "wall_seconds": 0.002682015299797058
+      },
+      "train_selected_direct_protocol": {
+        "fixed_pause_tokens": 0,
+        "generated_reasoning_tokens": 0,
+        "post_capture_source_queries_per_operation": 1,
+        "selected_pause_operations": 0,
+        "selected_reason_operations": 0,
+        "selected_sequence_operations": 32
+      }
+    },
+    "qwen3-4b|4": {
+      "amortized_operation_counts": [
+        1,
+        4,
+        16,
+        32
+      ],
+      "ensemble_size": 3,
+      "executor_operations_per_condition": 3072,
+      "executor_wall_seconds": {
+        "deterministic_text_parser": 0.0807005362585187,
+        "final_token_q4": 0.08049004711210728,
+        "interactive_basis": 0.08054214157164097,
+        "oracle_basis": 0.08043292909860611,
+        "primary_float": 0.08145381975919008,
+        "primary_q1": 0.0808833772316575,
+        "primary_q2": 0.08073829393833876,
+        "primary_q4": 0.08073608670383692,
+        "primary_q8": 0.08067922480404377,
+        "rate_matched_canonical_text": 0.08041299320757389,
+        "shuffled_world_packet": 0.08052418939769268,
+        "token_id_q4": 0.0805321242660284,
+        "train_edge_prior": 0.08067180123180151,
+        "wrong_world_packet": 0.08055062126368284,
+        "zero_packet": 0.08039504289627075
+      },
+      "flops_convention": "multiply_add_equals_two; token-slot estimate follows dense projection/attention/feedforward tensor shapes including padded tokens; final-token and continuous controls use a declared dense parameter-application proxy",
+      "flops_estimate": {
+        "behavioral": 298803002112,
+        "continuous": 31649789952,
+        "final_token": 1502669952,
+        "semantic": 298803002112,
+        "token_id": 298803002112
+      },
+      "inference_wall_seconds": {
+        "behavioral": 0.1659242995083332,
+        "continuous": 0.09250513277947903,
+        "final_token": 0.09375814255326986,
+        "semantic": 0.17133917473256588,
+        "semantic_train_identity": 0.262141521088779,
+        "token_id": 0.1467482252046466,
+        "train_controls": 0.0021744491532444954
+      },
+      "interactive_basis": {
+        "post_capture_source_queries_per_prefix": 12
+      },
+      "parameter_count": {
+        "behavioral": 2611806,
+        "continuous": 1717111,
+        "final_token": 2608802,
+        "semantic": 2611806,
+        "token_id": 2611806
+      },
+      "primary": {
+        "executor_operations_per_world": 32,
+        "generated_tokens": 0,
+        "pause_tokens": 0,
+        "post_capture_source_queries": 0,
+        "prefix_forwards": 96
+      },
+      "text_parser": {
+        "post_capture_source_queries": 0,
+        "prefix_bytes_read": 61091,
+        "wall_seconds": 0.0023363642394542694
+      },
+      "train_selected_direct_protocol": {
+        "fixed_pause_tokens": 0,
+        "generated_reasoning_tokens": 36864,
+        "post_capture_source_queries_per_operation": 1,
+        "selected_pause_operations": 0,
+        "selected_reason_operations": 12,
+        "selected_sequence_operations": 20
+      }
+    },
+    "qwen3-4b|6": {
+      "amortized_operation_counts": [
+        1,
+        4,
+        16,
+        32
+      ],
+      "ensemble_size": 3,
+      "executor_operations_per_condition": 3072,
+      "executor_wall_seconds": {
+        "deterministic_text_parser": 0.14762508869171143,
+        "final_token_q4": 0.14751341473311186,
+        "interactive_basis": 0.14762105699628592,
+        "oracle_basis": 0.14745616726577282,
+        "primary_float": 0.1480563385412097,
+        "primary_q1": 0.14774719718843699,
+        "primary_q2": 0.14761913660913706,
+        "primary_q4": 0.1473716590553522,
+        "primary_q8": 0.14751242101192474,
+        "rate_matched_canonical_text": 0.1476508490741253,
+        "shuffled_world_packet": 0.14791330322623253,
+        "token_id_q4": 0.1475490601733327,
+        "train_edge_prior": 0.14742535166442394,
+        "wrong_world_packet": 0.14747456554323435,
+        "zero_packet": 0.14772787038236856
+      },
+      "flops_convention": "multiply_add_equals_two; token-slot estimate follows dense projection/attention/feedforward tensor shapes including padded tokens; final-token and continuous controls use a declared dense parameter-application proxy",
+      "flops_estimate": {
+        "behavioral": 549202492800,
+        "continuous": 31649789952,
+        "final_token": 1502669952,
+        "semantic": 549202492800,
+        "token_id": 549202492800
+      },
+      "inference_wall_seconds": {
+        "behavioral": 0.17896795459091663,
+        "continuous": 0.0981135368347168,
+        "final_token": 0.09991510398685932,
+        "semantic": 0.18141132220625877,
+        "semantic_train_identity": 0.276151318103075,
+        "token_id": 0.1456622490659356,
+        "train_controls": 0.0024956855922937393
+      },
+      "interactive_basis": {
+        "post_capture_source_queries_per_prefix": 30
+      },
+      "parameter_count": {
+        "behavioral": 2611806,
+        "continuous": 1717111,
+        "final_token": 2608802,
+        "semantic": 2611806,
+        "token_id": 2611806
+      },
+      "primary": {
+        "executor_operations_per_world": 32,
+        "generated_tokens": 0,
+        "pause_tokens": 0,
+        "post_capture_source_queries": 0,
+        "prefix_forwards": 96
+      },
+      "text_parser": {
+        "post_capture_source_queries": 0,
+        "prefix_bytes_read": 77121,
+        "wall_seconds": 0.00267631933093071
+      },
+      "train_selected_direct_protocol": {
+        "fixed_pause_tokens": 36864,
+        "generated_reasoning_tokens": 12288,
+        "post_capture_source_queries_per_operation": 1,
+        "selected_pause_operations": 12,
+        "selected_reason_operations": 4,
+        "selected_sequence_operations": 16
+      }
+    },
+    "qwen3-8b|4": {
+      "amortized_operation_counts": [
+        1,
+        4,
+        16,
+        32
+      ],
+      "ensemble_size": 3,
+      "executor_operations_per_condition": 3072,
+      "executor_wall_seconds": {
+        "deterministic_text_parser": 0.08085077069699764,
+        "final_token_q4": 0.08093940746039152,
+        "interactive_basis": 0.08069736696779728,
+        "oracle_basis": 0.08079323638230562,
+        "primary_float": 0.08343656454235315,
+        "primary_q1": 0.08347425796091557,
+        "primary_q2": 0.08316105511039495,
+        "primary_q4": 0.08318457286804914,
+        "primary_q8": 0.08181227091699839,
+        "rate_matched_canonical_text": 0.0807259101420641,
+        "shuffled_world_packet": 0.08072658255696297,
+        "token_id_q4": 0.08109981752932072,
+        "train_edge_prior": 0.08210122026503086,
+        "wrong_world_packet": 0.0806903587654233,
+        "zero_packet": 0.0807473175227642
+      },
+      "flops_convention": "multiply_add_equals_two; token-slot estimate follows dense projection/attention/feedforward tensor shapes including padded tokens; final-token and continuous controls use a declared dense parameter-application proxy",
+      "flops_estimate": {
+        "behavioral": 433339497216,
+        "continuous": 49995675648,
+        "final_token": 2184095808,
+        "semantic": 433339497216,
+        "token_id": 433339497216
+      },
+      "inference_wall_seconds": {
+        "behavioral": 0.20079199690371752,
+        "continuous": 0.12059569917619228,
+        "final_token": 0.12570562679320574,
+        "semantic": 0.2032813150435686,
+        "semantic_train_identity": 0.2963628740981221,
+        "token_id": 0.17081743385642767,
+        "train_controls": 0.002338634803891182
+      },
+      "interactive_basis": {
+        "post_capture_source_queries_per_prefix": 12
+      },
+      "parameter_count": {
+        "behavioral": 3791454,
+        "continuous": 2712439,
+        "final_token": 3791833,
+        "semantic": 3791454,
+        "token_id": 3791454
+      },
+      "primary": {
+        "executor_operations_per_world": 32,
+        "generated_tokens": 0,
+        "pause_tokens": 0,
+        "post_capture_source_queries": 0,
+        "prefix_forwards": 96
+      },
+      "text_parser": {
+        "post_capture_source_queries": 0,
+        "prefix_bytes_read": 61091,
+        "wall_seconds": 0.0020702295005321503
+      },
+      "train_selected_direct_protocol": {
+        "fixed_pause_tokens": 24576,
+        "generated_reasoning_tokens": 24576,
+        "post_capture_source_queries_per_operation": 1,
+        "selected_pause_operations": 8,
+        "selected_reason_operations": 8,
+        "selected_sequence_operations": 16
+      }
+    },
+    "qwen3-8b|6": {
+      "amortized_operation_counts": [
+        1,
+        4,
+        16,
+        32
+      ],
+      "ensemble_size": 3,
+      "executor_operations_per_condition": 3072,
+      "executor_wall_seconds": {
+        "deterministic_text_parser": 0.1483272723853588,
+        "final_token_q4": 0.14841712359339,
+        "interactive_basis": 0.1485551679506898,
+        "oracle_basis": 0.14826647378504276,
+        "primary_float": 0.15115379448980093,
+        "primary_q1": 0.1499085258692503,
+        "primary_q2": 0.15001079440116882,
+        "primary_q4": 0.14969922229647636,
+        "primary_q8": 0.148759544827044,
+        "rate_matched_canonical_text": 0.14801557082682848,
+        "shuffled_world_packet": 0.14795525278896093,
+        "token_id_q4": 0.14826090727001429,
+        "train_edge_prior": 0.1480804644525051,
+        "wrong_world_packet": 0.14813159871846437,
+        "zero_packet": 0.14794703014194965
+      },
+      "flops_convention": "multiply_add_equals_two; token-slot estimate follows dense projection/attention/feedforward tensor shapes including padded tokens; final-token and continuous controls use a declared dense parameter-application proxy",
+      "flops_estimate": {
+        "behavioral": 790416915840,
+        "continuous": 49995675648,
+        "final_token": 2184095808,
+        "semantic": 790416915840,
+        "token_id": 790416915840
+      },
+      "inference_wall_seconds": {
+        "behavioral": 0.2207720736041665,
+        "continuous": 0.13156826328486204,
+        "final_token": 0.13588567450642586,
+        "semantic": 0.22334094066172838,
+        "semantic_train_identity": 0.31234610360115767,
+        "token_id": 0.17340146843343973,
+        "train_controls": 0.0026599345728754997
+      },
+      "interactive_basis": {
+        "post_capture_source_queries_per_prefix": 30
+      },
+      "parameter_count": {
+        "behavioral": 3791454,
+        "continuous": 2712439,
+        "final_token": 3791833,
+        "semantic": 3791454,
+        "token_id": 3791454
+      },
+      "primary": {
+        "executor_operations_per_world": 32,
+        "generated_tokens": 0,
+        "pause_tokens": 0,
+        "post_capture_source_queries": 0,
+        "prefix_forwards": 96
+      },
+      "text_parser": {
+        "post_capture_source_queries": 0,
+        "prefix_bytes_read": 77121,
+        "wall_seconds": 0.00267059076577425
+      },
+      "train_selected_direct_protocol": {
+        "fixed_pause_tokens": 36864,
+        "generated_reasoning_tokens": 0,
+        "post_capture_source_queries_per_operation": 1,
+        "selected_pause_operations": 12,
+        "selected_reason_operations": 0,
+        "selected_sequence_operations": 20
+      }
+    }
+  },
+  "consumer_compute_declared": true,
+  "framing_counted_separately": true,
+  "packet_rates": {
+    "behavioral_primary_q1|4|1": {
+      "framing_bits": 1744,
+      "payload_bits": 12,
+      "rows": 288,
+      "serialized_bits": 1756
+    },
+    "behavioral_primary_q1|6|1": {
+      "framing_bits": 1744,
+      "payload_bits": 30,
+      "rows": 288,
+      "serialized_bits": 1774
+    },
+    "behavioral_primary_q2|4|2": {
+      "framing_bits": 1744,
+      "payload_bits": 24,
+      "rows": 288,
+      "serialized_bits": 1768
+    },
+    "behavioral_primary_q2|6|2": {
+      "framing_bits": 1744,
+      "payload_bits": 60,
+      "rows": 288,
+      "serialized_bits": 1804
+    },
+    "behavioral_primary_q4|4|4": {
+      "framing_bits": 1744,
+      "payload_bits": 48,
+      "rows": 288,
+      "serialized_bits": 1792
+    },
+    "behavioral_primary_q4|6|4": {
+      "framing_bits": 1752,
+      "payload_bits": 120,
+      "rows": 288,
+      "serialized_bits": 1872
+    },
+    "behavioral_primary_q8|4|8": {
+      "framing_bits": 1744,
+      "payload_bits": 96,
+      "rows": 288,
+      "serialized_bits": 1840
+    },
+    "behavioral_primary_q8|6|8": {
+      "framing_bits": 1752,
+      "payload_bits": 240,
+      "rows": 288,
+      "serialized_bits": 1992
+    },
+    "final_token_q4|4|4": {
+      "framing_bits": 1744,
+      "payload_bits": 48,
+      "rows": 288,
+      "serialized_bits": 1792
+    },
+    "final_token_q4|6|4": {
+      "framing_bits": 1752,
+      "payload_bits": 120,
+      "rows": 288,
+      "serialized_bits": 1872
+    },
+    "rate_matched_canonical_text|4|4": {
+      "framing_bits": 1744,
+      "payload_bits": 48,
+      "rows": 288,
+      "serialized_bits": 1792
+    },
+    "rate_matched_canonical_text|6|4": {
+      "framing_bits": 1752,
+      "payload_bits": 120,
+      "rows": 288,
+      "serialized_bits": 1872
+    },
+    "semantic_primary_q1|4|1": {
+      "framing_bits": 1744,
+      "payload_bits": 12,
+      "rows": 288,
+      "serialized_bits": 1756
+    },
+    "semantic_primary_q1|6|1": {
+      "framing_bits": 1744,
+      "payload_bits": 30,
+      "rows": 288,
+      "serialized_bits": 1774
+    },
+    "semantic_primary_q2|4|2": {
+      "framing_bits": 1744,
+      "payload_bits": 24,
+      "rows": 288,
+      "serialized_bits": 1768
+    },
+    "semantic_primary_q2|6|2": {
+      "framing_bits": 1744,
+      "payload_bits": 60,
+      "rows": 288,
+      "serialized_bits": 1804
+    },
+    "semantic_primary_q4|4|4": {
+      "framing_bits": 1744,
+      "payload_bits": 48,
+      "rows": 288,
+      "serialized_bits": 1792
+    },
+    "semantic_primary_q4|6|4": {
+      "framing_bits": 1752,
+      "payload_bits": 120,
+      "rows": 288,
+      "serialized_bits": 1872
+    },
+    "semantic_primary_q8|4|8": {
+      "framing_bits": 1744,
+      "payload_bits": 96,
+      "rows": 288,
+      "serialized_bits": 1840
+    },
+    "semantic_primary_q8|6|8": {
+      "framing_bits": 1752,
+      "payload_bits": 240,
+      "rows": 288,
+      "serialized_bits": 1992
+    },
+    "token_id_q4|4|4": {
+      "framing_bits": 1744,
+      "payload_bits": 48,
+      "rows": 288,
+      "serialized_bits": 1792
+    },
+    "token_id_q4|6|4": {
+      "framing_bits": 1752,
+      "payload_bits": 120,
+      "rows": 288,
+      "serialized_bits": 1872
+    }
+  },
+  "schema": "frank_eq_stagea_v3_rate_compute_v1"
+}

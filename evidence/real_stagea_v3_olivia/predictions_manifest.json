@@ -1,0 +1,42 @@
+{
+  "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+  "entries": {
+    "qwen3-14b-held|4": {
+      "array": "predictions/qwen3-14b-held-n4.npz",
+      "array_sha256": "8f0f1e5f8529c8bac2b9437cd5852de93f2d29b319fed6cb9601ad76ed859b39",
+      "metadata": "predictions/qwen3-14b-held-n4.json",
+      "metadata_sha256": "5c5fe6ba147bbbd3bccf5813af2285836c37e59e0a96fb656a1a45460cf47996"
+    },
+    "qwen3-14b-held|6": {
+      "array": "predictions/qwen3-14b-held-n6.npz",
+      "array_sha256": "660da4d1669cf21ed0d9f114e1037b7e4de0561eaa239bf77a07dc5a0cce9123",
+      "metadata": "predictions/qwen3-14b-held-n6.json",
+      "metadata_sha256": "d163676d6f44a7f5e84979193a6ca2c31592d68b76c5f7c65fd87bff189873d2"
+    },
+    "qwen3-4b|4": {
+      "array": "predictions/qwen3-4b-n4.npz",
+      "array_sha256": "b9b5f59b43b028120a8477b108cbf2a7b17fb6fea9b87bc58ccab6e4a5cc3258",
+      "metadata": "predictions/qwen3-4b-n4.json",
+      "metadata_sha256": "cb7c332671edb9dbdc649f432e11227e51284c6e6363face1487245cc4666042"
+    },
+    "qwen3-4b|6": {
+      "array": "predictions/qwen3-4b-n6.npz",
+      "array_sha256": "6c7b09d5aab40346f371a85b23b173f8c188b4a72dea5d7ac0bb842528d9b56d",
+      "metadata": "predictions/qwen3-4b-n6.json",
+      "metadata_sha256": "70fb488db045209609f4cd37e4e08a1a554479f8f4bde9e2d61298c32138f552"
+    },
+    "qwen3-8b|4": {
+      "array": "predictions/qwen3-8b-n4.npz",
+      "array_sha256": "1bd96b2fe79d54e704fd1d6ae06c24f639827881fbd6d1a0d09df988c72b20ec",
+      "metadata": "predictions/qwen3-8b-n4.json",
+      "metadata_sha256": "86589055089ed684b35322bb3f00d4747e17cf41e88872e4be9df36ccd931b42"
+    },
+    "qwen3-8b|6": {
+      "array": "predictions/qwen3-8b-n6.npz",
+      "array_sha256": "b4353abaa69649e5b7f044f5af9f5a3c8304b3e9a9676c13b7db47db23594e41",
+      "metadata": "predictions/qwen3-8b-n6.json",
+      "metadata_sha256": "134cfb0c22e496433b593c65f642ea18512e0b2fca58cc428a819bc212ec7b32"
+    }
+  },
+  "schema": "frank_eq_stagea_v3_predictions_manifest_v1"
+}

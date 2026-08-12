@@ -1,0 +1,906 @@
+{
+  "checks": {
+    "checkpoint_seed_registry_complete": true,
+    "config_snapshot_hash": true,
+    "consumer_compute_declared": true,
+    "exclusive_kv_and_prefix_continuity": true,
+    "founder_freeze_present": true,
+    "held_freeze_present": true,
+    "model_revisions_exact": true,
+    "protected_authorizations_closed": true,
+    "required_baselines_complete": true,
+    "test_access_consumed_once": true,
+    "test_files_registered_and_opened": true
+  },
+  "models": [
+    {
+      "capture_groups": {
+        "test|4": {
+          "elapsed_seconds": 2245.116370677948,
+          "path": "captures/test/qwen3-4b-n4.pt",
+          "sha256": "c44e661d828c612526ec5aaa7d294b6527ff1eb44281461f0e889ef43d2e6c03",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 505,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 4,
+            "exact_prefix_continuity_checks": 10368,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 10368,
+            "logical_post_capture_source_queries": 10368,
+            "max_observed_batch_size": 6,
+            "model_id": "qwen3-4b",
+            "operation_registry_sha256": "b156a666acba7e1e8d609e98b92a01523fe13a2fe232985e058181e51992a420",
+            "prefix_forwards": 96,
+            "prefix_manifest_sha256": "cb5d01c731f0aa138ab3170eb8bcc98f0d025e0dfa56255516d880c4ed4d6adf",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 4224,
+            "revision_observed": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "revision_requested": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "role": "test",
+            "rows": 96,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "test|6": {
+          "elapsed_seconds": 2097.0905809402466,
+          "path": "captures/test/qwen3-4b-n6.pt",
+          "sha256": "938ed4186033eda481f9c5d88ac5333a8048f5c3602468b76a71e664e7d758e0",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 1082,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 6,
+            "exact_prefix_continuity_checks": 12096,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 12096,
+            "logical_post_capture_source_queries": 12096,
+            "max_observed_batch_size": 8,
+            "model_id": "qwen3-4b",
+            "operation_registry_sha256": "6b7367a70491e6e1ef074f0cfdae1c2ff384e8220697b674b7d44aefdc485533",
+            "prefix_forwards": 96,
+            "prefix_manifest_sha256": "835a1b8530519f72fe7db3a7586df41f2df0f2f6e317f109267a8c53b68cda28",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 4224,
+            "revision_observed": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "revision_requested": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "role": "test",
+            "rows": 96,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "train|4": {
+          "elapsed_seconds": 3463.9120965003967,
+          "path": "captures/train/qwen3-4b-n4.pt",
+          "sha256": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 1115,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 4,
+            "exact_prefix_continuity_checks": 17280,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 17280,
+            "logical_post_capture_source_queries": 17280,
+            "max_observed_batch_size": 6,
+            "model_id": "qwen3-4b",
+            "operation_registry_sha256": "b156a666acba7e1e8d609e98b92a01523fe13a2fe232985e058181e51992a420",
+            "prefix_forwards": 160,
+            "prefix_manifest_sha256": "810e556d111f62cec967e4c754f43495edb254aa52358d923d98c305856b52b4",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 7040,
+            "revision_observed": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "revision_requested": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "role": "train",
+            "rows": 160,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "train|6": {
+          "elapsed_seconds": 3278.2606954574585,
+          "path": "captures/train/qwen3-4b-n6.pt",
+          "sha256": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 2551,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 6,
+            "exact_prefix_continuity_checks": 20160,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 20160,
+            "logical_post_capture_source_queries": 20160,
+            "max_observed_batch_size": 8,
+            "model_id": "qwen3-4b",
+            "operation_registry_sha256": "6b7367a70491e6e1ef074f0cfdae1c2ff384e8220697b674b7d44aefdc485533",
+            "prefix_forwards": 160,
+            "prefix_manifest_sha256": "3429450d6f20cfb6cd1e0c52cf6cf5602bb0b85319276f0c14f6b42ff22240eb",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 7040,
+            "revision_observed": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "revision_requested": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "role": "train",
+            "rows": 160,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "validation|4": {
+          "elapsed_seconds": 1051.667475938797,
+          "path": "captures/validation/qwen3-4b-n4.pt",
+          "sha256": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 370,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 4,
+            "exact_prefix_continuity_checks": 5184,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 5184,
+            "logical_post_capture_source_queries": 5184,
+            "max_observed_batch_size": 6,
+            "model_id": "qwen3-4b",
+            "operation_registry_sha256": "b156a666acba7e1e8d609e98b92a01523fe13a2fe232985e058181e51992a420",
+            "prefix_forwards": 48,
+            "prefix_manifest_sha256": "f17ff3ea1a9b2a03cc28a05c25bd4b2d72dd66f11757392cee140a38e0612641",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 2112,
+            "revision_observed": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "revision_requested": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "role": "validation",
+            "rows": 48,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "validation|6": {
+          "elapsed_seconds": 983.8709452152252,
+          "path": "captures/validation/qwen3-4b-n6.pt",
+          "sha256": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 758,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 6,
+            "exact_prefix_continuity_checks": 6048,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 6048,
+            "logical_post_capture_source_queries": 6048,
+            "max_observed_batch_size": 8,
+            "model_id": "qwen3-4b",
+            "operation_registry_sha256": "6b7367a70491e6e1ef074f0cfdae1c2ff384e8220697b674b7d44aefdc485533",
+            "prefix_forwards": 48,
+            "prefix_manifest_sha256": "ee0a6d847d6caa9f656839695de632eccf5661baefdf050dcd4f2b5b640a1164",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 2112,
+            "revision_observed": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "revision_requested": "1cfa9a7208912126459214e8b04321603b3df60c",
+            "role": "validation",
+            "rows": 48,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        }
+      },
+      "model_id": "qwen3-4b",
+      "revision_observed": "1cfa9a7208912126459214e8b04321603b3df60c",
+      "revision_requested": "1cfa9a7208912126459214e8b04321603b3df60c",
+      "role": "founder"
+    },
+    {
+      "capture_groups": {
+        "test|4": {
+          "elapsed_seconds": 2284.930396080017,
+          "path": "captures/test/qwen3-8b-n4.pt",
+          "sha256": "e91dc820be6cc32b3e2c2e518596c13e7b2e825804be567523f17c756819020a",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 865,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 4,
+            "exact_prefix_continuity_checks": 10368,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 10368,
+            "logical_post_capture_source_queries": 10368,
+            "max_observed_batch_size": 6,
+            "model_id": "qwen3-8b",
+            "operation_registry_sha256": "b156a666acba7e1e8d609e98b92a01523fe13a2fe232985e058181e51992a420",
+            "prefix_forwards": 96,
+            "prefix_manifest_sha256": "aa67a01ad643dfd99ec4bef30b9814865d4b5870a40ff4a763a613bb9972aa01",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 4224,
+            "revision_observed": "b968826d9c46dd6066d109eabc6255188de91218",
+            "revision_requested": "b968826d9c46dd6066d109eabc6255188de91218",
+            "role": "test",
+            "rows": 96,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "test|6": {
+          "elapsed_seconds": 2140.20090842247,
+          "path": "captures/test/qwen3-8b-n6.pt",
+          "sha256": "5ba3ba0c6fe96b908006395e5b9f22a26bb1be4c9f785cba1a31d1ddab84e04f",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 1713,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 6,
+            "exact_prefix_continuity_checks": 12096,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 12096,
+            "logical_post_capture_source_queries": 12096,
+            "max_observed_batch_size": 8,
+            "model_id": "qwen3-8b",
+            "operation_registry_sha256": "6b7367a70491e6e1ef074f0cfdae1c2ff384e8220697b674b7d44aefdc485533",
+            "prefix_forwards": 96,
+            "prefix_manifest_sha256": "33fe3cd10fd8ffa776cb60618fd4913bb4479f5093626543416adb7721a5ebb5",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 4224,
+            "revision_observed": "b968826d9c46dd6066d109eabc6255188de91218",
+            "revision_requested": "b968826d9c46dd6066d109eabc6255188de91218",
+            "role": "test",
+            "rows": 96,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "train|4": {
+          "elapsed_seconds": 3869.874897480011,
+          "path": "captures/train/qwen3-8b-n4.pt",
+          "sha256": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 1786,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 4,
+            "exact_prefix_continuity_checks": 17280,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 17280,
+            "logical_post_capture_source_queries": 17280,
+            "max_observed_batch_size": 6,
+            "model_id": "qwen3-8b",
+            "operation_registry_sha256": "b156a666acba7e1e8d609e98b92a01523fe13a2fe232985e058181e51992a420",
+            "prefix_forwards": 160,
+            "prefix_manifest_sha256": "7f048d212767bd6a63bde0972fd106ddf2ba067c03de33d2c183af4ae1f94310",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 7040,
+            "revision_observed": "b968826d9c46dd6066d109eabc6255188de91218",
+            "revision_requested": "b968826d9c46dd6066d109eabc6255188de91218",
+            "role": "train",
+            "rows": 160,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "train|6": {
+          "elapsed_seconds": 3540.422108888626,
+          "path": "captures/train/qwen3-8b-n6.pt",
+          "sha256": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 3690,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 6,
+            "exact_prefix_continuity_checks": 20160,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 20160,
+            "logical_post_capture_source_queries": 20160,
+            "max_observed_batch_size": 8,
+            "model_id": "qwen3-8b",
+            "operation_registry_sha256": "6b7367a70491e6e1ef074f0cfdae1c2ff384e8220697b674b7d44aefdc485533",
+            "prefix_forwards": 160,
+            "prefix_manifest_sha256": "153806b705cbf1d2a7ba138554020196f6b1203a130231736dab67683cf670aa",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 7040,
+            "revision_observed": "b968826d9c46dd6066d109eabc6255188de91218",
+            "revision_requested": "b968826d9c46dd6066d109eabc6255188de91218",
+            "role": "train",
+            "rows": 160,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "validation|4": {
+          "elapsed_seconds": 1137.6627051830292,
+          "path": "captures/validation/qwen3-8b-n4.pt",
+          "sha256": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 541,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 4,
+            "exact_prefix_continuity_checks": 5184,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 5184,
+            "logical_post_capture_source_queries": 5184,
+            "max_observed_batch_size": 6,
+            "model_id": "qwen3-8b",
+            "operation_registry_sha256": "b156a666acba7e1e8d609e98b92a01523fe13a2fe232985e058181e51992a420",
+            "prefix_forwards": 48,
+            "prefix_manifest_sha256": "8d9726bb62e715796ac7edfc09d7da9c7bd96e46762f080163edb0c23708e68e",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 2112,
+            "revision_observed": "b968826d9c46dd6066d109eabc6255188de91218",
+            "revision_requested": "b968826d9c46dd6066d109eabc6255188de91218",
+            "role": "validation",
+            "rows": 48,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "validation|6": {
+          "elapsed_seconds": 1062.9749097824097,
+          "path": "captures/validation/qwen3-8b-n6.pt",
+          "sha256": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 1102,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 6,
+            "exact_prefix_continuity_checks": 6048,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 6048,
+            "logical_post_capture_source_queries": 6048,
+            "max_observed_batch_size": 8,
+            "model_id": "qwen3-8b",
+            "operation_registry_sha256": "6b7367a70491e6e1ef074f0cfdae1c2ff384e8220697b674b7d44aefdc485533",
+            "prefix_forwards": 48,
+            "prefix_manifest_sha256": "faec731c5b6db5f7a15845265fe89b9ee2d5f74c809fef055a5897012a38e77c",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 2112,
+            "revision_observed": "b968826d9c46dd6066d109eabc6255188de91218",
+            "revision_requested": "b968826d9c46dd6066d109eabc6255188de91218",
+            "role": "validation",
+            "rows": 48,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        }
+      },
+      "model_id": "qwen3-8b",
+      "revision_observed": "b968826d9c46dd6066d109eabc6255188de91218",
+      "revision_requested": "b968826d9c46dd6066d109eabc6255188de91218",
+      "role": "founder"
+    },
+    {
+      "capture_groups": {
+        "test|4": {
+          "elapsed_seconds": 2478.7766666412354,
+          "path": "captures/test/qwen3-14b-held-n4.pt",
+          "sha256": "edc92a8188acb318330d01fe86a2c618dee03e70eb5d86f11988955d0d814e43",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 880,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 4,
+            "exact_prefix_continuity_checks": 10368,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 10368,
+            "logical_post_capture_source_queries": 10368,
+            "max_observed_batch_size": 6,
+            "model_id": "qwen3-14b-held",
+            "operation_registry_sha256": "b156a666acba7e1e8d609e98b92a01523fe13a2fe232985e058181e51992a420",
+            "prefix_forwards": 96,
+            "prefix_manifest_sha256": "76f9e3d8481c4f6982654c05029fc3ed92ddb51557dce583efcd3879da29213d",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 4224,
+            "revision_observed": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "revision_requested": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "role": "test",
+            "rows": 96,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "test|6": {
+          "elapsed_seconds": 2324.8912632465363,
+          "path": "captures/test/qwen3-14b-held-n6.pt",
+          "sha256": "76d5ae33f1d849825a8b41566a20e849923fc9591ff6e39fd1b1c97e09295868",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 2092,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 6,
+            "exact_prefix_continuity_checks": 12096,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 12096,
+            "logical_post_capture_source_queries": 12096,
+            "max_observed_batch_size": 8,
+            "model_id": "qwen3-14b-held",
+            "operation_registry_sha256": "6b7367a70491e6e1ef074f0cfdae1c2ff384e8220697b674b7d44aefdc485533",
+            "prefix_forwards": 96,
+            "prefix_manifest_sha256": "cfe33cb920edb0de15498318ad647817a179c324b89edf077ff6db3be96b7aa7",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 4224,
+            "revision_observed": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "revision_requested": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "role": "test",
+            "rows": 96,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "train|4": {
+          "elapsed_seconds": 4118.027006864548,
+          "path": "captures/train/qwen3-14b-held-n4.pt",
+          "sha256": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 1863,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 4,
+            "exact_prefix_continuity_checks": 17280,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 17280,
+            "logical_post_capture_source_queries": 17280,
+            "max_observed_batch_size": 6,
+            "model_id": "qwen3-14b-held",
+            "operation_registry_sha256": "b156a666acba7e1e8d609e98b92a01523fe13a2fe232985e058181e51992a420",
+            "prefix_forwards": 160,
+            "prefix_manifest_sha256": "bd2df213ee57844b51ef305bfe352b2add517c35618eb3236e4d4619088295cb",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 7040,
+            "revision_observed": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "revision_requested": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "role": "train",
+            "rows": 160,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "train|6": {
+          "elapsed_seconds": 3874.979722261429,
+          "path": "captures/train/qwen3-14b-held-n6.pt",
+          "sha256": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 4543,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 6,
+            "exact_prefix_continuity_checks": 20160,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 20160,
+            "logical_post_capture_source_queries": 20160,
+            "max_observed_batch_size": 8,
+            "model_id": "qwen3-14b-held",
+            "operation_registry_sha256": "6b7367a70491e6e1ef074f0cfdae1c2ff384e8220697b674b7d44aefdc485533",
+            "prefix_forwards": 160,
+            "prefix_manifest_sha256": "62bdd3a73b0f2b8b85393a967be0f0becbaa7a1d89f682e7765affcaed550261",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 7040,
+            "revision_observed": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "revision_requested": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "role": "train",
+            "rows": 160,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "validation|4": {
+          "elapsed_seconds": 1253.4854772090912,
+          "path": "captures/validation/qwen3-14b-held-n4.pt",
+          "sha256": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 552,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 4,
+            "exact_prefix_continuity_checks": 5184,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 5184,
+            "logical_post_capture_source_queries": 5184,
+            "max_observed_batch_size": 6,
+            "model_id": "qwen3-14b-held",
+            "operation_registry_sha256": "b156a666acba7e1e8d609e98b92a01523fe13a2fe232985e058181e51992a420",
+            "prefix_forwards": 48,
+            "prefix_manifest_sha256": "e2931bcdfdbc8a064272c073c74a82ee3acd6324f4e16e061d760353a8b99df6",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 2112,
+            "revision_observed": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "revision_requested": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "role": "validation",
+            "rows": 48,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        },
+        "validation|6": {
+          "elapsed_seconds": 1169.4366254806519,
+          "path": "captures/validation/qwen3-14b-held-n6.pt",
+          "sha256": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2",
+          "summary": {
+            "allow_exact_replay_fallback": false,
+            "behavioral_probability_clamp_count": 1367,
+            "behavioral_probability_storage_epsilon": 1e-07,
+            "candidate_metadata": {
+              "false": {
+                "text": " false",
+                "token_ids": [
+                  895
+                ]
+              },
+              "true": {
+                "text": " true",
+                "token_ids": [
+                  830
+                ]
+              }
+            },
+            "configured_branch_batch_size": 8,
+            "direct_protocol_order": [
+              "sequence",
+              "reason",
+              "pause"
+            ],
+            "entity_count": 6,
+            "exact_prefix_continuity_checks": 6048,
+            "exact_replay_response_branches": 0,
+            "exclusive_cache_batching": true,
+            "kv_cloned_response_branches": 6048,
+            "logical_post_capture_source_queries": 6048,
+            "max_observed_batch_size": 8,
+            "model_id": "qwen3-14b-held",
+            "operation_registry_sha256": "6b7367a70491e6e1ef074f0cfdae1c2ff384e8220697b674b7d44aefdc485533",
+            "prefix_forwards": 48,
+            "prefix_manifest_sha256": "b61074e58f5e9deeda4d80532d4a15d874547ffa48fb7d909a4deb78afea1d19",
+            "primary_compiler_post_capture_source_queries": 0,
+            "response_batches": 2112,
+            "revision_observed": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "revision_requested": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+            "role": "validation",
+            "rows": 48,
+            "schema": "frank_eq_stagea_v3_capture_summary_v1"
+          }
+        }
+      },
+      "model_id": "qwen3-14b-held",
+      "revision_observed": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "revision_requested": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "role": "held"
+    }
+  ],
+  "schema": "frank_eq_stagea_v3_capture_validation_v1"
+}

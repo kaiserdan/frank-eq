@@ -1,0 +1,1434 @@
+{
+  "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+  "models": {
+    "qwen3-14b-held": {
+      "fits": [
+        {
+          "best_epoch": 105,
+          "best_selection_metric": 0.035921577924255446,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 71.27191615104675,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.03538442775607109,
+            "renderer_variance": 0.005371501681843555,
+            "selection_metric": 0.035921577924255446
+          },
+          "initialization_seed": 21101,
+          "input_width": 5120,
+          "kind": "activation",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4577886,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 95,
+          "best_selection_metric": 0.06118082644607057,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "behavioral",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 68.79140400886536,
+          "epochs_observed": 116,
+          "final_validation": {
+            "brier": 0.06006067618727684,
+            "renderer_variance": 0.011201502587937284,
+            "selection_metric": 0.06118082644607057
+          },
+          "initialization_seed": 21102,
+          "input_width": 5120,
+          "kind": "activation",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4577886,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 22,
+          "best_selection_metric": 0.19915956187566433,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 24.055814504623413,
+          "epochs_observed": 43,
+          "final_validation": {
+            "brier": 0.19846878945827484,
+            "renderer_variance": 0.006907724173894773,
+            "selection_metric": 0.19915956187566433
+          },
+          "initialization_seed": 21111,
+          "input_width": 5120,
+          "kind": "token_id",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4577886,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 93,
+          "best_selection_metric": 0.24828071892261544,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 25.918136596679688,
+          "epochs_observed": 114,
+          "final_validation": {
+            "brier": 0.24828071892261505,
+            "renderer_variance": 3.950852127708886e-15,
+            "selection_metric": 0.24828071892261544
+          },
+          "initialization_seed": 21121,
+          "input_width": 5120,
+          "kind": "final_token",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4573921,
+          "parameter_relative_error": 0.0008661203009424001,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 62,
+          "best_selection_metric": 0.15165056611213762,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "descriptor_sha256": {
+            "n4": "743e5c8b3867db7daabfcba8b8a46ef865bc45bbdee799dc1071364e972739f1",
+            "n6": "607a3010f1aeeae3542c279856ee9367d5cef8b18ef1dacda9fbdf443d008888"
+          },
+          "elapsed_seconds": 25.173744201660156,
+          "epochs_observed": 83,
+          "final_validation": {
+            "brier": 0.1516047865152359,
+            "renderer_variance": 0.00045779596901714587,
+            "selection_metric": 0.15165056611213762
+          },
+          "initialization_seed": 21131,
+          "input_width": 5120,
+          "kind": "historical_continuous_quotient",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 3375991,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_continuous_checkpoint_v1"
+        },
+        {
+          "best_epoch": 118,
+          "best_selection_metric": 0.043004413626355625,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 70.3197603225708,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.0420525036752224,
+            "renderer_variance": 0.009519099511332266,
+            "selection_metric": 0.043004413626355625
+          },
+          "initialization_seed": 22301,
+          "input_width": 5120,
+          "kind": "activation",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4577886,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 112,
+          "best_selection_metric": 0.05950682958524946,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "behavioral",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 70.11956191062927,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.05798010528087616,
+            "renderer_variance": 0.015267243043732984,
+            "selection_metric": 0.05950682958524946
+          },
+          "initialization_seed": 22302,
+          "input_width": 5120,
+          "kind": "activation",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4577886,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 26,
+          "best_selection_metric": 0.19541700477711857,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 25.437873125076294,
+          "epochs_observed": 47,
+          "final_validation": {
+            "brier": 0.1943344920873642,
+            "renderer_variance": 0.010825126897543669,
+            "selection_metric": 0.19541700477711857
+          },
+          "initialization_seed": 22311,
+          "input_width": 5120,
+          "kind": "token_id",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4577886,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 82,
+          "best_selection_metric": 0.24799521267414096,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 23.050864458084106,
+          "epochs_observed": 103,
+          "final_validation": {
+            "brier": 0.24799521267414093,
+            "renderer_variance": 1.512678963558141e-16,
+            "selection_metric": 0.24799521267414096
+          },
+          "initialization_seed": 22321,
+          "input_width": 5120,
+          "kind": "final_token",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4573921,
+          "parameter_relative_error": 0.0008661203009424001,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 51,
+          "best_selection_metric": 0.1518683400626666,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "descriptor_sha256": {
+            "n4": "743e5c8b3867db7daabfcba8b8a46ef865bc45bbdee799dc1071364e972739f1",
+            "n6": "607a3010f1aeeae3542c279856ee9367d5cef8b18ef1dacda9fbdf443d008888"
+          },
+          "elapsed_seconds": 22.1862735748291,
+          "epochs_observed": 72,
+          "final_validation": {
+            "brier": 0.15181714296340942,
+            "renderer_variance": 0.0005119709925717567,
+            "selection_metric": 0.1518683400626666
+          },
+          "initialization_seed": 22331,
+          "input_width": 5120,
+          "kind": "historical_continuous_quotient",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 3375991,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_continuous_checkpoint_v1"
+        },
+        {
+          "best_epoch": 114,
+          "best_selection_metric": 0.05262234782297159,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 71.07677602767944,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.05157165974378586,
+            "renderer_variance": 0.010506880791857279,
+            "selection_metric": 0.05262234782297159
+          },
+          "initialization_seed": 22701,
+          "input_width": 5120,
+          "kind": "activation",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4577886,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 111,
+          "best_selection_metric": 0.0935937225537297,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "behavioral",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 70.86626076698303,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.09214884787797928,
+            "renderer_variance": 0.01444874675750422,
+            "selection_metric": 0.0935937225537297
+          },
+          "initialization_seed": 22702,
+          "input_width": 5120,
+          "kind": "activation",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4577886,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 29,
+          "best_selection_metric": 0.19509518914856017,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 27.390881299972534,
+          "epochs_observed": 50,
+          "final_validation": {
+            "brier": 0.19417548179626465,
+            "renderer_variance": 0.00919707352295518,
+            "selection_metric": 0.19509518914856017
+          },
+          "initialization_seed": 22711,
+          "input_width": 5120,
+          "kind": "token_id",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4577886,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 93,
+          "best_selection_metric": 0.24811975657939914,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 25.782912731170654,
+          "epochs_observed": 114,
+          "final_validation": {
+            "brier": 0.2481197565793991,
+            "renderer_variance": 4.063108091748593e-16,
+            "selection_metric": 0.24811975657939914
+          },
+          "initialization_seed": 22721,
+          "input_width": 5120,
+          "kind": "final_token",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 4573921,
+          "parameter_relative_error": 0.0008661203009424001,
+          "primary_parameter_count": 4577886,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 76,
+          "best_selection_metric": 0.15222342069140873,
+          "capture_sha256": {
+            "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+            "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+            "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+            "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "descriptor_sha256": {
+            "n4": "743e5c8b3867db7daabfcba8b8a46ef865bc45bbdee799dc1071364e972739f1",
+            "n6": "607a3010f1aeeae3542c279856ee9367d5cef8b18ef1dacda9fbdf443d008888"
+          },
+          "elapsed_seconds": 29.574907779693604,
+          "epochs_observed": 97,
+          "final_validation": {
+            "brier": 0.15218393504619598,
+            "renderer_variance": 0.0003948564521275936,
+            "selection_metric": 0.15222342069140873
+          },
+          "initialization_seed": 22731,
+          "input_width": 5120,
+          "kind": "historical_continuous_quotient",
+          "model_id": "qwen3-14b-held",
+          "model_role": "held",
+          "onboarding": true,
+          "parameter_count": 3375991,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_continuous_checkpoint_v1"
+        }
+      ],
+      "model_id": "qwen3-14b-held"
+    },
+    "qwen3-4b": {
+      "fits": [
+        {
+          "best_epoch": 73,
+          "best_selection_metric": 0.046752423715898,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 53.601475954055786,
+          "epochs_observed": 94,
+          "final_validation": {
+            "brier": 0.045745521783828735,
+            "renderer_variance": 0.01006901932069267,
+            "selection_metric": 0.046752423715898
+          },
+          "initialization_seed": 21101,
+          "input_width": 2560,
+          "kind": "activation",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2611806,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 67,
+          "best_selection_metric": 0.10123154997515181,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "behavioral",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 49.15938115119934,
+          "epochs_observed": 88,
+          "final_validation": {
+            "brier": 0.09731020033359528,
+            "renderer_variance": 0.03921349641556541,
+            "selection_metric": 0.10123154997515181
+          },
+          "initialization_seed": 21102,
+          "input_width": 2560,
+          "kind": "activation",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2611806,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 30,
+          "best_selection_metric": 0.20049856962480891,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 27.28432559967041,
+          "epochs_observed": 51,
+          "final_validation": {
+            "brier": 0.19960817694664001,
+            "renderer_variance": 0.008903926781689128,
+            "selection_metric": 0.20049856962480891
+          },
+          "initialization_seed": 21111,
+          "input_width": 2560,
+          "kind": "token_id",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2611806,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 116,
+          "best_selection_metric": 0.2398598364305125,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 23.871362686157227,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.23981840908527374,
+            "renderer_variance": 0.0004142734523876849,
+            "selection_metric": 0.2398598364305125
+          },
+          "initialization_seed": 21121,
+          "input_width": 2560,
+          "kind": "final_token",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2608802,
+          "parameter_relative_error": 0.0011501619951864725,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 79,
+          "best_selection_metric": 0.15334712280252158,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "descriptor_sha256": {
+            "n4": "743e5c8b3867db7daabfcba8b8a46ef865bc45bbdee799dc1071364e972739f1",
+            "n6": "607a3010f1aeeae3542c279856ee9367d5cef8b18ef1dacda9fbdf443d008888"
+          },
+          "elapsed_seconds": 27.452713012695312,
+          "epochs_observed": 100,
+          "final_validation": {
+            "brier": 0.15325042605400085,
+            "renderer_variance": 0.00096696748520723,
+            "selection_metric": 0.15334712280252158
+          },
+          "initialization_seed": 21131,
+          "input_width": 2560,
+          "kind": "historical_continuous_quotient",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 1717111,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_continuous_checkpoint_v1"
+        },
+        {
+          "best_epoch": 105,
+          "best_selection_metric": 0.056417186268867714,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 66.94482445716858,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.055535487830638885,
+            "renderer_variance": 0.008816984382288284,
+            "selection_metric": 0.056417186268867714
+          },
+          "initialization_seed": 22301,
+          "input_width": 2560,
+          "kind": "activation",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2611806,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 105,
+          "best_selection_metric": 0.1026014406234026,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "behavioral",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 66.66329765319824,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.09898267686367035,
+            "renderer_variance": 0.036187637597322464,
+            "selection_metric": 0.1026014406234026
+          },
+          "initialization_seed": 22302,
+          "input_width": 2560,
+          "kind": "activation",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2611806,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 32,
+          "best_selection_metric": 0.20079248244098077,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 28.196568727493286,
+          "epochs_observed": 53,
+          "final_validation": {
+            "brier": 0.19984488189220428,
+            "renderer_variance": 0.009476005487764875,
+            "selection_metric": 0.20079248244098077
+          },
+          "initialization_seed": 22311,
+          "input_width": 2560,
+          "kind": "token_id",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2611806,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 116,
+          "best_selection_metric": 0.23882384866319437,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 23.435588836669922,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.2387736737728119,
+            "renderer_variance": 0.0005017489038247428,
+            "selection_metric": 0.23882384866319437
+          },
+          "initialization_seed": 22321,
+          "input_width": 2560,
+          "kind": "final_token",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2608802,
+          "parameter_relative_error": 0.0011501619951864725,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 79,
+          "best_selection_metric": 0.15387515890367165,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "descriptor_sha256": {
+            "n4": "743e5c8b3867db7daabfcba8b8a46ef865bc45bbdee799dc1071364e972739f1",
+            "n6": "607a3010f1aeeae3542c279856ee9367d5cef8b18ef1dacda9fbdf443d008888"
+          },
+          "elapsed_seconds": 27.36559271812439,
+          "epochs_observed": 100,
+          "final_validation": {
+            "brier": 0.15377360582351685,
+            "renderer_variance": 0.001015530801547963,
+            "selection_metric": 0.15387515890367165
+          },
+          "initialization_seed": 22331,
+          "input_width": 2560,
+          "kind": "historical_continuous_quotient",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 1717111,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_continuous_checkpoint_v1"
+        },
+        {
+          "best_epoch": 118,
+          "best_selection_metric": 0.04975600577618023,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 66.79902386665344,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.048700232058763504,
+            "renderer_variance": 0.010557737174167267,
+            "selection_metric": 0.04975600577618023
+          },
+          "initialization_seed": 22701,
+          "input_width": 2560,
+          "kind": "activation",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2611806,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 79,
+          "best_selection_metric": 0.10994409926546117,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "behavioral",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 55.711835622787476,
+          "epochs_observed": 100,
+          "final_validation": {
+            "brier": 0.10637522488832474,
+            "renderer_variance": 0.035688743771364294,
+            "selection_metric": 0.10994409926546117
+          },
+          "initialization_seed": 22702,
+          "input_width": 2560,
+          "kind": "activation",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2611806,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 32,
+          "best_selection_metric": 0.19883520193203974,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 28.58052968978882,
+          "epochs_observed": 53,
+          "final_validation": {
+            "brier": 0.19779415428638458,
+            "renderer_variance": 0.010410476456551502,
+            "selection_metric": 0.19883520193203974
+          },
+          "initialization_seed": 22711,
+          "input_width": 2560,
+          "kind": "token_id",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2611806,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 117,
+          "best_selection_metric": 0.2399160830114776,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 23.753535509109497,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.2398749142885208,
+            "renderer_variance": 0.00041168722956778464,
+            "selection_metric": 0.2399160830114776
+          },
+          "initialization_seed": 22721,
+          "input_width": 2560,
+          "kind": "final_token",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2608802,
+          "parameter_relative_error": 0.0011501619951864725,
+          "primary_parameter_count": 2611806,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 63,
+          "best_selection_metric": 0.15380742229181124,
+          "capture_sha256": {
+            "captures/train/qwen3-4b-n4.pt": "2210af85c6c589341dd5a6ded6dba220c0ac24cd9e2f83cbabdb5372923e5c3c",
+            "captures/train/qwen3-4b-n6.pt": "30112cf20edf73854a22ad892710a6542718f0d66cb3af79490509719e20cd49",
+            "captures/validation/qwen3-4b-n4.pt": "8444d892f4d79df9ca9513d7c2c77e92809600a89a024e51ee15521c5e563a5b",
+            "captures/validation/qwen3-4b-n6.pt": "d9cb4007dd14baf9d02b5994842713497fb6ebc0c9e5060b0dd4a9946363d3bb"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "descriptor_sha256": {
+            "n4": "743e5c8b3867db7daabfcba8b8a46ef865bc45bbdee799dc1071364e972739f1",
+            "n6": "607a3010f1aeeae3542c279856ee9367d5cef8b18ef1dacda9fbdf443d008888"
+          },
+          "elapsed_seconds": 23.15489101409912,
+          "epochs_observed": 84,
+          "final_validation": {
+            "brier": 0.15369586646556854,
+            "renderer_variance": 0.00111555826242693,
+            "selection_metric": 0.15380742229181124
+          },
+          "initialization_seed": 22731,
+          "input_width": 2560,
+          "kind": "historical_continuous_quotient",
+          "model_id": "qwen3-4b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 1717111,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_continuous_checkpoint_v1"
+        }
+      ],
+      "model_id": "qwen3-4b"
+    },
+    "qwen3-8b": {
+      "fits": [
+        {
+          "best_epoch": 105,
+          "best_selection_metric": 0.017272246665636745,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 68.49085783958435,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.01698797382414341,
+            "renderer_variance": 0.0028427284149333634,
+            "selection_metric": 0.017272246665636745
+          },
+          "initialization_seed": 21101,
+          "input_width": 4096,
+          "kind": "activation",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791454,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 117,
+          "best_selection_metric": 0.06404443013296562,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "behavioral",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 68.48707270622253,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.06268540024757385,
+            "renderer_variance": 0.013590298853917679,
+            "selection_metric": 0.06404443013296562
+          },
+          "initialization_seed": 21102,
+          "input_width": 4096,
+          "kind": "activation",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791454,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 20,
+          "best_selection_metric": 0.2021792041535567,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 22.142566680908203,
+          "epochs_observed": 41,
+          "final_validation": {
+            "brier": 0.20173445343971252,
+            "renderer_variance": 0.004447507138441627,
+            "selection_metric": 0.2021792041535567
+          },
+          "initialization_seed": 21111,
+          "input_width": 4096,
+          "kind": "token_id",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791454,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 101,
+          "best_selection_metric": 0.23948872742363012,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 25.936230421066284,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.23943465948104858,
+            "renderer_variance": 0.0005406794258154454,
+            "selection_metric": 0.23948872742363012
+          },
+          "initialization_seed": 21121,
+          "input_width": 4096,
+          "kind": "final_token",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791833,
+          "parameter_relative_error": 9.996165059631476e-05,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 64,
+          "best_selection_metric": 0.15104849441816745,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "descriptor_sha256": {
+            "n4": "743e5c8b3867db7daabfcba8b8a46ef865bc45bbdee799dc1071364e972739f1",
+            "n6": "607a3010f1aeeae3542c279856ee9367d5cef8b18ef1dacda9fbdf443d008888"
+          },
+          "elapsed_seconds": 24.673521041870117,
+          "epochs_observed": 85,
+          "final_validation": {
+            "brier": 0.15099018812179565,
+            "renderer_variance": 0.0005830629637178694,
+            "selection_metric": 0.15104849441816745
+          },
+          "initialization_seed": 21131,
+          "input_width": 4096,
+          "kind": "historical_continuous_quotient",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2712439,
+          "registered_seed": 211,
+          "schema": "frank_eq_stagea_v3_continuous_checkpoint_v1"
+        },
+        {
+          "best_epoch": 114,
+          "best_selection_metric": 0.020556813829245922,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 69.21249747276306,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.020126597955822945,
+            "renderer_variance": 0.004302158734229761,
+            "selection_metric": 0.020556813829245922
+          },
+          "initialization_seed": 22301,
+          "input_width": 4096,
+          "kind": "activation",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791454,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 111,
+          "best_selection_metric": 0.06222313218504685,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "behavioral",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 69.38769960403442,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.06110232323408127,
+            "renderer_variance": 0.011208089509655869,
+            "selection_metric": 0.06222313218504685
+          },
+          "initialization_seed": 22302,
+          "input_width": 4096,
+          "kind": "activation",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791454,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 32,
+          "best_selection_metric": 0.19537947438657283,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 29.095125436782837,
+          "epochs_observed": 53,
+          "final_validation": {
+            "brier": 0.1942976415157318,
+            "renderer_variance": 0.010818328708410263,
+            "selection_metric": 0.19537947438657283
+          },
+          "initialization_seed": 22311,
+          "input_width": 4096,
+          "kind": "token_id",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791454,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 73,
+          "best_selection_metric": 0.24774527549743655,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 20.25867772102356,
+          "epochs_observed": 94,
+          "final_validation": {
+            "brier": 0.24774527549743652,
+            "renderer_variance": 2.4409487762786557e-16,
+            "selection_metric": 0.24774527549743655
+          },
+          "initialization_seed": 22321,
+          "input_width": 4096,
+          "kind": "final_token",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791833,
+          "parameter_relative_error": 9.996165059631476e-05,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 106,
+          "best_selection_metric": 0.15015117360010966,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "descriptor_sha256": {
+            "n4": "743e5c8b3867db7daabfcba8b8a46ef865bc45bbdee799dc1071364e972739f1",
+            "n6": "607a3010f1aeeae3542c279856ee9367d5cef8b18ef1dacda9fbdf443d008888"
+          },
+          "elapsed_seconds": 34.87241005897522,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.15006574988365173,
+            "renderer_variance": 0.0008542371645792931,
+            "selection_metric": 0.15015117360010966
+          },
+          "initialization_seed": 22331,
+          "input_width": 4096,
+          "kind": "historical_continuous_quotient",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2712439,
+          "registered_seed": 223,
+          "schema": "frank_eq_stagea_v3_continuous_checkpoint_v1"
+        },
+        {
+          "best_epoch": 102,
+          "best_selection_metric": 0.06869565701539007,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 69.42242288589478,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.0675102099776268,
+            "renderer_variance": 0.011854470377632728,
+            "selection_metric": 0.06869565701539007
+          },
+          "initialization_seed": 22701,
+          "input_width": 4096,
+          "kind": "activation",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791454,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 65,
+          "best_selection_metric": 0.07492065778618175,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "behavioral",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 49.99522113800049,
+          "epochs_observed": 86,
+          "final_validation": {
+            "brier": 0.0736752301454544,
+            "renderer_variance": 0.012454276407273332,
+            "selection_metric": 0.07492065778618175
+          },
+          "initialization_seed": 22702,
+          "input_width": 4096,
+          "kind": "activation",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791454,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 29,
+          "best_selection_metric": 0.19836126603768206,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 27.52458095550537,
+          "epochs_observed": 50,
+          "final_validation": {
+            "brier": 0.19745022058486938,
+            "renderer_variance": 0.009110454528126866,
+            "selection_metric": 0.19836126603768206
+          },
+          "initialization_seed": 22711,
+          "input_width": 4096,
+          "kind": "token_id",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791454,
+          "parameter_relative_error": 0.0,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 88,
+          "best_selection_metric": 0.23917128649051544,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "elapsed_seconds": 23.630658388137817,
+          "epochs_observed": 109,
+          "final_validation": {
+            "brier": 0.2391214817762375,
+            "renderer_variance": 0.0004980471427794934,
+            "selection_metric": 0.23917128649051544
+          },
+          "initialization_seed": 22721,
+          "input_width": 4096,
+          "kind": "final_token",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 3791833,
+          "parameter_relative_error": 9.996165059631476e-05,
+          "primary_parameter_count": 3791454,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_basis_checkpoint_v1"
+        },
+        {
+          "best_epoch": 118,
+          "best_selection_metric": 0.15124857852133572,
+          "capture_sha256": {
+            "captures/train/qwen3-8b-n4.pt": "41308cad19e481582773d74f0e5eb6c378b11be1d87fd161ef51dfb2c45b35b0",
+            "captures/train/qwen3-8b-n6.pt": "c996666e0546bbb6d65b0571c78f105276a9f2f510009e9d4e6edcc35687d185",
+            "captures/validation/qwen3-8b-n4.pt": "7db21c31a7ce59bf0fdb51cf5335ed6d07d2b53b73bc25d44de202837aed991c",
+            "captures/validation/qwen3-8b-n6.pt": "87b61cc159a01bea7bb086d198e5ec8592e33300eb8ebf2f7bc761921c0072e2"
+          },
+          "channel": "semantic",
+          "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+          "depth_count": 4,
+          "descriptor_sha256": {
+            "n4": "743e5c8b3867db7daabfcba8b8a46ef865bc45bbdee799dc1071364e972739f1",
+            "n6": "607a3010f1aeeae3542c279856ee9367d5cef8b18ef1dacda9fbdf443d008888"
+          },
+          "elapsed_seconds": 35.14080619812012,
+          "epochs_observed": 120,
+          "final_validation": {
+            "brier": 0.1511646956205368,
+            "renderer_variance": 0.0008388290079892613,
+            "selection_metric": 0.15124857852133572
+          },
+          "initialization_seed": 22731,
+          "input_width": 4096,
+          "kind": "historical_continuous_quotient",
+          "model_id": "qwen3-8b",
+          "model_role": "founder",
+          "onboarding": false,
+          "parameter_count": 2712439,
+          "registered_seed": 227,
+          "schema": "frank_eq_stagea_v3_continuous_checkpoint_v1"
+        }
+      ],
+      "model_id": "qwen3-8b"
+    }
+  },
+  "schema": "frank_eq_stagea_v3_training_summary_v1"
+}

@@ -12,8 +12,14 @@ not change the scientific contract.
 
 ## Current authority
 
-LUMI job `20942127` produced the adopted Stage-A v1 negative. Do not rerun its
-test role. Analyze its fetched cache with:
+There is no authorized LUMI execution. LUMI jobs `20942127` and `20952565`
+produced the adopted Stage-A v1 and v2 negatives. RC0 and Stage-A v3-2 later
+completed on Olivia; v3-2's terminal decision is
+`ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`. Do not rerun any of these registrations,
+launch receiver work, or treat a cluster move as fresh scientific authority.
+
+The historical v1 fetched cache can still be analyzed without model execution
+using:
 
 ```bash
 frank-eq diagnose-real-cache \
@@ -53,9 +59,10 @@ Default Hugging Face cache:
 
 Future v2 configs must pin exact model revisions.
 
-## Diagnostic dry run and submit
+## Historical diagnostic dry run
 
-For a fresh operational smoke, not a v1 scientific rerun:
+Retained for provenance only; do not submit without a separately authorized
+fresh registration:
 
 ```bash
 python lumi/cli.py submit \

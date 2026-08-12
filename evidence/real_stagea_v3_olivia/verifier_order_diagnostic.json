@@ -1,0 +1,67 @@
+{
+  "classification": "post_outcome_non_mutating_reducer_diagnostic",
+  "diagnostic_job": {
+    "elapsed": "00:00:13",
+    "exit_code": "0:0",
+    "job_id": "1953471",
+    "node": "gpu-1-109",
+    "partition": "accel",
+    "qos": "devel",
+    "state": "COMPLETED"
+  },
+  "inputs": {
+    "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+    "decision_file_sha256": "61b21a24e7ab2457e10d3e490b95062bddc3d4264713a4c942defcdbc736184f",
+    "metrics_canonical_sha256": "10dd92543939fabefef26e19a09263d1bef157fc526f6867f306bce286f45e41",
+    "metrics_file_sha256": "29f6196f4e0b756e54345a2eba5fc2b1b623ef4250cc08c77eab2bbe6ecd4e9c",
+    "prediction_manifest_sha256": "7f9bd11ff9d7adebfc97706a0f07a915cb988bcebbdb4a955addd8b85ac83450",
+    "source_job_id": "1899057"
+  },
+  "lexicographic_manifest_key_order": {
+    "bundle_order": [
+      "qwen3-14b-held|4",
+      "qwen3-14b-held|6",
+      "qwen3-4b|4",
+      "qwen3-4b|6",
+      "qwen3-8b|4",
+      "qwen3-8b|6"
+    ],
+    "canonical_metrics_sha256": "ba0696426ae30b0c4a43fffec9f635fc22b0cea5535b0d0820a344c2c6bf5dac",
+    "decision_recomputed_exactly": true,
+    "difference_count": 46,
+    "difference_kind": "numeric_only",
+    "exact_metrics_match": false,
+    "maximum_absolute_difference": 5.551115123125783e-17,
+    "nonnumeric_difference_count": 0
+  },
+  "result": {
+    "classification": "verifier_bundle_order_sensitivity",
+    "gate_or_decision_difference": false,
+    "original_audit_must_remain_failed": true,
+    "result_artifacts_mutated": false,
+    "same_registration_retry_authorized": false
+  },
+  "runtime": {
+    "image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "numpy": "2.2.6",
+    "platform": "Linux-6.4.0-150700.53.31-64kb-aarch64-with-glibc2.35",
+    "python": "3.10.12"
+  },
+  "schema": "frank_eq_stagea_v3_verifier_order_diagnostic_v1",
+  "workflow_config_order": {
+    "bundle_order": [
+      "qwen3-4b|4",
+      "qwen3-4b|6",
+      "qwen3-8b|4",
+      "qwen3-8b|6",
+      "qwen3-14b-held|4",
+      "qwen3-14b-held|6"
+    ],
+    "canonical_metrics_sha256": "10dd92543939fabefef26e19a09263d1bef157fc526f6867f306bce286f45e41",
+    "decision_recomputed_exactly": true,
+    "difference_count": 0,
+    "exact_metrics_match": true,
+    "maximum_absolute_difference": 0.0,
+    "nonnumeric_difference_count": 0
+  }
+}

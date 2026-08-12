@@ -108,6 +108,33 @@ REQUIRED = (
     "evidence/real_stage_r_olivia_rc0/verification_summary.json",
     "evidence/real_stage_r_olivia_rc0/workflow_status.json",
     "evidence/real_stage_r_olivia_rc0/manifest.json",
+    "evidence/real_stagea_v3_olivia/AUDIT.md",
+    "evidence/real_stagea_v3_olivia/access_ledger.json",
+    "evidence/real_stagea_v3_olivia/artifact_manifest.json",
+    "evidence/real_stagea_v3_olivia/baseline_manifest.json",
+    "evidence/real_stagea_v3_olivia/capture_validation.json",
+    "evidence/real_stagea_v3_olivia/compiler_checkpoints_manifest.json",
+    "evidence/real_stagea_v3_olivia/config.yaml",
+    "evidence/real_stagea_v3_olivia/decision.json",
+    "evidence/real_stagea_v3_olivia/dry_run_plan.json",
+    "evidence/real_stagea_v3_olivia/freeze_manifest.json",
+    "evidence/real_stagea_v3_olivia/held_onboarding_manifest.json",
+    "evidence/real_stagea_v3_olivia/identity_train_basis_manifest.json",
+    "evidence/real_stagea_v3_olivia/implementation_manifest.json",
+    "evidence/real_stagea_v3_olivia/independent_audit.json",
+    "evidence/real_stagea_v3_olivia/manifest.json",
+    "evidence/real_stagea_v3_olivia/metrics.json",
+    "evidence/real_stagea_v3_olivia/models.json",
+    "evidence/real_stagea_v3_olivia/predictions_manifest.json",
+    "evidence/real_stagea_v3_olivia/rate_compute.json",
+    "evidence/real_stagea_v3_olivia/registration.json",
+    "evidence/real_stagea_v3_olivia/run_manifest.json",
+    "evidence/real_stagea_v3_olivia/run_summary.json",
+    "evidence/real_stagea_v3_olivia/test_panel_manifest.json",
+    "evidence/real_stagea_v3_olivia/training_summary.json",
+    "evidence/real_stagea_v3_olivia/verification_summary.json",
+    "evidence/real_stagea_v3_olivia/verifier_order_diagnostic.json",
+    "evidence/real_stagea_v3_olivia/workflow_status.json",
 )
 
 
@@ -380,6 +407,183 @@ def main() -> int:
         if sha256_file(ROOT / relative_path) != expected_hash:
             raise SystemExit(f"Stage-A v3 registration hash changed: {relative_path}")
 
+    v3_evidence_dir = ROOT / "evidence/real_stagea_v3_olivia"
+    v3_evidence_manifest = _validate_hash_manifest(v3_evidence_dir)
+    v3_evidence_decision = json.loads((v3_evidence_dir / "decision.json").read_text())
+    v3_evidence_metrics = json.loads((v3_evidence_dir / "metrics.json").read_text())
+    v3_evidence_workflow = json.loads(
+        (v3_evidence_dir / "workflow_status.json").read_text()
+    )
+    v3_evidence_run_summary = json.loads(
+        (v3_evidence_dir / "run_summary.json").read_text()
+    )
+    v3_evidence_run_manifest = json.loads(
+        (v3_evidence_dir / "run_manifest.json").read_text()
+    )
+    v3_evidence_access = json.loads((v3_evidence_dir / "access_ledger.json").read_text())
+    v3_evidence_capture = json.loads(
+        (v3_evidence_dir / "capture_validation.json").read_text()
+    )
+    v3_evidence_audit = json.loads(
+        (v3_evidence_dir / "independent_audit.json").read_text()
+    )
+    v3_evidence_verification = json.loads(
+        (v3_evidence_dir / "verification_summary.json").read_text()
+    )
+    v3_order_diagnostic = json.loads(
+        (v3_evidence_dir / "verifier_order_diagnostic.json").read_text()
+    )
+    if v3_evidence_manifest.get("schema") != "frank_eq_stagea_v3_evidence_manifest_v1":
+        raise SystemExit("Stage-A v3 evidence manifest has the wrong schema")
+    expected_v3_evidence_files = set(v3_evidence_manifest.get("files", {})) | {
+        "manifest.json"
+    }
+    observed_v3_evidence_files = {
+        path.name for path in v3_evidence_dir.iterdir() if path.is_file()
+    }
+    if observed_v3_evidence_files != expected_v3_evidence_files:
+        raise SystemExit("Stage-A v3 compact evidence file set changed")
+    v3_run_environment = v3_evidence_run_manifest.get("environment", {})
+    if (
+        v3_evidence_manifest.get("source_archive_sha256")
+        != v3_run_environment.get("source_sha256")
+        or v3_evidence_manifest.get("job_name")
+        != v3_run_environment.get("project_version")
+        or v3_evidence_manifest.get("slurm_job_id")
+        != v3_run_environment.get("slurm_job_id")
+    ):
+        raise SystemExit("Stage-A v3 evidence source lineage changed")
+    if sha256_file(v3_evidence_dir / "config.yaml") != sha256_file(v3_path):
+        raise SystemExit("adopted Stage-A v3 config differs from the frozen registration")
+    if (
+        v3_evidence_decision.get("status") != "fail"
+        or v3_evidence_decision.get("diagnosis")
+        != "ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED"
+    ):
+        raise SystemExit("adopted Stage-A v3 negative decision changed")
+    expected_v3_checks = {
+        "activation_specificity": False,
+        "behavioral_basis": True,
+        "composition": False,
+        "held_sender": True,
+        "integrity": True,
+        "oracle_executor": True,
+        "public_alignment": True,
+        "quantization": True,
+        "semantic_basis": False,
+        "unseen_renderer": False,
+    }
+    if v3_evidence_decision.get("checks") != expected_v3_checks:
+        raise SystemExit("adopted Stage-A v3 gate vector changed")
+    if v3_evidence_metrics.get("gate_checks") != expected_v3_checks:
+        raise SystemExit("Stage-A v3 metrics and decision gates differ")
+    expected_v3_authorization = {
+        "new_receiver_world_access_authorized": False,
+        "paper_claim_authorized": False,
+        "receiver_execution_authorized": False,
+        "receiver_protocol_draft_authorized": False,
+        "scientific_claim_authorized": False,
+    }
+    if v3_evidence_decision.get("authorization") != expected_v3_authorization:
+        raise SystemExit("Stage-A v3 negative improperly opens an authorization")
+    expected_v3_integrity = {
+        "checkpoint_seed_registry_complete": True,
+        "config_snapshot_hash": True,
+        "consumer_compute_declared": True,
+        "exclusive_kv_and_prefix_continuity": True,
+        "founder_freeze_present": True,
+        "held_freeze_present": True,
+        "model_revisions_exact": True,
+        "protected_authorizations_closed": True,
+        "required_baselines_complete": True,
+        "test_access_consumed_once": True,
+        "test_files_registered_and_opened": True,
+    }
+    if (
+        v3_evidence_capture.get("checks") != expected_v3_integrity
+        or v3_evidence_decision.get("integrity_checks") != expected_v3_integrity
+    ):
+        raise SystemExit("adopted Stage-A v3 integrity check changed")
+    registered_test_files = v3_evidence_access.get("registered_test_files", [])
+    opened_test_files = [
+        row.get("path") for row in v3_evidence_access.get("test_file_opens", [])
+    ]
+    if (
+        v3_evidence_access.get("test_access_count") != 1
+        or len(registered_test_files) != 21
+        or len(opened_test_files) != 21
+        or len(set(registered_test_files)) != 21
+        or len(set(opened_test_files)) != 21
+        or set(registered_test_files) != set(opened_test_files)
+    ):
+        raise SystemExit("Stage-A v3 one-access ledger changed")
+    if (
+        v3_evidence_workflow.get("state") != "failed"
+        or v3_evidence_workflow.get("completed_stages")
+        != ["prepare", "founder_fit", "freeze", "held_onboard", "evaluate"]
+        or v3_evidence_workflow.get("failure", {}).get("message")
+        != "independent Stage-A v3 audit failed"
+    ):
+        raise SystemExit("Stage-A v3 fail-closed workflow status changed")
+    if (
+        v3_evidence_run_summary.get("status") != "completed"
+        or v3_evidence_run_summary.get("workflow_integrity_passed") is not True
+    ):
+        raise SystemExit("Stage-A v3 pre-audit completion record changed")
+    audit_checks = v3_evidence_audit.get("checks", {})
+    if (
+        v3_evidence_audit.get("passed") is not False
+        or {name for name, passed in audit_checks.items() if not passed}
+        != {"metrics_recomputed_exactly"}
+        or v3_evidence_audit.get("decision") != v3_evidence_decision
+    ):
+        raise SystemExit("Stage-A v3 original independent audit changed")
+    if (
+        v3_evidence_verification.get("schema")
+        != "frank_eq_stagea_v3_adopted_verification_summary_v1"
+        or v3_evidence_verification.get("overall") != "adopted_valid_negative"
+        or v3_evidence_verification.get("artifact_manifest_audit", {}).get(
+            "hash_matches"
+        )
+        != 117
+        or v3_evidence_verification.get("artifact_manifest_audit", {}).get("entries")
+        != 118
+    ):
+        raise SystemExit("Stage-A v3 adopted verification summary changed")
+    terminal_mismatches = v3_evidence_verification.get(
+        "artifact_manifest_audit", {}
+    ).get("terminal_mismatches", [])
+    if [row.get("path") for row in terminal_mismatches] != ["workflow_status.json"]:
+        raise SystemExit("Stage-A v3 terminal manifest mismatch set changed")
+    if (
+        v3_order_diagnostic.get("schema")
+        != "frank_eq_stagea_v3_verifier_order_diagnostic_v1"
+        or v3_order_diagnostic.get("workflow_config_order", {}).get(
+            "exact_metrics_match"
+        )
+        is not True
+        or v3_order_diagnostic.get("workflow_config_order", {}).get("difference_count")
+        != 0
+        or v3_order_diagnostic.get("lexicographic_manifest_key_order", {}).get(
+            "difference_count"
+        )
+        != 46
+        or v3_order_diagnostic.get("lexicographic_manifest_key_order", {}).get(
+            "maximum_absolute_difference"
+        )
+        != 5.551115123125783e-17
+        or v3_order_diagnostic.get("result", {}).get("gate_or_decision_difference")
+        is not False
+    ):
+        raise SystemExit("Stage-A v3 verifier-order diagnosis changed")
+    forbidden_evidence_suffixes = {".pt", ".npz", ".safetensors"}
+    if any(
+        path.suffix in forbidden_evidence_suffixes
+        for path in v3_evidence_dir.rglob("*")
+        if path.is_file()
+    ):
+        raise SystemExit("Stage-A v3 compact evidence contains generated tensor payloads")
+
     gitignore = (ROOT / ".gitignore").read_text()
     if ".agents/state/" not in gitignore:
         raise SystemExit(".agents/state/ must remain ignored")
@@ -398,6 +602,8 @@ def main() -> int:
                 "stage_r_rc0_diagnosis": rc0_decision["diagnosis"],
                 "stage_r_rc0_recovery": "artifact_only",
                 "stagea_v3_protocol": v3_registration["protocol_version"],
+                "stagea_v3_diagnosis": v3_evidence_decision["diagnosis"],
+                "stagea_v3_evidence": v3_evidence_verification["overall"],
                 "stageq_pair_registered": True,
                 "stageq_cache_only_enforced": True,
             },

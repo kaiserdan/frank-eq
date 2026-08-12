@@ -1,0 +1,13 @@
+{
+  "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+  "files": {
+    "panels/test_n4.json": "ae0f4123c051a3d63ccf2f23f35dfe74d9fd56fc18d5c3ef279d97fc6343a843",
+    "panels/test_n6.json": "8c972ca750d9a86ce3e9dcce950f91cafddbcd4071453eec6d262fadadc126bd"
+  },
+  "operation_registry_sha256": {
+    "4": "b156a666acba7e1e8d609e98b92a01523fe13a2fe232985e058181e51992a420",
+    "6": "6b7367a70491e6e1ef074f0cfdae1c2ff384e8220697b674b7d44aefdc485533"
+  },
+  "role": "test",
+  "schema": "frank_eq_stagea_v3_panel_manifest_v1"
+}

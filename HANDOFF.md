@@ -6,7 +6,7 @@ Snapshot: 2026-08-12
 
 Synthetic Stage 0 passes as implementation evidence only.
 
-Two real Stage-A runs are adopted exact-pipeline negatives:
+Two historical real Stage-A runs are adopted exact-pipeline negatives:
 
 ```text
 v1: frank-eq-stagea-devg-v2     LUMI 20942127   STOP_OR_REVISE_STAGE0
@@ -25,15 +25,28 @@ capture:  frank-eq-rc0-rate-compute-olivia-20260811c  Slurm 1874736
 recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
 ```
 
-Stage-A v3-2 is now frozen in `docs/20_STAGEA_V3_PROTOCOL.md` and
-`configs/stagea_v3/real_olivia_v3.yaml`. The user explicitly authorized the
-sequential next steps on 2026-08-12. Implementation and exactly one
-outcome-bearing representation run may proceed only after separate protocol and
-implementation commits, a green repository validation, and an inspected
-content-addressed dry run.
+Stage-A v3-2 has now completed as the third exact-pipeline negative:
 
-Receiver execution, receiver-world access, and scientific-claim authorization
-remain false. A v3 pass may authorize drafting a receiver protocol only.
+```text
+job:       frank-eq-stagea-v3-2-olivia-20260812b  Slurm 1899057
+decision:  ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
+evidence:  evidence/real_stagea_v3_olivia/
+```
+
+All registered stages and integrity checks complete, and the single test grant
+is consumed. Behavioral basis, public alignment, held-sender retention,
+quantization, and oracle execution pass. Semantic calibration,
+unseen-renderer transfer, activation specificity, and the conjunctive
+composition gate fail.
+
+The terminal Slurm failure is the fail-closed response to an
+independent-verifier bundle-order difference of at most `5.55e-17`. The exact
+runtime reproduces stored metrics bit-for-bit in workflow order and the same
+decision in either order. The original failed audit remains immutable.
+
+There is no authorized next execution. Stage-A v3-2 cannot be retried or tuned;
+receiver-protocol drafting, receiver execution, receiver-world access,
+scientific claims, and paper claims all remain false.
 
 ## What the accumulated results establish
 
@@ -161,21 +174,12 @@ Answer-channel and reasoning-over-pause effects are diagnostic only.
 
 A pass authorizes protocol drafting, not execution.
 
-## Next action
+## Stage-A v3-2 execution record
 
-The frozen v3-2 implementation is complete without changing its scientific
-fields. It includes fresh panels, typed coordinates, independent semantic and
-behavioral compilers, process-locked one-time test access, all-token capture,
-cloned-KV teachers, world-balanced fitting, every registered control, packet
-and executor records, grouped gates, protected decisions, measured and
-estimated rate/compute accounting, hash-bound founder/held freezes, an
-independent recomputation verifier, CLI, and the Olivia entrypoint.
-
-Run the full local contract and commit the green implementation. Then generate,
-inspect, and separately commit `configs/stagea_v3/inspected_plan.json`, stage the
-exact unopened Qwen3-14B revision without task queries, inspect the repository
-launcher dry run, and submit exactly one full v3-2 workflow. Do not instantiate
-the registered test panel locally.
+The frozen implementation, preflight, immutable launch, evaluation, fail-closed
+audit, fetch, exact-runtime diagnosis, and compact evidence adoption are
+complete. The chronology below is retained as provenance, not as a launch
+instruction.
 
 Those pre-launch freezes are now complete: implementation commit `e75952a`,
 archive-hygiene repair `29e2cc3`, Python 3.10 compatibility repair `f91f9d3`,
@@ -213,7 +217,7 @@ implementation-tree hash `bf8c87fa...812fc` across the same 64 bound files. It
 preserves the exact config, models, 1,824 prefix forwards, 213,408 logical
 queries, and closed pre-run access flags.
 
-The fresh immutable retry is now running as Olivia Slurm job `1899057`, job name
+The fresh immutable retry ran as Olivia Slurm job `1899057`, job name
 `frank-eq-stagea-v3-2-olivia-20260812b`, bound to Git `4f93143`, source archive
 `b6203d03...a44e0`, and the replacement plan above. The archive reproduced
 byte-for-byte and independently passed all 64 bound hashes, 208 safe-file
@@ -252,7 +256,7 @@ records exactly one grant and all 21 registered opens. Reduction and audit are
 complete. `decision.json` records `fail` with diagnosis
 `ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`: semantic-basis and unseen-renderer gates
 fail, while behavioral basis, public alignment, held-sender retention,
-quantization, oracle execution, and all ten integrity checks pass. Composition
+quantization, oracle execution, and all eleven integrity checks pass. Composition
 and activation-specificity gates also fail. Every authorization remains false.
 
 The outcome job terminates Slurm `FAILED`/exit 1 only because its fail-closed
@@ -265,8 +269,9 @@ whereas the verifier's lexicographic bundle order creates 46 floating-point
 roundoff differences, maximum absolute delta `5.55e-17`, without changing the
 decision. This is a verifier order-sensitivity refusal, not a scientific or
 artifact ambiguity. The consumed result must not be rerun or altered. The
-immediate next action is to finish the immutable fetch, independently verify
-and audit the complete package, then adopt compact negative evidence.
+complete 26.45-GB run/log tree was fetched and matched Olivia under a
+checksum-only mirror comparison. The compact hash-verified negative is adopted
+under `evidence/real_stagea_v3_olivia/`.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every
@@ -280,7 +285,7 @@ docs/19_STAGE_R_CLUSTER_RUNBOOK.md
 docs/20_STAGEA_V3_PROTOCOL.md
 ```
 
-## Decision after RC0
+## Historical decision after RC0
 
 ### Basis readout fails
 
@@ -318,10 +323,15 @@ replace it with a one-shot source-local compiler before any communication claim.
 - Resuming the shared-head oracle quotient.
 - Selecting a Stage-A architecture on a fresh claim-bearing test split.
 - Starting receiver-native execution.
+- Retrying, recovering, or tuning Stage-A v3-2 after its consumed test result.
+- Drafting a receiver protocol from the negative v3-2 decision.
 
 ## Evidence policy
 
-Generated RC0 responses and model caches remain outside Git. Adopt only a small,
-hash-verified package containing the frozen config/source identity, workflow
-verification, metrics, machine decision, and independent audit. The adopted
-package is `evidence/real_stage_r_olivia_rc0/`.
+Generated responses, captures, checkpoints, prediction arrays, model caches,
+and operational state remain outside Git. The adopted compact packages are:
+
+```text
+evidence/real_stage_r_olivia_rc0/
+evidence/real_stagea_v3_olivia/
+```

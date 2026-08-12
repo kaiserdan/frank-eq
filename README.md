@@ -20,7 +20,7 @@ Sigma_M(h; k, c) = p_M(y | h, k, c).
 The synthetic reference passes as implementation evidence only. It establishes
 that the original contracts, packet, held-sender workflow, and reducer execute.
 
-### Real Stage A: two exact-pipeline negatives
+### Real Stage A v1/v2: two exact-pipeline negatives
 
 ```text
 v1  frank-eq-stagea-devg-v2   LUMI 20942127   STOP_OR_REVISE_STAGE0
@@ -144,22 +144,33 @@ configs/rate_compute/real_olivia_rc0.yaml
 
 No RC0 rerun is authorized.
 
-## Current next step: execute frozen Stage-A v3-2 once
+## Stage-A v3-2: completed exact-pipeline negative
 
-The one-shot compiler protocol is now frozen in
-`docs/20_STAGEA_V3_PROTOCOL.md` and
-`configs/stagea_v3/real_olivia_v3.yaml`. It uses fresh train/validation/test
-panels, Qwen3-4B and Qwen3-8B founders, an unopened Qwen3-14B held sender,
-separate semantic and behavioral token/slot compilers, and the complete
-token/text/direct/continuous/interactive/oracle baseline set.
+The sole registered one-shot compiler workflow ran on Olivia as job `1899057`.
+It preserved founder/held/test causal order, consumed its test grant exactly
+once, completed all six test captures, and passed every integrity check. The
+machine decision is:
 
-The complete representation workflow, access controller, independent verifier,
-and Olivia entrypoint are implemented. The user authorized one sequential
-representation run on 2026-08-12. The registration and implementation are
-committed separately; all validators and the committed content-addressed plan
-must pass before submission. Both compiler freeze manifests must exist before
-the test panel is created. Receiver execution remains locked behind a v3
-machine pass and a separate frozen receiver protocol.
+```text
+status:     fail
+diagnosis:  ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
+```
+
+Behavioral-basis prediction, public alignment, held-sender retention,
+quantization, and oracle execution pass. The semantic basis misses its frozen
+Brier ceiling, all six unseen-renderer gains are negative, and the conjunctive
+composition and activation-specificity gates fail. Aggregate composition is
+positive, but cannot override the failed registered strata.
+
+The job exits 1 because the independent audit fails closed on 46
+reduction-order differences no larger than `5.55e-17`. Exact-runtime diagnostic
+job `1953471` reproduces stored metrics bit-for-bit in workflow/config order and
+reproduces the same decision in both orders. This is a verifier-order refusal,
+not an alternate scientific outcome; the failed audit remains immutable.
+
+The compact adopted package is in `evidence/real_stagea_v3_olivia/`. Stage-A
+v3-2 is consumed and terminal. No rerun, receiver protocol, receiver execution,
+new receiver-world access, or claim is authorized.
 
 ## Frozen RC0 decision tree
 
@@ -188,9 +199,9 @@ This is the observed branch. Draft exactly one Stage-A v3 registration with:
   baselines;
 - receiver execution still locked until the representation gate passes.
 
-## Architecture direction
+## Tested architecture and unresolved direction
 
-The intended constructive architecture is no longer a shared private vector:
+Stage-A v3-2 tested this alternative to a shared private vector:
 
 ```text
 query-blind frozen source state
@@ -205,10 +216,11 @@ public separating operational basis
 frozen deterministic or receiver-native executor
 ```
 
-This synthesizes the accumulated Frank evidence: descriptive representation
-prediction is common, direct hidden realization is unreliable, and the strongest
-positive endpoint is structured information followed by native downstream
-computation.
+The frozen compiler did not qualify this interface. It predicts the sources'
+behavioral channel and transfers across models on seen renderers, but semantic
+calibration and unseen-renderer transfer fail. Any successor would require a
+freshly registered question; this exposed test result cannot be used to tune
+one.
 
 ## Commands
 
@@ -279,12 +291,16 @@ Git. Adopted evidence belongs under `evidence/` with a content hash manifest.
 Frank-EQ currently establishes only:
 
 - functioning synthetic and cluster infrastructure;
-- two valid negative results for narrow shared-code architectures;
+- three valid exact-pipeline negatives across the historical shared-code and
+  one-shot typed-basis compiler architectures;
 - a corrected source-qualification methodology;
 - development evidence that an interactively queried, typed edge basis is
   recoverable from the tested sources and composes better than their
-  training-selected direct protocols under the frozen RC0 contract.
+  training-selected direct protocols under the frozen RC0 contract; and
+- v3 evidence that the all-token compiler predicts the frozen sources'
+  behavioral edge responses, while its semantic basis fails the registered
+  calibration and unseen-renderer gates.
 
 It does not yet establish a cross-model public interface, a hidden-state
-advantage over text/tokens, a one-shot compiler, held-sender establishment,
-receiver execution, or a positive ICLR claim.
+advantage over text/tokens, a qualified one-shot compiler, receiver execution,
+or a positive ICLR claim.

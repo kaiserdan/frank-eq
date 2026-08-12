@@ -1,0 +1,141 @@
+{
+  "access": {
+    "registered_test_files": 21,
+    "test_access_count": 1,
+    "test_file_opens": 21,
+    "test_grant_timestamp_utc": "2026-08-12T09:22:32.879829+00:00"
+  },
+  "artifact_manifest_audit": {
+    "entries": 118,
+    "hash_matches": 117,
+    "missing_files": 0,
+    "post_failure_unlisted_artifact": "independent_audit.json",
+    "terminal_mismatches": [
+      {
+        "actual_sha256": "dd67c7c3549321187a1ba2cd84a0d26af9f182e3112bb8095bd3e96ed4dcf5ba",
+        "expected_sha256": "f664a9a0722ad607d67c15bc710f58d67813a59eb394e12548d77c8f0f82c113",
+        "path": "workflow_status.json",
+        "reason": "fail-closed exception handler recorded the audit refusal after artifact-manifest creation"
+      }
+    ]
+  },
+  "authorization": {
+    "new_receiver_world_access_authorized": false,
+    "paper_claim_authorized": false,
+    "receiver_execution_authorized": false,
+    "receiver_protocol_draft_authorized": false,
+    "scientific_claim_authorized": false
+  },
+  "classification": "valid_consumed_negative_with_fail_closed_verifier_order_refusal",
+  "cluster": "olivia",
+  "decision": {
+    "diagnosis": "ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED",
+    "file_sha256": "61b21a24e7ab2457e10d3e490b95062bddc3d4264713a4c942defcdbc736184f",
+    "recomputed_exactly": true,
+    "status": "fail"
+  },
+  "fetch": {
+    "byte_exact_remote_local_checksum_comparison": true,
+    "fetched": [
+      "runs",
+      "logs"
+    ],
+    "receipt_schema": "frank_eq_cluster_fetch_v1"
+  },
+  "logs": {
+    "fatal_infrastructure_signatures": [],
+    "stderr_sha256": "02f67cae5adc75a86b4c9eda45479045ed94e3896a6768e95a32cf7ec2b4a186",
+    "stdout_sha256": "022ae9e3b8f7e5d14b9462bbefa840822dca62c30addc881d9c687f54b8ae4a7",
+    "terminal_application_message": "independent Stage-A v3 audit failed"
+  },
+  "manifest_lineage": {
+    "artifact_manifest_sha256": "0deee3aa363ee525ec641ccfaf590ed45e6feb69cafbdc51b84dc6ca99728938",
+    "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+    "dry_run_plan_file_sha256": "9a728f192b04035281e616822e9a468615a4969c8111a488ec58f28cd240cbf8",
+    "dry_run_plan_internal_sha256": "7b5098588c9368b64694eaf248713810ebc714a2d7f7e6891f93cb7cd16a113c",
+    "git_commit": "4f93143c357a4d77f905c41a3aeb1d7de1418473",
+    "implementation_tree_sha256": "bf8c87fa98116abff8d872b7fea0b6120d9337856d82f7d29778ccc3617812fc",
+    "runtime_image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "source_archive_sha256": "b6203d03031d928f5006415f2a6b4dccd16bc27f7a4a0f7b298d50936f4a44e0"
+  },
+  "original_independent_audit": {
+    "artifact_files_checked": 118,
+    "checks": {
+      "artifact_hashes_valid": true,
+      "config_and_stage_contract_valid": true,
+      "decision_recomputed_exactly": true,
+      "existing_independent_audit_valid": true,
+      "integrity_checks_pass": true,
+      "metrics_recomputed_exactly": false,
+      "protected_authorizations_closed": true,
+      "rate_compute_recomputed_exactly": true,
+      "required_files_present": true,
+      "workflow_completed": true
+    },
+    "passed": false,
+    "prediction_groups": 6,
+    "test_artifacts_verified": 21
+  },
+  "overall": "adopted_valid_negative",
+  "rate_compute": {
+    "file_sha256": "1136cc4dd112dec6ce5262a8fdf2abe4c31ac8bc683e0a12f0fa665d589073e3",
+    "recomputed_exactly": true
+  },
+  "runner_verifier": {
+    "artifacts_present": 28,
+    "failures": [
+      "workflow state is 'failed'"
+    ],
+    "overall": "failed",
+    "warning": "scientific gate failed; workflow may still be valid"
+  },
+  "schema": "frank_eq_stagea_v3_adopted_verification_summary_v1",
+  "slurm": {
+    "elapsed": "12:31:24",
+    "exit_code": "1:0",
+    "job_id": "1899057",
+    "node": "gpu-1-85",
+    "state": "FAILED"
+  },
+  "specialized_verifier_after_fetch": {
+    "checks": {
+      "artifact_hashes_valid": false,
+      "config_and_stage_contract_valid": true,
+      "decision_recomputed_exactly": true,
+      "existing_independent_audit_valid": false,
+      "integrity_checks_pass": true,
+      "metrics_recomputed_exactly": false,
+      "protected_authorizations_closed": true,
+      "rate_compute_recomputed_exactly": true,
+      "required_files_present": true,
+      "workflow_completed": false
+    },
+    "passed": false,
+    "prediction_groups": 6,
+    "test_artifacts_verified": 21
+  },
+  "verifier_order_diagnostic": {
+    "diagnostic_job_id": "1953471",
+    "lexicographic_difference_count": 46,
+    "lexicographic_maximum_absolute_difference": 5.551115123125783e-17,
+    "scientific_decision_difference": false,
+    "workflow_order_exact_metrics_match": true
+  },
+  "workflow": {
+    "completed_stages": [
+      "prepare",
+      "founder_fit",
+      "freeze",
+      "held_onboard",
+      "evaluate"
+    ],
+    "failure": {
+      "message": "independent Stage-A v3 audit failed",
+      "type": "RuntimeError"
+    },
+    "pre_audit_run_summary_status": "completed",
+    "state": "failed",
+    "test_access_consumed": true,
+    "workflow_integrity_passed": true
+  }
+}

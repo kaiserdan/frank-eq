@@ -9,20 +9,24 @@ Use `olivia/cli.py`; do not create mutable remote worktrees or ad-hoc copy
 procedures. Read `AGENTS.md`, `HANDOFF.md`, `docs/OLIVIA.md`, and the selected
 protocol first.
 
-## Current authorized run
+## Current authority
 
 ```text
-config: configs/stagea_v3/real_olivia_v3.yaml
-protocol: stagea-v3-2
-role: outcome-bearing representation qualification
+completed job: frank-eq-stagea-v3-2-olivia-20260812b / Slurm 1899057
+decision: ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
+evidence: evidence/real_stagea_v3_olivia/
+next authorized execution: none
 ```
 
-The user authorized exactly one sequential representation run on 2026-08-12,
-but only after the frozen registration and implementation are separately
-committed, all validators pass, and the content-addressed dry run is inspected.
-The repository launcher supports v3 only through `olivia/stagea_v3.slurm`, the
-committed inspected plan, and the exact full stage sequence. Do not improvise
-an ad-hoc command. RC0 is complete and must not be rerun.
+The user's one-run authorization from 2026-08-12 is exhausted. The complete
+workflow reached its frozen negative decision, then failed closed because the
+independent verifier used a different bundle-reduction order and required
+bit-exact metrics. The exact Olivia runtime diagnostic reproduced the stored
+metrics in config order and found only 46 lexicographic-order roundoff changes,
+bounded by `5.551115123125783e-17`, with no decision change.
+
+Do not resubmit, repair, recover, or tune v3-2. RC0 must not be rerun. Receiver
+work, new receiver-world access, and all claim fields remain unauthorized.
 
 Local validation:
 
@@ -34,22 +38,20 @@ python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
 ```
 
-Submit only after checking the deterministic source SHA-256 and confirming all
-three exact model revisions are available on Olivia. Qwen3-14B remains
-task-unopened during staging and engineering smoke tests.
-
-## Operator commands
+## Historical-run inspection commands
 
 ```bash
-python olivia/cli.py submit --job-name <v3-job> \
-  --config configs/stagea_v3/real_olivia_v3.yaml --profile full \
-  --stages prepare,founder_fit,freeze,held_onboard,evaluate --dry-run --json
-python olivia/cli.py status --job-name <v3-job> --json
-python olivia/cli.py fetch  --job-name <v3-job> --json
-python olivia/cli.py verify --job-name <v3-job> --json
+python olivia/cli.py status --job-name frank-eq-stagea-v3-2-olivia-20260812b --json
+python olivia/cli.py fetch  --job-name frank-eq-stagea-v3-2-olivia-20260812b --json
+python olivia/cli.py verify --job-name frank-eq-stagea-v3-2-olivia-20260812b --json
 python scripts/verify_stagea_v3_run.py \
-  --config configs/stagea_v3/real_olivia_v3.yaml --run <fetched-run-root>
+  --config configs/stagea_v3/real_olivia_v3.yaml \
+  --run .agents/state/olivia/frank-eq-stagea-v3-2-olivia-20260812b/remote/runs
 ```
+
+The last two verifiers are expected to return nonzero for the preserved
+fail-closed workflow state. Diagnose from the adopted evidence; do not reinterpret
+that status as permission to rerun.
 
 ## Invariants
 
@@ -65,7 +67,11 @@ python scripts/verify_stagea_v3_run.py \
   Git.
 - RC0 development worlds and exposed models cannot become later confirmation or
   held roles.
+- The v3-2 test role and held Qwen3-14B checkpoint are task-exposed and cannot be
+  reused as unopened evidence.
 
-Do not launch receiver execution, rerun RC0, or run another Stage-Q scale screen.
-See `docs/20_STAGEA_V3_PROTOCOL.md` and `references/contract.md` for the current
-scientific and failure contract.
+Do not launch receiver execution, rerun RC0, run another Stage-Q scale screen,
+or resubmit v3-2. See `AGENTS.md`, `HANDOFF.md`, and
+`evidence/real_stagea_v3_olivia/AUDIT.md` for the current scientific and failure
+contract; `docs/20_STAGEA_V3_PROTOCOL.md` remains the immutable historical
+registration.

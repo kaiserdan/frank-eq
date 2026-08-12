@@ -1,0 +1,33 @@
+{
+  "artifacts": {
+    "captures/train/qwen3-14b-held-n4.pt": "cb30252ddbbf5e0255c26ad5108f67d1f42671c54eb0396b59423ebe2c6d73c0",
+    "captures/train/qwen3-14b-held-n6.pt": "eb2096eb82ce46c62e7e7b76bcb1b19968bf977470bd314d3fd58780ea5aec86",
+    "captures/validation/qwen3-14b-held-n4.pt": "438f6c85251278a04e92936aeca77fe1ac41f4d4d81c6b98ef1a74d1f890472f",
+    "captures/validation/qwen3-14b-held-n6.pt": "e98788ee3d4b64bdfec08727d8deea1759fac86a3c5d0703b93e0362c06119e2",
+    "checkpoints/qwen3-14b-held/behavioral-behavioral-seed211.pt": "0ddd42adbb5d9b89eee7300a28740fc0fee11d8c6a184e3e54d2581eb509b21d",
+    "checkpoints/qwen3-14b-held/behavioral-behavioral-seed223.pt": "bd70d0e9d6d99735b9116071bd7c3d0c3a104e61adbbe9b5f898b57895e5c86f",
+    "checkpoints/qwen3-14b-held/behavioral-behavioral-seed227.pt": "818185215abe2001b7a74bd52f7eaf3d7799471e875e56186e3904c3503b7858",
+    "checkpoints/qwen3-14b-held/continuous-semantic-seed211.pt": "ae737e0f1070e9be7517474be86a1b73cf984e0cbf97862629f3749e3499d535",
+    "checkpoints/qwen3-14b-held/continuous-semantic-seed223.pt": "3b437b4a55060059ae589ddc732e7650fa9097efffef56cec886ce6070ed8529",
+    "checkpoints/qwen3-14b-held/continuous-semantic-seed227.pt": "4d0e485b3bed63d0f30bb3aa88fc1078cc029a494e3942dbc78ce13297f63e6b",
+    "checkpoints/qwen3-14b-held/final_token-semantic-seed211.pt": "7367777568dbd6fe6242863a04dd7870a5241f0c7b72d198020be70759ccf09a",
+    "checkpoints/qwen3-14b-held/final_token-semantic-seed223.pt": "1ea75be2375f89925552f31a95bde45336262d2ba622fc9c1f5e470be8f0d242",
+    "checkpoints/qwen3-14b-held/final_token-semantic-seed227.pt": "24670de1e734029232639a88352d5829c8bd5523295d28ab9b0a4186119fd671",
+    "checkpoints/qwen3-14b-held/semantic-semantic-seed211.pt": "ec41008f192d28544a7d0f0d61a51395739457c315c40e851f65a054a4396e18",
+    "checkpoints/qwen3-14b-held/semantic-semantic-seed223.pt": "6ad42ddf6be73395f22562bec4ef95b2e825f3b546ee5ce7e4154394b500acbf",
+    "checkpoints/qwen3-14b-held/semantic-semantic-seed227.pt": "97cca62f83f1adf17ec1a0a36520bc57ae38ae541c83c29fec09125f467ea031",
+    "checkpoints/qwen3-14b-held/token_id-semantic-seed211.pt": "7672d1957f860199469e18ff8e6c66347cb18e877deb1f77085c6880c0a29c74",
+    "checkpoints/qwen3-14b-held/token_id-semantic-seed223.pt": "ce4f5ac7ca2fcf45f6eed06034f600ddb38e0d2cde11f083e6e0ef5c98e92068",
+    "checkpoints/qwen3-14b-held/token_id-semantic-seed227.pt": "5e23e4a116f67cc40f0aea71d825e4ca4fa67ee9887b7e4123309ad84a4f2d7a",
+    "controls/qwen3-14b-held.json": "1b516d650c3a6fab8628130b5e00fc2c396ae60f0c9ea8329953a523ad5cc3a1",
+    "freeze_manifest.json": "f6895ff9aaf4d4796ef06b40d10b1d14c961b85c5b75d91297d60743a1786eca",
+    "held_checkpoints_manifest.json": "3dcbaf74f9080e11209549f957c7ddec7497f686f9469162f01907ed0346cd3d"
+  },
+  "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+  "founder_freeze_sha256": "f6895ff9aaf4d4796ef06b40d10b1d14c961b85c5b75d91297d60743a1786eca",
+  "frozen_at": "2026-08-12T09:22:18.678176+00:00",
+  "held_model": "qwen3-14b-held",
+  "schema": "frank_eq_stagea_v3_held_onboarding_v1",
+  "status": "frozen",
+  "test_files_existing": []
+}

@@ -27,13 +27,20 @@ docs/20_STAGEA_V3_PROTOCOL.md
 configs/stagea_v3/real_olivia_v3.yaml
 ```
 
-The user authorized sequential implementation and one representation run on
-2026-08-12. The registration and implementation must be separately committed,
-all local validators must pass, and the content-addressed plan must be inspected
-before launch. Receiver execution remains locked behind a v3 machine pass and a
-separate frozen protocol.
+The one authorized representation workflow completed on Olivia as job
+`1899057`. Its frozen decision is `ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`; all
+receiver and claim authorizations are false. The job deliberately terminated
+nonzero when the independent verifier rejected floating-point-exact metric
+recomputation. An exact-runtime diagnostic established that config-order
+reduction reproduces the stored metrics exactly, while the verifier's
+lexicographic bundle order changes 46 numeric fields by at most
+`5.551115123125783e-17` and leaves the decision unchanged.
 
-## Mandatory RC0 workflow
+The run is consumed and adopted under `evidence/real_stagea_v3_olivia/`. There
+is no authorized next execution: do not retry or tune v3-2, draft a receiver
+protocol from it, open receiver worlds, or make a scientific or paper claim.
+
+## Historical RC0 workflow
 
 1. Confirm exact Qwen3-4B and Qwen3-8B revisions.
 2. Confirm `chat_turn`, exclusive KV reuse, and no replay fallback.
@@ -66,7 +73,7 @@ separate frozen protocol.
 - Density/reciprocity global tags are controls and cannot promote the method.
 - Machine decisions and hashes outrank prose and W&B.
 
-## RC0 promotion logic
+## Historical RC0 promotion logic
 
 Protocol drafting requires:
 
@@ -79,7 +86,7 @@ compiled hard-operation gain over train-selected direct lower95 > 0
 
 Answer-channel and reasoning-over-pause effects are diagnostics only.
 
-## After RC0
+## Historical post-RC0 branches
 
 ### Failure
 
@@ -96,7 +103,7 @@ model-local token/slot compilers into the typed basis, separate behavioral and
 semantic channels, and strong text/token/direct/continuous/oracle baselines.
 Receiver execution remains locked.
 
-## Stage-A v3-2 sequencing
+## Completed Stage-A v3-2 sequencing
 
 1. Commit the frozen registration.
 2. Implement without changing scientific fields; add focused tests.
@@ -120,6 +127,9 @@ Receiver execution remains locked.
 - Resuming the shared-head oracle quotient.
 - Direct target-hidden reconstruction as the primary continuation.
 - Mixing replay and KV branches.
+- Retrying, recovering, or tuning the consumed Stage-A v3-2 registration.
+- Drafting or executing a receiver protocol from the negative v3-2 decision.
+- Using exposed v3-2 outcomes to select a successor registration.
 - Committing generated caches, checkpoints, `.agents/state/`, secrets, or W&B
   credentials.
 

@@ -9,6 +9,8 @@ Snapshot: 2026-08-12
 - Corrected Stage-Q prompt comparison: completed negative.
 - Stronger-checkpoint Stage-Q screens through Qwen3-8B: completed negative.
 - Stage R / RC0: completed development pass; protocol drafting only.
+- Stage-A v3-2: completed exact-pipeline negative;
+  `ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`.
 - Model-local public-head option: implemented but dormant.
 
 The v2 shared public code failed with held-out Brier `0.2065`, fact accuracy
@@ -126,14 +128,26 @@ seven-day one-GH200 Olivia entrypoint. The repository launcher rejects partial
 stage sequences, stale plans, dirty source, wrong image provenance, and any
 same-registration recovery after test access.
 
-The user authorized implementation and one representation run after the
-registration and implementation are separately committed and validated. The
-remaining operational sequence is a green full local validation, the separate
-inspected-plan commit, task-blind held-checkpoint staging, immutable Olivia dry
-run, and one submission. No receiver execution is authorized. A v3 pass may
-authorize drafting one receiver protocol; a miss is terminal for v3-2.
+The one authorized representation workflow has now terminated. Olivia job
+`1899057` completes every registered stage, passes all eleven integrity checks,
+consumes one test grant, and emits the negative diagnosis
+`ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`. Behavioral basis, public alignment,
+held-sender retention, quantization, and oracle execution pass; semantic basis,
+unseen-renderer transfer, activation specificity, and the conjunctive
+composition gate fail.
 
-## Intended architecture after a pass
+The workflow then fails closed because the independent verifier reduces bundle
+keys lexicographically and demands byte-exact metrics. Same-runtime diagnostic
+job `1953471` proves that config/workflow order reproduces stored metrics
+exactly, while verifier order creates 46 numeric-only differences no larger
+than `5.55e-17`; the decision is identical. The complete fetched tree matches
+Olivia byte-for-byte, and compact evidence is adopted under
+`evidence/real_stagea_v3_olivia/`.
+
+The miss is terminal for v3-2. No rerun, tuning, receiver protocol, receiver
+execution, receiver-world access, or claim is authorized.
+
+## Tested Stage-A v3 architecture
 
 ```text
 frozen query-blind token/layer state
@@ -142,10 +156,10 @@ frozen query-blind token/layer state
         -> frozen deterministic or receiver-native executor
 ```
 
-Stage-A v3 must use fresh worlds, a new unopened held sender, separate behavioral
-and oracle-semantic channels, and strong token/text/direct/continuous/oracle
-baselines. Runtime basis probing in RC0 is an upper-bound diagnostic, not a
-latent interface.
+The frozen implementation used fresh worlds, a new held sender, separate
+behavioral and oracle-semantic channels, and the complete registered control
+set. It did not qualify the one-shot public interface. Runtime basis probing in
+RC0 remains an upper-bound diagnostic, not a latent interface.
 
 ## Not authorized
 
@@ -153,4 +167,6 @@ latent interface.
 - treating interactive basis probing as communication;
 - reusing RC0 worlds or exposed models for held/confirmation roles;
 - restarting the shared-head quotient;
-- receiver execution.
+- retrying or tuning Stage-A v3-2;
+- drafting or executing receiver work;
+- using the exposed v3-2 test outcome to select a successor protocol.

@@ -1,0 +1,46 @@
+{
+  "config_sha256": "92d7ede7ce8deccba6ce3233a7a3612ce5688f998faf61386a82cb10c496f5b3",
+  "created_at": "2026-08-12T00:44:43.141946+00:00",
+  "dry_run_plan_sha256": "9a728f192b04035281e616822e9a468615a4969c8111a488ec58f28cd240cbf8",
+  "environment": {
+    "accelerators": [
+      "NVIDIA GH200 120GB"
+    ],
+    "cluster": "olivia",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "git_commit": "4f93143c357a4d77f905c41a3aeb1d7de1418473",
+    "git_dirty": "false",
+    "hf_home": "/cluster/projects/nn12027k/hf-cache",
+    "hostname": "gpu-1-85",
+    "numpy": "2.2.6",
+    "platform": "Linux-6.4.0-150700.53.31-64kb-aarch64-with-glibc2.35",
+    "project_version": "frank-eq-stagea-v3-2-olivia-20260812b",
+    "python": "3.10.12",
+    "runtime_image": "/cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif",
+    "runtime_image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "slurm_cpus_per_task": "32",
+    "slurm_gpus_on_node": "1",
+    "slurm_job_id": "1899057",
+    "slurm_mem_per_node": "196608",
+    "slurm_partition": "accel",
+    "source_sha256": "b6203d03031d928f5006415f2a6b4dccd16bc27f7a4a0f7b298d50936f4a44e0",
+    "torch": "2.12.0.dev20260309+cu126"
+  },
+  "implementation_manifest_sha256": "09f14a3d4f9652e64961f6820f39f6b880f34aadbdf1db7ecdec583b610e9d1a",
+  "inspected_plan_sha256": "7b5098588c9368b64694eaf248713810ebc714a2d7f7e6891f93cb7cd16a113c",
+  "output_dir": "/cluster/work/projects/nn12027k/dakai5365/frank-eq/jobs/frank-eq-stagea-v3-2-olivia-20260812b/source/runs",
+  "protocol_version": "stagea-v3-2",
+  "receiver_execution_authorized": false,
+  "representation_only": true,
+  "run_name": "frank-eq-stagea-v3-olivia",
+  "schema": "frank_eq_stagea_v3_run_manifest_v1",
+  "stages": [
+    "prepare",
+    "founder_fit",
+    "freeze",
+    "held_onboard",
+    "evaluate"
+  ],
+  "test_access_limit": 1
+}

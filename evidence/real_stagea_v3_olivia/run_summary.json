@@ -1,0 +1,51 @@
+{
+  "decision": {
+    "authorization": {
+      "new_receiver_world_access_authorized": false,
+      "paper_claim_authorized": false,
+      "receiver_execution_authorized": false,
+      "receiver_protocol_draft_authorized": false,
+      "scientific_claim_authorized": false
+    },
+    "checks": {
+      "activation_specificity": false,
+      "behavioral_basis": true,
+      "composition": false,
+      "held_sender": true,
+      "integrity": true,
+      "oracle_executor": true,
+      "public_alignment": true,
+      "quantization": true,
+      "semantic_basis": false,
+      "unseen_renderer": false
+    },
+    "diagnosis": "ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED",
+    "integrity_checks": {
+      "checkpoint_seed_registry_complete": true,
+      "config_snapshot_hash": true,
+      "consumer_compute_declared": true,
+      "exclusive_kv_and_prefix_continuity": true,
+      "founder_freeze_present": true,
+      "held_freeze_present": true,
+      "model_revisions_exact": true,
+      "protected_authorizations_closed": true,
+      "required_baselines_complete": true,
+      "test_access_consumed_once": true,
+      "test_files_registered_and_opened": true
+    },
+    "schema": "frank_eq_stagea_v3_decision_v1",
+    "status": "fail"
+  },
+  "elapsed_seconds": 45008.27075815201,
+  "protocol_version": "stagea-v3-2",
+  "representation_only": true,
+  "root": "/cluster/work/projects/nn12027k/dakai5365/frank-eq/jobs/frank-eq-stagea-v3-2-olivia-20260812b/source/runs",
+  "schema": "frank_eq_stagea_v3_run_summary_v1",
+  "status": "completed",
+  "telemetry": {
+    "enabled": true,
+    "failures": 0,
+    "reason": null
+  },
+  "workflow_integrity_passed": true
+}

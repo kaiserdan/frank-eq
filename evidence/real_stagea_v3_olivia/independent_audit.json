@@ -1,0 +1,91 @@
+{
+  "artifact_files_checked": 118,
+  "checks": {
+    "artifact_hashes_valid": true,
+    "config_and_stage_contract_valid": true,
+    "decision_recomputed_exactly": true,
+    "existing_independent_audit_valid": true,
+    "integrity_checks_pass": true,
+    "metrics_recomputed_exactly": false,
+    "protected_authorizations_closed": true,
+    "rate_compute_recomputed_exactly": true,
+    "required_files_present": true,
+    "workflow_completed": true
+  },
+  "decision": {
+    "authorization": {
+      "new_receiver_world_access_authorized": false,
+      "paper_claim_authorized": false,
+      "receiver_execution_authorized": false,
+      "receiver_protocol_draft_authorized": false,
+      "scientific_claim_authorized": false
+    },
+    "checks": {
+      "activation_specificity": false,
+      "behavioral_basis": true,
+      "composition": false,
+      "held_sender": true,
+      "integrity": true,
+      "oracle_executor": true,
+      "public_alignment": true,
+      "quantization": true,
+      "semantic_basis": false,
+      "unseen_renderer": false
+    },
+    "diagnosis": "ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED",
+    "integrity_checks": {
+      "checkpoint_seed_registry_complete": true,
+      "config_snapshot_hash": true,
+      "consumer_compute_declared": true,
+      "exclusive_kv_and_prefix_continuity": true,
+      "founder_freeze_present": true,
+      "held_freeze_present": true,
+      "model_revisions_exact": true,
+      "protected_authorizations_closed": true,
+      "required_baselines_complete": true,
+      "test_access_consumed_once": true,
+      "test_files_registered_and_opened": true
+    },
+    "schema": "frank_eq_stagea_v3_decision_v1",
+    "status": "fail"
+  },
+  "integrity_checks": {
+    "checkpoint_seed_registry_complete": true,
+    "config_snapshot_hash": true,
+    "consumer_compute_declared": true,
+    "exclusive_kv_and_prefix_continuity": true,
+    "founder_freeze_present": true,
+    "held_freeze_present": true,
+    "model_revisions_exact": true,
+    "protected_authorizations_closed": true,
+    "required_baselines_complete": true,
+    "test_access_consumed_once": true,
+    "test_files_registered_and_opened": true
+  },
+  "passed": false,
+  "prediction_groups": 6,
+  "schema": "frank_eq_stagea_v3_independent_audit_v1",
+  "test_artifacts_verified": {
+    "captures/test/qwen3-14b-held-n4.pt": "edc92a8188acb318330d01fe86a2c618dee03e70eb5d86f11988955d0d814e43",
+    "captures/test/qwen3-14b-held-n6.pt": "76d5ae33f1d849825a8b41566a20e849923fc9591ff6e39fd1b1c97e09295868",
+    "captures/test/qwen3-4b-n4.pt": "c44e661d828c612526ec5aaa7d294b6527ff1eb44281461f0e889ef43d2e6c03",
+    "captures/test/qwen3-4b-n6.pt": "938ed4186033eda481f9c5d88ac5333a8048f5c3602468b76a71e664e7d758e0",
+    "captures/test/qwen3-8b-n4.pt": "e91dc820be6cc32b3e2c2e518596c13e7b2e825804be567523f17c756819020a",
+    "captures/test/qwen3-8b-n6.pt": "5ba3ba0c6fe96b908006395e5b9f22a26bb1be4c9f785cba1a31d1ddab84e04f",
+    "panels/test_n4.json": "ae0f4123c051a3d63ccf2f23f35dfe74d9fd56fc18d5c3ef279d97fc6343a843",
+    "panels/test_n6.json": "8c972ca750d9a86ce3e9dcce950f91cafddbcd4071453eec6d262fadadc126bd",
+    "predictions/qwen3-14b-held-n4.json": "5c5fe6ba147bbbd3bccf5813af2285836c37e59e0a96fb656a1a45460cf47996",
+    "predictions/qwen3-14b-held-n4.npz": "8f0f1e5f8529c8bac2b9437cd5852de93f2d29b319fed6cb9601ad76ed859b39",
+    "predictions/qwen3-14b-held-n6.json": "d163676d6f44a7f5e84979193a6ca2c31592d68b76c5f7c65fd87bff189873d2",
+    "predictions/qwen3-14b-held-n6.npz": "660da4d1669cf21ed0d9f114e1037b7e4de0561eaa239bf77a07dc5a0cce9123",
+    "predictions/qwen3-4b-n4.json": "cb7c332671edb9dbdc649f432e11227e51284c6e6363face1487245cc4666042",
+    "predictions/qwen3-4b-n4.npz": "b9b5f59b43b028120a8477b108cbf2a7b17fb6fea9b87bc58ccab6e4a5cc3258",
+    "predictions/qwen3-4b-n6.json": "70fb488db045209609f4cd37e4e08a1a554479f8f4bde9e2d61298c32138f552",
+    "predictions/qwen3-4b-n6.npz": "6c7b09d5aab40346f371a85b23b173f8c188b4a72dea5d7ac0bb842528d9b56d",
+    "predictions/qwen3-8b-n4.json": "86589055089ed684b35322bb3f00d4747e17cf41e88872e4be9df36ccd931b42",
+    "predictions/qwen3-8b-n4.npz": "1bd96b2fe79d54e704fd1d6ae06c24f639827881fbd6d1a0d09df988c72b20ec",
+    "predictions/qwen3-8b-n6.json": "134cfb0c22e496433b593c65f642ea18512e0b2fca58cc428a819bc212ec7b32",
+    "predictions/qwen3-8b-n6.npz": "b4353abaa69649e5b7f044f5af9f5a3c8304b3e9a9676c13b7db47db23594e41",
+    "test_panel_manifest.json": "c4362a0585a8f3e8e8a6091e61e100b4ea4ffa1d40ada5e20f90f1cb7e70e215"
+  }
+}

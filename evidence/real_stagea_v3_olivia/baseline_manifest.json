@@ -1,0 +1,32 @@
+{
+  "conditions_complete": true,
+  "control_artifacts": {
+    "qwen3-14b-held": {
+      "path": "controls/qwen3-14b-held.json",
+      "sha256": "1b516d650c3a6fab8628130b5e00fc2c396ae60f0c9ea8329953a523ad5cc3a1"
+    },
+    "qwen3-4b": {
+      "path": "controls/qwen3-4b.json",
+      "sha256": "10317f40ed334ebe6d3ce156e763876363d137cb8a41e9f700a2d406dce12d2b"
+    },
+    "qwen3-8b": {
+      "path": "controls/qwen3-8b.json",
+      "sha256": "0ae7480ea6693fa5dc5659f397b507c196e0416ae0b813584717270f346ca5b9"
+    }
+  },
+  "required": [
+    "train_edge_prior",
+    "token_id_resampler",
+    "final_token_public_mlp",
+    "historical_continuous_quotient",
+    "train_selected_direct_protocol",
+    "interactive_basis",
+    "deterministic_text_parser",
+    "rate_matched_canonical_text",
+    "oracle_basis",
+    "shuffled_world_packet",
+    "wrong_world_packet",
+    "zero_packet"
+  ],
+  "schema": "frank_eq_stagea_v3_baseline_manifest_v1"
+}

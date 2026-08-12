@@ -1,0 +1,1116 @@
+{
+  "activation_specificity": {
+    "continuous": {
+      "baseline_brier": 0.18635239216283692,
+      "brier_gain": 0.02884071185341819,
+      "brier_gain_ci": {
+        "estimate": 0.02884071185341819,
+        "lower": 0.009709168093222162,
+        "replicates": 2000,
+        "upper": 0.04785685255459737
+      },
+      "candidate_brier": 0.15751168030941873,
+      "passed": true,
+      "rows": 9216,
+      "worlds": 64
+    },
+    "final_token": {
+      "baseline_brier": 0.19002999454104438,
+      "brier_gain": 0.032518314231625656,
+      "brier_gain_ci": {
+        "estimate": 0.032518314231625656,
+        "lower": 0.008178175313544724,
+        "replicates": 2000,
+        "upper": 0.05660669727310396
+      },
+      "candidate_brier": 0.15751168030941873,
+      "passed": true,
+      "rows": 9216,
+      "worlds": 64
+    },
+    "token_id": {
+      "baseline_brier": 0.16006390125919306,
+      "brier_gain": 0.002552220949774366,
+      "brier_gain_ci": {
+        "estimate": 0.002552220949774366,
+        "lower": -0.01646548198858151,
+        "replicates": 2000,
+        "upper": 0.022139687805121454
+      },
+      "candidate_brier": 0.15751168030941873,
+      "passed": false,
+      "rows": 9216,
+      "worlds": 64
+    }
+  },
+  "behavioral_basis": {
+    "qwen3-14b-held": {
+      "4": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.8410384678263504,
+          "lower": 0.83122796167496,
+          "pooled": 0.841511765929588,
+          "replicates": 2000,
+          "upper": 0.8511354900852381
+        },
+        "baseline_brier": 0.2472701366349039,
+        "brier_gain": 0.08673481207152323,
+        "brier_gain_ci": {
+          "estimate": 0.08673481207152323,
+          "lower": 0.0624312517592445,
+          "replicates": 2000,
+          "upper": 0.11249971793355483
+        },
+        "candidate_brier": 0.16053532456338068,
+        "ece": 0.1549165119116778,
+        "passed": true,
+        "rows": 1152,
+        "worlds": 32
+      },
+      "6": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.7846508712663116,
+          "lower": 0.7713000540000527,
+          "pooled": 0.7854379986118801,
+          "replicates": 2000,
+          "upper": 0.7975542109955277
+        },
+        "baseline_brier": 0.24607986950879984,
+        "brier_gain": 0.067407455205249,
+        "brier_gain_ci": {
+          "estimate": 0.06740745520524899,
+          "lower": 0.055920497448082924,
+          "replicates": 2000,
+          "upper": 0.07852938179124841
+        },
+        "candidate_brier": 0.17867241430355085,
+        "ece": 0.15476785680932356,
+        "passed": true,
+        "rows": 2880,
+        "worlds": 32
+      }
+    },
+    "qwen3-4b": {
+      "4": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.7878385830593764,
+          "lower": 0.7662288115621645,
+          "pooled": 0.7890614540099077,
+          "replicates": 2000,
+          "upper": 0.8091012362100218
+        },
+        "baseline_brier": 0.2372992759158361,
+        "brier_gain": 0.08272048408682256,
+        "brier_gain_ci": {
+          "estimate": 0.08272048408682256,
+          "lower": 0.059159527292597804,
+          "replicates": 2000,
+          "upper": 0.10499606748396646
+        },
+        "candidate_brier": 0.15457879182901355,
+        "ece": 0.14837956191652463,
+        "passed": true,
+        "rows": 1152,
+        "worlds": 32
+      },
+      "6": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.7725077482314575,
+          "lower": 0.757205617359677,
+          "pooled": 0.7717764757385532,
+          "replicates": 2000,
+          "upper": 0.7876876711654179
+        },
+        "baseline_brier": 0.24091941266319872,
+        "brier_gain": 0.08430841476405211,
+        "brier_gain_ci": {
+          "estimate": 0.0843084147640521,
+          "lower": 0.06863954115449451,
+          "replicates": 2000,
+          "upper": 0.09915263055444785
+        },
+        "candidate_brier": 0.15661099789914662,
+        "ece": 0.12264661604233174,
+        "passed": true,
+        "rows": 2880,
+        "worlds": 32
+      }
+    },
+    "qwen3-8b": {
+      "4": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.8456547724509429,
+          "lower": 0.8267563898275668,
+          "pooled": 0.8488926746166952,
+          "replicates": 2000,
+          "upper": 0.8630351640470543
+        },
+        "baseline_brier": 0.2554774292855664,
+        "brier_gain": 0.13658249261658806,
+        "brier_gain_ci": {
+          "estimate": 0.13658249261658806,
+          "lower": 0.11682172343555391,
+          "replicates": 2000,
+          "upper": 0.15530479677422768
+        },
+        "candidate_brier": 0.11889493666897834,
+        "ece": 0.12728589897973408,
+        "passed": true,
+        "rows": 1152,
+        "worlds": 32
+      },
+      "6": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.7844703509931588,
+          "lower": 0.7683044015937058,
+          "pooled": 0.785407692035496,
+          "replicates": 2000,
+          "upper": 0.7997134136897549
+        },
+        "baseline_brier": 0.24877961139447957,
+        "brier_gain": 0.09266878763801553,
+        "brier_gain_ci": {
+          "estimate": 0.09266878763801553,
+          "lower": 0.08177680050160692,
+          "replicates": 2000,
+          "upper": 0.10360811028414305
+        },
+        "candidate_brier": 0.15611082375646407,
+        "ece": 0.1262499430713433,
+        "passed": true,
+        "rows": 2880,
+        "worlds": 32
+      }
+    }
+  },
+  "bootstrap_replicates": 2000,
+  "compiler_seed_strata": {
+    "qwen3-14b-held": {
+      "4": {
+        "211": {
+          "behavioral_brier": 0.19098141347653513,
+          "semantic_brier": 0.15569672218286676
+        },
+        "223": {
+          "behavioral_brier": 0.1589533087129216,
+          "semantic_brier": 0.18717690744843893
+        },
+        "227": {
+          "behavioral_brier": 0.16569387903492105,
+          "semantic_brier": 0.16246572098543696
+        }
+      },
+      "6": {
+        "211": {
+          "behavioral_brier": 0.20051740615775376,
+          "semantic_brier": 0.1922167346361127
+        },
+        "223": {
+          "behavioral_brier": 0.1773744396098954,
+          "semantic_brier": 0.18794600570140685
+        },
+        "227": {
+          "behavioral_brier": 0.22178183383232733,
+          "semantic_brier": 0.20268651185668057
+        }
+      }
+    },
+    "qwen3-4b": {
+      "4": {
+        "211": {
+          "behavioral_brier": 0.16902929332262173,
+          "semantic_brier": 0.15738965451728706
+        },
+        "223": {
+          "behavioral_brier": 0.1896090357215896,
+          "semantic_brier": 0.17518777823608453
+        },
+        "227": {
+          "behavioral_brier": 0.13994760240536908,
+          "semantic_brier": 0.1794559282834406
+        }
+      },
+      "6": {
+        "211": {
+          "behavioral_brier": 0.18863554941251234,
+          "semantic_brier": 0.1853551527640004
+        },
+        "223": {
+          "behavioral_brier": 0.20626930982763325,
+          "semantic_brier": 0.20830242203415422
+        },
+        "227": {
+          "behavioral_brier": 0.16971488340518467,
+          "semantic_brier": 0.20769174825928924
+        }
+      }
+    },
+    "qwen3-8b": {
+      "4": {
+        "211": {
+          "behavioral_brier": 0.10287701760481532,
+          "semantic_brier": 0.16408200197798514
+        },
+        "223": {
+          "behavioral_brier": 0.15510904263984504,
+          "semantic_brier": 0.16621124587437194
+        },
+        "227": {
+          "behavioral_brier": 0.11864729490973369,
+          "semantic_brier": 0.17301261225600997
+        }
+      },
+      "6": {
+        "211": {
+          "behavioral_brier": 0.16687293649941284,
+          "semantic_brier": 0.16881053869591822
+        },
+        "223": {
+          "behavioral_brier": 0.2020499713202098,
+          "semantic_brier": 0.15625224443923952
+        },
+        "227": {
+          "behavioral_brier": 0.19292006898552966,
+          "semantic_brier": 0.2091469562717858
+        }
+      }
+    }
+  },
+  "composition": {
+    "aggregate_over_direct": {
+      "baseline_brier": 0.19266625361309114,
+      "brier_gain": 0.0351545733036724,
+      "brier_gain_ci": {
+        "estimate": 0.0351545733036724,
+        "lower": 0.019621154713844076,
+        "replicates": 2000,
+        "upper": 0.05057042239239707
+      },
+      "candidate_brier": 0.15751168030941873,
+      "passed": true,
+      "rows": 9216,
+      "worlds": 64
+    },
+    "aggregate_over_prior": {
+      "baseline_brier": 0.19405924053194876,
+      "brier_gain": 0.03654756022253004,
+      "brier_gain_ci": {
+        "estimate": 0.036547560222530036,
+        "lower": 0.014379426662961018,
+        "replicates": 2000,
+        "upper": 0.05941272630004393
+      },
+      "candidate_brier": 0.15751168030941873,
+      "passed": true,
+      "rows": 9216,
+      "worlds": 64
+    },
+    "by_hard_family": {
+      "compare_outdegree": {
+        "over_direct": {
+          "baseline_brier": 0.1980070218705212,
+          "brier_gain": 0.059272076558511994,
+          "brier_gain_ci": {
+            "estimate": 0.05927207655851201,
+            "lower": 0.03319478131320123,
+            "replicates": 2000,
+            "upper": 0.08561989929844131
+          },
+          "candidate_brier": 0.1387349453120092,
+          "passed": true,
+          "rows": 2304,
+          "worlds": 64
+        },
+        "over_prior": {
+          "baseline_brier": 0.21776155956310322,
+          "brier_gain": 0.07902661425109406,
+          "brier_gain_ci": {
+            "estimate": 0.07902661425109406,
+            "lower": 0.05904374634058752,
+            "replicates": 2000,
+            "upper": 0.09882865457258937
+          },
+          "candidate_brier": 0.1387349453120092,
+          "passed": true,
+          "rows": 2304,
+          "worlds": 64
+        }
+      },
+      "compose": {
+        "over_direct": {
+          "baseline_brier": 0.214535326012404,
+          "brier_gain": 0.03792967784719072,
+          "brier_gain_ci": {
+            "estimate": 0.037929677847190715,
+            "lower": 0.013038345259540562,
+            "replicates": 2000,
+            "upper": 0.06338932301565837
+          },
+          "candidate_brier": 0.17660564816521326,
+          "passed": true,
+          "rows": 2304,
+          "worlds": 64
+        },
+        "over_prior": {
+          "baseline_brier": 0.2081602328422387,
+          "brier_gain": 0.031554584677025446,
+          "brier_gain_ci": {
+            "estimate": 0.031554584677025446,
+            "lower": 0.0009179763449535084,
+            "replicates": 2000,
+            "upper": 0.06460351461637051
+          },
+          "candidate_brier": 0.17660564816521326,
+          "passed": true,
+          "rows": 2304,
+          "worlds": 64
+        }
+      },
+      "counterfactual_add": {
+        "over_direct": {
+          "baseline_brier": 0.22314442082869623,
+          "brier_gain": 0.046136486915548655,
+          "brier_gain_ci": {
+            "estimate": 0.046136486915548655,
+            "lower": 0.021364809159520947,
+            "replicates": 2000,
+            "upper": 0.07162264318680009
+          },
+          "candidate_brier": 0.1770079339131476,
+          "passed": true,
+          "rows": 2304,
+          "worlds": 64
+        },
+        "over_prior": {
+          "baseline_brier": 0.21878282267211432,
+          "brier_gain": 0.04177488875896673,
+          "brier_gain_ci": {
+            "estimate": 0.041774888758966726,
+            "lower": 0.005829302569264789,
+            "replicates": 2000,
+            "upper": 0.07974076295479408
+          },
+          "candidate_brier": 0.1770079339131476,
+          "passed": true,
+          "rows": 2304,
+          "worlds": 64
+        }
+      },
+      "mutual": {
+        "over_direct": {
+          "baseline_brier": 0.13497824574074313,
+          "brier_gain": -0.002719948106561781,
+          "brier_gain_ci": {
+            "estimate": -0.0027199481065617757,
+            "lower": -0.025340992074638267,
+            "replicates": 2000,
+            "upper": 0.019729885217329043
+          },
+          "candidate_brier": 0.1376981938473049,
+          "passed": false,
+          "rows": 2304,
+          "worlds": 64
+        },
+        "over_prior": {
+          "baseline_brier": 0.13153234705033884,
+          "brier_gain": -0.006165846796966048,
+          "brier_gain_ci": {
+            "estimate": -0.006165846796966051,
+            "lower": -0.04019402669733408,
+            "replicates": 2000,
+            "upper": 0.03456027863753263
+          },
+          "candidate_brier": 0.1376981938473049,
+          "passed": false,
+          "rows": 2304,
+          "worlds": 64
+        }
+      }
+    },
+    "by_model_and_complexity": {
+      "qwen3-14b-held": {
+        "4": {
+          "over_direct": {
+            "baseline_brier": 0.173763617734725,
+            "brier_gain": -0.007501837029399151,
+            "brier_gain_ci": {
+              "estimate": -0.007501837029399147,
+              "lower": -0.03654254671522189,
+              "replicates": 2000,
+              "upper": 0.02085349401540119
+            },
+            "candidate_brier": 0.18126545476412415,
+            "passed": false,
+            "rows": 1536,
+            "worlds": 32
+          },
+          "over_prior": {
+            "baseline_brier": 0.19090973870354908,
+            "brier_gain": 0.009644283939424911,
+            "brier_gain_ci": {
+              "estimate": 0.009644283939424906,
+              "lower": -0.03185336512476997,
+              "replicates": 2000,
+              "upper": 0.054152484637406136
+            },
+            "candidate_brier": 0.18126545476412415,
+            "passed": false,
+            "rows": 1536,
+            "worlds": 32
+          }
+        },
+        "6": {
+          "over_direct": {
+            "baseline_brier": 0.17855483037423922,
+            "brier_gain": 0.011759417317517918,
+            "brier_gain_ci": {
+              "estimate": 0.011759417317517918,
+              "lower": -0.014322017071065705,
+              "replicates": 2000,
+              "upper": 0.03869847913116528
+            },
+            "candidate_brier": 0.1667954130567213,
+            "passed": false,
+            "rows": 1536,
+            "worlds": 32
+          },
+          "over_prior": {
+            "baseline_brier": 0.1972087423603485,
+            "brier_gain": 0.0304133293036272,
+            "brier_gain_ci": {
+              "estimate": 0.030413329303627203,
+              "lower": 0.006137289898248248,
+              "replicates": 2000,
+              "upper": 0.056130435463026374
+            },
+            "candidate_brier": 0.1667954130567213,
+            "passed": true,
+            "rows": 1536,
+            "worlds": 32
+          }
+        }
+      },
+      "qwen3-4b": {
+        "4": {
+          "over_direct": {
+            "baseline_brier": 0.20409253131273894,
+            "brier_gain": 0.05628255261213891,
+            "brier_gain_ci": {
+              "estimate": 0.05628255261213891,
+              "lower": 0.027003052908674746,
+              "replicates": 2000,
+              "upper": 0.08621374183729728
+            },
+            "candidate_brier": 0.1478099787006,
+            "passed": true,
+            "rows": 1536,
+            "worlds": 32
+          },
+          "over_prior": {
+            "baseline_brier": 0.19090973870354908,
+            "brier_gain": 0.043099760002949045,
+            "brier_gain_ci": {
+              "estimate": 0.043099760002949045,
+              "lower": 0.007630657729384294,
+              "replicates": 2000,
+              "upper": 0.08062220498570773
+            },
+            "candidate_brier": 0.1478099787006,
+            "passed": true,
+            "rows": 1536,
+            "worlds": 32
+          }
+        },
+        "6": {
+          "over_direct": {
+            "baseline_brier": 0.21630703819168243,
+            "brier_gain": 0.08345397335764788,
+            "brier_gain_ci": {
+              "estimate": 0.08345397335764788,
+              "lower": 0.07105846913974441,
+              "replicates": 2000,
+              "upper": 0.0958187823719441
+            },
+            "candidate_brier": 0.13285306483403456,
+            "passed": true,
+            "rows": 1536,
+            "worlds": 32
+          },
+          "over_prior": {
+            "baseline_brier": 0.1972087423603485,
+            "brier_gain": 0.06435567752631395,
+            "brier_gain_ci": {
+              "estimate": 0.06435567752631396,
+              "lower": 0.04578083538345654,
+              "replicates": 2000,
+              "upper": 0.08117249486435338
+            },
+            "candidate_brier": 0.13285306483403456,
+            "passed": true,
+            "rows": 1536,
+            "worlds": 32
+          }
+        }
+      },
+      "qwen3-8b": {
+        "4": {
+          "over_direct": {
+            "baseline_brier": 0.18279127747042356,
+            "brier_gain": 0.027619323517630565,
+            "brier_gain_ci": {
+              "estimate": 0.027619323517630568,
+              "lower": -0.0010444548428878327,
+              "replicates": 2000,
+              "upper": 0.056093373082761515
+            },
+            "candidate_brier": 0.155171953952793,
+            "passed": false,
+            "rows": 1536,
+            "worlds": 32
+          },
+          "over_prior": {
+            "baseline_brier": 0.19090973870354908,
+            "brier_gain": 0.03573778475075604,
+            "brier_gain_ci": {
+              "estimate": 0.035737784750756035,
+              "lower": 0.0005601382179654932,
+              "replicates": 2000,
+              "upper": 0.07499897660590168
+            },
+            "candidate_brier": 0.155171953952793,
+            "passed": true,
+            "rows": 1536,
+            "worlds": 32
+          }
+        },
+        "6": {
+          "over_direct": {
+            "baseline_brier": 0.20048822659473764,
+            "brier_gain": 0.03931401004649828,
+            "brier_gain_ci": {
+              "estimate": 0.039314010046498274,
+              "lower": 0.021457833199492224,
+              "replicates": 2000,
+              "upper": 0.058449342072508674
+            },
+            "candidate_brier": 0.1611742165482394,
+            "passed": true,
+            "rows": 1536,
+            "worlds": 32
+          },
+          "over_prior": {
+            "baseline_brier": 0.1972087423603485,
+            "brier_gain": 0.03603452581210909,
+            "brier_gain_ci": {
+              "estimate": 0.03603452581210909,
+              "lower": 0.015899675667382696,
+              "replicates": 2000,
+              "upper": 0.06018901632936503
+            },
+            "candidate_brier": 0.1611742165482394,
+            "passed": true,
+            "rows": 1536,
+            "worlds": 32
+          }
+        }
+      }
+    }
+  },
+  "gate_checks": {
+    "activation_specificity": false,
+    "behavioral_basis": true,
+    "composition": false,
+    "held_sender": true,
+    "integrity": true,
+    "oracle_executor": true,
+    "public_alignment": true,
+    "quantization": true,
+    "semantic_basis": false,
+    "unseen_renderer": false
+  },
+  "held_sender_retention": {
+    "4": {
+      "behavioral": {
+        "founder_mean_gain": 0.10965148835170531,
+        "held_gain": 0.08673481207152323,
+        "passed": true,
+        "retention": 0.791004421146777
+      },
+      "semantic": {
+        "founder_mean_gain": 0.08412303710072126,
+        "held_gain": 0.08100334099745445,
+        "passed": true,
+        "retention": 0.9629150799734967
+      }
+    },
+    "6": {
+      "behavioral": {
+        "founder_mean_gain": 0.08848860120103383,
+        "held_gain": 0.067407455205249,
+        "passed": true,
+        "retention": 0.761764275741105
+      },
+      "semantic": {
+        "founder_mean_gain": 0.08485629482301255,
+        "held_gain": 0.087377079263086,
+        "passed": true,
+        "retention": 1.029706510817272
+      }
+    }
+  },
+  "integrity_checks": {
+    "checkpoint_seed_registry_complete": true,
+    "config_snapshot_hash": true,
+    "consumer_compute_declared": true,
+    "exclusive_kv_and_prefix_continuity": true,
+    "founder_freeze_present": true,
+    "held_freeze_present": true,
+    "model_revisions_exact": true,
+    "protected_authorizations_closed": true,
+    "required_baselines_complete": true,
+    "test_access_consumed_once": true,
+    "test_files_registered_and_opened": true
+  },
+  "oracle_executor": {
+    "hard_mismatches": 0,
+    "passed": true
+  },
+  "public_alignment": {
+    "model_identity": {
+      "accuracy": 0.296875,
+      "by_complexity": {
+        "4": 0.3020833333333333,
+        "6": 0.2916666666666667
+      },
+      "chance": 0.3333333333333333,
+      "fit_role": "train",
+      "over_chance": -0.036458333333333315,
+      "passed": true,
+      "score_role": "test"
+    },
+    "retrieval": {
+      "by_complexity": {
+        "4": {
+          "margin": 0.0910788650955685,
+          "retrieval": 1.0
+        },
+        "6": {
+          "margin": 0.13367012795676322,
+          "retrieval": 1.0
+        }
+      },
+      "margin_passed": true,
+      "retrieval_ci": {
+        "estimate": 1.0,
+        "lower": 1.0,
+        "replicates": 2000,
+        "upper": 1.0
+      },
+      "retrieval_passed": true,
+      "wrong_world_margin_ci": {
+        "estimate": 0.11237449652616585,
+        "lower": 0.1043386632130121,
+        "replicates": 2000,
+        "upper": 0.12016149078110772
+      }
+    }
+  },
+  "quantization": {
+    "float_compiled_over_direct": {
+      "baseline_brier": 0.19266625361309114,
+      "brier_gain": 0.03529238468730729,
+      "brier_gain_ci": {
+        "estimate": 0.03529238468730729,
+        "lower": 0.0205224883153212,
+        "replicates": 2000,
+        "upper": 0.05007317461260616
+      },
+      "candidate_brier": 0.15737386892578384,
+      "rows": 9216,
+      "worlds": 64
+    },
+    "four_bit_compiled_over_direct": {
+      "baseline_brier": 0.19266625361309114,
+      "brier_gain": 0.0351545733036724,
+      "brier_gain_ci": {
+        "estimate": 0.0351545733036724,
+        "lower": 0.019621154713844076,
+        "replicates": 2000,
+        "upper": 0.05057042239239707
+      },
+      "candidate_brier": 0.15751168030941873,
+      "passed": true,
+      "rows": 9216,
+      "worlds": 64
+    },
+    "gain_retention": 0.9960951524002726,
+    "passed": true
+  },
+  "renderer_strata": {
+    "qwen3-14b-held": {
+      "4": {
+        "adjacency": {
+          "baseline_brier": 0.24988281225785616,
+          "brier_gain": 0.24988228975448348,
+          "brier_gain_ci": {
+            "estimate": 0.24988228975448346,
+            "lower": 0.24037543082342247,
+            "replicates": 2000,
+            "upper": 0.2588033473597714
+          },
+          "candidate_brier": 5.225033727361037e-07
+        },
+        "natural": {
+          "baseline_brier": 0.24988281225785616,
+          "brier_gain": 0.24979630659090057,
+          "brier_gain_ci": {
+            "estimate": 0.24979630659090057,
+            "lower": 0.2405527391331478,
+            "replicates": 2000,
+            "upper": 0.2593113822952615
+          },
+          "candidate_brier": 8.650566695561309e-05
+        },
+        "unseen": {
+          "baseline_brier": 0.24988281225785616,
+          "brier_gain": -0.2566685733530207,
+          "brier_gain_ci": {
+            "estimate": -0.25666857335302073,
+            "lower": -0.313305409540112,
+            "replicates": 2000,
+            "upper": -0.19751459251111328
+          },
+          "candidate_brier": 0.5065513856108769,
+          "passed": false
+        }
+      },
+      "6": {
+        "adjacency": {
+          "baseline_brier": 0.24815625031292446,
+          "brier_gain": 0.221008703745398,
+          "brier_gain_ci": {
+            "estimate": 0.22100870374539794,
+            "lower": 0.211341971219973,
+            "replicates": 2000,
+            "upper": 0.23034456686682592
+          },
+          "candidate_brier": 0.02714754656752648
+        },
+        "natural": {
+          "baseline_brier": 0.24815625031292446,
+          "brier_gain": 0.22508993448773362,
+          "brier_gain_ci": {
+            "estimate": 0.2250899344877336,
+            "lower": 0.21669729308718036,
+            "replicates": 2000,
+            "upper": 0.2328659644387156
+          },
+          "candidate_brier": 0.023066315825190833
+        },
+        "unseen": {
+          "baseline_brier": 0.24815625031292446,
+          "brier_gain": -0.18396740044387366,
+          "brier_gain_ci": {
+            "estimate": -0.1839674004438737,
+            "lower": -0.21684471756286994,
+            "replicates": 2000,
+            "upper": -0.14803413370199708
+          },
+          "candidate_brier": 0.43212365075679815,
+          "passed": false
+        }
+      }
+    },
+    "qwen3-4b": {
+      "4": {
+        "adjacency": {
+          "baseline_brier": 0.24988281225785616,
+          "brier_gain": 0.24987168526518536,
+          "brier_gain_ci": {
+            "estimate": 0.24987168526518533,
+            "lower": 0.24036512521600703,
+            "replicates": 2000,
+            "upper": 0.2590513528363831
+          },
+          "candidate_brier": 1.1126992670859978e-05
+        },
+        "natural": {
+          "baseline_brier": 0.24988281225785616,
+          "brier_gain": 0.24988127534060356,
+          "brier_gain_ci": {
+            "estimate": 0.24988127534060356,
+            "lower": 0.24070301080057263,
+            "replicates": 2000,
+            "upper": 0.2587384140380666
+          },
+          "candidate_brier": 1.5369172526750335e-06
+        },
+        "unseen": {
+          "baseline_brier": 0.24988281225785616,
+          "brier_gain": -0.2514860454946914,
+          "brier_gain_ci": {
+            "estimate": -0.25148604549469133,
+            "lower": -0.2974777099240325,
+            "replicates": 2000,
+            "upper": -0.2040780215750113
+          },
+          "candidate_brier": 0.5013688577525476,
+          "passed": false
+        }
+      },
+      "6": {
+        "adjacency": {
+          "baseline_brier": 0.24815625031292446,
+          "brier_gain": 0.19074365554903616,
+          "brier_gain_ci": {
+            "estimate": 0.19074365554903613,
+            "lower": 0.18025834098176885,
+            "replicates": 2000,
+            "upper": 0.2015143749362552
+          },
+          "candidate_brier": 0.05741259476388832
+        },
+        "natural": {
+          "baseline_brier": 0.24815625031292446,
+          "brier_gain": 0.22552601309320253,
+          "brier_gain_ci": {
+            "estimate": 0.22552601309320247,
+            "lower": 0.21819128830010492,
+            "replicates": 2000,
+            "upper": 0.23259046620029686
+          },
+          "candidate_brier": 0.02263023721972197
+        },
+        "unseen": {
+          "baseline_brier": 0.24815625031292446,
+          "brier_gain": -0.18749905145344872,
+          "brier_gain_ci": {
+            "estimate": -0.18749905145344872,
+            "lower": -0.21124045120460794,
+            "replicates": 2000,
+            "upper": -0.16296943218793739
+          },
+          "candidate_brier": 0.4356553017663732,
+          "passed": false
+        }
+      }
+    },
+    "qwen3-8b": {
+      "4": {
+        "adjacency": {
+          "baseline_brier": 0.24988281225785616,
+          "brier_gain": 0.24987145060972424,
+          "brier_gain_ci": {
+            "estimate": 0.2498714506097242,
+            "lower": 0.2401676766480068,
+            "replicates": 2000,
+            "upper": 0.25949581141490685
+          },
+          "candidate_brier": 1.1361648131998065e-05
+        },
+        "natural": {
+          "baseline_brier": 0.24988281225785616,
+          "brier_gain": 0.2498824638603719,
+          "brier_gain_ci": {
+            "estimate": 0.24988246386037188,
+            "lower": 0.24037693076932784,
+            "replicates": 2000,
+            "upper": 0.2595196474239385
+          },
+          "candidate_brier": 3.483974843059439e-07
+        },
+        "unseen": {
+          "baseline_brier": 0.24988281225785616,
+          "brier_gain": -0.2432826069768659,
+          "brier_gain_ci": {
+            "estimate": -0.24328260697686588,
+            "lower": -0.29754441548954436,
+            "replicates": 2000,
+            "upper": -0.19006307628121558
+          },
+          "candidate_brier": 0.49316541923472207,
+          "passed": false
+        }
+      },
+      "6": {
+        "adjacency": {
+          "baseline_brier": 0.24815625031292446,
+          "brier_gain": 0.22755758489615038,
+          "brier_gain_ci": {
+            "estimate": 0.22755758489615036,
+            "lower": 0.2179508702783225,
+            "replicates": 2000,
+            "upper": 0.2362524552855708
+          },
+          "candidate_brier": 0.020598665416774097
+        },
+        "natural": {
+          "baseline_brier": 0.24815625031292446,
+          "brier_gain": 0.23547456311237713,
+          "brier_gain_ci": {
+            "estimate": 0.23547456311237708,
+            "lower": 0.22755901713856333,
+            "replicates": 2000,
+            "upper": 0.2426157103015251
+          },
+          "candidate_brier": 0.012681687200547366
+        },
+        "unseen": {
+          "baseline_brier": 0.24815625031292446,
+          "brier_gain": -0.18266499625924218,
+          "brier_gain_ci": {
+            "estimate": -0.18266499625924218,
+            "lower": -0.21005965454614398,
+            "replicates": 2000,
+            "upper": -0.1546620078707465
+          },
+          "candidate_brier": 0.4308212465721667,
+          "passed": false
+        }
+      }
+    }
+  },
+  "role": "test",
+  "schema": "frank_eq_stagea_v3_metrics_v1",
+  "semantic_basis": {
+    "qwen3-14b-held": {
+      "4": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.8313554067460317,
+          "lower": 0.8178371982473545,
+          "pooled": 0.8311529933481153,
+          "replicates": 2000,
+          "upper": 0.8451048383763227
+        },
+        "baseline_brier": 0.24988281225785616,
+        "brier_gain": 0.08100334099745445,
+        "brier_gain_ci": {
+          "estimate": 0.08100334099745443,
+          "lower": 0.05886197211414786,
+          "replicates": 2000,
+          "upper": 0.10446354838343642
+        },
+        "candidate_brier": 0.16887947126040176,
+        "ece": 0.1702266618286659,
+        "passed": false,
+        "rows": 1152,
+        "worlds": 32
+      },
+      "6": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.8187301474271773,
+          "lower": 0.8065371402653414,
+          "pooled": 0.8188615216201424,
+          "replicates": 2000,
+          "upper": 0.8312523560731584
+        },
+        "baseline_brier": 0.24815625031292446,
+        "brier_gain": 0.087377079263086,
+        "brier_gain_ci": {
+          "estimate": 0.087377079263086,
+          "lower": 0.07333368260423552,
+          "replicates": 2000,
+          "upper": 0.10234999512321921
+        },
+        "candidate_brier": 0.1607791710498385,
+        "ece": 0.1445977772626267,
+        "passed": false,
+        "rows": 2880,
+        "worlds": 32
+      }
+    },
+    "qwen3-4b": {
+      "4": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.8283420138888888,
+          "lower": 0.8132862103174603,
+          "pooled": 0.8285107169253512,
+          "replicates": 2000,
+          "upper": 0.8440853381283069
+        },
+        "baseline_brier": 0.24988281225785616,
+        "brier_gain": 0.08275563837036581,
+        "brier_gain_ci": {
+          "estimate": 0.08275563837036581,
+          "lower": 0.06378691445088985,
+          "replicates": 2000,
+          "upper": 0.10267254225851784
+        },
+        "candidate_brier": 0.16712717388749038,
+        "ece": 0.16431176607251372,
+        "passed": false,
+        "rows": 1152,
+        "worlds": 32
+      },
+      "6": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.7986633686293855,
+          "lower": 0.7834688721276859,
+          "pooled": 0.7990585659551177,
+          "replicates": 2000,
+          "upper": 0.8124872570400186
+        },
+        "baseline_brier": 0.24815625031292446,
+        "brier_gain": 0.07625687239626332,
+        "brier_gain_ci": {
+          "estimate": 0.07625687239626332,
+          "lower": 0.06325475523080122,
+          "replicates": 2000,
+          "upper": 0.08818562303349176
+        },
+        "candidate_brier": 0.17189937791666116,
+        "ece": 0.1534547831006926,
+        "passed": false,
+        "rows": 2880,
+        "worlds": 32
+      }
+    },
+    "qwen3-8b": {
+      "4": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.829780505952381,
+          "lower": 0.8117770854001323,
+          "pooled": 0.8305247597930525,
+          "replicates": 2000,
+          "upper": 0.8468799603174603
+        },
+        "baseline_brier": 0.24988281225785616,
+        "brier_gain": 0.08549043583107671,
+        "brier_gain_ci": {
+          "estimate": 0.08549043583107671,
+          "lower": 0.06492277354352002,
+          "replicates": 2000,
+          "upper": 0.10615344439397398
+        },
+        "candidate_brier": 0.16439237642677948,
+        "ece": 0.15914354716475526,
+        "passed": false,
+        "rows": 1152,
+        "worlds": 32
+      },
+      "6": {
+        "balanced_accuracy_ci": {
+          "estimate": 0.8280078809085436,
+          "lower": 0.8172530699627134,
+          "pooled": 0.8277175697865353,
+          "replicates": 2000,
+          "upper": 0.8382587388890752
+        },
+        "baseline_brier": 0.24815625031292446,
+        "brier_gain": 0.09345571724976176,
+        "brier_gain_ci": {
+          "estimate": 0.09345571724976176,
+          "lower": 0.08214572873595398,
+          "replicates": 2000,
+          "upper": 0.1044629691409211
+        },
+        "candidate_brier": 0.1547005330631627,
+        "ece": 0.13889356164672792,
+        "passed": false,
+        "rows": 2880,
+        "worlds": 32
+      }
+    }
+  },
+  "world_grouped": true
+}
