@@ -227,11 +227,18 @@ post-capture queries.
 
 Only after that founder freeze did the ledger enter `held_onboard`. The held
 Qwen3-14B has therefore now legitimately become task-open on registered
-train/validation data; both held train captures are durable and held validation
-is running. Test access remains unconsumed with no registered or opened test
-file. The immediate next action is to monitor through the held freeze and the
-one-way test-access boundary. Once test access is consumed, no retry is
-permitted.
+train/validation data. All four held train/validation captures and all 15 held
+checkpoint units completed. The held freeze was written at `09:22:18Z` with 22
+hash-bound artifacts, the exact founder-freeze hash, and no existing test file.
+
+The one-way test boundary has now been crossed. At `09:22:32Z`, 14 seconds after
+the held freeze, the ledger consumed its single grant, registered exactly the
+21 expected test panel/capture/prediction paths, entered `evaluate`, and opened
+the test manifest plus both panels under matching SHA-256 hashes. Qwen3-4B test
+capture is starting. This is now the consumed v3-2 outcome: no same-registration
+retry or adaptive repair is permitted under any later failure. The immediate
+next action is immutable monitoring through terminal evaluation, followed by
+fetch and independent verification.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every
