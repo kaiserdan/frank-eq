@@ -10,6 +10,8 @@ from frank_eq.moment_compute.events import (
     event_truth,
     project_event_probabilities,
 )
+from frank_eq.moment_compute.panel import _build_operations
+from frank_eq.real_config import RealPanelConfig
 from frank_eq.schemas import OperationDefinition
 
 
@@ -34,7 +36,7 @@ def _operations() -> list[OperationDefinition]:
         OperationDefinition(2, "mutual", (0, 1), (2, 3), 1.0),
         OperationDefinition(3, "compose", (0, 3), (1, 2), 1.0),
         OperationDefinition(4, "compare_outdegree", (0, 3), (1, 2), 1.0),
-        OperationDefinition(5, "counterfactual_add", (2, 0), (1, 3), 1.0),
+        OperationDefinition(5, "counterfactual_add", (2, 0), (2, 3), 1.0),
         OperationDefinition(6, "compose", (0, 3), (1, 2), -1.0),
     ]
 
@@ -75,3 +77,18 @@ def test_registry_is_deterministic_and_nontrivial() -> None:
     assert any(
         event.kind == "counterfactual_two_path_intersection" for event in left.events
     )
+
+
+def test_counterfactual_generator_makes_the_added_edge_load_bearing() -> None:
+    operations = _build_operations(
+        RealPanelConfig(n_entities=4, n_operations=32, seed=20260831)
+    )
+    counterfactuals = [
+        row.definition for row in operations if row.definition.family == "counterfactual_add"
+    ]
+    assert counterfactuals
+    for operation in counterfactuals:
+        source, added_target = operation.fact_args
+        query_source, query_target = operation.residual_args
+        assert query_source == source
+        assert query_target not in {source, added_target}
