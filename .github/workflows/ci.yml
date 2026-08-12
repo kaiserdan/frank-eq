@@ -29,3 +29,4 @@ jobs:
         run: |
           python scripts/validate_repo.py
           python scripts/validate_rate_compute.py
+          python scripts/validate_moment_compute.py
