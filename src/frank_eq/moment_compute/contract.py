@@ -1,3 +1,4 @@
+# ruff: noqa: I001
 """Prospective Stage-M registry overlay for non-degenerate counterfactual events."""
 
 from __future__ import annotations
