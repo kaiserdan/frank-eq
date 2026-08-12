@@ -99,9 +99,9 @@ def main() -> int:
     quickstart = (ROOT / "olivia/quickstart.sh").read_text()
     for marker in (
         "configs/predictive_state/",
-        "validate-predictive-state-config",
-        "run-predictive-state-audit",
-        "verify-predictive-state",
+        "scripts/predictive_state_cli.py validate",
+        "scripts/predictive_state_cli.py run",
+        "scripts/predictive_state_cli.py verify",
     ):
         if marker not in quickstart:
             raise SystemExit(f"Olivia quickstart lacks PSR0 dispatch marker {marker!r}")
