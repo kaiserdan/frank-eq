@@ -138,6 +138,7 @@ Receiver execution remains locked.
 3. Inspect the content-addressed Olivia dry run for a clean source, exact config
    and source hashes, the two pinned Qwen revisions, the approved ARM64 image,
    available checkpoints, and a fresh remote job root.
+   `FRANK_EQ_IMAGE_SHA256` must equal `a3ca46f0...aa3b1`; reject a null digest.
 4. Submit only the exact `full` / `audit` plan.
 5. Monitor through terminal scheduler state, fetch through `olivia/cli.py`, run
    both verifiers, and inspect every model/event and model/operation stratum.

@@ -111,6 +111,8 @@ state, remote target absence, and checkpoint availability are inspected.
   SHA-256 `769fbf65...8326`, and zero exact-executor mismatches.
 - Use only pinned Qwen3-4B and Qwen3-8B founders, corrected `chat_turn`, literal
   cloned-KV branches, and no replay fallback.
+- Export the inspected Olivia image SHA-256 `a3ca46f0...aa3b1` before planning;
+  a null or different runtime-image hash invalidates the plan.
 - Fit event calibration only by model, event kind, and event order. Never fit by
   event ID. Preserve the historical marginal/independence executor as a frozen
   control.

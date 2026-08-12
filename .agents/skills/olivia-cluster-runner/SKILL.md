@@ -47,15 +47,17 @@ bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 ## Stage M0 dry run
 
 ```bash
+export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
 python olivia/cli.py submit \
   --job-name frank-eq-moment-compute-m0 \
   --config configs/moment_compute/real_olivia_m0.yaml \
   --profile full --stages audit --dry-run --json
 ```
 
-Inspect the deterministic source hash, config hash, clean Git state, exact model
-revisions, and checkpoint availability. Submit the identical command without
-`--dry-run` only after those checks.
+Reject a plan whose runtime image hash is null or differs from the exported
+digest. Inspect the deterministic source hash, config hash, clean Git state,
+fresh remote target, exact model revisions, and checkpoint availability. Submit
+the identical command without `--dry-run` only after those checks.
 
 ## Monitor, fetch, verify
 

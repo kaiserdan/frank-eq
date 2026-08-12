@@ -62,6 +62,7 @@ revisions, zero executor mismatches, and closed protected authorizations.
 Then execute exactly:
 
 ```bash
+export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
 python olivia/cli.py submit \
   --job-name frank-eq-moment-compute-m0 \
   --config configs/moment_compute/real_olivia_m0.yaml \
@@ -71,7 +72,8 @@ python olivia/cli.py submit \
 ```
 
 Inspect the deterministic source/config hashes, exact Qwen3-4B and Qwen3-8B
-revisions, ARM64 image hash, fresh remote root, and shared-cache availability.
+revisions, non-null ARM64 image hash, fresh remote root, and shared-cache
+availability.
 The current full launcher profile routes through `olivia/run.slurm` and requests
 one GH200, 32 CPUs, 128 GiB host memory, and 12 hours; the dry-run artifact is
 authoritative if these defaults change.

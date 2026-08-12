@@ -27,6 +27,7 @@ bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 ## Content-addressed dry run
 
 ```bash
+export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
 python olivia/cli.py submit \
   --job-name frank-eq-moment-compute-m0 \
   --config configs/moment_compute/real_olivia_m0.yaml \
@@ -35,9 +36,10 @@ python olivia/cli.py submit \
   --dry-run --json
 ```
 
-Inspect the source SHA-256, config SHA-256, exact Qwen revisions, clean Git state,
-and local checkpoint availability. Submit the identical command without
-`--dry-run` only after that inspection.
+Reject a plan whose runtime image hash is null or differs from the exported
+digest. Inspect the source SHA-256, config SHA-256, exact Qwen revisions, clean
+Git state, fresh remote target, and checkpoint availability. Submit the
+identical command without `--dry-run` only after that inspection.
 
 ## Monitor and retrieve
 

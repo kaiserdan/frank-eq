@@ -153,6 +153,7 @@ world-grouped intervals, and closed protected authorizations remain mandatory.
 The next executable is dry-run only:
 
 ```bash
+export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
 python olivia/cli.py submit \
   --job-name frank-eq-moment-compute-m0 \
   --config configs/moment_compute/real_olivia_m0.yaml \
