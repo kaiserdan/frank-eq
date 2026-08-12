@@ -239,7 +239,11 @@ captures for both n=4 and n=6 have now completed all 96 worlds with 10,368 and
 12,096 logical queries respectively and zero recorded errors. Independent
 SHA-256 checks match `c44e661d...2e6c03` for the 780,205,761-byte n=4 capture
 and `938ed418...7d758e0` for the 1,397,854,209-byte n=6 capture. Qwen3-8B test
-capture is next. This is now the consumed v3-2 outcome: no same-registration
+captures have also completed all 96 worlds for both n=4 and n=6, with 10,368
+and 12,096 logical queries and zero recorded errors. Independent hashes match
+`e91dc820...19020a` for the 1,247,336,833-byte n=4 capture and
+`5ba3ba0c...84e04f` for the 2,235,406,145-byte n=6 capture. The held Qwen3-14B
+test captures are next. This is now the consumed v3-2 outcome: no same-registration
 retry or adaptive repair is permitted under any later failure. The immediate
 next action is immutable monitoring through terminal evaluation, followed by
 fetch and independent verification.

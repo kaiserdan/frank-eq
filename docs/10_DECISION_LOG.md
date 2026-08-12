@@ -266,3 +266,9 @@
 - **n=4:** job `1899057` completes all 96 test worlds and 10,368 logical queries with zero recorded errors, then atomically writes `qwen3-4b-n4.pt`. Its 780,205,761 bytes independently hash to SHA-256 `c44e661d828c612526ec5aaa7d294b6527ff1eb44281461f0e889ef43d2e6c03`.
 - **n=6:** the same immutable job completes all 96 test worlds and 12,096 logical queries with zero recorded errors, then atomically writes `qwen3-4b-n6.pt`. Its 1,397,854,209 bytes independently hash to SHA-256 `938ed4186033eda481f9c5d88ac5333a8048f5c3602468b76a71e664e7d758e0`.
 - **Boundary:** these are capture-completion and integrity observations only. No raw test outcome is inspected or used adaptively; evaluation proceeds to the remaining frozen model/complexity strata. The consumed registration, no-retry rule, receiver lock, and claim locks are unchanged.
+
+## 2026-08-12 — complete the Qwen3-8B test captures
+
+- **n=4:** job `1899057` completes all 96 test worlds and 10,368 logical queries with zero recorded errors, then atomically writes `qwen3-8b-n4.pt`. Its 1,247,336,833 bytes independently hash to SHA-256 `e91dc820be6cc32b3e2c2e518596c13e7b2e825804be567523f17c756819020a`.
+- **n=6:** the same immutable job completes all 96 test worlds and 12,096 logical queries with zero recorded errors, then atomically writes `qwen3-8b-n6.pt`. Its 2,235,406,145 bytes independently hash to SHA-256 `5ba3ba0c6fe96b908006395e5b9f22a26bb1be4c9f785cba1a31d1ddab84e04f`.
+- **Boundary:** these observations reveal no test metric and change no frozen choice. Evaluation proceeds to the registered held Qwen3-14B strata; the one-access consumption, no-retry rule, receiver lock, and claim locks remain in force.
