@@ -64,7 +64,7 @@ def test_frozen_config_and_inspected_plan_are_consistent() -> None:
 
 
 def test_rank_selected_core_tests_exactly_factor_target_tests() -> None:
-    model = _automaton()
+    _automaton()
     basis = _basis()
     assert basis.rank == 4
     assert basis.condition_number < 4.0

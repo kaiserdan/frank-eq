@@ -289,7 +289,7 @@ class PredictiveAutomaton:
             )
 
         remaining: list[tuple[int, float]] = []
-        for index, test in enumerate(candidates):
+        for index, _test in enumerate(candidates):
             if index in selected:
                 continue
             coefficient = np.linalg.solve(core_matrix, vectors[:, index])
