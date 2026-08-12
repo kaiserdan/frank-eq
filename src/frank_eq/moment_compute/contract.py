@@ -6,7 +6,11 @@ from itertools import permutations
 
 from frank_eq.utils import canonical_json_bytes, sha256_bytes
 
-from .events import EventRegistry, PublicEvent, build_event_registry as _build_base_registry
+from .events import (
+    EventRegistry,
+    PublicEvent,
+    build_event_registry as _build_base_registry,
+)
 
 
 def _counterfactual_path_key(
