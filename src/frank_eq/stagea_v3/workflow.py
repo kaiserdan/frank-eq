@@ -861,6 +861,9 @@ def _integrity_checks(
         and row.get("allow_exact_replay_fallback") is False
         and row.get("exclusive_cache_batching") is True
         and row.get("primary_compiler_post_capture_source_queries") == 0
+        and row.get("behavioral_probability_storage_epsilon") == 1e-7
+        and isinstance(row.get("behavioral_probability_clamp_count"), int)
+        and row.get("behavioral_probability_clamp_count") >= 0
         and row.get("logical_post_capture_source_queries")
         == row.get("kv_cloned_response_branches")
         == row.get("exact_prefix_continuity_checks")

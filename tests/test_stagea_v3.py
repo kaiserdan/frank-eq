@@ -579,8 +579,8 @@ class _FakeCaptureAdapter:
     def _scores(query_ids: list[torch.Tensor], generated: int) -> list[ProtocolScore]:
         return [
             ProtocolScore(
-                probability_true=0.25 + 0.1 * (int(query.shape[1]) % 3),
-                log_odds_score=-0.5 + 0.25 * (int(query.shape[1]) % 3),
+                probability_true=1.0 if int(query.shape[1]) % 2 else 0.0,
+                log_odds_score=80.0 if int(query.shape[1]) % 2 else -80.0,
                 false_token_count=1,
                 true_token_count=1,
                 generated_token_count=generated,
@@ -645,6 +645,14 @@ def test_capture_shard_preserves_all_tokens_and_exclusive_query_accounting(
     assert shard.residuals.shape[:2] == (4, 4)
     assert shard.semantic_targets.shape == (4, 12)
     assert shard.behavioral_targets.shape == (4, 12)
+    assert torch.all(shard.behavioral_targets > 0.0)
+    assert torch.all(shard.behavioral_targets < 1.0)
+    assert shard.capture_summary["behavioral_probability_storage_epsilon"] == 1e-7
+    assert (
+        shard.capture_summary["behavioral_probability_clamp_count"]
+        == shard.behavioral_targets.numel()
+    )
+    assert float(shard.behavioral_log_odds.abs().max()) == 80.0
     assert shard.direct_probabilities.shape == (4, 32, 3)
     assert shard.capture_summary["prefix_forwards"] == 4
     assert shard.capture_summary["logical_post_capture_source_queries"] == 4 * (12 + 96)

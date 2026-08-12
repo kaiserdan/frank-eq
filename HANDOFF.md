@@ -202,10 +202,14 @@ test access; its ledger records `test_access_count=0` and no registered/opened
 test files. The failed job and fetched logs remain immutable.
 
 This is a pre-test engineering failure under Section 14 of the frozen protocol,
-not a scientific v3-2 outcome. The immediate next action is a minimal
-Stage-A-only probability-boundary repair that retains raw log-odds, a focused
-regression, full validation, and a freshly generated and inspected plan before
-one fresh immutable retry. Once test access is consumed, no retry is permitted.
+not a scientific v3-2 outcome. The minimal repair retains raw log-odds, clamps
+only the serialized float32 behavioral probability view to
+`[1e-7, 1-1e-7]`, records the per-shard clamp count, and makes workflow and
+independent verification require that storage contract. A focused endpoint
+round-trip regression passes. The old inspected plan is invalid; the immediate
+next action is full validation and a freshly generated, inspected, separately
+committed plan before one fresh immutable retry. Once test access is consumed,
+no retry is permitted.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every

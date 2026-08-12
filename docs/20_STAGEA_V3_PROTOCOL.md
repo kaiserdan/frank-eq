@@ -169,6 +169,9 @@ amendment before any panel or model outcome existed.
 - exact token IDs, attention mask, token spans, prefix bytes, selected layer
   indices, observed hidden width, and SHA-256 recorded per capture;
 - bfloat16 model execution and float32 serialized compiler input;
+- preserve raw behavioral teacher log-odds and clamp only their serialized
+  float32 probability view to `[1e-7, 1-1e-7]`, recording the clamp count per
+  shard; this is a numeric storage boundary, not post-hoc calibration;
 - exclusive cloned-KV branches for behavioral teachers and direct baselines;
 - no replay fallback or mixed cache modes;
 - branch batches have query-exclusive cache slots;

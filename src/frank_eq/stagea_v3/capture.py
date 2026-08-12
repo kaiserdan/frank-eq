@@ -25,6 +25,8 @@ from frank_eq.utils import canonical_json_bytes, sha256_bytes, sha256_file
 from .config import StageAV3Config, StageAV3ModelSpec
 from .panel import V3Panel, render_v3_world_prefix
 
+BEHAVIORAL_PROBABILITY_STORAGE_EPSILON = 1e-7
+
 
 @dataclass(slots=True)
 class V3CaptureShard:
@@ -372,6 +374,7 @@ def capture_panel_shard(
     total_response_batches = 0
     max_observed_batch = 0
     logical_queries = 0
+    behavioral_probability_clamp_count = 0
 
     for world in panel.panel.worlds:
         semantic_target = torch.from_numpy(world.fact_vector()).to(torch.float32)
@@ -481,11 +484,17 @@ def capture_panel_shard(
             residual_rows.append(selected)
             token_rows.append(cpu_ids)
             semantic_rows.append(semantic_target)
-            behavioral_rows.append(
-                torch.tensor(
-                    [score.probability_true for score in basis_scores], dtype=torch.float32
-                )
+            raw_behavioral = torch.tensor(
+                [score.probability_true for score in basis_scores], dtype=torch.float32
             )
+            stored_behavioral = raw_behavioral.clamp(
+                BEHAVIORAL_PROBABILITY_STORAGE_EPSILON,
+                1.0 - BEHAVIORAL_PROBABILITY_STORAGE_EPSILON,
+            )
+            behavioral_probability_clamp_count += int(
+                torch.count_nonzero(stored_behavioral != raw_behavioral).item()
+            )
+            behavioral_rows.append(stored_behavioral)
             behavioral_score_rows.append(
                 torch.tensor([score.log_odds_score for score in basis_scores], dtype=torch.float32)
             )
@@ -587,6 +596,10 @@ def capture_panel_shard(
         "exclusive_cache_batching": True,
         "allow_exact_replay_fallback": False,
         "primary_compiler_post_capture_source_queries": 0,
+        "behavioral_probability_storage_epsilon": (
+            BEHAVIORAL_PROBABILITY_STORAGE_EPSILON
+        ),
+        "behavioral_probability_clamp_count": behavioral_probability_clamp_count,
         "candidate_metadata": adapter.candidate_metadata(protocols),
         "direct_protocol_order": list(protocols.target_protocols),
         "operation_registry_sha256": panel.operation_registry_sha256,
