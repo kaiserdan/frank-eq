@@ -20,13 +20,15 @@ jobs:
       - name: Unpack staged PSR0 implementation
         run: |
           cat .psr0-upload/part00 \
-              .psr0-upload/part01 \
+              .psr0-upload/part01a \
+              .psr0-upload/part01b \
               .psr0-upload/part02 \
               .psr0-upload/part03 \
               .psr0-upload/part04 \
               .psr0-upload/part05 \
               .psr0-upload/part06 \
               .psr0-upload/part07 > /tmp/psr0.tar.gz
+          echo 'c2e7134cb85bf6c6b3a3a9d59e13b741d1203649f83b076cfd704359dc554ed2  /tmp/psr0.tar.gz' | sha256sum -c -
           tar -xzf /tmp/psr0.tar.gz -C .
           rm -rf .psr0-upload .github/workflows/psr0-bootstrap.yml
       - name: Commit exact implementation tree
