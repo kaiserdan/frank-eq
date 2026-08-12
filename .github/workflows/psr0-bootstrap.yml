@@ -1,0 +1,38 @@
+name: psr0-bootstrap
+
+on:
+  push:
+    branches:
+      - agent/predictive-state-psr0
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/predictive-state-psr0
+          fetch-depth: 0
+      - name: Unpack staged PSR0 implementation
+        run: |
+          cat .psr0-upload/part00 \
+              .psr0-upload/part01 \
+              .psr0-upload/part02 \
+              .psr0-upload/part03 \
+              .psr0-upload/part04 \
+              .psr0-upload/part05 \
+              .psr0-upload/part06 \
+              .psr0-upload/part07 > /tmp/psr0.tar.gz
+          tar -xzf /tmp/psr0.tar.gz -C .
+          rm -rf .psr0-upload .github/workflows/psr0-bootstrap.yml
+      - name: Commit exact implementation tree
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Implement predictive-state PSR0 Olivia audit'
+          git push origin HEAD:agent/predictive-state-psr0
