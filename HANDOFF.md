@@ -249,10 +249,24 @@ match `edc92a81...d814e43` for the 1,558,724,915-byte n=4 capture and
 `76d5ae33...295868` for the 2,793,722,099-byte n=6 capture. All six test
 captures and all 12 registered prediction files now exist; the access ledger
 records exactly one grant and all 21 registered opens. Reduction and audit are
-next. This is the consumed v3-2 outcome: no same-registration retry or adaptive
-repair is permitted under any later failure. The immediate next action is
-immutable monitoring through terminal evaluation, followed by fetch and
-independent verification.
+complete. `decision.json` records `fail` with diagnosis
+`ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`: semantic-basis and unseen-renderer gates
+fail, while behavioral basis, public alignment, held-sender retention,
+quantization, oracle execution, and all ten integrity checks pass. Composition
+and activation-specificity gates also fail. Every authorization remains false.
+
+The outcome job terminates Slurm `FAILED`/exit 1 only because its fail-closed
+independent audit requires byte-exact metric recomputation. The audit verifies
+118 artifact files, all registered test hashes, integrity, decision, and
+rate/compute, but records `metrics_recomputed_exactly=false`. Exact-runtime
+diagnostic job `1953471` proves the cause: workflow/config bundle order
+reproduces stored metrics at SHA-256 `10dd9254...45e41` with zero differences,
+whereas the verifier's lexicographic bundle order creates 46 floating-point
+roundoff differences, maximum absolute delta `5.55e-17`, without changing the
+decision. This is a verifier order-sensitivity refusal, not a scientific or
+artifact ambiguity. The consumed result must not be rerun or altered. The
+immediate next action is to finish the immutable fetch, independently verify
+and audit the complete package, then adopt compact negative evidence.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every
