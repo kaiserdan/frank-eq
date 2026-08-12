@@ -211,9 +211,16 @@ local contract passes with 110 tests. The replacement inspected plan has
 internal hash `7b509858...a113c`, plan-file hash `9a728f19...0cbf8`, and
 implementation-tree hash `bf8c87fa...812fc` across the same 64 bound files. It
 preserves the exact config, models, 1,824 prefix forwards, 213,408 logical
-queries, and closed pre-run access flags. The immediate next action is to inspect
-a fresh deterministic launcher archive and submit one fresh immutable retry.
-Once test access is consumed, no retry is permitted.
+queries, and closed pre-run access flags.
+
+The fresh immutable retry is now running as Olivia Slurm job `1899057`, job name
+`frank-eq-stagea-v3-2-olivia-20260812b`, bound to Git `4f93143`, source archive
+`b6203d03...a44e0`, and the replacement plan above. The archive reproduced
+byte-for-byte and independently passed all 64 bound hashes, 208 safe-file
+checks, and generated-artifact/credential exclusions before submission. The
+immediate next action is to monitor through the formerly failing first-shard
+boundary and onward through the ordered workflow. Once test access is consumed,
+no retry is permitted.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every
