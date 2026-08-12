@@ -58,10 +58,11 @@ profile: full
 stages:  audit
 ```
 
-The immediate next executable is its content-addressed dry run. Stage M0 has no
-held sender, claim-bearing test role, receiver access, or claim authority. A
-pass permits drafting—not launching—one separately frozen successor compiler
-protocol.
+The content-addressed plan was inspected and the frozen audit is now running as
+Olivia Slurm job `1970800`, job name `frank-eq-moment-compute-m0`, from source
+commit `d4e64bb`. Stage M0 has no held sender, claim-bearing test role, receiver
+access, or claim authority. A pass permits drafting—not launching—one
+separately frozen successor compiler protocol.
 
 ## What the accumulated results establish
 
@@ -150,21 +151,18 @@ Event calibration is model-local but event-ID agnostic within event kind and
 order. Corrected `chat_turn`, literal cloned-KV branching, no replay fallback,
 world-grouped intervals, and closed protected authorizations remain mandatory.
 
-The next executable is dry-run only:
+The submitted immutable binding is:
 
-```bash
-export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
-python olivia/cli.py submit \
-  --job-name frank-eq-moment-compute-m0 \
-  --config configs/moment_compute/real_olivia_m0.yaml \
-  --profile full \
-  --stages audit \
-  --dry-run --json
+```text
+Slurm job:      1970800
+source SHA-256: 352215a620e2b9147140a719c8c4ad8666a3cacf51d5d73d1454b5c2ccc27668
+config SHA-256: f181fece5f47078c9aae3a04195fd44156efa917648f6f0591192e948d80d51d
+image SHA-256:  a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
 ```
 
-After inspecting the immutable plan, submit the identical command without
-`--dry-run`, monitor to termination, fetch, run both verifiers, audit every
-registered stratum, and adopt a compact evidence package. Only
+Monitor this one job to termination, fetch, run both verifiers, audit every
+registered stratum, and adopt a compact evidence package. Do not submit a
+second M0 execution. Only
 `OPERATION_CLOSED_MOMENT_BASIS_SUPPORTED` permits a new protocol draft; it
 never authorizes that successor run.
 

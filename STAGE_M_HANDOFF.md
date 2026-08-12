@@ -48,21 +48,25 @@ response baseline.
 
 ## Next action
 
-Run the complete local validation contract, commit any documentation-only
-reconciliation so the source tree is clean, and execute exactly:
+The content-addressed dry run was inspected and the identical frozen command
+without `--dry-run` was submitted as Olivia Slurm job `1970800` from source
+commit `d4e64bb78b6cce8740a0856bb971a9492fa662e1`:
 
-```bash
-export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
-python olivia/cli.py submit \
-  --job-name frank-eq-moment-compute-m0 \
-  --config configs/moment_compute/real_olivia_m0.yaml \
-  --profile full \
-  --stages audit \
-  --dry-run --json
+```text
+job:            frank-eq-moment-compute-m0
+Slurm:          1970800
+source SHA-256: 352215a620e2b9147140a719c8c4ad8666a3cacf51d5d73d1454b5c2ccc27668
+config SHA-256: f181fece5f47078c9aae3a04195fd44156efa917648f6f0591192e948d80d51d
+image SHA-256:  a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
 ```
 
-Inspect the resulting source/config hashes, exact revisions, runtime image,
-resources, checkpoint availability, and fresh remote path. Only then may the
-identical command without `--dry-run` be submitted. Do not launch another
-architecture, held sender, receiver, or confirmation experiment before the M0
-machine decision is fetched, independently verified, and adopted.
+The job started on `gpu-1-58`; the deployed source/config hashes and requested
+one-H200, 32-CPU, 128-GiB, 12-hour allocation were independently checked. Its
+in-job static validator passed the frozen contract before model execution.
+
+The next action is to monitor this immutable job to termination, fetch it with
+the repository launcher, run the runner verification and
+`scripts/verify_moment_compute_run.py`, audit every registered stratum, and
+adopt only a compact hash-verified evidence package. Do not submit a second M0
+job or launch another architecture, held sender, receiver, or confirmation
+experiment before that process is complete.
