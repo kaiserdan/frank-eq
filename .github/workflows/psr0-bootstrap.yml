@@ -20,7 +20,8 @@ jobs:
       - name: Unpack staged PSR0 implementation
         run: |
           cat .psr0-upload/part00 \
-              .psr0-upload/part01a \
+              .psr0-upload/part01a0 \
+              .psr0-upload/part01a1 \
               .psr0-upload/part01b \
               .psr0-upload/part02 \
               .psr0-upload/part03 \
