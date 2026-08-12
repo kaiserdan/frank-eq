@@ -243,10 +243,16 @@ captures have also completed all 96 worlds for both n=4 and n=6, with 10,368
 and 12,096 logical queries and zero recorded errors. Independent hashes match
 `e91dc820...19020a` for the 1,247,336,833-byte n=4 capture and
 `5ba3ba0c...84e04f` for the 2,235,406,145-byte n=6 capture. The held Qwen3-14B
-test captures are next. This is now the consumed v3-2 outcome: no same-registration
-retry or adaptive repair is permitted under any later failure. The immediate
-next action is immutable monitoring through terminal evaluation, followed by
-fetch and independent verification.
+test captures have now completed all 96 worlds for both n=4 and n=6, with
+10,368 and 12,096 logical queries and zero recorded errors. Independent hashes
+match `edc92a81...d814e43` for the 1,558,724,915-byte n=4 capture and
+`76d5ae33...295868` for the 2,793,722,099-byte n=6 capture. All six test
+captures and all 12 registered prediction files now exist; the access ledger
+records exactly one grant and all 21 registered opens. Reduction and audit are
+next. This is the consumed v3-2 outcome: no same-registration retry or adaptive
+repair is permitted under any later failure. The immediate next action is
+immutable monitoring through terminal evaluation, followed by fetch and
+independent verification.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every

@@ -272,3 +272,10 @@
 - **n=4:** job `1899057` completes all 96 test worlds and 10,368 logical queries with zero recorded errors, then atomically writes `qwen3-8b-n4.pt`. Its 1,247,336,833 bytes independently hash to SHA-256 `e91dc820be6cc32b3e2c2e518596c13e7b2e825804be567523f17c756819020a`.
 - **n=6:** the same immutable job completes all 96 test worlds and 12,096 logical queries with zero recorded errors, then atomically writes `qwen3-8b-n6.pt`. Its 2,235,406,145 bytes independently hash to SHA-256 `5ba3ba0c6fe96b908006395e5b9f22a26bb1be4c9f785cba1a31d1ddab84e04f`.
 - **Boundary:** these observations reveal no test metric and change no frozen choice. Evaluation proceeds to the registered held Qwen3-14B strata; the one-access consumption, no-retry rule, receiver lock, and claim locks remain in force.
+
+## 2026-08-12 — complete all registered test captures and prediction writes
+
+- **Held n=4:** job `1899057` completes all 96 test worlds and 10,368 logical queries with zero recorded errors, then atomically writes `qwen3-14b-held-n4.pt`. Its 1,558,724,915 bytes independently hash to SHA-256 `edc92a8188acb318330d01fe86a2c618dee03e70eb5d86f11988955d0d814e43`.
+- **Held n=6:** the same immutable job completes all 96 test worlds and 12,096 logical queries with zero recorded errors, then atomically writes `qwen3-14b-held-n6.pt`. Its 2,793,722,099 bytes independently hash to SHA-256 `76d5ae33f1d849825a8b41566a20e849923fc9591ff6e39fd1b1c97e09295868`.
+- **Evaluation boundary:** all six registered test captures and all 12 registered JSON/NPZ prediction files exist. The access ledger records exactly one test grant, 21 registered paths, and 21 opens; `workflow_status.json` lists `evaluate` among the completed stages with no failure. No decision artifact exists at this checkpoint, so no result is interpreted before frozen reduction and audit complete.
+- **Authority:** capture and prediction completion changes no authorization. Reduction and audit must terminate and the fetched package must pass independent verification before interpretation; the no-retry rule, receiver lock, and claim locks remain in force.
