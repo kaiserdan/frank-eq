@@ -18,14 +18,23 @@ result:    ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
 evidence:  evidence/real_stagea_v3_olivia/
 ```
 
-The registration is consumed. Do not submit, recover, or tune it again. No RC0
-rerun, receiver protocol, receiver execution, receiver-world access,
+The v3 registration is consumed. Do not submit, recover, or tune it again. The
+only newly authorized experiment is the development-only Stage M0 audit:
+
+```text
+config:  configs/moment_compute/real_olivia_m0.yaml
+profile: full
+stages:  audit
+```
+
+Stage M0 has no held sender, test role, receiver access, or claim authority.
+No RC0 rerun, receiver protocol, receiver execution, receiver-world access,
 scientific claim, or paper claim is authorized.
 
 ## Runtime contract
 
-Olivia `accel` nodes are ARM64 NVIDIA Grace Hopper nodes. The inspected runtime
-for RC0 is:
+Olivia `accel` nodes are ARM64 NVIDIA Grace Hopper nodes. The inspected Frank-EQ
+runtime is:
 
 ```text
 image:  /cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif
@@ -36,14 +45,52 @@ work:   /cluster/work/projects/nn12027k/dakai5365/frank-eq
 
 It exposes `python3`, CUDA-enabled PyTorch, Transformers, NumPy, PyYAML, and
 W&B on `aarch64`. Do not use the historical AMD64 image or the existing CPython
-x86_64 wheelhouse, and do not enable runtime package installation for RC0.
+x86_64 wheelhouse, and do not enable runtime package installation for Stage M0.
 
 W&B remains fail-open telemetry. Its credential is sourced from
 `$HOME/.config/codex-hpc/wandb.env` only when that file has mode `0600`; the
 credential itself must never enter the repository, source archive, or Slurm
 submission record.
 
-## Preserved checkpoint preflight
+## Stage M0 dry run and execution boundary
+
+Run the full local contract from `docs/24_STAGE_M_OLIVIA_RUNBOOK.md`, commit any
+intended source changes, and require a clean Git tree. Static validation must
+report 64 worlds, 32 operations, 318 event coordinates, the two exact founder
+revisions, zero executor mismatches, and closed protected authorizations.
+
+Then execute exactly:
+
+```bash
+python olivia/cli.py submit \
+  --job-name frank-eq-moment-compute-m0 \
+  --config configs/moment_compute/real_olivia_m0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
+```
+
+Inspect the deterministic source/config hashes, exact Qwen3-4B and Qwen3-8B
+revisions, ARM64 image hash, fresh remote root, and shared-cache availability.
+The current full launcher profile routes through `olivia/run.slurm` and requests
+one GH200, 32 CPUs, 128 GiB host memory, and 12 hours; the dry-run artifact is
+authoritative if these defaults change.
+
+Only after every check passes may the identical command without `--dry-run` be
+submitted. Monitor, fetch, and verify with:
+
+```bash
+python olivia/cli.py status --job-name frank-eq-moment-compute-m0 --json
+python olivia/cli.py fetch  --job-name frank-eq-moment-compute-m0 --json
+python olivia/cli.py verify --job-name frank-eq-moment-compute-m0 --json
+python scripts/verify_moment_compute_run.py \
+  --run .agents/state/olivia/frank-eq-moment-compute-m0/remote/runs
+```
+
+Stage M0 must finish scheduler-successfully even for a scientific gate miss.
+Adopt no result until the fetched tree and independent verifier pass.
+
+## Preserved V3 checkpoint preflight
 
 All exact revisions must be present in the shared offline cache:
 
@@ -99,7 +146,7 @@ The command is intentionally omitted here now that the one registered launch is
 consumed. Repository launcher support remains for provenance and tests, not as
 authorization to submit v3-2 again.
 
-## Status, fetch, and verify
+## Preserved V3 status, fetch, and verify
 
 ```bash
 python olivia/cli.py status --job-name frank-eq-stagea-v3-2-olivia-20260812b --json

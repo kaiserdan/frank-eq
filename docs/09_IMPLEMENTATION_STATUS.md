@@ -11,6 +11,8 @@ Snapshot: 2026-08-12
 - Stage R / RC0: completed development pass; protocol drafting only.
 - Stage-A v3-2: completed exact-pipeline negative;
   `ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`.
+- Stage M0: frozen and implemented development-only operation-closure audit;
+  not yet executed.
 - Model-local public-head option: implemented but dormant.
 
 The v2 shared public code failed with held-out Brier `0.2065`, fact accuracy
@@ -161,6 +163,38 @@ behavioral and oracle-semantic channels, and the complete registered control
 set. It did not qualify the one-shot public interface. Runtime basis probing in
 RC0 remains an upper-bound diagnostic, not a latent interface.
 
+## Ready for execution: Stage M0
+
+Stage M0 is a separately frozen development-only question, not a v3 retry. It
+tests whether the nonlinear composition gap is caused by an undercomplete
+first-order marginal packet. The implementation adds:
+
+```text
+src/frank_eq/moment_compute/
+configs/moment_compute/real_olivia_m0.yaml
+scripts/validate_moment_compute.py
+scripts/verify_moment_compute_run.py
+docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md
+docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md
+docs/24_STAGE_M_OLIVIA_RUNBOOK.md
+```
+
+The full-grammar four-entity registry contains 318 typed events for edges,
+reciprocal conjunctions, paths and intersections, load-bearing
+counterfactual-add events, and ordered-pair joint degree tables. The panel has
+64 worlds, 32 operations, two renderers, and disjoint calibration,
+direct-selection, and validation roles. There is no held or test role.
+
+Static validation passes with event-registry SHA-256 `70ce5d31...a6d55`,
+contract SHA-256 `769fbf65...8326`, and zero exact-executor mismatches. The
+frozen execution authority permits only profile `full` and stage `audit` for
+this config. The next action is a content-addressed dry run followed by source,
+config, revision, image, checkpoint, resource, and remote-path inspection.
+
+Only `OPERATION_CLOSED_MOMENT_BASIS_SUPPORTED` may permit drafting a separately
+frozen one-shot compiler protocol. It does not authorize that run or any held,
+receiver, test, scientific-claim, or paper-claim role.
+
 ## Not authorized
 
 - another scale-only Stage-Q screen under immediate A/B readout;
@@ -169,4 +203,8 @@ RC0 remains an upper-bound diagnostic, not a latent interface.
 - restarting the shared-head quotient;
 - retrying or tuning Stage-A v3-2;
 - drafting or executing receiver work;
-- using the exposed v3-2 test outcome to select a successor protocol.
+- using the exposed v3-2 test outcome to select a successor protocol;
+- running Stage M0 with any stage other than `audit`;
+- changing its event registry, development roles, baselines, thresholds, or
+  gates after validation outcomes; or
+- treating interactive Stage M tomography as one-shot communication.

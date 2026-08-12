@@ -44,9 +44,24 @@ independent-verifier bundle-order difference of at most `5.55e-17`. The exact
 runtime reproduces stored metrics bit-for-bit in workflow order and the same
 decision in either order. The original failed audit remains immutable.
 
-There is no authorized next execution. Stage-A v3-2 cannot be retried or tuned;
-receiver-protocol drafting, receiver execution, receiver-world access,
-scientific claims, and paper claims all remain false.
+Stage-A v3-2 cannot be retried or tuned; receiver-protocol drafting, receiver
+execution, receiver-world access, scientific claims, and paper claims all
+remain false.
+
+Merge commit `659c120` adds the separately frozen, development-only Stage M0
+continuation. It is the sole newly authorized experiment:
+
+```text
+config:  configs/moment_compute/real_olivia_m0.yaml
+cluster: Olivia
+profile: full
+stages:  audit
+```
+
+The immediate next executable is its content-addressed dry run. Stage M0 has no
+held sender, claim-bearing test role, receiver access, or claim authority. A
+pass permits drafting—not launching—one separately frozen successor compiler
+protocol.
 
 ## What the accumulated results establish
 
@@ -99,6 +114,58 @@ basis.
 RC0 tested whether the frozen sources can expose that basis and whether a
 parameter-free public executor can compose it into the hard structural
 operations more reliably than direct model reasoning.
+
+## Current Stage M0 direction
+
+The v3 packet stores first-order edge marginals, while its nonlinear executor
+implicitly treats uncertain edges as independent. In general,
+`E[f(E)] != f(E[E])`: mutuality needs reciprocal conjunctions, two-hop
+reachability needs path conjunctions and intersections, and degree comparison
+needs a joint degree distribution. The v3 composition miss therefore does not
+identify whether the missing object is source information or an
+operation-incomplete public state.
+
+Stage M0 isolates that distinction with interactive event tomography. Its
+registry is generated from the complete four-entity operation grammar and
+contains edge events, reciprocal conjunctions, two-hop path/intersection
+events, load-bearing counterfactual-add events, and complete ordered-pair joint
+degree tables. An exact affine executor consumes those typed events and is
+compared against both the historical marginal/independence executor and a
+direct response protocol selected on a disjoint development role.
+
+The frozen static contract currently validates as:
+
+```text
+worlds:                 64 development-only
+operations:             32
+event coordinates:      318
+models:                 Qwen3-4B, Qwen3-8B
+event-registry SHA-256: 70ce5d31...a6d55
+contract SHA-256:       769fbf65...8326
+exact-executor errors:  0
+```
+
+Calibration, direct-protocol selection, and validation worlds are disjoint.
+Event calibration is model-local but event-ID agnostic within event kind and
+order. Corrected `chat_turn`, literal cloned-KV branching, no replay fallback,
+world-grouped intervals, and closed protected authorizations remain mandatory.
+
+The next executable is dry-run only:
+
+```bash
+python olivia/cli.py submit \
+  --job-name frank-eq-moment-compute-m0 \
+  --config configs/moment_compute/real_olivia_m0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
+```
+
+After inspecting the immutable plan, submit the identical command without
+`--dry-run`, monitor to termination, fetch, run both verifiers, audit every
+registered stratum, and adopt a compact evidence package. Only
+`OPERATION_CLOSED_MOMENT_BASIS_SUPPORTED` permits a new protocol draft; it
+never authorizes that successor run.
 
 ## RC0 experiment
 
@@ -283,6 +350,9 @@ Full operator instructions:
 docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md
 docs/19_STAGE_R_CLUSTER_RUNBOOK.md
 docs/20_STAGEA_V3_PROTOCOL.md
+docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md
+docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md
+docs/24_STAGE_M_OLIVIA_RUNBOOK.md
 ```
 
 ## Historical decision after RC0
@@ -325,6 +395,12 @@ replace it with a one-shot source-local compiler before any communication claim.
 - Starting receiver-native execution.
 - Retrying, recovering, or tuning Stage-A v3-2 after its consumed test result.
 - Drafting a receiver protocol from the negative v3-2 decision.
+- Running Stage M0 with any stage other than `audit`.
+- Tuning the Stage M registry, split roles, controls, thresholds, or gates after
+  validation outcomes are available.
+- Treating Stage M event tomography as a one-shot or communication result.
+- Launching a successor compiler, held sender, confirmation role, or receiver
+  merely because Stage M0 passes.
 
 ## Evidence policy
 
@@ -335,3 +411,6 @@ and operational state remain outside Git. The adopted compact packages are:
 evidence/real_stage_r_olivia_rc0/
 evidence/real_stagea_v3_olivia/
 ```
+
+No Stage M evidence package exists yet. Create one only after a terminal run is
+fetched and independently verified.

@@ -293,12 +293,22 @@ one-shot typed-compiler experiment is scientifically warranted.
 
 ## 9. Current next action
 
-Run exactly one frozen RC0 audit on LUMI or Olivia and adopt its evidence before
-changing the architecture:
+RC0 is complete and adopted; Stage-A v3-2 is a consumed negative. The current
+next action is the separately frozen, development-only Stage M0
+operation-closed-basis audit on Olivia:
 
-```text
-configs/rate_compute/real_lumi_rc0.yaml
-configs/rate_compute/real_olivia_rc0.yaml
+```bash
+python olivia/cli.py submit \
+  --job-name frank-eq-moment-compute-m0 \
+  --config configs/moment_compute/real_olivia_m0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
 ```
 
-See `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`.
+Stage M0 tests whether sparse joint public events close the nonlinear operation
+algebra more faithfully than the historical marginal/independence executor and
+a cross-fitted direct protocol. It has no held sender, test role, receiver
+access, or claim authority. Inspect the dry run before submission and follow
+`docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md` through
+`docs/24_STAGE_M_OLIVIA_RUNBOOK.md`.

@@ -172,7 +172,51 @@ The compact adopted package is in `evidence/real_stagea_v3_olivia/`. Stage-A
 v3-2 is consumed and terminal. No rerun, receiver protocol, receiver execution,
 new receiver-world access, or claim is authorized.
 
-## Frozen RC0 decision tree
+## Stage M0: next development-only audit
+
+Stage M0 asks whether the public state used by the nonlinear executor was
+undercomplete. First-order edge marginals do not generally determine
+reciprocal conjunctions, path intersections, or joint degree distributions, so
+`E[f(E)]` need not equal `f(E[E])`.
+
+The frozen Stage M0 registry is generated from the complete four-entity
+operation grammar. It contains 318 typed edge, conjunction, path,
+counterfactual, and joint-degree events. Its exact affine executor is compared
+with both the historical marginal/independence executor and a direct response
+protocol selected on disjoint development worlds.
+
+Static validation currently reports:
+
+```text
+protocol:                 stage-m0-operation-closed-basis
+development worlds:       64
+registered operations:    32
+event coordinates:        318
+models:                   Qwen3-4B, Qwen3-8B
+exact-executor mismatches: 0
+protected authorizations: closed
+```
+
+This is interactive event tomography, not a one-shot latent interface. It has
+no held sender, claim-bearing test role, receiver access, or claim authority.
+Only `OPERATION_CLOSED_MOMENT_BASIS_SUPPORTED` may permit drafting a separately
+frozen successor protocol; it does not authorize launching one.
+
+The immediate next executable is the content-addressed Olivia dry run:
+
+```bash
+python olivia/cli.py submit \
+  --job-name frank-eq-moment-compute-m0 \
+  --config configs/moment_compute/real_olivia_m0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
+```
+
+Read `STAGE_M_HANDOFF.md` and `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`
+through `docs/24_STAGE_M_OLIVIA_RUNBOOK.md` before removing `--dry-run`.
+
+## Historical RC0 decision tree
 
 ### Basis readout fails
 
@@ -218,9 +262,10 @@ frozen deterministic or receiver-native executor
 
 The frozen compiler did not qualify this interface. It predicts the sources'
 behavioral channel and transfers across models on seen renderers, but semantic
-calibration and unseen-renderer transfer fail. Any successor would require a
-freshly registered question; this exposed test result cannot be used to tune
-one.
+calibration and unseen-renderer transfer fail. Stage M0 is a separately frozen
+development question about operation closure; it does not tune the v3 compiler
+or reuse v3 confirmation roles. Any one-shot successor still requires a fresh
+registration and cannot be selected on the exposed v3 test outcome.
 
 ## Commands
 
@@ -256,6 +301,16 @@ frank-eq verify-stagea-v3
 python scripts/verify_stagea_v3_run.py
 ```
 
+Stage M0 commands:
+
+```text
+python scripts/validate_moment_compute.py
+python olivia/cli.py submit --job-name frank-eq-moment-compute-m0 \
+  --config configs/moment_compute/real_olivia_m0.yaml \
+  --profile full --stages audit --dry-run --json
+python scripts/verify_moment_compute_run.py --run <fetched-run-root>
+```
+
 ## Local validation
 
 ```bash
@@ -266,8 +321,10 @@ pip install -e '.[real,dev]'
 python -m compileall -q src scripts olivia lumi
 ruff check src scripts tests
 pytest -q
+bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
+python scripts/validate_moment_compute.py
 ```
 
 ## Evidence hierarchy
@@ -300,6 +357,10 @@ Frank-EQ currently establishes only:
 - v3 evidence that the all-token compiler predicts the frozen sources'
   behavioral edge responses, while its semantic basis fails the registered
   calibration and unseen-renderer gates.
+
+Stage M0 is a frozen prospective development audit, not an empirical result.
+Its implementation and exact-algebra validation add no scientific claim until
+the cluster run is fetched, independently verified, and adopted.
 
 It does not yet establish a cross-model public interface, a hidden-state
 advantage over text/tokens, a qualified one-shot compiler, receiver execution,

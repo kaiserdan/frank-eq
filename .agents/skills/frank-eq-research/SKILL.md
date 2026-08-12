@@ -15,9 +15,10 @@ description: Audit and extend Frank-EQ public operational-interface experiments 
 
 ## Current authority
 
-Read `AGENTS.md`, `HANDOFF.md`,
-`docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`, and
-`docs/19_STAGE_R_CLUSTER_RUNBOOK.md` before acting.
+Read `AGENTS.md`, `HANDOFF.md`, `STAGE_M_HANDOFF.md`,
+`docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`,
+`docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`, and
+`docs/24_STAGE_M_OLIVIA_RUNBOOK.md` before acting.
 
 Stage-A v1/v2 and Stage-Q are preserved negatives. RC0 is an adopted development
 pass. Stage-A v3-2 is frozen in:
@@ -36,9 +37,21 @@ reduction reproduces the stored metrics exactly, while the verifier's
 lexicographic bundle order changes 46 numeric fields by at most
 `5.551115123125783e-17` and leaves the decision unchanged.
 
-The run is consumed and adopted under `evidence/real_stagea_v3_olivia/`. There
-is no authorized next execution: do not retry or tune v3-2, draft a receiver
-protocol from it, open receiver worlds, or make a scientific or paper claim.
+The run is consumed and adopted under `evidence/real_stagea_v3_olivia/`. Do not
+retry or tune v3-2, draft a receiver protocol from it, open receiver worlds, or
+make a scientific or paper claim.
+
+The only newly authorized execution is Stage M0, a development-only audit of an
+operation-closed public event basis:
+
+```text
+config: configs/moment_compute/real_olivia_m0.yaml
+stage:  audit
+```
+
+It has no held sender, test role, receiver access, or claim authority. Run and
+inspect the content-addressed Olivia dry run before submission. A pass may
+authorize only drafting a separately frozen one-shot compiler protocol.
 
 ## Historical RC0 workflow
 
@@ -117,6 +130,20 @@ Receiver execution remains locked.
 8. Fetch, verify, independently recompute, document, and commit the outcome.
 9. Follow the machine decision; never skip directly to receiver execution.
 
+## Stage M0 sequencing
+
+1. Run compile, lint, tests, shell checks, and all three repository validators.
+2. Require the static event algebra to report 318 coordinates, 32 operations,
+   64 worlds, and zero exact-executor mismatches.
+3. Inspect the content-addressed Olivia dry run for a clean source, exact config
+   and source hashes, the two pinned Qwen revisions, the approved ARM64 image,
+   available checkpoints, and a fresh remote job root.
+4. Submit only the exact `full` / `audit` plan.
+5. Monitor through terminal scheduler state, fetch through `olivia/cli.py`, run
+   both verifiers, and inspect every model/event and model/operation stratum.
+6. Adopt only a compact hash-verified evidence package and follow the frozen
+   Stage M diagnosis. Do not automatically launch a successor.
+
 ## Prohibited actions
 
 - Another model-scale screen under immediate A/B scoring.
@@ -130,6 +157,11 @@ Receiver execution remains locked.
 - Retrying, recovering, or tuning the consumed Stage-A v3-2 registration.
 - Drafting or executing a receiver protocol from the negative v3-2 decision.
 - Using exposed v3-2 outcomes to select a successor registration.
+- Running Stage M0 with a stage other than `audit` or modifying its frozen
+  registry, split roles, controls, thresholds, or gates after outcomes.
+- Treating Stage M interactive tomography as one-shot latent communication.
+- Launching a successor compiler, held sender, confirmation role, or receiver
+  from a Stage M pass without a separate frozen protocol and authority.
 - Committing generated caches, checkpoints, `.agents/state/`, secrets, or W&B
   credentials.
 
@@ -142,6 +174,7 @@ pytest -q
 bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
+python scripts/validate_moment_compute.py
 ```
 
 ## Evidence standard

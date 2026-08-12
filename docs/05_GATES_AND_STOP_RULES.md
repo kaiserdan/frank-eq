@@ -30,9 +30,9 @@ residual, and quantization checks cannot be interpreted independently because:
 - residual coordinates were explicitly rendered in the prefix;
 - quantization retained a failed code.
 
-## Existing-cache localization gate
+## Historical existing-cache localization gate
 
-The next action is a **diagnostic**, not a promotion gate.
+At that stage, the next action was a **diagnostic**, not a promotion gate.
 
 Allowed data:
 

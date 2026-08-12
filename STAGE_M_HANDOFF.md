@@ -1,7 +1,8 @@
 # Stage M handoff
 
-This file is prospective and applies only on the Stage-M implementation branch.
-It does not alter the immutable Stage-A v3-2 evidence.
+Stage M0 was merged into `main` by merge commit `659c120`. This handoff is now
+the live continuation guide; it does not alter the immutable Stage-A v3-2
+evidence.
 
 ## Current authority
 
@@ -24,6 +25,10 @@ Stage M0 has no held sender, claim-bearing test role, receiver access, or claim
 authority. A pass authorizes only drafting a separately frozen one-shot compiler
 protocol.
 
+Static contract validation currently reports 64 four-entity worlds, 32
+operations, 318 typed event coordinates, two pinned founder models, zero exact
+executor mismatches, and all protected authorizations closed.
+
 ## Why Stage M exists
 
 The historical executor applies nonlinear graph operations to first-order edge
@@ -43,6 +48,20 @@ response baseline.
 
 ## Next action
 
-Validate and inspect a content-addressed Olivia dry run. Do not launch another
-architecture, held-sender, receiver, or confirmation experiment before the M0
+Run the complete local validation contract, commit any documentation-only
+reconciliation so the source tree is clean, and execute exactly:
+
+```bash
+python olivia/cli.py submit \
+  --job-name frank-eq-moment-compute-m0 \
+  --config configs/moment_compute/real_olivia_m0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
+```
+
+Inspect the resulting source/config hashes, exact revisions, runtime image,
+resources, checkpoint availability, and fresh remote path. Only then may the
+identical command without `--dry-run` be submitted. Do not launch another
+architecture, held sender, receiver, or confirmation experiment before the M0
 machine decision is fetched, independently verified, and adopted.
