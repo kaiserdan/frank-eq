@@ -260,3 +260,9 @@
 - **One-way grant:** only at `2026-08-12T09:22:32.879829+00:00`, 14 seconds after the held freeze, the access ledger records `test_access_consumed` and enters `evaluate`. The count is exactly one, with 21 registered panel/capture/prediction paths.
 - **First opens:** `test_panel_manifest.json` opens at `09:22:32.918378Z` under SHA-256 `c4362a05...0e215`; `panels/test_n4.json` and `panels/test_n6.json` follow under independently matching hashes `ae0f4123...3a843` and `8c972ca7...126bd`. No test capture existed during the boundary audit; Qwen3-4B test capture then began.
 - **Irreversibility:** v3-2 is now consumed. Any subsequent application, scheduler, verification, or artifact failure is part of the outcome and cannot be repaired or rerun under this registration. Compiler seeds, checkpoints, controls, calibrators, protocols, thresholds, renderers, and gates are frozen; receiver execution and every claim field remain unauthorized.
+
+## 2026-08-12 — complete the Qwen3-4B test captures
+
+- **n=4:** job `1899057` completes all 96 test worlds and 10,368 logical queries with zero recorded errors, then atomically writes `qwen3-4b-n4.pt`. Its 780,205,761 bytes independently hash to SHA-256 `c44e661d828c612526ec5aaa7d294b6527ff1eb44281461f0e889ef43d2e6c03`.
+- **n=6:** the same immutable job completes all 96 test worlds and 12,096 logical queries with zero recorded errors, then atomically writes `qwen3-4b-n6.pt`. Its 1,397,854,209 bytes independently hash to SHA-256 `938ed4186033eda481f9c5d88ac5333a8048f5c3602468b76a71e664e7d758e0`.
+- **Boundary:** these are capture-completion and integrity observations only. No raw test outcome is inspected or used adaptively; evaluation proceeds to the remaining frozen model/complexity strata. The consumed registration, no-retry rule, receiver lock, and claim locks are unchanged.

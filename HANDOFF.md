@@ -235,7 +235,11 @@ The one-way test boundary has now been crossed. At `09:22:32Z`, 14 seconds after
 the held freeze, the ledger consumed its single grant, registered exactly the
 21 expected test panel/capture/prediction paths, entered `evaluate`, and opened
 the test manifest plus both panels under matching SHA-256 hashes. Qwen3-4B test
-capture is starting. This is now the consumed v3-2 outcome: no same-registration
+captures for both n=4 and n=6 have now completed all 96 worlds with 10,368 and
+12,096 logical queries respectively and zero recorded errors. Independent
+SHA-256 checks match `c44e661d...2e6c03` for the 780,205,761-byte n=4 capture
+and `938ed418...7d758e0` for the 1,397,854,209-byte n=6 capture. Qwen3-8B test
+capture is next. This is now the consumed v3-2 outcome: no same-registration
 retry or adaptive repair is permitted under any later failure. The immediate
 next action is immutable monitoring through terminal evaluation, followed by
 fetch and independent verification.
