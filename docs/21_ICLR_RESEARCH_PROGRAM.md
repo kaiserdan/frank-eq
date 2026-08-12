@@ -293,23 +293,15 @@ one-shot typed-compiler experiment is scientifically warranted.
 
 ## 9. Current next action
 
-RC0 is complete and adopted; Stage-A v3-2 is a consumed negative. The current
-next action is the separately frozen, development-only Stage M0
-operation-closed-basis audit on Olivia:
+RC0 is complete and adopted; Stage-A v3-2 is a consumed negative. Stage M0 also
+completed and is adopted with diagnosis
+`OPERATION_CLOSED_EVENTS_NOT_READABLE`. Sparse joint public events beat the
+cross-fitted direct protocol but not the historical marginal/independence
+executor, and required high-order event groups fail readout.
 
-```bash
-export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
-python olivia/cli.py submit \
-  --job-name frank-eq-moment-compute-m0 \
-  --config configs/moment_compute/real_olivia_m0.yaml \
-  --profile full \
-  --stages audit \
-  --dry-run --json
-```
-
-Stage M0 tests whether sparse joint public events close the nonlinear operation
-algebra more faithfully than the historical marginal/independence executor and
-a cross-fitted direct protocol. It has no held sender, test role, receiver
-access, or claim authority. Inspect the dry run before submission and follow
-`docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md` through
-`docs/24_STAGE_M_OLIVIA_RUNBOOK.md`.
+The registered stop rule closes the current graph/source line. No successor
+compiler, held sender, receiver work, claim-bearing role, or cluster executable
+is authorized. The next research action, if any, is to formulate a new
+task-level scientific question where useful state must be computed by filtering
+or closure rather than copied from explicit graph text. That question requires
+fresh roles and a separately frozen protocol before any implementation or run.

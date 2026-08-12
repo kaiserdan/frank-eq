@@ -15,20 +15,21 @@ frozen question, preserve information boundaries, and fail closed.
 4. `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`
 5. `docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`
 6. `docs/24_STAGE_M_OLIVIA_RUNBOOK.md`
-7. `.agents/skills/moment-compute-runner/SKILL.md`
-8. `evidence/real_stagea_v3_olivia/AUDIT.md`
-9. `docs/20_STAGEA_V3_PROTOCOL.md`
-10. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
-11. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
-12. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
-13. `evidence/real_stagea_lumi_v2/REVIEW.md`
-14. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
-15. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
-16. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
-17. `docs/05_GATES_AND_STOP_RULES.md`
-18. `docs/09_IMPLEMENTATION_STATUS.md`
-19. `docs/10_DECISION_LOG.md`
-20. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
+7. `evidence/real_stage_m_olivia_m0/AUDIT.md`
+8. `.agents/skills/moment-compute-runner/SKILL.md`
+9. `evidence/real_stagea_v3_olivia/AUDIT.md`
+10. `docs/20_STAGEA_V3_PROTOCOL.md`
+11. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
+12. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
+13. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
+14. `evidence/real_stagea_lumi_v2/REVIEW.md`
+15. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
+16. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
+17. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
+18. `docs/05_GATES_AND_STOP_RULES.md`
+19. `docs/09_IMPLEMENTATION_STATUS.md`
+20. `docs/10_DECISION_LOG.md`
+21. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
 
 For cluster work, also read the matching runner skill under `.agents/skills/`.
 
@@ -65,20 +66,20 @@ the original failed audit; do not relabel it as a pass.
 Stage-A v3-2 cannot be retried, recovered, or tuned. It also must not be
 broadened into a claim that every public operational state fails.
 
-The sole newly authorized execution is the development-only Stage M0 audit:
+Stage M0 completed on Olivia and is an adopted development negative:
 
 ```text
-config:  configs/moment_compute/real_olivia_m0.yaml
-cluster: Olivia
-profile: full
-stages:  audit
+job:       frank-eq-moment-compute-m0 / Slurm 1970800
+decision:  OPERATION_CLOSED_EVENTS_NOT_READABLE
+evidence:  evidence/real_stage_m_olivia_m0/
 ```
 
-Stage M0 has no held sender, claim-bearing test role, receiver access, or claim
-authority. The immediate executable is the content-addressed Olivia dry run.
-Submit the identical command without `--dry-run` only after the complete local
-contract passes and the source hash, config hash, exact revisions, clean Git
-state, remote target absence, and checkpoint availability are inspected.
+The exact event algebra, atomic retention, and advantage over cross-fitted direct
+responses pass. Required joint-degree and path-intersection event groups fail
+balanced accuracy, and the moment executor is worse than the historical
+marginal executor for both models. No successor draft, run, held sender,
+receiver work, or claim is authorized. There is currently no authorized
+experiment or cluster executable.
 
 ## Completed Stage-A v3 execution boundary
 
@@ -98,7 +99,7 @@ state, remote target absence, and checkpoint availability are inspected.
   compute.
 - A valid gate miss is terminal for v3-2.
 
-## Stage M0 execution boundary
+## Completed Stage M0 boundary
 
 - Stage M0 asks a fresh development-only question: whether the public state is
   undercomplete for nonlinear operations because first-order edge marginals do
@@ -120,9 +121,11 @@ state, remote target absence, and checkpoint availability are inspected.
   model inference. Bootstrap worlds, not response rows.
 - Stage M0 is interactive event tomography, not a one-shot compiler,
   communication interface, held-sender result, or receiver result.
-- Only `OPERATION_CLOSED_MOMENT_BASIS_SUPPORTED` may authorize drafting one
-  separately frozen successor compiler protocol. It never authorizes launching
-  that protocol.
+- The observed diagnosis is `OPERATION_CLOSED_EVENTS_NOT_READABLE`. It closes
+  the current graph/source line under the frozen stop rule.
+- Do not resubmit M0, enlarge its basis, tune calibration or gates, or train a
+  successor compiler. A future direction requires a new task-level question and
+  separately frozen authority.
 
 ## Scientific invariants
 
@@ -292,13 +295,14 @@ Draft exactly one fresh Stage-A v3 protocol using:
 - Retrying or recovering Stage-A v3-2 after its consumed test access.
 - Using v3-2 test metrics to tune or select a successor registration.
 - Drafting a receiver protocol from the negative v3-2 decision.
-- Running Stage M0 with any stage other than exactly `audit`.
+- Rerunning Stage M0, including with another stage, resource profile, model
+  scale, registry, or calibration choice.
 - Changing the Stage M event registry, panel, roles, calibrators, baselines,
   thresholds, or gates after validation outcomes are read.
 - Calling Stage M interactive event tomography a one-shot interface or a
   communication result.
 - Launching a successor compiler, held-sender, confirmation, or receiver run
-  merely because Stage M0 passes.
+  from the negative Stage M0 result.
 
 ## Development validation
 

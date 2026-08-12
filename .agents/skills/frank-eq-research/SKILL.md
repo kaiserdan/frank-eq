@@ -41,17 +41,19 @@ The run is consumed and adopted under `evidence/real_stagea_v3_olivia/`. Do not
 retry or tune v3-2, draft a receiver protocol from it, open receiver worlds, or
 make a scientific or paper claim.
 
-The only newly authorized execution is Stage M0, a development-only audit of an
-operation-closed public event basis:
+Stage M0 completed on Olivia and is adopted as a development negative:
 
 ```text
-config: configs/moment_compute/real_olivia_m0.yaml
-stage:  audit
+job:       frank-eq-moment-compute-m0 / Slurm 1970800
+decision:  OPERATION_CLOSED_EVENTS_NOT_READABLE
+evidence:  evidence/real_stage_m_olivia_m0/
 ```
 
-It has no held sender, test role, receiver access, or claim authority. Run and
-inspect the content-addressed Olivia dry run before submission. A pass may
-authorize only drafting a separately frozen one-shot compiler protocol.
+It has no held sender, test role, receiver access, claim authority, successor
+draft authority, or rerun authority. Joint-degree and two-path-intersection
+events fail readout; the moment executor beats direct responses but is worse
+than the marginal control for both models. The current graph/source line stops,
+and there is no authorized experiment.
 
 ## Historical RC0 workflow
 
@@ -130,7 +132,7 @@ Receiver execution remains locked.
 8. Fetch, verify, independently recompute, document, and commit the outcome.
 9. Follow the machine decision; never skip directly to receiver execution.
 
-## Stage M0 sequencing
+## Completed Stage M0 sequencing
 
 1. Run compile, lint, tests, shell checks, and all three repository validators.
 2. Require the static event algebra to report 318 coordinates, 32 operations,
@@ -143,7 +145,8 @@ Receiver execution remains locked.
 5. Monitor through terminal scheduler state, fetch through `olivia/cli.py`, run
    both verifiers, and inspect every model/event and model/operation stratum.
 6. Adopt only a compact hash-verified evidence package and follow the frozen
-   Stage M diagnosis. Do not automatically launch a successor.
+   Stage M diagnosis. The observed negative closes the graph/source line and
+   does not authorize a successor.
 
 ## Prohibited actions
 
@@ -158,8 +161,8 @@ Receiver execution remains locked.
 - Retrying, recovering, or tuning the consumed Stage-A v3-2 registration.
 - Drafting or executing a receiver protocol from the negative v3-2 decision.
 - Using exposed v3-2 outcomes to select a successor registration.
-- Running Stage M0 with a stage other than `audit` or modifying its frozen
-  registry, split roles, controls, thresholds, or gates after outcomes.
+- Rerunning Stage M0 under any stage, scale, registry, split, control, threshold,
+  or gate after outcomes.
 - Treating Stage M interactive tomography as one-shot latent communication.
 - Launching a successor compiler, held sender, confirmation role, or receiver
   from a Stage M pass without a separate frozen protocol and authority.

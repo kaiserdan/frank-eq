@@ -20,17 +20,17 @@ evidence: evidence/real_stagea_v3_olivia/
 ```
 
 Do not resubmit, repair, recover, or tune it. RC0 and Stage Q also remain closed.
-
-The only newly prepared experiment is the development-only Stage M0 audit:
+Stage M0 completed and is adopted:
 
 ```text
-config:  configs/moment_compute/real_olivia_m0.yaml
-profile: full
-stages:  audit
+job:       frank-eq-moment-compute-m0 / Slurm 1970800
+decision:  OPERATION_CLOSED_EVENTS_NOT_READABLE
+evidence:  evidence/real_stage_m_olivia_m0/
 ```
 
-It has no held sender, claim-bearing test role, receiver access, or scientific
-claim authority.
+It has no held sender, claim-bearing test role, receiver access, successor draft
+authority, or scientific claim authority. Do not resubmit it. There is no
+current Olivia execution authority.
 
 ## Validation
 
@@ -44,20 +44,17 @@ python scripts/validate_moment_compute.py
 bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 ```
 
-## Stage M0 dry run
+## Historical Stage M0 record
 
 ```bash
-export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
-python olivia/cli.py submit \
-  --job-name frank-eq-moment-compute-m0 \
-  --config configs/moment_compute/real_olivia_m0.yaml \
-  --profile full --stages audit --dry-run --json
+python olivia/cli.py status --job-name frank-eq-moment-compute-m0 --json
+python olivia/cli.py fetch --job-name frank-eq-moment-compute-m0 --json
+python olivia/cli.py verify --job-name frank-eq-moment-compute-m0 --json
 ```
 
-Reject a plan whose runtime image hash is null or differs from the exported
-digest. Inspect the deterministic source hash, config hash, clean Git state,
-fresh remote target, exact model revisions, and checkpoint availability. Submit
-the identical command without `--dry-run` only after those checks.
+The completed immutable binding is source SHA-256 `352215a6...27668`, config
+SHA-256 `f181fece...d51d`, and image SHA-256 `a3ca46f0...aa3b1`. These commands
+are inspection only, not resubmission authority.
 
 ## Monitor, fetch, verify
 
@@ -81,6 +78,6 @@ python scripts/verify_moment_compute_run.py \
 - Generated runs, source archives, checkpoints, `.agents/state/`, and credentials
   remain outside Git.
 
-Only `OPERATION_CLOSED_MOMENT_BASIS_SUPPORTED` permits drafting a fresh
-successor protocol. It does not authorize that run, a held sender, receiver work,
-or a paper claim.
+The observed Stage M diagnosis closes the current graph/source line. No fresh
+successor protocol, run, held sender, receiver work, or paper claim is
+authorized.

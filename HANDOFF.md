@@ -1,6 +1,6 @@
 # Frank-EQ handoff
 
-Snapshot: 2026-08-12
+Snapshot: 2026-08-13
 
 ## Current authority
 
@@ -48,21 +48,20 @@ Stage-A v3-2 cannot be retried or tuned; receiver-protocol drafting, receiver
 execution, receiver-world access, scientific claims, and paper claims all
 remain false.
 
-Merge commit `659c120` adds the separately frozen, development-only Stage M0
-continuation. It is the sole newly authorized experiment:
+Stage M0 has completed and is adopted as a development negative:
 
 ```text
-config:  configs/moment_compute/real_olivia_m0.yaml
-cluster: Olivia
-profile: full
-stages:  audit
+job:       frank-eq-moment-compute-m0  Slurm 1970800
+state:     COMPLETED 0:0
+decision:  OPERATION_CLOSED_EVENTS_NOT_READABLE
+evidence:  evidence/real_stage_m_olivia_m0/
 ```
 
-The content-addressed plan was inspected and the frozen audit is now running as
-Olivia Slurm job `1970800`, job name `frank-eq-moment-compute-m0`, from source
-commit `d4e64bb`. Stage M0 has no held sender, claim-bearing test role, receiver
-access, or claim authority. A pass permits drafting—not launching—one
-separately frozen successor compiler protocol.
+The exact event algebra, atomic retention, and advantage over cross-fitted
+direct responses pass. Joint-degree and two-path-intersection event groups fail
+the frozen readout gate, and the projected moment executor is worse than the
+historical marginal executor for both models. Every protected authorization is
+false. The current graph/source line stops, and no experiment is authorized.
 
 ## What the accumulated results establish
 
@@ -116,9 +115,9 @@ RC0 tested whether the frozen sources can expose that basis and whether a
 parameter-free public executor can compose it into the hard structural
 operations more reliably than direct model reasoning.
 
-## Current Stage M0 direction
+## Stage M0 result
 
-The v3 packet stores first-order edge marginals, while its nonlinear executor
+The v3 packet stored first-order edge marginals, while its nonlinear executor
 implicitly treats uncertain edges as independent. In general,
 `E[f(E)] != f(E[E])`: mutuality needs reciprocal conjunctions, two-hop
 reachability needs path conjunctions and intersections, and degree comparison
@@ -126,7 +125,7 @@ needs a joint degree distribution. The v3 composition miss therefore does not
 identify whether the missing object is source information or an
 operation-incomplete public state.
 
-Stage M0 isolates that distinction with interactive event tomography. Its
+Stage M0 isolated that distinction with interactive event tomography. Its
 registry is generated from the complete four-entity operation grammar and
 contains edge events, reciprocal conjunctions, two-hop path/intersection
 events, load-bearing counterfactual-add events, and complete ordered-pair joint
@@ -134,7 +133,7 @@ degree tables. An exact affine executor consumes those typed events and is
 compared against both the historical marginal/independence executor and a
 direct response protocol selected on a disjoint development role.
 
-The frozen static contract currently validates as:
+The frozen contract and completed run report:
 
 ```text
 worlds:                 64 development-only
@@ -144,6 +143,8 @@ models:                 Qwen3-4B, Qwen3-8B
 event-registry SHA-256: 70ce5d31...a6d55
 contract SHA-256:       769fbf65...8326
 exact-executor errors:  0
+captured responses:     105,984
+compiled predictions:  1,824
 ```
 
 Calibration, direct-protocol selection, and validation worlds are disjoint.
@@ -151,7 +152,7 @@ Event calibration is model-local but event-ID agnostic within event kind and
 order. Corrected `chat_turn`, literal cloned-KV branching, no replay fallback,
 world-grouped intervals, and closed protected authorizations remain mandatory.
 
-The submitted immutable binding is:
+The immutable binding was:
 
 ```text
 Slurm job:      1970800
@@ -160,11 +161,16 @@ config SHA-256: f181fece5f47078c9aae3a04195fd44156efa917648f6f0591192e948d80d51d
 image SHA-256:  a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
 ```
 
-Monitor this one job to termination, fetch, run both verifiers, audit every
-registered stratum, and adopt a compact evidence package. Do not submit a
-second M0 execution. Only
-`OPERATION_CLOSED_MOMENT_BASIS_SUPPORTED` permits a new protocol draft; it
-never authorizes that successor run.
+The job and fetched tree verify. Moment Brier is `0.05310`, compared with
+`0.02744` for the marginal executor and `0.19445` for the cross-fitted direct
+response. The lower-95 moment gain is `-0.02999` over marginals and `0.11980`
+over direct. The frozen diagnosis is therefore
+`OPERATION_CLOSED_EVENTS_NOT_READABLE`, not the only diagnosis that could have
+opened a successor draft.
+
+There is no next executable. Any continuation requires a new task-level
+scientific question, fresh roles, and separately frozen authority; do not use
+the exposed Stage M outcome to tune another graph basis.
 
 ## RC0 experiment
 
@@ -394,12 +400,12 @@ replace it with a one-shot source-local compiler before any communication claim.
 - Starting receiver-native execution.
 - Retrying, recovering, or tuning Stage-A v3-2 after its consumed test result.
 - Drafting a receiver protocol from the negative v3-2 decision.
-- Running Stage M0 with any stage other than `audit`.
+- Rerunning Stage M0 under any stage, profile, scale, registry, or calibration.
 - Tuning the Stage M registry, split roles, controls, thresholds, or gates after
   validation outcomes are available.
 - Treating Stage M event tomography as a one-shot or communication result.
 - Launching a successor compiler, held sender, confirmation role, or receiver
-  merely because Stage M0 passes.
+  from the negative Stage M0 result.
 
 ## Evidence policy
 
@@ -409,7 +415,5 @@ and operational state remain outside Git. The adopted compact packages are:
 ```text
 evidence/real_stage_r_olivia_rc0/
 evidence/real_stagea_v3_olivia/
+evidence/real_stage_m_olivia_m0/
 ```
-
-No Stage M evidence package exists yet. Create one only after a terminal run is
-fetched and independently verified.

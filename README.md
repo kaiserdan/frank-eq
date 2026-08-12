@@ -172,50 +172,37 @@ The compact adopted package is in `evidence/real_stagea_v3_olivia/`. Stage-A
 v3-2 is consumed and terminal. No rerun, receiver protocol, receiver execution,
 new receiver-world access, or claim is authorized.
 
-## Stage M0: next development-only audit
+## Stage M0: completed development negative
 
-Stage M0 asks whether the public state used by the nonlinear executor was
-undercomplete. First-order edge marginals do not generally determine
-reciprocal conjunctions, path intersections, or joint degree distributions, so
-`E[f(E)]` need not equal `f(E[E])`.
+Stage M0 tested whether the nonlinear executor's public state was
+undercomplete. Its full-grammar registry contains 318 typed edge, conjunction,
+path, counterfactual, and joint-degree events. Olivia job `1970800` completed
+all 105,984 response rows and 1,824 validation predictions with exact revisions,
+exclusive cloned-KV branching, zero replay, and no held or test role.
 
-The frozen Stage M0 registry is generated from the complete four-entity
-operation grammar. It contains 318 typed edge, conjunction, path,
-counterfactual, and joint-degree events. Its exact affine executor is compared
-with both the historical marginal/independence executor and a direct response
-protocol selected on disjoint development worlds.
-
-Static validation currently reports:
+The machine decision is:
 
 ```text
-protocol:                 stage-m0-operation-closed-basis
-development worlds:       64
-registered operations:    32
-event coordinates:        318
-models:                   Qwen3-4B, Qwen3-8B
-exact-executor mismatches: 0
-protected authorizations: closed
+status:     fail
+diagnosis:  OPERATION_CLOSED_EVENTS_NOT_READABLE
 ```
 
-This is interactive event tomography, not a one-shot latent interface. It has
-no held sender, claim-bearing test role, receiver access, or claim authority.
-Only `OPERATION_CLOSED_MOMENT_BASIS_SUPPORTED` may permit drafting a separately
-frozen successor protocol; it does not authorize launching one.
+Exact public algebra and atomic retention pass. The moment executor beats the
+cross-fitted direct response (`0.05310` versus `0.19445` Brier), but the simpler
+marginal/independence executor is better (`0.02744`). Joint out-degree and
+two-path-intersection events fail the frozen balanced-accuracy gate for both
+models. The same conclusion holds model by model.
 
-The immediate next executable is the content-addressed Olivia dry run:
+The scheduler, repository verifier, artifact hashes, and exact-runtime
+specialized verifier pass. A newer workstation NumPy version changes only two
+projection-adjustment diagnostic summaries by at most `4.44e-16`; no scientific
+prediction field, metric, gate, or decision changes. The compact adopted
+package is in `evidence/real_stage_m_olivia_m0/`.
 
-```bash
-export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
-python olivia/cli.py submit \
-  --job-name frank-eq-moment-compute-m0 \
-  --config configs/moment_compute/real_olivia_m0.yaml \
-  --profile full \
-  --stages audit \
-  --dry-run --json
-```
-
-Read `STAGE_M_HANDOFF.md` and `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`
-through `docs/24_STAGE_M_OLIVIA_RUNBOOK.md` before removing `--dry-run`.
+This is interactive event tomography, not a one-shot latent interface. The
+negative result authorizes no successor compiler draft or run, held sender,
+receiver access, or claim. The current graph/source line stops; there is no
+authorized next executable.
 
 ## Historical RC0 decision tree
 
@@ -263,10 +250,11 @@ frozen deterministic or receiver-native executor
 
 The frozen compiler did not qualify this interface. It predicts the sources'
 behavioral channel and transfers across models on seen renderers, but semantic
-calibration and unseen-renderer transfer fail. Stage M0 is a separately frozen
-development question about operation closure; it does not tune the v3 compiler
-or reuse v3 confirmation roles. Any one-shot successor still requires a fresh
-registration and cannot be selected on the exposed v3 test outcome.
+calibration and unseen-renderer transfer fail. Stage M0 subsequently showed
+that interactively querying a larger operation-closed graph basis does not beat
+the simpler marginal executor. Any future direction must change the task-level
+scientific question and use fresh roles; it cannot be selected on the exposed
+v3 or Stage M outcomes.
 
 ## Commands
 
@@ -302,14 +290,10 @@ frank-eq verify-stagea-v3
 python scripts/verify_stagea_v3_run.py
 ```
 
-Stage M0 commands:
+Historical Stage M0 validation and verification commands:
 
 ```text
 python scripts/validate_moment_compute.py
-export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
-python olivia/cli.py submit --job-name frank-eq-moment-compute-m0 \
-  --config configs/moment_compute/real_olivia_m0.yaml \
-  --profile full --stages audit --dry-run --json
 python scripts/verify_moment_compute_run.py --run <fetched-run-root>
 ```
 
@@ -358,12 +342,11 @@ Frank-EQ currently establishes only:
   training-selected direct protocols under the frozen RC0 contract; and
 - v3 evidence that the all-token compiler predicts the frozen sources'
   behavioral edge responses, while its semantic basis fails the registered
-  calibration and unseen-renderer gates.
-
-Stage M0 is a frozen prospective development audit, not an empirical result.
-Its implementation and exact-algebra validation add no scientific claim until
-the cluster run is fetched, independently verified, and adopted.
+  calibration and unseen-renderer gates; and
+- Stage M development evidence that the registered high-order graph events are
+  not uniformly readable and their projected executor is worse than the
+  first-order marginal control, despite beating direct responses.
 
 It does not yet establish a cross-model public interface, a hidden-state
 advantage over text/tokens, a qualified one-shot compiler, receiver execution,
-or a positive ICLR claim.
+or a positive ICLR claim. No further experiment is currently authorized.

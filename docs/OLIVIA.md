@@ -18,18 +18,21 @@ result:    ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
 evidence:  evidence/real_stagea_v3_olivia/
 ```
 
-The v3 registration is consumed. Do not submit, recover, or tune it again. The
-only newly authorized experiment is the development-only Stage M0 audit:
+The v3 registration is consumed. Do not submit, recover, or tune it again.
+Stage M0 has also completed:
 
 ```text
-config:  configs/moment_compute/real_olivia_m0.yaml
-profile: full
-stages:  audit
+job:       frank-eq-moment-compute-m0  Slurm 1970800
+state:     COMPLETED 0:0
+decision:  OPERATION_CLOSED_EVENTS_NOT_READABLE
+evidence:  evidence/real_stage_m_olivia_m0/
 ```
 
-Stage M0 has no held sender, test role, receiver access, or claim authority.
-No RC0 rerun, receiver protocol, receiver execution, receiver-world access,
-scientific claim, or paper claim is authorized.
+Stage M0 has no held sender, test role, receiver access, or claim authority. Its
+negative closes the current graph/source line. No RC0 or M0 rerun, successor
+compiler, receiver protocol, receiver execution, receiver-world access,
+scientific claim, or paper claim is authorized. There is no current Olivia
+executable.
 
 ## Runtime contract
 
@@ -52,14 +55,13 @@ W&B remains fail-open telemetry. Its credential is sourced from
 credential itself must never enter the repository, source archive, or Slurm
 submission record.
 
-## Stage M0 dry run and execution boundary
+## Historical Stage M0 execution record
 
-Run the full local contract from `docs/24_STAGE_M_OLIVIA_RUNBOOK.md`, commit any
-intended source changes, and require a clean Git tree. Static validation must
-report 64 worlds, 32 operations, 318 event coordinates, the two exact founder
+The full local contract passed from clean commit `d4e64bb`. Static validation
+reported 64 worlds, 32 operations, 318 event coordinates, the two exact founder
 revisions, zero executor mismatches, and closed protected authorizations.
 
-Then execute exactly:
+The historical dry-run command was:
 
 ```bash
 export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
@@ -71,15 +73,12 @@ python olivia/cli.py submit \
   --dry-run --json
 ```
 
-Inspect the deterministic source/config hashes, exact Qwen3-4B and Qwen3-8B
-revisions, non-null ARM64 image hash, fresh remote root, and shared-cache
-availability.
-The current full launcher profile routes through `olivia/run.slurm` and requests
-one GH200, 32 CPUs, 128 GiB host memory, and 12 hours; the dry-run artifact is
-authoritative if these defaults change.
+The deterministic source/config hashes, exact revisions, non-null ARM64 image
+hash, fresh remote root, and shared cache were inspected before the sole
+submission. The job used `olivia/run.slurm`, one H200, 32 CPUs, 128 GiB, and a
+12-hour limit. These details are provenance, not resubmission authority.
 
-Only after every check passes may the identical command without `--dry-run` be
-submitted. Monitor, fetch, and verify with:
+The completed job was fetched and verified with:
 
 ```bash
 python olivia/cli.py status --job-name frank-eq-moment-compute-m0 --json
@@ -89,8 +88,9 @@ python scripts/verify_moment_compute_run.py \
   --run .agents/state/olivia/frank-eq-moment-compute-m0/remote/runs
 ```
 
-Stage M0 must finish scheduler-successfully even for a scientific gate miss.
-Adopt no result until the fetched tree and independent verifier pass.
+Stage M0 finished scheduler-successfully despite its scientific gate miss. The
+fetched tree, repository verifier, and NumPy-2.2.6 exact-runtime verifier pass;
+compact evidence is adopted. Do not submit the historical command again.
 
 ## Preserved V3 checkpoint preflight
 

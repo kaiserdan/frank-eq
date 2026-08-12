@@ -17,8 +17,9 @@ produced the adopted Stage-A v1 and v2 negatives. RC0 and Stage-A v3-2 later
 completed on Olivia; v3-2's terminal decision is
 `ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`. Do not rerun any of these registrations,
 launch receiver work, or treat a cluster move as fresh scientific authority.
-The newly frozen Stage M0 audit is authorized only through its Olivia config;
-there is no Stage M0 LUMI port or LUMI execution authority.
+Stage M0 subsequently completed on Olivia with
+`OPERATION_CLOSED_EVENTS_NOT_READABLE`; it cannot be rerun or moved to LUMI.
+There is no Stage M0 LUMI port and no current LUMI execution authority.
 
 The historical v1 fetched cache can still be analyzed without model execution
 using:

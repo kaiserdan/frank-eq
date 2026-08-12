@@ -10,21 +10,24 @@ Read, in order:
 1. `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`
 2. `docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`
 3. `docs/24_STAGE_M_OLIVIA_RUNBOOK.md`
-4. `evidence/real_stagea_v3_olivia/AUDIT.md`
-5. `AGENTS.md`
+4. `evidence/real_stage_m_olivia_m0/AUDIT.md`
+5. `evidence/real_stagea_v3_olivia/AUDIT.md`
+6. `AGENTS.md`
 
 ## Current authority
 
 The historical Stage-A v3-2 registration is consumed and cannot be retried or
-tuned. Stage M0 is a new development-only question. It has no held sender, test
-role, receiver access, or claim authority.
-
-The only Stage-M command surface is:
+tuned. Stage M0 is also complete and adopted:
 
 ```text
-config: configs/moment_compute/real_olivia_m0.yaml
-stage:  audit
+job:       frank-eq-moment-compute-m0 / Slurm 1970800
+decision:  OPERATION_CLOSED_EVENTS_NOT_READABLE
+evidence:  evidence/real_stage_m_olivia_m0/
 ```
+
+It has no held sender, test role, receiver access, claim authority, successor
+draft authority, or rerun authority. There is no current Stage-M command
+surface for execution.
 
 ## Required invariants
 
@@ -40,24 +43,22 @@ stage:  audit
 - A valid negative is scheduler-successful and scientifically preserved.
 - Never commit model caches, raw runs, `.agents/state/`, credentials, or W&B keys.
 
-## Commands
+## Historical retrieval commands
 
 ```bash
-python scripts/validate_moment_compute.py
-export FRANK_EQ_IMAGE_SHA256=a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1
-python olivia/cli.py submit \
-  --job-name frank-eq-moment-compute-m0 \
-  --config configs/moment_compute/real_olivia_m0.yaml \
-  --profile full --stages audit --dry-run --json
+python olivia/cli.py status --job-name frank-eq-moment-compute-m0 --json
+python olivia/cli.py fetch --job-name frank-eq-moment-compute-m0 --json
+python olivia/cli.py verify --job-name frank-eq-moment-compute-m0 --json
+python scripts/verify_moment_compute_run.py \
+  --run .agents/state/olivia/frank-eq-moment-compute-m0/remote/runs
 ```
 
-Reject a plan with a null or different image hash. After source, image, remote
-target, and checkpoint inspection, remove `--dry-run`. Fetch and verify with
-`olivia/cli.py`, then run `scripts/verify_moment_compute_run.py`.
+These commands inspect the immutable completed job. They do not authorize
+resubmission or a modified verifier contract.
 
 ## Decision boundary
 
-Only `OPERATION_CLOSED_MOMENT_BASIS_SUPPORTED` permits drafting a separately
-frozen one-shot compiler protocol. It does not authorize that run. All other
-diagnoses stop or redirect the graph/source line according to
-`docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`.
+The observed diagnosis is `OPERATION_CLOSED_EVENTS_NOT_READABLE`, so the frozen
+stop rule closes the current graph/source line. Do not draft or train a Stage M
+compiler, enlarge the basis, tune readout, or rerun M0. A future task requires a
+new scientific question and separately frozen authority.
