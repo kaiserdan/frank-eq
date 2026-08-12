@@ -2,171 +2,124 @@
 
 Snapshot: 2026-08-12
 
-## Completed evidence
+## Adopted evidence
 
-- Synthetic Stage 0: implementation evidence only.
-- Real Stage-A v1 and v2: completed exact-pipeline negatives.
-- Corrected Stage-Q prompt comparison: completed negative.
-- Stronger-checkpoint Stage-Q screens through Qwen3-8B: completed negative.
-- Stage R / RC0: completed development pass; protocol drafting only.
-- Stage-A v3-2: completed exact-pipeline negative;
-  `ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`.
-- Model-local public-head option: implemented but dormant.
+| Stage | Status | Scientific role |
+|---|---|---|
+| Synthetic Stage 0 | complete | implementation evidence only |
+| Real Stage-A v1/v2 | complete | exact-pipeline negatives |
+| Stage Q + scale screens | complete | development negatives |
+| Stage R / RC0 | complete | interactive public-basis development pass |
+| Stage-A v3-2 | complete | terminal one-shot graph-compiler negative |
+| PSR0 | implemented, not run | next development-only census |
 
-The v2 shared public code failed with held-out Brier `0.2065`, fact accuracy
-`0.5509`, cross-model retrieval `0.1528`, wrong-world margin `-0.0607`,
-held-sender retention `-0.3445`, and model-ID leakage over chance `0.6389`.
-The final-token, private-chart, shared-head architecture must not be resumed.
+The original shared/private continuous-code paths must not be resumed. RC0
+showed that a calibrated, interactively queried public graph basis can be
+recovered and composed reliably. Stage-A v3-2 showed that the frozen one-shot
+graph compiler does not produce a renderer-invariant or activation-specific
+semantic interface.
 
-At 8B, the immediate answer-token source screen passed inverse and reciprocity
-but failed mutual, lookup, composition, and out-degree comparison. The completed
-screen therefore exposes a structured wall, but it does not identify whether the
-wall is answer calibration, post-query computation, or missing state information.
-The branch allowed no additional autoregressive scratchpad tokens.
+## Stage-A v3-2 interpretation
 
-## Completed implementation: Stage R / RC0
-
-RC0 ran as a development-only audit on Olivia. It evaluated:
+The v3 machine decision is:
 
 ```text
-answer_token    historical immediate A/B probability
-sequence        semantic false/true sequence likelihood
-reason          32 generated scratchpad tokens
-pause           32 fixed matched-control tokens
+ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
 ```
 
-It also probes a public separating basis containing every directed edge: 12
-slots for four entities and 30 for six. A parameter-free executor composes the
-calibrated basis into lookup, inverse, mutual, two-hop composition, out-degree
-comparison, and counterfactual composition. Exact binary basis inputs reproduce
-the formal oracle and are covered by tests.
+Integrity, behavioral prediction, public alignment, held-sender retention,
+quantization, and oracle execution pass. Semantic Brier, unseen-renderer
+transfer, activation-over-token specificity, and conjunctive composition fail.
+The consumed graph registration is terminal.
+
+The verifier refusal is numerical rather than scientific: exact-runtime
+recomputation localizes 46 reducer-order differences to at most `5.55e-17` and
+preserves the same decision. Future independent reducers use explicit numerical
+tolerance rather than byte equality for floating metrics.
+
+## Implemented successor: PSR0
+
+PSR0 changes the task from visible graph reformatting to noisy sequential
+filtering. It defines a four-dimensional public predictive state through
+probabilities of rank-selected future tests in a controlled hidden Markov model.
+An exact linear public executor maps four core-test probabilities to 18 target
+tests.
 
 Implemented surfaces:
 
 ```text
-src/frank_eq/rate_compute/
-configs/rate_compute/real_lumi_rc0.yaml
-configs/rate_compute/real_olivia_rc0.yaml
-scripts/verify_rate_compute_run.py
-scripts/audit_rate_compute_result.py
-scripts/validate_rate_compute.py
-docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md
-docs/19_STAGE_R_CLUSTER_RUNBOOK.md
-evidence/real_stage_r_olivia_rc0/
+src/frank_eq/predictive_state/__init__.py
+src/frank_eq/predictive_state/automaton.py
+src/frank_eq/predictive_state/config.py
+src/frank_eq/predictive_state/panel.py
+src/frank_eq/predictive_state/probes.py
+src/frank_eq/predictive_state/workflow.py
+src/frank_eq/predictive_state/verify.py
+scripts/predictive_state_cli.py
+scripts/validate_predictive_state.py
+configs/predictive_state/real_olivia_psr0.yaml
+configs/predictive_state/inspected_plan.json
+docs/22_PREDICTIVE_STATE_PSR0.md
+docs/23_PSR0_OLIVIA_RUNBOOK.md
 ```
 
-Both cluster configs use pinned Qwen3-4B and Qwen3-8B revisions, corrected
-`chat_turn`, exclusive KV reuse, no replay fallback, world-grouped intervals,
-and no held or claim-bearing test role. Quickstart scripts accept only the
-`audit` stage for these configs.
-
-The original capture (`frank-eq-rc0-rate-compute-olivia-20260811c`, Slurm
-`1874736`) completed all 89,856 response rows and then hit a mechanical grouped
-aggregation API regression before producing any outcome. A fail-closed,
-hash-bound recovery (`frank-eq-rc0-rate-compute-olivia-20260811d-recovery`,
-Slurm `1891471`) copied the exact capture into a fresh run and executed no model
-inference.
-
-Both verifiers and an independent recomputation pass. The machine diagnosis is
-`PUBLIC_BASIS_COMPOSITION_SUPPORTED`: hard-family compiled Brier is `0.0408`,
-versus direct `0.2035` and prior `0.2181`, with lower-95 gains `0.1542` and
-`0.1661`. Every frozen basis and composition stratum passes, and the independent
-executor has zero hard-oracle mismatches. Generated reasoning is worse than the
-matched pause control, so no reasoning-token benefit is established.
-
-## RC0 promotion boundary
-
-RC0 supports drafting one Stage-A v3 protocol only if every model/complexity
-basis group passes prior-relative Brier and balanced-accuracy gates, and compiled
-hard operations beat both the prior and the training-selected direct protocol.
-Answer-channel and reasoning-versus-pause findings are diagnostic only.
-
-A pass does not authorize a Stage-A run, hidden-state compiler training,
-claim-bearing test access, receiver execution, or a scientific claim.
-
-## Completed implementation: Stage-A v3-2
-
-Stage-A v3-2 is frozen and its causal core is now implemented. The first
-implementation checkpoint adds:
-
-- hash-bound config loading for the exact registration;
-- deterministic role-fresh panels with one complexity-specific operation
-  registry shared across train, validation, and test;
-- a canonical six-entity coordinate registry whose four-entity condition uses
-  the correct 12-coordinate induced subgraph;
-- model-local all-token cross-attention compilers with independent semantic and
-  behavioral parameter sets; and
-- a process-locked access ledger that refuses test creation until founder and
-  held manifests both exist and verify, then consumes the registered access
-  exactly once.
-
-The second implementation checkpoint adds causally ordered all-token capture,
-exclusive cloned-KV semantic and direct teachers, exact prefix bytes/token
-offsets/layer hashes, world-balanced fitting, validation-only early stopping,
-and hash-bound checkpoint reload. The token-ID resampler has exactly the primary
-parameter count; the final-token MLP is constructed and checked within the
-frozen 5% tolerance. A deterministic parser recovers every frozen renderer.
-
-Focused tests cover deterministic panels, renderer completeness, padding
-isolation, coordinate masking, channel disjointness, manifest hash drift, early
-or repeated test access, capture/query accounting, config mutation, text-parser
-exactness, baseline parameter matching, and a fit/save/reload/predict cycle.
-The third implementation checkpoint adds the historical continuous quotient,
-train-only Platt calibration and direct-protocol selection, typed packet
-serialization, deterministic execution, all registered negative/text/oracle
-conditions, hash-bound prediction bundles, world-grouped gates, public retrieval
-and identity probes, held-sender retention, rate/compute accounting, and the
-seven-way machine reducer. Payload, framing, checksum, source queries, generated
-tokens, and consumer work remain separate quantities.
-
-The final implementation checkpoint adds the complete ordered workflow,
-hash-bound founder and held freeze manifests, an exact one-access test-file
-registry, immutable plan comparison, separate generated-reasoning/pause-token
-accounting, compiler FLOP estimates and measured inference/executor wall time,
-an independent hash and metric recomputation audit, CLI commands, and a
-seven-day one-GH200 Olivia entrypoint. The repository launcher rejects partial
-stage sequences, stale plans, dirty source, wrong image provenance, and any
-same-registration recovery after test access.
-
-The one authorized representation workflow has now terminated. Olivia job
-`1899057` completes every registered stage, passes all eleven integrity checks,
-consumes one test grant, and emits the negative diagnosis
-`ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`. Behavioral basis, public alignment,
-held-sender retention, quantization, and oracle execution pass; semantic basis,
-unseen-renderer transfer, activation specificity, and the conjunctive
-composition gate fail.
-
-The workflow then fails closed because the independent verifier reduces bundle
-keys lexicographically and demands byte-exact metrics. Same-runtime diagnostic
-job `1953471` proves that config/workflow order reproduces stored metrics
-exactly, while verifier order creates 46 numeric-only differences no larger
-than `5.55e-17`; the decision is identical. The complete fetched tree matches
-Olivia byte-for-byte, and compact evidence is adopted under
-`evidence/real_stagea_v3_olivia/`.
-
-The miss is terminal for v3-2. No rerun, tuning, receiver protocol, receiver
-execution, receiver-world access, or claim is authorized.
-
-## Tested Stage-A v3 architecture
+## PSR0 frozen design
 
 ```text
-frozen query-blind token/layer state
-        -> complete model-local token/slot compiler
-        -> public typed operational basis
-        -> frozen deterministic or receiver-native executor
+models:                   pinned Qwen3-4B and Qwen3-8B
+predictive rank:          4
+core tests / targets:     4 / 18
+core condition number:    1.8311192670
+train histories:          256 at lengths 8 and 16
+validation histories:     192 at lengths 8, 16, and 32
+fit renderers:            narrative and table
+unseen renderer:          symbolic
+prefixes per model:       1,088
+KV branches per model:    23,936
 ```
 
-The frozen implementation used fresh worlds, a new held sender, separate
-behavioral and oracle-semantic channels, and the complete registered control
-set. It did not qualify the one-shot public interface. Runtime basis probing in
-RC0 remains an upper-bound diagnostic, not a latent interface.
+The primary train-only linear activation probe is compared with an
+order-sensitive token-only hash probe, mean input embeddings, priors, calibrated
+interactive future-test queries, direct target queries, and the oracle basis.
+History is the paired independent unit.
 
-## Not authorized
+High-dimensional ridge fitting uses the dual system when feature width exceeds
+history count. The workflow loads models sequentially, forbids replay fallback,
+uses exact `chat_turn` prefix continuity, and opens no held or test role.
 
-- another scale-only Stage-Q screen under immediate A/B readout;
-- treating interactive basis probing as communication;
-- reusing RC0 worlds or exposed models for held/confirmation roles;
-- restarting the shared-head quotient;
-- retrying or tuning Stage-A v3-2;
-- drafting or executing receiver work;
-- using the exposed v3-2 test outcome to select a successor protocol.
+The independent verifier regenerates automaton, basis, panels, probes,
+predictions, metrics, and decision from hash-bound artifacts. Floating reducer
+comparisons use `atol=rtol=1e-12`; decision and protected authorization fields
+remain fail closed.
+
+## PSR0 promotion boundary
+
+All of the following must pass for every model:
+
+- public core gain over prior on seen, unseen-renderer, length-transfer, and
+  joint-OOD conditions;
+- activation gain over token-only control on joint OOD;
+- unseen-renderer transfer and a seen/unseen Brier gap at most `0.02`;
+- length-32 transfer;
+- compiled target-test gain over both prior and direct prediction on joint OOD,
+  in aggregate and at every target horizon;
+- exact rank/conditioning/executor checks.
+
+A pass permits drafting one fresh PSR Stage 1 registration only. Execution,
+held-sender onboarding, test access, receiver work, scientific claims, and paper
+claims remain unauthorized.
+
+## Next executable action
+
+One content-addressed Olivia dry run is ready:
+
+```bash
+python olivia/cli.py submit \
+  --job-name frank-eq-psr0-olivia-20260812a \
+  --config configs/predictive_state/real_olivia_psr0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
+```
+
+No PSR0 model run has been launched from the implementation branch.

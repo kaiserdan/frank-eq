@@ -45,6 +45,32 @@ stages_arg="${stages_arg//+/ ,}"
 stages_arg="${stages_arg// /}"
 
 case "$config_arg" in
+    configs/predictive_state/*)
+        if [[ "$stages_arg" != "audit" ]]; then
+            echo "PSR0 requires --stages audit; received: $stages_arg" >&2
+            exit 2
+        fi
+        plan_file="${FRANK_EQ_PSR0_PLAN:-configs/predictive_state/inspected_plan.json}"
+        if [[ ! -f "$plan_file" ]]; then
+            echo "missing inspected PSR0 plan: $plan_file" >&2
+            exit 2
+        fi
+        plan_sha256="$($python_bin -c 'import json,sys; print(json.load(open(sys.argv[1]))["plan_sha256"])' "$plan_file")"
+        [[ "$plan_sha256" =~ ^[0-9a-f]{64}$ ]] || {
+            echo "inspected PSR0 plan has no valid internal SHA-256" >&2
+            exit 2
+        }
+        "$python_bin" scripts/predictive_state_cli.py validate --config "$config_arg"
+        "$python_bin" scripts/predictive_state_cli.py run \
+          --config "$config_arg" \
+          --out "${FRANK_EQ_RUN_ROOT:?missing FRANK_EQ_RUN_ROOT}" \
+          --stages "$stages_arg" \
+          --plan "$plan_file" \
+          --inspected-plan-sha256 "$plan_sha256"
+        "$python_bin" scripts/predictive_state_cli.py verify \
+          --config "$config_arg" \
+          --run "$FRANK_EQ_RUN_ROOT"
+        ;;
     configs/stagea_v3/*)
         expected_stages="prepare,founder_fit,freeze,held_onboard,evaluate"
         if [[ "$stages_arg" != "$expected_stages" ]]; then

@@ -1,0 +1,215 @@
+{
+  "access": {
+    "claim_bearing_test_role": false,
+    "future_operation_revealed_before_capture": false,
+    "held_sender": false,
+    "receiver": false
+  },
+  "compute": {
+    "models_loaded_sequentially": true,
+    "prefixes_per_model": 1088,
+    "response_branches_per_model": 23936,
+    "response_tests_per_prefix": 22,
+    "runtime_basis_queries_are_development_tomography": true
+  },
+  "config_path": "configs/predictive_state/real_olivia_psr0.yaml",
+  "config_sha256": "56930aafeacb2d8167c7a363a3ebeb3a7029f27e25596fa145b33b800541993b",
+  "development_only": true,
+  "models": [
+    {
+      "hf_id": "Qwen/Qwen3-4B",
+      "model_id": "qwen3-4b",
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+    },
+    {
+      "hf_id": "Qwen/Qwen3-8B",
+      "model_id": "qwen3-8b",
+      "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+    }
+  ],
+  "panel": {
+    "fit_renderers": [
+      "narrative",
+      "table"
+    ],
+    "train_histories": 256,
+    "train_lengths": [
+      8,
+      16
+    ],
+    "validation_histories": 192,
+    "validation_lengths": [
+      8,
+      16,
+      32
+    ],
+    "validation_renderers": [
+      "narrative",
+      "table",
+      "symbolic"
+    ]
+  },
+  "plan_sha256": "ecad5644536542b29db2dbffc62687a174f828cab307163fe8b0ade55128367c",
+  "protocol_version": "frank_eq_predictive_state_psr0_v1",
+  "public_basis": {
+    "condition_number": 1.831119267029982,
+    "core_tests": [
+      {
+        "actions": [
+          0
+        ],
+        "observation": 0
+      },
+      {
+        "actions": [
+          2
+        ],
+        "observation": 0
+      },
+      {
+        "actions": [
+          1
+        ],
+        "observation": 0
+      },
+      {
+        "actions": [
+          2,
+          2
+        ],
+        "observation": 0
+      }
+    ],
+    "maximum_target_l1": 2.421418212543963,
+    "rank": 4,
+    "target_tests": [
+      {
+        "actions": [
+          2
+        ],
+        "observation": 1
+      },
+      {
+        "actions": [
+          0
+        ],
+        "observation": 2
+      },
+      {
+        "actions": [
+          1,
+          1
+        ],
+        "observation": 0
+      },
+      {
+        "actions": [
+          2,
+          1
+        ],
+        "observation": 1
+      },
+      {
+        "actions": [
+          2,
+          2
+        ],
+        "observation": 2
+      },
+      {
+        "actions": [
+          0,
+          1,
+          2
+        ],
+        "observation": 0
+      },
+      {
+        "actions": [
+          1,
+          1,
+          2
+        ],
+        "observation": 1
+      },
+      {
+        "actions": [
+          2,
+          0,
+          0
+        ],
+        "observation": 2
+      },
+      {
+        "actions": [
+          0
+        ],
+        "observation": 1
+      },
+      {
+        "actions": [
+          1
+        ],
+        "observation": 2
+      },
+      {
+        "actions": [
+          2,
+          1
+        ],
+        "observation": 0
+      },
+      {
+        "actions": [
+          0,
+          2
+        ],
+        "observation": 1
+      },
+      {
+        "actions": [
+          1,
+          2
+        ],
+        "observation": 2
+      },
+      {
+        "actions": [
+          1,
+          0,
+          0
+        ],
+        "observation": 0
+      },
+      {
+        "actions": [
+          2,
+          2,
+          1
+        ],
+        "observation": 1
+      },
+      {
+        "actions": [
+          1,
+          0,
+          2
+        ],
+        "observation": 2
+      },
+      {
+        "actions": [
+          1
+        ],
+        "observation": 1
+      },
+      {
+        "actions": [
+          2
+        ],
+        "observation": 2
+      }
+    ]
+  },
+  "schema": "frank_eq_predictive_state_plan_v1"
+}

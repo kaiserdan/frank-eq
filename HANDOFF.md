@@ -4,334 +4,202 @@ Snapshot: 2026-08-12
 
 ## Current authority
 
-Synthetic Stage 0 passes as implementation evidence only.
-
-Two historical real Stage-A runs are adopted exact-pipeline negatives:
+The adopted evidence contains:
 
 ```text
-v1: frank-eq-stagea-devg-v2     LUMI 20942127   STOP_OR_REVISE_STAGE0
-v2: frank-eq-stagea-lumi-v2     LUMI 20952565   STOP_OR_REVISE_STAGE0
+Synthetic Stage 0          implementation evidence only
+Real Stage-A v1/v2         exact-pipeline negatives
+Stage Q + scale screens    development negatives
+Stage R / RC0              development pass
+Stage-A v3-2               terminal one-shot compiler negative
 ```
 
-Stage Q and the stronger-checkpoint screens are development-only negatives.
-None authorizes a scientific claim, another latent training run, or receiver
-execution.
+RC0 demonstrated that interactively recovered public edge coordinates compose
+far better than direct frozen-model answers. Stage-A v3-2 then showed that the
+registered one-shot graph compiler does not produce a renderer-invariant,
+activation-specific semantic interface. Its test role was consumed exactly once
+and the registration must not be retried or tuned.
 
-Stage R / RC0 is now a completed development pass. The frozen scientific
-capture and its artifact-only recovery were:
+The currently authorized prospective execution is **PSR0 only**:
 
 ```text
-capture:  frank-eq-rc0-rate-compute-olivia-20260811c  Slurm 1874736
-recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
+config: configs/predictive_state/real_olivia_psr0.yaml
+plan:   configs/predictive_state/inspected_plan.json
+stage:  audit
+role:   development-only
 ```
 
-Stage-A v3-2 has now completed as the third exact-pipeline negative:
+PSR0 contains no held sender, claim-bearing test split, receiver stage, or claim
+authorization.
+
+## What the v3 result actually says
+
+The v3 result is not a generic failure of public operational state.
+
+Seen-renderer validation established that the frozen activations contain enough
+information for low-Brier semantic edge prediction under the training grammars.
+The outcome failed because:
+
+1. every model reversed under the unseen canonical grammar;
+2. activations did not beat the matched token-ID compiler;
+3. the held-model and operation-family composition strata did not pass;
+4. the graph basis was explicitly visible in the input, so token/text methods
+   have a complete solution.
+
+The correct conclusion is that the graph task and compiler did not isolate a
+latent, grammar-invariant public state. Do not respond by widening the graph
+compiler, adding target-state reconstruction, or trying another hidden gauge.
+
+## New scientific object
+
+PSR0 uses a controlled noisy automaton. The query-blind prefix contains the
+known dynamics and an action-observation history. The required state is the
+posterior predictive state obtained by sequential Bayesian filtering.
+
+For public future test `tau`:
 
 ```text
-job:       frank-eq-stagea-v3-2-olivia-20260812b  Slurm 1899057
-decision:  ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
-evidence:  evidence/real_stagea_v3_olivia/
+p_tau(h) = b(h)^T q_tau.
 ```
 
-All registered stages and integrity checks complete, and the single test grant
-is consumed. Behavioral basis, public alignment, held-sender retention,
-quantization, and oracle execution pass. Semantic calibration,
-unseen-renderer transfer, activation specificity, and the conjunctive
-composition gate fail.
+A deterministic rank-selected core bank `B` has full-rank matrix `Q_B`, hence:
 
-The terminal Slurm failure is the fail-closed response to an
-independent-verifier bundle-order difference of at most `5.55e-17`. The exact
-runtime reproduces stored metrics bit-for-bit in workflow order and the same
-decision in either order. The original failed audit remains immutable.
+```text
+s_B(h) = b(h)^T Q_B
+p_tau(h) = s_B(h) Q_B^{-1} q_tau.
+```
 
-There is no authorized next execution. Stage-A v3-2 cannot be retried or tuned;
-receiver-protocol drafting, receiver execution, receiver-world access,
-scientific claims, and paper claims all remain false.
+The four core probabilities are therefore an exact public separating basis for
+the 18 registered target tests.
 
-## What the accumulated results establish
-
-### The shared private-code path is not working
-
-The v2 representation has high renderer cosine but negative wrong-world
-specificity, low cross-model retrieval, and near-perfect model identity leakage.
-The exact final-token, model-local-chart, shared-public-head architecture is
-falsified.
-
-### The source screens did not isolate state sufficiency
-
-The Stage-Q response was the immediate probability of one A/B token after the
-operation query. The branch used zero additional autoregressive scratchpad tokens.
-Its Brier score therefore confounds:
-
-- model-local answer-channel calibration;
-- available post-query computation;
-- information in the query-blind state.
-
-The operation pattern is the key clue. At 8B, inverse and reciprocity pass while
-mutual, composition, and out-degree comparison fail. This is consistent with a
-compute/composition wall, not only absent state information.
-
-### Earlier Frank branches point in the same direction
-
-Across SuperFrank, strict realization, SSCT, BaryFrank, Frank-Sol, and CTSI:
-
-- descriptive or predictable hidden structure is repeatedly positive;
-- direct receiver realization and autonomous continuation repeatedly fail;
-- model-local calibration is repeatedly load bearing;
-- structured receiver-native computation is the strongest positive endpoint;
-- learned rule/rendering layers are less reliable than grounded facts plus a
-  deterministic compiler.
-
-The next method must therefore fix the public gauge and expose downstream compute
-rather than add another continuous translator.
-
-## Current scientific hypothesis
-
-A useful cross-model interface is a **public separating operational basis** plus
-an explicit consumer-compute contract.
-
-For an operation bank `K`, basis `B` is separating when equal basis responses
-imply equality under every operation in `K`. A separating basis is a complete
-invariant of operational equivalence, so every target operation factors through
-it. In the controlled graph task, all non-diagonal directed edges are an exact
-basis.
-
-RC0 tested whether the frozen sources can expose that basis and whether a
-parameter-free public executor can compose it into the hard structural
-operations more reliably than direct model reasoning.
-
-## RC0 experiment
+## Frozen PSR0 design
 
 Models:
 
 ```text
-Qwen3-4B  revision 1cfa9a7208912126459214e8b04321603b3df60c
-Qwen3-8B  revision b968826d9c46dd6066d109eabc6255188de91218
+Qwen/Qwen3-4B
+1cfa9a7208912126459214e8b04321603b3df60c
+
+Qwen/Qwen3-8B
+b968826d9c46dd6066d109eabc6255188de91218
 ```
 
-Development panels:
+Data:
 
 ```text
-entity counts:             4 and 6
-worlds per complexity:     96
-renderer views:            2
-registered targets:        32
-basis coordinates:         12 and 30 directed edges
-claim-bearing test worlds: 0
-held sender:               none
+train:       128 histories at lengths 8 and 16
+validation:   64 histories at lengths 8, 16, and 32
+fit grammar: narrative + table
+OOD grammar: symbolic
 ```
 
-Response protocols:
+Per model:
 
 ```text
-answer_token    historical immediate A/B readout
-sequence        semantic false/true candidate likelihood
-reason          32 generated scratchpad tokens + final cue
-pause           32 fixed pause tokens + final cue
+query-blind prefixes:       1,088
+future tests per prefix:       22
+KV response branches:      23,936
 ```
 
-All semantic scores receive train-only Platt calibration. Basis calibration is
-coordinate-specific within each model and complexity; direct target calibration
-is family/protocol-specific. Negative calibration slopes are legal because a
-stable answer-label inversion is local calibration, not missing information.
+The models are loaded sequentially. Every future test is revealed only after
+prefix capture and is executed from an exclusive cloned KV branch. Replay
+fallback is forbidden.
 
-The public executor composes calibrated edge probabilities into lookup, inverse,
-mutual, two-hop composition, out-degree comparison, and counterfactual
-composition. Exact binary basis inputs are required to reproduce the formal
-oracle.
+## Primary comparisons
 
-## RC0 result
+A train-only linear activation probe predicts the four public core-test
+probabilities. It is compared with:
 
-The original job completed both pinned models and all 89,856 raw and calibrated
-response rows before a mechanical aggregation API regression failed the first
-metric. The recovery restored the historical two-output helper contract, bound
-every reused artifact by SHA-256, copied rather than modified the capture, and
-executed no model inference. The original failed job remains immutable.
+- train-history prior;
+- order-sensitive token-hash probe at matched activation width;
+- mean input-embedding probe;
+- calibrated interactive source queries;
+- direct target-test queries;
+- exact oracle predictive state.
 
-The machine diagnosis is `PUBLIC_BASIS_COMPOSITION_SUPPORTED`, independently
-recomputed with no failures and zero hard-oracle executor mismatches. Across
-3,712 hard-family validation predictions, compiled Brier is `0.0408`, versus
-`0.2035` for the training-selected direct baseline and `0.2181` for the prior.
-The lower-95 gains are `0.1542` and `0.1661`; every model/complexity and hard
-family stratum is positive over both baselines.
-
-Semantic sequence likelihood improves over the historical answer-token channel.
-Generated reasoning is worse than the matched fixed-pause condition: the
-reasoning-minus-pause interval is `[-0.00540, -0.00029]`. Preserve this negative
-diagnostic.
-
-## Promotion gate
-
-RC0 supports drafting a Stage-A v3 protocol only if:
-
-1. every model x complexity basis group has lower-95 Brier gain at least zero;
-2. every basis group has balanced accuracy at least 0.60;
-3. compiled hard operations beat the train-world operation prior;
-4. compiled hard operations beat the training-selected direct response protocol
-   for the aggregate and every model x complexity group.
-
-Answer-channel and reasoning-over-pause effects are diagnostic only.
-
-A pass authorizes protocol drafting, not execution.
-
-## Stage-A v3-2 execution record
-
-The frozen implementation, preflight, immutable launch, evaluation, fail-closed
-audit, fetch, exact-runtime diagnosis, and compact evidence adoption are
-complete. The chronology below is retained as provenance, not as a launch
-instruction.
-
-Those pre-launch freezes are now complete: implementation commit `e75952a`,
-archive-hygiene repair `29e2cc3`, Python 3.10 compatibility repair `f91f9d3`,
-and superseding inspected-plan commit `a9a6b74`. The current plan has internal
-hash `694408c6...505922`, plan-file hash `3f4f5740...af0b7`, and
-implementation-tree hash `2fe48197...1014` across 64 bound files. It preserves
-1,824 prefix forwards, 213,408 logical source queries, zero pre-run test access,
-and `held_model_task_opened=false`.
-
-Task-blind Qwen3-14B staging job `1895307` verified 18 hashed files, eight
-weight shards, zero broken files, zero prompts, and no model inference. The
-subsequent neutral-prefix runtime smoke `1895366` loaded the exact offline held
-revision, produced a 5,120-wide hidden state, cloned its KV cache, and verified
-chat-prefix continuity. Its receipt records zero registered worlds, operations,
-answers, and test accesses.
-
-The first v3-2 execution attempt, immutable Olivia Slurm job `1895410` under job
-name `frank-eq-stagea-v3-2-olivia-20260812a`, failed during `founder_fit` after
-computing all 160 Qwen3-4B train/n4 rows. An extreme semantic-sequence score
-rounded to probability `1.0` when stored as float32, and the shard correctly
-failed its existing open-interval validation before serialization. The run
-contains no capture file, founder freeze, held-task exposure, test panel, or
-test access; its ledger records `test_access_count=0` and no registered/opened
-test files. The failed job and fetched logs remain immutable.
-
-This is a pre-test engineering failure under Section 14 of the frozen protocol,
-not a scientific v3-2 outcome. The minimal repair retains raw log-odds, clamps
-only the serialized float32 behavioral probability view to
-`[1e-7, 1-1e-7]`, records the per-shard clamp count, and makes workflow and
-independent verification require that storage contract. A focused endpoint
-round-trip regression passes. The repair is committed as `d40cdf5`; the complete
-local contract passes with 110 tests. The replacement inspected plan has
-internal hash `7b509858...a113c`, plan-file hash `9a728f19...0cbf8`, and
-implementation-tree hash `bf8c87fa...812fc` across the same 64 bound files. It
-preserves the exact config, models, 1,824 prefix forwards, 213,408 logical
-queries, and closed pre-run access flags.
-
-The fresh immutable retry ran as Olivia Slurm job `1899057`, job name
-`frank-eq-stagea-v3-2-olivia-20260812b`, bound to Git `4f93143`, source archive
-`b6203d03...a44e0`, and the replacement plan above. The archive reproduced
-byte-for-byte and independently passed all 64 bound hashes, 208 safe-file
-checks, and generated-artifact/credential exclusions before submission. The
-retry crossed the formerly failing first-shard boundary and froze both founder
-models at `2026-08-12T06:14:41Z` with 50 hash-bound artifacts and no existing
-test files. An independent hash of the 1.10-GB first capture matches the freeze
-manifest. Its embedded summary records 1,115 float32 endpoint clamps, strict
-open-interval targets, unchanged raw log-odds, zero replay, and zero primary
-post-capture queries.
-
-Only after that founder freeze did the ledger enter `held_onboard`. The held
-Qwen3-14B has therefore now legitimately become task-open on registered
-train/validation data. All four held train/validation captures and all 15 held
-checkpoint units completed. The held freeze was written at `09:22:18Z` with 22
-hash-bound artifacts, the exact founder-freeze hash, and no existing test file.
-
-The one-way test boundary has now been crossed. At `09:22:32Z`, 14 seconds after
-the held freeze, the ledger consumed its single grant, registered exactly the
-21 expected test panel/capture/prediction paths, entered `evaluate`, and opened
-the test manifest plus both panels under matching SHA-256 hashes. Qwen3-4B test
-captures for both n=4 and n=6 have now completed all 96 worlds with 10,368 and
-12,096 logical queries respectively and zero recorded errors. Independent
-SHA-256 checks match `c44e661d...2e6c03` for the 780,205,761-byte n=4 capture
-and `938ed418...7d758e0` for the 1,397,854,209-byte n=6 capture. Qwen3-8B test
-captures have also completed all 96 worlds for both n=4 and n=6, with 10,368
-and 12,096 logical queries and zero recorded errors. Independent hashes match
-`e91dc820...19020a` for the 1,247,336,833-byte n=4 capture and
-`5ba3ba0c...84e04f` for the 2,235,406,145-byte n=6 capture. The held Qwen3-14B
-test captures have now completed all 96 worlds for both n=4 and n=6, with
-10,368 and 12,096 logical queries and zero recorded errors. Independent hashes
-match `edc92a81...d814e43` for the 1,558,724,915-byte n=4 capture and
-`76d5ae33...295868` for the 2,793,722,099-byte n=6 capture. All six test
-captures and all 12 registered prediction files now exist; the access ledger
-records exactly one grant and all 21 registered opens. Reduction and audit are
-complete. `decision.json` records `fail` with diagnosis
-`ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`: semantic-basis and unseen-renderer gates
-fail, while behavioral basis, public alignment, held-sender retention,
-quantization, oracle execution, and all eleven integrity checks pass. Composition
-and activation-specificity gates also fail. Every authorization remains false.
-
-The outcome job terminates Slurm `FAILED`/exit 1 only because its fail-closed
-independent audit requires byte-exact metric recomputation. The audit verifies
-118 artifact files, all registered test hashes, integrity, decision, and
-rate/compute, but records `metrics_recomputed_exactly=false`. Exact-runtime
-diagnostic job `1953471` proves the cause: workflow/config bundle order
-reproduces stored metrics at SHA-256 `10dd9254...45e41` with zero differences,
-whereas the verifier's lexicographic bundle order creates 46 floating-point
-roundoff differences, maximum absolute delta `5.55e-17`, without changing the
-decision. This is a verifier order-sensitivity refusal, not a scientific or
-artifact ambiguity. The consumed result must not be rerun or altered. The
-complete 26.45-GB run/log tree was fetched and matched Olivia under a
-checksum-only mirror comparison. The compact hash-verified negative is adopted
-under `evidence/real_stagea_v3_olivia/`.
-
-The primary compiler must make zero post-capture source queries. The graph text
-parser is an oracle-like ceiling because the controlled prefix states every
-edge; a pass cannot support a hidden-over-text claim.
-
-Full operator instructions:
+Mandatory conditions:
 
 ```text
-docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md
-docs/19_STAGE_R_CLUSTER_RUNBOOK.md
-docs/20_STAGEA_V3_PROTOCOL.md
+seen
+unseen_renderer
+length_transfer
+joint_ood = symbolic grammar at length 32
 ```
 
-## Historical decision after RC0
+The machine gate requires every model to pass semantic readability,
+activation-over-token specificity, wrong-history specificity, renderer transfer, length transfer, and
+compiled target-test advantage over both prior and direct query prediction,
+including every target horizon.
 
-### Basis readout fails
+## Implemented surfaces
 
-Stop the current graph/source contract. Do not train a larger latent model.
+```text
+src/frank_eq/predictive_state/automaton.py
+src/frank_eq/predictive_state/panel.py
+src/frank_eq/predictive_state/config.py
+src/frank_eq/predictive_state/probes.py
+src/frank_eq/predictive_state/workflow.py
+src/frank_eq/predictive_state/verify.py
+scripts/predictive_state_cli.py
+scripts/validate_predictive_state.py
+configs/predictive_state/real_olivia_psr0.yaml
+configs/predictive_state/inspected_plan.json
+docs/22_PREDICTIVE_STATE_PSR0.md
+docs/23_PSR0_OLIVIA_RUNBOOK.md
+```
 
-### Basis passes, composition fails against the prior
+The ridge implementation switches to the mathematically equivalent dual solve
+when hidden width exceeds the number of development histories. The independent
+PSR0 verifier tolerates only `1e-12` numerical reduction differences while
+recomputing panels, probes, predictions, metrics, and decisions.
 
-Investigate structured calibration/dependence on development data only. Do not
-change the private representation.
+## Next command
 
-### Composition beats the prior but not direct computation
+```bash
+python olivia/cli.py submit \
+  --job-name frank-eq-psr0-olivia-20260812a \
+  --config configs/predictive_state/real_olivia_psr0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
+```
 
-Retain the basis as a diagnostic; it is not yet the constructive paper result.
+Inspect the content-addressed source SHA, clean Git status, checkpoint cache, and
+plan SHA before submitting the same package without `--dry-run`.
 
-### Composition beats direct computation
+## Decision after PSR0
 
-This is the observed RC0 branch. Draft one Stage-A v3 registration using:
+A pass authorizes drafting one fresh PSR Stage 1 registration only. That future
+stage would require fresh histories, a genuinely unopened sender, model-local
+one-shot core-test compilers, rate-matched text/token/recurrent-filter baselines,
+and a frozen executor.
 
-- fresh claim-bearing worlds;
-- a new unopened held sender;
-- complete model-local token/slot compilers into typed public coordinates;
-- separate self-future behavioral and oracle-semantic channels;
-- text/token/direct/continuous/oracle baselines;
-- receiver execution still locked.
-
-The runtime basis probing in RC0 is an upper-bound diagnostic. Stage-A v3 must
-replace it with a one-shot source-local compiler before any communication claim.
+A PSR0 failure is terminal for the corresponding diagnosis. Do not use its
+validation histories to adapt thresholds, automaton matrices, renderer grammar,
+probe family, layer set, or model roster and rerun under the same identity.
 
 ## Prohibited actions
 
-- Running another Stage-Q scale screen under the immediate A/B contract.
-- Treating RC0 interactive basis queries as a latent interface.
-- Reusing RC0 development worlds for Stage-A confirmation.
-- Reusing any development-exposed model as the future held sender.
-- Resuming the shared-head oracle quotient.
-- Selecting a Stage-A architecture on a fresh claim-bearing test split.
-- Starting receiver-native execution.
-- Retrying, recovering, or tuning Stage-A v3-2 after its consumed test result.
-- Drafting a receiver protocol from the negative v3-2 decision.
+- Retrying or tuning Stage-A v3-2.
+- Using the consumed v3 test outcomes as a selection set for another graph
+  registration.
+- Treating RC0 runtime tomography as one-shot communication.
+- Adding another shared private latent space.
+- Mapping directly into receiver hidden coordinates as the primary method.
+- Opening a PSR claim-bearing split or held sender during PSR0.
+- Promoting a PSR0 aggregate when any model or joint-OOD gate fails.
+- Starting receiver execution.
+- Committing generated captures, model checkpoints, scheduler state,
+  `.agents/state/`, or credentials.
 
-## Evidence policy
+## Validation
 
-Generated responses, captures, checkpoints, prediction arrays, model caches,
-and operational state remain outside Git. The adopted compact packages are:
-
-```text
-evidence/real_stage_r_olivia_rc0/
-evidence/real_stagea_v3_olivia/
+```bash
+python -m compileall -q src scripts olivia lumi
+ruff check src scripts tests
+pytest -q
+bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
+python scripts/validate_repo.py
+python scripts/validate_rate_compute.py
+python scripts/validate_predictive_state.py
 ```

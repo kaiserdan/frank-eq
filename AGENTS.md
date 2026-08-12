@@ -2,251 +2,137 @@
 
 ## Mission
 
-Frank-EQ studies whether an LLM state formed before an operation is revealed can
-be compiled into a public operational interface. The project is not an
-unrestricted hidden-state architecture search. Every experiment must answer a
-frozen question, preserve information boundaries, and fail closed.
+Frank-EQ studies whether a query-blind frozen-model state can be compiled into
+an externally identifiable predictive or operational interface. Do not optimize
+hidden-coordinate similarity as an end in itself. Every experiment must preserve
+causal order, use a frozen question, and fail closed.
 
 ## Reading order
 
 1. `README.md`
 2. `HANDOFF.md`
-3. `evidence/real_stagea_v3_olivia/AUDIT.md`
-4. `docs/20_STAGEA_V3_PROTOCOL.md`
-5. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
-6. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
+3. `docs/22_PREDICTIVE_STATE_PSR0.md`
+4. `docs/23_PSR0_OLIVIA_RUNBOOK.md`
+5. `evidence/real_stagea_v3_olivia/AUDIT.md`
+6. `docs/20_STAGEA_V3_PROTOCOL.md`
 7. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
-8. `evidence/real_stagea_lumi_v2/REVIEW.md`
-9. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
-10. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
-11. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
-12. `docs/05_GATES_AND_STOP_RULES.md`
-13. `docs/09_IMPLEMENTATION_STATUS.md`
-14. `docs/10_DECISION_LOG.md`
-15. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
+8. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
+9. `docs/09_IMPLEMENTATION_STATUS.md`
+10. `docs/10_DECISION_LOG.md`
 
-For cluster work, also read the matching runner skill under `.agents/skills/`.
+For Olivia work, also read `.agents/skills/olivia-cluster-runner/SKILL.md`.
 
 ## Current authority
 
-Synthetic Stage 0 passes as implementation evidence only. Real Stage-A v1 and
-v2 are exact-pipeline negatives. Stage Q and its scale screens are development
-negatives. Stage R / RC0 is an adopted development pass:
+RC0 is an adopted development pass for interactive typed-basis recovery and
+composition. Stage-A v3-2 is an adopted terminal negative for the registered
+one-shot graph compiler. Its test access is consumed and cannot be reopened.
+
+The only authorized prospective execution is PSR0:
 
 ```text
-capture:  frank-eq-rc0-rate-compute-olivia-20260811c  Slurm 1874736
-recovery: frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
-result:   PUBLIC_BASIS_COMPOSITION_SUPPORTED
+config: configs/predictive_state/real_olivia_psr0.yaml
+plan:   configs/predictive_state/inspected_plan.json
+stage:  audit
+role:   development-only
 ```
 
-Stage-A v3-2 completed on Olivia as job `1899057`. It is an adopted
-exact-pipeline negative:
+No held sender, claim-bearing test role, receiver, scientific claim, or paper
+claim is authorized.
+
+## Scientific interpretation
+
+### Preserve the v3 negative without broadening it
+
+V3 succeeded on seen-renderer semantic decoding and on the behavioral channel,
+but failed unseen grammar, activation-over-token specificity, and conjunctive
+composition. This rules out the exact graph/compiler contract. It does not prove
+that LLM activations lack predictive state.
+
+### Do not continue on visible graph facts
+
+The graph edge basis is printed in the prefix. A parser or token-only model has a
+complete semantic solution. Do not use another graph compiler as the primary
+positive paper direction.
+
+### Predictive state is the next object
+
+For a noisy controlled process, future-test probability is
 
 ```text
-decision:  ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
-evidence:  evidence/real_stagea_v3_olivia/
+p_tau(h) = b(h)^T q_tau.
 ```
 
-Every integrity check passes and the test grant was consumed once. Behavioral
-basis, public alignment, held-sender retention, quantization, and oracle
-execution pass. Semantic basis, unseen-renderer transfer, activation
-specificity, and conjunctive composition fail.
-
-The terminal job failure is a fail-closed verifier bundle-order refusal. An
-exact-runtime reducer diagnostic reproduces stored metrics bit-for-bit in
-workflow/config order and the same machine decision in either order. Preserve
-the original failed audit; do not relabel it as a pass.
-
-There is no authorized next execution. Stage-A v3-2 cannot be retried,
-recovered, or tuned. Receiver-protocol drafting, receiver execution, new
-receiver-world access, scientific claims, and paper claims remain locked.
-
-## Completed Stage-A v3 execution boundary
-
-- Fresh train/validation/test seeds `2026081201/02/1297` are now exposed and
-  cannot be reused for confirmation. The v3-1 test seed `2026081203` remains
-  permanently void.
-- The held `Qwen/Qwen3-14B` revision
-  `40c069824f4251a91eefaf281ebe4c544efd3e18` is task-exposed under v3-2 and
-  cannot serve as a future unopened sender.
-- Test panels must not exist before founder and held freeze manifests.
-- The primary compiler consumes all prefix-token residuals at four frozen depths
-  and makes zero post-capture source queries.
-- Semantic and behavioral compilers have separate model-local parameters,
-  losses, checkpoints, and metrics.
-- Run every registered token/text/direct/continuous/interactive/oracle control.
-- World-group all intervals and report message rate with source and consumer
-  compute.
-- A valid gate miss is terminal for v3-2.
-
-## Scientific invariants
-
-### Preserve exact negatives without broadening them
-
-The completed shared-head, final-token architectures failed. Do not generalize
-those results to the full KV/runtime state or to all possible operational
-interfaces.
-
-### A future signature includes an explicit compute contract
-
-Use:
+A full-rank public core bank `B` gives
 
 ```text
-Sigma_M(h; k, c) = p_M(y | h, k, c)
+s_B(h) = b(h)^T Q_B
+p_tau(h) = s_B(h) Q_B^{-1} q_tau.
 ```
 
-where `c` records the answer/readout protocol and any post-reveal token budget.
-Do not call immediate next-token A/B probability the model's full future
-computational competence.
+PSR0 tests whether query-blind activations expose this compact predictive state
+more cleanly than matched token-only controls.
 
-### Separate calibration, computation, and information
+## PSR0 invariants
 
-RC0 distinguishes:
+- Use only the committed config and inspected plan.
+- Run exactly `audit`.
+- Use the pinned Qwen3-4B and Qwen3-8B revisions.
+- Form the prefix state before any future test or candidate answer is revealed.
+- Use corrected `chat_turn`, exact prefix continuity, exclusive cloned KV reuse,
+  and no replay fallback.
+- Train/select probes on training histories only.
+- Keep all renderer views of one history in the same role and bootstrap history
+  units, not rows.
+- Treat the symbolic grammar and history length 32 as validation-only transfer.
+- Keep oracle-semantic and model-behavioral predictive states separate.
+- Count runtime future-test queries as tomography, not packet rate.
+- Require every model and joint-OOD gate; no aggregate override.
+- Keep all protected authorization fields false.
 
-- historical A/B answer-token logits;
-- semantic candidate-sequence likelihood;
-- generated reasoning tokens;
-- matched fixed pause tokens;
-- public-basis sufficiency.
+## PSR0 decision tree
 
-A train-only local calibration map may reverse a stable answer-label inversion.
-That is a readout correction, not evidence that the state was absent.
+### `PREDICTIVE_BASIS_OR_EXECUTOR_INVALID`
 
-### State formation precedes operation reveal
+Repair only engineering or mathematical defects. Do not interpret model results.
 
-No operation, query, target, candidate answer, or future label may influence the
-captured prefix state. `chat_turn` must verify exact token-prefix continuity.
+### `ACTIVATION_PREDICTIVE_STATE_NOT_READABLE`
 
-### Use exclusive KV branching
+Stop the registered model/task contract. Do not add a larger probe search.
 
-KV reuse and replay differed materially on the LUMI stack. RC0 requires cloned
-KV branches and forbids replay fallback or mixed caches.
+### `NO_ACTIVATION_SPECIFIC_PREDICTIVE_STATE_ADVANTAGE`
 
-### Public coordinates must be identifiable
+The transcript controls explain the result. Do not claim a hidden-state
+interface.
 
-A shared private vector is not a public interface. RC0's directed-edge basis is
-gauge fixed by semantics: coordinate `(i,j)` always means the same fact.
+### `PREDICTIVE_STATE_NOT_RENDERER_INVARIANT`
 
-A future Stage-A compiler may be completely model local. Only typed coordinate
-meaning, packet schema, and executor are shared.
+The readout is grammar-bound. Do not tune on PSR0 validation histories.
 
-### A separating basis is an upper-bound diagnostic, not yet a latent interface
+### `PREDICTIVE_STATE_NOT_LENGTH_TRANSFERABLE`
 
-RC0 queries the source model for every basis coordinate after capture. This
-interactive tomography tests information and composition. It is not a one-shot
-hidden-state compiler and cannot support a communication claim.
+The readout is regime-specific rather than a stable filter state.
 
-Stage-A v3, only after RC0 passes, must learn a source-local token/slot compiler
-that emits the same typed coordinates without runtime basis interrogation.
+### `PUBLIC_PREDICTIVE_STATE_NOT_COMPOSITIONALLY_USEFUL`
 
-### Behavioral and semantic channels are distinct
+The core state does not outperform direct future-test prediction.
 
-`model_signatures` describe what the frozen source will do. Oracle facts describe
-external correctness. Do not merge them into one unnamed loss or claim.
+### `PUBLIC_PREDICTIVE_STATE_CANDIDATE_SUPPORTED`
 
-### Consumer compute is part of the interface
-
-A message can be useful only relative to an executor and compute budget. Report
-both message/rate and downstream computation; do not compare a reusable basis
-against a single direct answer without the amortization boundary.
-
-### World is the paired independent unit
-
-All model, renderer, operation, basis, and protocol rows for a world remain in
-one development split. Calibration and protocol selection use training worlds;
-validation worlds are scored only after those choices are frozen.
-
-### Declared controls are not discoveries
-
-Density and reciprocity labels are printed in the historical graph prefixes.
-They remain controls and cannot promote RC0.
-
-### Machine artifacts outrank prose
-
-Use evidence in this order:
-
-1. frozen config and source identity;
-2. causal branch and cache validation;
-3. machine decision;
-4. world-grouped metrics;
-5. response artifacts and calibration state;
-6. W&B telemetry;
-7. prose.
-
-## Completed RC0 execution record
-
-1. Local compile, lint, tests, shell checks, and both repository validators passed.
-2. The content-addressed Olivia plan ran only the frozen audit stage.
-3. A post-capture aggregation failure was recovered artifact-only under a fresh
-   source and job, with no model inference and no prior outcome artifacts.
-4. Repository and RC0-specific verification passed.
-5. An independent audit reproduced the metrics, strata, and decision.
-6. The compact hash-verified package is under
-   `evidence/real_stage_r_olivia_rc0/`.
-7. Do not launch Stage-A v3 merely because RC0 passes.
-
-## Completed Stage-A v3-2 execution record
-
-1. The frozen registration, implementation, numeric storage repair, and
-   content-addressed plan passed the full local contract.
-2. The immutable Olivia outcome job preserved founder freeze, held onboarding,
-   held freeze, one-time test access, and evaluation order.
-3. All six test captures and all 12 prediction files completed with no capture
-   error; all eleven integrity checks pass.
-4. The machine decision is `ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`.
-5. The original independent audit fails only byte-exact metric recomputation;
-   decision and rate/compute recompute exactly.
-6. Exact-runtime diagnostic job `1953471` localizes the refusal to bundle-order
-   roundoff no larger than `5.55e-17`, with no gate or decision change.
-7. The complete fetched tree matches Olivia byte-for-byte, and the compact
-   package is adopted under `evidence/real_stagea_v3_olivia/`.
-8. Stop this compiler/task contract. Do not launch receiver work or another
-   v3-2 run.
-
-## RC0 decision tree
-
-### `BASIS_READOUT_NOT_QUALIFIED`
-
-Stop the current source/task contract. Do not enlarge the latent architecture.
-
-### `PUBLIC_BASIS_NOT_SUFFICIENT`
-
-Inspect only structured calibration or executor assumptions on development data.
-
-### `NO_COMPOSITION_ADVANTAGE_OVER_TRAIN_SELECTED_DIRECT_BASELINE`
-
-The basis is a diagnostic, not the constructive paper result.
-
-### `PUBLIC_BASIS_COMPOSITION_SUPPORTED`
-
-Draft exactly one fresh Stage-A v3 protocol using:
-
-- new claim-bearing worlds;
-- a new unopened held sender;
-- complete model-local token/slot compilers;
-- separate behavioral and oracle-semantic channels;
-- token/text/direct/continuous/oracle baselines;
-- receiver work still locked.
+Draft one fresh PSR Stage 1 registration. Do not execute it automatically.
 
 ## Prohibited shortcuts
 
-- Another scale-only Stage-Q screen under immediate A/B readout.
-- Running RC0 with anything other than `audit`.
-- Tuning RC0 thresholds after validation outcomes are read.
-- Treating runtime basis probing as latent communication.
-- Reusing RC0 worlds or exposed models as future held/confirmation roles.
-- Resuming the shared-head oracle quotient.
-- Mapping directly into a receiver hidden state as the primary method.
+- Retrying or tuning Stage-A v3-2.
+- Using the consumed v3 test role to select a successor graph architecture.
+- Resuming shared private latent alignment.
+- Mapping directly into target/receiver hidden state as the primary method.
 - Mixing replay and KV branches.
-- Jointly training sender and receiver in the primary condition.
-- Committing generated caches, checkpoints, `.agents/state/`, API keys, or W&B
-  credentials.
-- Creating or opening Stage-A v3 test panels before both compiler freeze steps.
-- Selecting a compiler seed, baseline, calibrator, threshold, renderer, or
-  checkpoint after v3 test access.
-- Retrying or recovering Stage-A v3-2 after its consumed test access.
-- Using v3-2 test metrics to tune or select a successor registration.
-- Drafting a receiver protocol from the negative v3-2 decision.
+- Opening a held sender or claim-bearing PSR split during PSR0.
+- Changing automaton matrices, histories, renderers, gates, models, layers, or
+  probes after reading PSR0 validation outcomes and rerunning the same protocol.
+- Starting receiver execution.
+- Committing generated runs, model snapshots, `.agents/state/`, or credentials.
 
 ## Development validation
 
@@ -257,7 +143,7 @@ pytest -q
 bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
+python scripts/validate_predictive_state.py
 ```
 
-For any behavioral change, add a focused test and update the frozen protocol
-before an experiment is launched.
+Machine decisions, hashes, and independent recomputation outrank prose and W&B.

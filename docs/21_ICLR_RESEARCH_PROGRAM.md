@@ -1,304 +1,160 @@
 # Frank-EQ ICLR research program
 
-Status: research synthesis and prospective decision map. RC0 remains the only
-currently authorized execution.
+Status: updated after the terminal Stage-A v3-2 result. PSR0 is the only
+currently authorized prospective execution.
 
-## 1. Scientific diagnosis from the complete Frank lineage
+## 1. What the complete lineage now says
 
-The accumulated projects do not support a universal continuous coordinate
-system as the primary object. They support four sharper separations:
-
-```text
-shared/predictable geometry  != receiver-native utility
-receiver-native utility      != semantic specificity
-oracle packet sufficiency    != sender compilation
-single-step readout           != future computational sufficiency
-```
-
-The strongest recurring facts are:
-
-1. hidden states often share descriptive and predictive structure;
-2. target-state reconstruction and legal vocabulary realization remain brittle;
-3. source-local calibration is repeatedly load bearing;
-4. structured receiver-native computation is the strongest causal endpoint;
-5. independently learned senders fail when asked to enter a founder-private
-   gauge or reproduce a learned renderer;
-6. the recent Stage-Q screens confound answer calibration, post-query compute,
-   and state information.
-
-The correct constructive question is therefore not:
-
-> Can one model's hidden vector be mapped into another model's hidden vector?
-
-It is:
-
-> Can independently trained source-local compilers populate the same externally
-> identifiable operational state, at a useful rate, for a frozen executor with
-> a declared compute budget?
-
-## 2. Public operational quotients
-
-Let `Z` be the external state space and `K` a family of future operations. Define
+The accumulated evidence supports four separations:
 
 ```text
-z ~_K z'  iff  f_k(z) = f_k(z') for every k in K.
+predictable hidden geometry    != receiver-native utility
+interactive public basis       != one-shot sender compilation
+visible semantic recovery      != latent predictive state
+average improvement            != robust held/stratified qualification
 ```
 
-The quotient `Q_K = Z / ~_K` is the minimal semantic object needed to support the
-registered future operations. It does not preserve distinctions that no future
-operation can observe.
+The project should no longer search for a universal continuous coordinate
+system or a direct hidden-state translator. Those objects repeatedly preserve
+model identity, fail specificity, or collapse under receiver realization.
 
-### Proposition 1: message lower bound
+RC0 provides the strongest constructive evidence: an externally named basis can
+be recovered interactively and composed by a frozen executor. Stage-A v3-2 then
+shows that the graph task does not support a one-shot activation-specific claim:
+the edge state is visible to tokens, and the learned compiler binds to grammar.
 
-Any zero-error one-shot public message supporting all operations in `K` must
-distinguish every class in `Q_K`. Therefore its alphabet satisfies
+The correct question is:
+
+> Can independently trained model-local compilers expose the same public
+> predictive state when that state must be computed from history rather than
+> copied from the prompt?
+
+## 2. Public predictive quotients
+
+For histories `h` and registered future tests `tau`, define operational
+predictive equivalence by
 
 ```text
-|M| >= |Q_K|,
+h ~ h'  iff  p_tau(h) = p_tau(h') for every registered tau.
 ```
 
-and its worst-case rate is at least
+A core test bank `B` is separating when equality of its predictions implies this
+equivalence. In a finite controlled process:
 
 ```text
-R >= ceil(log2 |Q_K|).
+p_tau(h) = b(h)^T q_tau.
 ```
 
-This is the relevant lower bound for interoperability. Hidden dimension, CKA,
-and reconstruction R2 do not determine it.
-
-### Proposition 2: separating-basis factorization
-
-A public test bank `B` is separating when equality under all basis tests implies
-operational equivalence under `K`. Then every target operation factors through
-the public basis:
+If the core matrix `Q_B` has full predictive rank:
 
 ```text
-f_k = g_k o T_B.
+s_B(h) = b(h)^T Q_B
+p_tau(h) = s_B(h) Q_B^{-1} q_tau.
 ```
 
-The proof follows because `T_B` is injective on `Q_K`; `g_k` is well defined on
-its image.
+This is a public, future-defined state. Its coordinates are named observable
+future events rather than latent-state labels or hidden axes.
 
-### Proposition 3: query-conditioned rate
+## 3. The rate--compute object
 
-For one known future operation `k`, the relevant quotient is
-
-```text
-Q_k = Z / ~_k,
-```
-
-so a query-conditioned packet needs only
-
-```text
-R_k >= ceil(log2 |Q_k|).
-```
-
-A universal reusable packet and a query-conditioned packet therefore occupy
-different rate points. Their utility must not be compared without amortizing the
-number of future queries served by the reusable state.
-
-### Approximate interfaces
-
-For a probabilistic basis estimate `b_hat`, an operation executor `g_k`, and
-metric `d`, local error obeys
-
-```text
-d(g_k(b), g_k(b_hat)) <= L_k d(b, b_hat)
-```
-
-when `g_k` is `L_k`-Lipschitz on the relevant region. Composition operations can
-have much larger sensitivity than direct lookup. This predicts a graded
-rate/calibration requirement even when the same basis is semantically complete.
-
-## 3. The full rate--compute object
-
-The useful interface frontier has three resources:
+A useful interface lives on
 
 ```text
 U(C_source, R_message, C_consumer).
 ```
 
-- `C_source`: query-blind producer computation used to form a reusable state;
-- `R_message`: communicated public state or selected packet;
-- `C_consumer`: post-reveal computation used to execute a future operation.
+- `C_source`: query-blind computation used to build a reusable state;
+- `R_message`: public state rate;
+- `C_consumer`: computation after the future request is known.
 
-Previous Frank projects usually changed all three implicitly or held them at
-unexamined values. Stage-Q fixed `C_source` near zero, used no explicit message,
-and evaluated an immediate one-token consumer. RC0 varies the response/consumer
-contract and public rate while holding producer preparation fixed.
+RC0 varied response and consumer compute while using interactive basis queries.
+PSR0 asks whether the reusable predictive state is already linearly readable
+from frozen activations. A later Stage 1, only after a pass, would learn a
+one-shot sender compiler and measure the full frontier.
 
-A later producer-preparation audit is warranted only if RC0 shows that public
-basis information is inaccessible without query-time computation. It must
-compare query-blind generated preparation against an equal-token pre-pause
-control before capture.
+## 4. PSR0: decisive development census
 
-## 4. Why the old graph conclusion was not identified
+PSR0 uses a fresh four-state controlled HMM and a deterministic rank-selected
+bank of four core tests. The sufficient state requires Bayesian filtering over
+noisy action-observation histories. The same process is rendered through two fit
+grammars and one unseen symbolic grammar; length 32 is validation-only.
 
-The earlier 16-operation panels contained two instances per family and held out
-one. Each reported family result therefore depended on a single operation
-instance, argument tuple, and polarity. The claim that multi-edge depth was the
-binding wall was stronger than the design supported: lookup and inverse have the
-same one-edge complexity yet moved in opposite directions in the 8B screen.
-
-RC0 uses four registered instances per family and scores the same frozen
-instances across independent validation worlds. It still remains a development
-localization study, not a broad benchmark claim.
-
-## 5. RC0 and the next architecture
-
-RC0 tests an exact semantic basis: every directed edge. The basis is deliberately
-simple because it provides a theorem-backed separating set and a deterministic
-executor. Its interactive source probes are an upper bound on what a future
-one-shot compiler could recover.
-
-A positive RC0 result supports the following Stage-A v3 architecture:
+The decisive comparison is not activation versus no information. It is:
 
 ```text
-source token/layer/KV state before query
-        |
-        v
-model-local typed slot extractor E_m
-        |
-        v
-public basis b_hat in [0,1]^d
-        |
-        +--> frozen deterministic executor g_k
-        |
-        +--> optional receiver-native rendering
+activation probe
+versus full transcript token-only probe
+versus lexical embedding probe
+versus interactive future-test teacher
+versus direct target query
+versus exact public oracle
 ```
 
-### Model-local compiler
+A meaningful positive result requires activation-specific advantage on the
+joint-OOD condition, not merely good in-distribution decoding.
 
-Each model receives an independent compiler. The recommended extractor is a
-small set of typed slot queries attending over source token positions and
-selected layers, rather than an MLP over the final token:
+## 5. Stage 1 only after a PSR0 pass
+
+A fresh claim-bearing registration would use:
 
 ```text
-slot(i,j) query -> cross-attention over token/layer memory -> edge probability
+query-blind token/layer/KV state
+        -> model-local typed core-test compiler
+        -> public predictive state
+        -> frozen target-test executor
+        -> optional receiver-native rendering
 ```
 
-Entity anchors are public or pointer grounded. No hidden chart, fact head,
-router, or residual decoder is shared between model families.
+It must include:
 
-### Two output namespaces
+- fresh train/validation/test histories;
+- a genuinely unopened held sender;
+- model-local compilers with no shared private bottleneck;
+- token-only, raw-text, recurrent Bayesian/filtering, rate-matched summary,
+  direct-query, historical continuous-latent, and oracle-state baselines;
+- matched wrong-history specificity;
+- held-sender onboarding without executor retraining;
+- rate and source/consumer compute accounting;
+- one formal natural-language filtering or logical-closure domain.
+
+## 6. Positive ICLR package required
+
+A competitive constructive paper should require all of:
+
+1. formal predictive quotient and separating-core factorization;
+2. activation-specific public-state recovery under grammar and length shift;
+3. target-test composition advantage over direct prediction;
+4. positive wrong-history specificity;
+5. held-sender retention at least `0.80` with a frozen executor;
+6. a useful amortized rate advantage over text/token communication;
+7. receiver-native execution in at least one formal natural-language domain;
+8. stable worst-model and worst-condition results.
+
+Without these, the project is better framed as a rigorous negative ladder than a
+positive interoperability method.
+
+## 7. Kill rules
+
+Stop the constructive line if the registered stage shows any of:
+
+- predictive core state is not readable from activations;
+- token-only controls match activations on joint OOD;
+- renderer or length transfer fails;
+- public composition does not beat direct target prediction;
+- held onboarding requires executor or founder retraining;
+- gains disappear under wrong-history controls;
+- the method reduces to pair-specific hidden translation.
+
+Do not answer a kill with a broad architecture sweep.
+
+## 8. Current next action
+
+Run one frozen PSR0 development audit on Olivia:
 
 ```text
-semantic basis:
-  externally correct public facts/core tests
-
-behavioral basis:
-  frozen source model's own future response distribution
+configs/predictive_state/real_olivia_psr0.yaml
+configs/predictive_state/inspected_plan.json
 ```
 
-The semantic channel enables correct external execution. The behavioral channel
-tests whether the compiler preserves the model's own reusable causal state even
-when that state is wrong. They require separate losses and claims.
-
-### Required controls
-
-A latent-space contribution is authorized only if the hidden-state compiler
-beats:
-
-- deterministic/raw-text parsing where available;
-- token-ID and embedding-only slot extractors;
-- final-token residual probes;
-- direct complex-operation prediction;
-- historical continuous quotient transport;
-- rate-matched natural-language summaries;
-- oracle public basis.
-
-On the current explicit graph text, a parser is an intentionally unbeatable
-semantic baseline. Stage-A v3 is therefore an architecture/mechanism canary, not
-the final application result.
-
-## 6. The natural task required for the final paper
-
-A competitive paper needs a domain where the useful operational state is not
-merely a lossless reformatting of visible input. The final task should satisfy:
-
-1. observations arrive sequentially or noisily;
-2. the sufficient state requires aggregation, filtering, or closure;
-3. multiple future operations are unknown when the state is formed;
-4. an external solver or simulator defines public core tests;
-5. token/text baselines are rate matched;
-6. a new sender can be onboarded without retraining the executor.
-
-The strongest candidate is a controlled latent-state filtering task:
-
-```text
-observation history -> belief/predictive state -> unknown future tests
-```
-
-Examples include finite POMDP belief tracking, hidden automata, noisy relational
-worlds, and solver-backed logical closure. Predictive-state representation theory
-provides the relevant object: a finite set of core tests whose predictions form
-a sufficient state without requiring recovery of an arbitrary latent variable.
-
-A natural-language proof domain can follow as Stage 1 once the controlled
-mechanism passes. ProofWriter-style private facts or solver-backed logic grids
-allow exact public facts, proof certificates, matched wrong worlds, and native
-receiver execution.
-
-## 7. Prospective paper structure
-
-### Thesis
-
-> Public operational bases, not aligned hidden coordinates, determine whether
-> independently trained language models can interoperate. Utility lies on a
-> producer-compute/message-rate/consumer-compute frontier.
-
-### Main contributions
-
-1. formal operational quotient, message lower bound, and separating-basis
-   factorization;
-2. a prospective ladder separating geometry, basis recovery, composition,
-   sender establishment, and receiver execution;
-3. model-local typed compilers into an externally identifiable predictive state;
-4. held-sender establishment with a frozen executor;
-5. rate--compute curves and matched text/token/direct/continuous baselines;
-6. a compact retrospective map of prior Frank negatives as motivating evidence,
-   not pooled confirmatory data.
-
-### Positive evidence required
-
-The paper should not be submitted as a constructive ICLR paper unless a frozen
-confirmation shows:
-
-- public-basis recovery above all token/text controls where hidden state is
-  claimed to help;
-- composition gain over direct prediction;
-- positive specificity against matched wrong states;
-- held-sender retention at least 0.80;
-- no receiver retraining;
-- stable worst-model and worst-complexity results;
-- a useful rate advantage or amortized multi-query advantage;
-- receiver-native execution on at least one formal natural-language domain.
-
-## 8. Kill rules
-
-Stop the constructive line when any of the following remains true after the
-registered stage designed to address it:
-
-- the source cannot expose a separating basis under calibrated semantic probes;
-- a token/text extractor matches the hidden-state compiler everywhere;
-- public composition does not beat direct operation prediction;
-- a held sender requires founder or receiver retraining;
-- gains disappear under matched wrong-state controls;
-- only average utility is positive while worst-tail harm worsens;
-- the final method reduces to pair-specific target-state translation.
-
-A negative RC0 does not justify another broad architecture sweep. A positive RC0
-does not by itself justify a latent-interface claim. It determines whether the
-one-shot typed-compiler experiment is scientifically warranted.
-
-## 9. Current next action
-
-Run exactly one frozen RC0 audit on LUMI or Olivia and adopt its evidence before
-changing the architecture:
-
-```text
-configs/rate_compute/real_lumi_rc0.yaml
-configs/rate_compute/real_olivia_rc0.yaml
-```
-
-See `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`.
+See `docs/22_PREDICTIVE_STATE_PSR0.md` and
+`docs/23_PSR0_OLIVIA_RUNBOOK.md`.

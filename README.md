@@ -2,258 +2,224 @@
 
 **Public operational interfaces for future-defined LLM state.**
 
-Frank-EQ asks whether a state formed before an operation is revealed can be
-compiled into a public description of the future computations it supports. It
-does not treat hidden-coordinate similarity as interoperability.
+Frank-EQ asks whether a state formed before a future operation is revealed can
+be compiled into an externally identifiable description of the computations it
+supports. Hidden-coordinate similarity is not treated as interoperability.
 
-For frozen model `M`, query-blind state `h`, future operation `k`, and explicit
+For frozen model `M`, query-blind state `h`, future operation `k`, and declared
 post-reveal compute contract `c`:
 
 ```text
 Sigma_M(h; k, c) = p_M(y | h, k, c).
 ```
 
-## Current evidence
+## Evidence so far
 
-### Synthetic Stage 0
+### Historical shared-code architectures: exact-pipeline negatives
 
-The synthetic reference passes as implementation evidence only. It establishes
-that the original contracts, packet, held-sender workflow, and reducer execute.
+Real Stage-A v1/v2, Stage Q, and the scale screens rule out the tested
+final-token/private-chart/shared-head constructions. The v2 public code had weak
+world specificity and held-sender establishment while retaining strong model
+identity. The corrected Stage-Q comparison also showed that proper user-turn
+placement did not repair immediate source competence.
 
-### Real Stage A v1/v2: two exact-pipeline negatives
+These are architecture-specific negatives. They do not establish that the full
+runtime state lacks a reusable operational quotient.
 
-```text
-v1  frank-eq-stagea-devg-v2   LUMI 20942127   STOP_OR_REVISE_STAGE0
-v2  frank-eq-stagea-lumi-v2   LUMI 20952565   STOP_OR_REVISE_STAGE0
-```
+### RC0: positive interactive public-basis result
 
-The v2 shared-head oracle quotient failed:
-
-```text
-native competence gain vs prior:  -0.0521
-held-out signature Brier:          0.2065 (upper95 0.2421)
-fact accuracy:                     0.5509 (lower95 0.5120)
-cross-model retrieval:             0.1528 (lower95 0.0972)
-wrong-world margin:               -0.0607
-held-sender retention:            -0.3445
-model-ID leakage over chance:      0.6389
-```
-
-This rules out the exact final-token, private-chart, shared-head pipeline. It
-does not rule out an operational interface over the full runtime state.
-
-### Stage Q: prompt correction and scale screens
-
-A paired development experiment compared the historical assistant-continuation
-construction with a proper new-user-turn reveal. Both failed source competence,
-and the prompt effect was not identified:
+The adopted Olivia RC0 capture and artifact-only recovery returned:
 
 ```text
-legacy     -0.098  [-0.152, -0.040]
-chat_turn  -0.118  [-0.162, -0.068]
-paired improvement -0.020 [-0.107, 0.071]
+PUBLIC_BASIS_COMPOSITION_SUPPORTED
 ```
 
-Subsequent development screens through Qwen3-8B also failed the aggregate and
-per-founder gate. The operation pattern was highly structured:
+For hard graph operations:
 
 ```text
-8B inverse lower95:             +0.136
-8B reciprocity lower95:         +0.147
-8B mutual lower95:              -0.758
-8B lookup lower95:              -0.482
-8B compose lower95:             -0.299
-8B compare-outdegree lower95:   -0.252
+compiled public-basis Brier:       0.0408
+direct frozen-model Brier:         0.2035
+train-world prior Brier:           0.2181
+lower95 gain over direct/prior:     0.1542 / 0.1661
+weakest basis balanced accuracy:   0.9246
+oracle executor mismatches:        0
 ```
 
-The screens used an immediate single-token A/B readout. They therefore do not
-separate answer-token calibration, post-query computation, and information
-stored in the query-blind state.
+Semantic sequence scoring improved over the historical answer-token channel.
+Generated reasoning did not beat an equal-token pause control. RC0 therefore
+supports a typed public basis plus deterministic composition, not a chain-of-
+thought claim.
 
-## Stage R / RC0: completed development pass
+RC0 is interactive tomography: the source is queried separately for every basis
+coordinate after capture. It is an upper bound, not a one-shot message.
 
-RC0 was a development-only rate--compute and public-basis audit. The original
-Olivia capture completed all 89,856 response rows, then failed before its first
-metric because a grouped-aggregation helper no longer matched its callers. A
-fresh, hash-bound artifact-only recovery restored the historical helper API and
-executed no model inference:
+### Stage-A v3-2: one-shot graph compiler negative
+
+The sole registered one-shot compiler ran on Olivia job `1899057`, passed every
+integrity check, and returned:
 
 ```text
-capture   frank-eq-rc0-rate-compute-olivia-20260811c  Slurm 1874736
-recovery  frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
+ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
 ```
 
-Both repository verifiers and a separate recomputation audit pass. The machine
-diagnosis is `PUBLIC_BASIS_COMPOSITION_SUPPORTED`:
+The exact result is more informative than the aggregate failure:
+
+- behavioral self-future prediction passed;
+- public alignment, held-sender retention, quantization, and exact execution
+  passed;
+- seen-renderer semantic decoding was strong;
+- every unseen canonical-renderer semantic gain was negative;
+- activations did not beat the matched token-ID compiler;
+- aggregate composition improved, but held-model and operation-family strata
+  failed.
+
+The independent verifier refusal was caused only by reduction-order differences
+at most `5.55e-17`; exact-runtime recomputation preserved the same machine
+scientific decision. The v3-2 registration is consumed and terminal.
+
+## Scientific diagnosis
+
+The data now reject the original primary framing:
 
 ```text
-compiled hard-family Brier:                0.0408
-training-selected direct Brier:            0.2035
-training-world prior Brier:                0.2181
-lower95 gain over direct / prior:          0.1542 / 0.1661
-basis balanced accuracy, weakest group:    0.9246
-hard-oracle executor mismatches:            0
+map one model's hidden vector into another model's hidden vector
 ```
 
-Semantic sequence likelihood improved over the historical answer-token channel.
-Generated reasoning did not: the reasoning-minus-pause Brier-gain interval was
-`[-0.00540, -0.00029]`. The positive result is therefore public-basis recovery
-and deterministic composition, not a reasoning-token effect.
-
-RC0 compared:
-
-1. historical immediate A/B token probability;
-2. semantic false/true sequence likelihood;
-3. 32 generated reasoning tokens;
-4. 32 matched fixed pause tokens;
-5. a public separating basis containing every directed edge;
-6. a parameter-free executor that composes the basis into complex operations.
-
-The key distinction was:
+Three recurrent separations are more defensible:
 
 ```text
-answer-channel calibration
-vs post-reveal computation
-vs state/basis sufficiency
+predictable geometry       != receiver-native utility
+interactive basis access   != one-shot sender compilation
+visible semantic facts     != latent predictive state
 ```
 
-The public basis is gauge fixed by semantics: slot `(i,j)` always means the
-same directed edge. For a closed directed graph, all `n(n-1)` edge slots form a
-separating basis, so every registered structural operation factors through it.
+The graph task has become the wrong final application. Its semantic basis is
+printed in the prefix, so a parser or token-only model has an intrinsically
+complete solution. The v3 unseen-renderer reversal further shows that the
+learned compiler bound itself to grammar rather than recovering a stable public
+state.
 
-The adopted, hash-verified evidence is in
-`evidence/real_stage_r_olivia_rc0/`. Runtime basis interrogation remains
-interactive tomography, not a one-shot hidden-state compiler or communication
-result.
+The strongest positive clue is the behavioral channel: frozen-model future
+responses remain predictable even when externally grounded graph semantics do
+not transfer. The next question should therefore use a state that must be
+computed by filtering or closure, not copied from visible text.
+
+## Current next experiment: PSR0
+
+PSR0 is a fresh development-only predictive-state census. It asks whether frozen
+LLM activations expose an amortized belief state for a noisy controlled automaton
+and whether that state transfers across grammar and history length.
+
+For history `h` and future test `tau`:
+
+```text
+p_tau(h) = P(future event tau | h).
+```
+
+A rank-selected public core-test bank `B` has matrix `Q_B`. When `Q_B` has full
+predictive rank:
+
+```text
+s_B(h) = b(h)^T Q_B
+p_tau(h) = s_B(h) Q_B^{-1} q_tau.
+```
+
+Thus the core-test probabilities are an externally identifiable separating
+basis and every registered target test has an exact public executor.
+
+Frozen PSR0 facts:
+
+```text
+models:                   Qwen3-4B and Qwen3-8B, exact revisions
+latent process:           four-state controlled HMM
+public predictive rank:   4
+core tests / targets:     4 / 18
+core condition number:    1.8311
+train lengths:            8 and 16
+validation lengths:       8, 16, and unseen length 32
+fit grammars:             narrative and table
+unseen grammar:           symbolic
+held sender:              none
+claim-bearing test role:  none
+```
+
+The primary probe is linear and selected on training histories only. It is
+compared against:
+
+- an order-sensitive token-only hash probe at matched width;
+- a mean input-embedding probe;
+- the training-history prior;
+- calibrated interactive future-test queries;
+- direct target-test prediction;
+- the exact oracle public basis.
+
+The decisive condition is joint OOD: unseen symbolic grammar at history length
+32. A pass requires every model to show positive core readability, positive
+activation-specific advantage over tokens, positive wrong-history specificity, renderer and length transfer, and
+compiled target-test advantage over both prior and direct prediction.
 
 Read:
 
 ```text
-docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md
-docs/19_STAGE_R_CLUSTER_RUNBOOK.md
+docs/22_PREDICTIVE_STATE_PSR0.md
+docs/23_PSR0_OLIVIA_RUNBOOK.md
 HANDOFF.md
 AGENTS.md
 ```
 
-Frozen configs:
+Frozen artifacts:
 
 ```text
-configs/rate_compute/real_lumi_rc0.yaml
-configs/rate_compute/real_olivia_rc0.yaml
+configs/predictive_state/real_olivia_psr0.yaml
+configs/predictive_state/inspected_plan.json
 ```
 
-No RC0 rerun is authorized.
+## Olivia dry run
 
-## Stage-A v3-2: completed exact-pipeline negative
+```bash
+python olivia/cli.py submit \
+  --job-name frank-eq-psr0-olivia-20260812a \
+  --config configs/predictive_state/real_olivia_psr0.yaml \
+  --profile full \
+  --stages audit \
+  --dry-run --json
+```
 
-The sole registered one-shot compiler workflow ran on Olivia as job `1899057`.
-It preserved founder/held/test causal order, consumed its test grant exactly
-once, completed all six test captures, and passed every integrity check. The
-machine decision is:
+No PSR0 model run has been launched from this branch.
+
+## Decision after PSR0
+
+A negative diagnosis stops or localizes the corresponding branch:
 
 ```text
-status:     fail
-diagnosis:  ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
+PREDICTIVE_BASIS_OR_EXECUTOR_INVALID
+ACTIVATION_PREDICTIVE_STATE_NOT_READABLE
+NO_ACTIVATION_SPECIFIC_PREDICTIVE_STATE_ADVANTAGE
+PREDICTIVE_STATE_NOT_RENDERER_INVARIANT
+PREDICTIVE_STATE_NOT_LENGTH_TRANSFERABLE
+PUBLIC_PREDICTIVE_STATE_NOT_COMPOSITIONALLY_USEFUL
 ```
 
-Behavioral-basis prediction, public alignment, held-sender retention,
-quantization, and oracle execution pass. The semantic basis misses its frozen
-Brier ceiling, all six unseen-renderer gains are negative, and the conjunctive
-composition and activation-specificity gates fail. Aggregate composition is
-positive, but cannot override the failed registered strata.
-
-The job exits 1 because the independent audit fails closed on 46
-reduction-order differences no larger than `5.55e-17`. Exact-runtime diagnostic
-job `1953471` reproduces stored metrics bit-for-bit in workflow/config order and
-reproduces the same decision in both orders. This is a verifier-order refusal,
-not an alternate scientific outcome; the failed audit remains immutable.
-
-The compact adopted package is in `evidence/real_stagea_v3_olivia/`. Stage-A
-v3-2 is consumed and terminal. No rerun, receiver protocol, receiver execution,
-new receiver-world access, or claim is authorized.
-
-## Frozen RC0 decision tree
-
-### Basis readout fails
-
-Stop the current graph/source contract. Do not train another cross-model latent.
-
-### Basis passes but public composition fails
-
-Revise only structured calibration or executor assumptions on development data.
-Do not enlarge a private latent code.
-
-### Public composition beats the prior but not direct computation
-
-The basis is a valid diagnostic but not yet a constructive paper result.
-
-### Public composition beats the training-selected direct baseline
-
-This is the observed branch. Draft exactly one Stage-A v3 registration with:
-
-- fresh claim-bearing worlds;
-- a new unopened held sender;
-- complete model-local token/slot compilers into typed public coordinates;
-- separate behavioral self-future and oracle-semantic channels;
-- token-only, text, direct-operation, continuous-latent, and oracle-basis
-  baselines;
-- receiver execution still locked until the representation gate passes.
-
-## Tested architecture and unresolved direction
-
-Stage-A v3-2 tested this alternative to a shared private vector:
+Only
 
 ```text
-query-blind frozen source state
-        |
-        v
-model-local token/slot compiler
-        |
-        v
-public separating operational basis
-        |
-        v
-frozen deterministic or receiver-native executor
+PUBLIC_PREDICTIVE_STATE_CANDIDATE_SUPPORTED
 ```
 
-The frozen compiler did not qualify this interface. It predicts the sources'
-behavioral channel and transfers across models on seen renderers, but semantic
-calibration and unseen-renderer transfer fail. Any successor would require a
-freshly registered question; this exposed test result cannot be used to tune
-one.
+permits drafting one fresh PSR Stage 1 protocol. It does not authorize executing
+that protocol, onboarding a held sender, opening a claim-bearing test role,
+running a receiver, or making a claim.
 
 ## Commands
 
-Synthetic and historical Stage-A commands:
+Historical workflows remain available through `frank-eq`. PSR0 uses an isolated
+operator CLI:
 
 ```text
-frank-eq validate-config
-frank-eq run-stage0
-frank-eq validate-real-config
-frank-eq make-real-cache
-frank-eq validate-real-cache
-frank-eq diagnose-real-cache
-frank-eq run-real-stagea
-```
-
-RC0 commands:
-
-```text
-frank-eq validate-rate-compute-config
-frank-eq run-rate-compute-audit
-frank-eq recover-rate-compute-audit
-python scripts/verify_rate_compute_run.py
-python scripts/audit_rate_compute_result.py
-```
-
-Stage-A v3 commands:
-
-```text
-frank-eq validate-stagea-v3-config
-frank-eq plan-stagea-v3
-frank-eq run-stagea-v3
-frank-eq verify-stagea-v3
-python scripts/verify_stagea_v3_run.py
+python scripts/predictive_state_cli.py validate
+python scripts/predictive_state_cli.py plan
+python scripts/predictive_state_cli.py run
+python scripts/predictive_state_cli.py verify
 ```
 
 ## Local validation
@@ -266,41 +232,22 @@ pip install -e '.[real,dev]'
 python -m compileall -q src scripts olivia lumi
 ruff check src scripts tests
 pytest -q
+bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
+python scripts/validate_predictive_state.py
 ```
-
-## Evidence hierarchy
-
-```text
-frozen protocol and source identity
-causal cache/branch validation
-machine decision
-world-grouped metrics
-prediction/response artifacts
-training history or calibration state
-W&B telemetry
-prose
-```
-
-Generated runs, checkpoints, source archives, and `.agents/state/` remain outside
-Git. Adopted evidence belongs under `evidence/` with a content hash manifest.
 
 ## Claim boundary
 
-Frank-EQ currently establishes only:
+Frank-EQ currently establishes:
 
-- functioning synthetic and cluster infrastructure;
-- three valid exact-pipeline negatives across the historical shared-code and
-  one-shot typed-basis compiler architectures;
-- a corrected source-qualification methodology;
-- development evidence that an interactively queried, typed edge basis is
-  recoverable from the tested sources and composes better than their
-  training-selected direct protocols under the frozen RC0 contract; and
-- v3 evidence that the all-token compiler predicts the frozen sources'
-  behavioral edge responses, while its semantic basis fails the registered
-  calibration and unseen-renderer gates.
+- reproducible causal-order and cluster infrastructure;
+- exact negatives for several shared/private continuous-code pipelines;
+- a positive interactive typed-basis composition result;
+- a terminal one-shot graph-compiler negative with strong failure localization;
+- a prospective, theorem-backed predictive-state experiment.
 
-It does not yet establish a cross-model public interface, a hidden-state
-advantage over text/tokens, a qualified one-shot compiler, receiver execution,
-or a positive ICLR claim.
+It does not yet establish an activation-specific public interface, a qualified
+held sender, receiver-native execution, a rate advantage over text/tokens, or a
+positive ICLR claim.

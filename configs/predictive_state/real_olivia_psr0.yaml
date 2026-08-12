@@ -1,0 +1,126 @@
+# Development-only PSR0: test whether frozen LLM activations expose an
+# amortized public predictive state under grammar and history-length shift.
+protocol_version: frank_eq_predictive_state_psr0_v1
+run_name: frank-eq-predictive-state-psr0-olivia
+output_dir: runs/predictive-state-psr0-olivia
+development_only: true
+require_revision_pins: true
+
+models:
+  - model_id: qwen3-4b
+    hf_id: Qwen/Qwen3-4B
+    role: founder
+    revision: 1cfa9a7208912126459214e8b04321603b3df60c
+  - model_id: qwen3-8b
+    hf_id: Qwen/Qwen3-8B
+    role: founder
+    revision: b968826d9c46dd6066d109eabc6255188de91218
+
+capture:
+  normalized_depths: [0.25, 0.50, 0.75, 1.00]
+  max_length: 4096
+  dtype: bfloat16
+  device: cuda
+  branch_mode: kv_reuse
+  allow_exact_replay_fallback: false
+  answer_token_pairs:
+    - [" A", " B"]
+    - ["A", "B"]
+    - [" No", " Yes"]
+  branch_seed: 1729
+  branch_batch_size: 8
+  local_files_only: true
+  prompt_format: chat_turn
+  chat_template_kwargs:
+    enable_thinking: false
+  parity_sample_size: 0
+  parity_max_abs_diff: 0.33
+
+automaton:
+  state_names: [S0, S1, S2, S3]
+  action_names: [orbit, fold, shift]
+  observation_names: [amber, blue, coral]
+  transition_matrices:
+    - - [0.02666666666666667, 0.02666666666666667, 0.02666666666666667, 0.92]
+      - [0.02666666666666667, 0.92, 0.02666666666666667, 0.02666666666666667]
+      - [0.02666666666666667, 0.02666666666666667, 0.92, 0.02666666666666667]
+      - [0.92, 0.02666666666666667, 0.02666666666666667, 0.02666666666666667]
+    - - [0.92, 0.02666666666666667, 0.02666666666666667, 0.02666666666666667]
+      - [0.02666666666666667, 0.02666666666666667, 0.02666666666666667, 0.92]
+      - [0.02666666666666667, 0.92, 0.02666666666666667, 0.02666666666666667]
+      - [0.02666666666666667, 0.02666666666666667, 0.92, 0.02666666666666667]
+    - - [0.02666666666666667, 0.02666666666666667, 0.02666666666666667, 0.92]
+      - [0.92, 0.02666666666666667, 0.02666666666666667, 0.02666666666666667]
+      - [0.02666666666666667, 0.02666666666666667, 0.92, 0.02666666666666667]
+      - [0.02666666666666667, 0.92, 0.02666666666666667, 0.02666666666666667]
+  emission_matrix:
+    - [0.05540893415539574, 0.4270059655232451, 0.5175851003213593]
+    - [0.6242304014714685, 0.3412122981949898, 0.03455730033354173]
+    - [0.026604617543133677, 0.8262683284933302, 0.14712705396353606]
+    - [0.09336645216444885, 0.07237487233136852, 0.8342586755041828]
+  initial_belief: [0.25, 0.25, 0.25, 0.25]
+  candidate_horizons: [1, 2, 3]
+  n_target_tests: 18
+  target_seed: 20260831
+  max_core_condition_number: 10.0
+  max_target_executor_l1: 3.0
+
+panel:
+  train:
+    lengths: [8, 16]
+    histories_per_length: 128
+    seed: 2026083201
+  validation:
+    lengths: [8, 16, 32]
+    histories_per_length: 64
+    seed: 2026083202
+  fit_renderers: [narrative, table]
+  validation_renderers: [narrative, table, symbolic]
+  min_belief_entropy: 0.15
+  max_belief_entropy: 1.35
+  min_core_variance: 0.0025
+  max_generation_attempt_multiplier: 100
+
+teacher:
+  candidate_false: " false"
+  candidate_true: " true"
+  sequence_cue: "\nGive only the final truth value. Answer:"
+  normalize_sequence_log_likelihood: true
+  branch_batch_size: 8
+
+probe:
+  ridge_grid: [0.1, 1.0, 10.0, 100.0]
+  selection_fraction: 0.20
+  selection_seed: 20260833
+  bootstrap_replicates: 2000
+  bootstrap_seed: 991
+  calibration_l2: 0.001
+  calibration_max_steps: 100
+  token_hash_position_period: 64
+  quantization_bits: [2, 4, 8]
+
+gates:
+  min_core_gain_over_prior_lower95: 0.0
+  min_activation_over_token_lower95: 0.0
+  min_wrong_history_margin_lower95: 0.0
+  min_unseen_renderer_gain_lower95: 0.0
+  min_length_transfer_gain_lower95: 0.0
+  min_compiled_over_prior_lower95: 0.0
+  min_compiled_over_direct_lower95: 0.0
+  max_oracle_executor_abs_error: 1.0e-10
+  max_public_basis_condition_number: 10.0
+  max_renderer_pair_brier_gap: 0.02
+
+logging:
+  wandb:
+    enabled: true
+    project: frank-eq-stagea
+    tags: [predictive-state, psr0, olivia, development-only]
+
+authorization:
+  development_run_authorized: true
+  claim_bearing_test_access_authorized: false
+  held_sender_onboarding_authorized: false
+  receiver_execution_authorized: false
+  scientific_claim_authorized: false
+  paper_claim_authorized: false
