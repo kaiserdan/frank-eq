@@ -192,14 +192,20 @@ revision, produced a 5,120-wide hidden state, cloned its KV cache, and verified
 chat-prefix continuity. Its receipt records zero registered worlds, operations,
 answers, and test accesses.
 
-The one authorized v3-2 workflow is now running as Olivia Slurm job `1895410`
-under immutable job name `frank-eq-stagea-v3-2-olivia-20260812a`. It is bound to
-Git commit `91a0021`, source archive `b81c704e...cb47a`, and the inspected plan
-above. The archive was reproduced byte-for-byte and independently checked for
-all 64 bound hashes and 208 safe regular files before submission. The immediate
-next action is to monitor the ordered workflow, preserve failures immutably, and
-fetch and independently verify the terminal artifact package. Do not attempt a
-same-registration retry after official test access.
+The first v3-2 execution attempt, immutable Olivia Slurm job `1895410` under job
+name `frank-eq-stagea-v3-2-olivia-20260812a`, failed during `founder_fit` after
+computing all 160 Qwen3-4B train/n4 rows. An extreme semantic-sequence score
+rounded to probability `1.0` when stored as float32, and the shard correctly
+failed its existing open-interval validation before serialization. The run
+contains no capture file, founder freeze, held-task exposure, test panel, or
+test access; its ledger records `test_access_count=0` and no registered/opened
+test files. The failed job and fetched logs remain immutable.
+
+This is a pre-test engineering failure under Section 14 of the frozen protocol,
+not a scientific v3-2 outcome. The immediate next action is a minimal
+Stage-A-only probability-boundary repair that retains raw log-odds, a focused
+regression, full validation, and a freshly generated and inspected plan before
+one fresh immutable retry. Once test access is consumed, no retry is permitted.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every
