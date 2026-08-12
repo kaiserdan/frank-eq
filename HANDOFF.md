@@ -218,9 +218,20 @@ The fresh immutable retry is now running as Olivia Slurm job `1899057`, job name
 `b6203d03...a44e0`, and the replacement plan above. The archive reproduced
 byte-for-byte and independently passed all 64 bound hashes, 208 safe-file
 checks, and generated-artifact/credential exclusions before submission. The
-immediate next action is to monitor through the formerly failing first-shard
-boundary and onward through the ordered workflow. Once test access is consumed,
-no retry is permitted.
+retry crossed the formerly failing first-shard boundary and froze both founder
+models at `2026-08-12T06:14:41Z` with 50 hash-bound artifacts and no existing
+test files. An independent hash of the 1.10-GB first capture matches the freeze
+manifest. Its embedded summary records 1,115 float32 endpoint clamps, strict
+open-interval targets, unchanged raw log-odds, zero replay, and zero primary
+post-capture queries.
+
+Only after that founder freeze did the ledger enter `held_onboard`. The held
+Qwen3-14B has therefore now legitimately become task-open on registered
+train/validation data; both held train captures are durable and held validation
+is running. Test access remains unconsumed with no registered or opened test
+file. The immediate next action is to monitor through the held freeze and the
+one-way test-access boundary. Once test access is consumed, no retry is
+permitted.
 
 The primary compiler must make zero post-capture source queries. The graph text
 parser is an oracle-like ceiling because the controlled prefix states every
