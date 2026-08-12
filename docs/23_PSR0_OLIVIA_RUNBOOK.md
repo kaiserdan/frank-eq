@@ -64,7 +64,7 @@ Inspect and record:
 - Git commit and clean-tree status;
 - config path and config SHA-256;
 - internal plan SHA-256
-  `ecad5644536542b29db2dbffc62687a174f828cab307163fe8b0ade55128367c`;
+  `a25e80cc4a5b11adf869f11196394a93bf647915807803fea2df12434bd2c27f`;
 - one-GPU full profile;
 - output root;
 - stages exactly `audit`.

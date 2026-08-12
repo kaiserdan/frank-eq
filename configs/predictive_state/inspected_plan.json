@@ -49,10 +49,10 @@
       "symbolic"
     ]
   },
-  "plan_sha256": "ecad5644536542b29db2dbffc62687a174f828cab307163fe8b0ade55128367c",
+  "plan_sha256": "a25e80cc4a5b11adf869f11196394a93bf647915807803fea2df12434bd2c27f",
   "protocol_version": "frank_eq_predictive_state_psr0_v1",
   "public_basis": {
-    "condition_number": 1.831119267029982,
+    "condition_number": 1.8311192670299825,
     "core_tests": [
       {
         "actions": [
