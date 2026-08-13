@@ -1,0 +1,57 @@
+name: spq0-review-corrections
+
+on:
+  push:
+    branches:
+      - agent/shared-predictive-quotient-spq0
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/shared-predictive-quotient-spq0
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install validation dependencies
+        run: |
+          python -m pip install numpy PyYAML pytest ruff
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -e . --no-deps
+      - name: Apply fail-closed scientific corrections
+        run: |
+          python scripts/apply_spq0_review_corrections.py patch
+          ruff format src/frank_eq/shared_predictive_quotient tests/test_spq0.py
+          ruff check --fix src/frank_eq/shared_predictive_quotient tests/test_spq0.py
+          python -m frank_eq.shared_predictive_quotient.cli plan \
+            --config configs/spq0/real_olivia_spq0.yaml \
+            --out configs/spq0/inspected_plan.json > /tmp/spq0-plan.json
+          python scripts/apply_spq0_review_corrections.py register
+          rm scripts/apply_spq0_review_corrections.py
+          rm .github/workflows/spq0-review-corrections.yml
+      - name: Validate corrected registration
+        run: |
+          python -m compileall -q src scripts olivia lumi
+          ruff check src scripts tests
+          pytest -q
+          bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
+          python scripts/validate_repo.py
+          python scripts/validate_rate_compute.py
+          python scripts/validate_moment_compute.py
+          python scripts/validate_spq0.py
+          git diff --check
+      - name: Commit reviewed SPQ0 contract
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Correct SPQ0 transfer controls and rank gate'
+          git push origin HEAD:agent/shared-predictive-quotient-spq0
