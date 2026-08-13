@@ -28,6 +28,16 @@ jobs:
           python -m pip install -e . --no-deps
       - name: Apply fail-closed scientific corrections
         run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('scripts/apply_spq0_review_corrections.py')
+          text = path.read_text()
+          optional = '        "frank_eq_spq0_research_and_implementation_plan.md",\n'
+          if optional not in text:
+              raise SystemExit('optional planning-document entry was not found')
+          path.write_text(text.replace(optional, '', 1))
+          PY
           python scripts/apply_spq0_review_corrections.py patch
           ruff format src/frank_eq/shared_predictive_quotient tests/test_spq0.py
           ruff check --fix src/frank_eq/shared_predictive_quotient tests/test_spq0.py
