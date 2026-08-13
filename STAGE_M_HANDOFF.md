@@ -1,7 +1,8 @@
 # Stage M handoff
 
-Stage M0 is complete, fetched, independently verified, and adopted. This is the
-live continuation guide; it does not alter the immutable Stage-A v3-2 evidence.
+Stage M0 is complete, fetched, independently verified, and adopted. This is now
+a historical graph-line handoff; the later SPQ0 outcome is the current project
+boundary. It does not alter immutable Stage-A v3-2 or Stage M0 evidence.
 
 ## Terminal result
 
@@ -50,15 +51,19 @@ train a one-shot Stage M compiler, or open a held/receiver/claim-bearing role.
 
 ## Current next action
 
-There is no authorized experiment or cluster executable. Any continuation must
+Stage M0 authorized no successor. A later separately frozen SPQ0 census was
+executed and also ended negative with
+`SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED`. It authorizes no SPQ1 draft. There
+is still no authorized experiment or cluster executable. Any continuation must
 begin with a new task-level scientific question and a separately frozen
-registration using fresh roles. Drafting such a question is not authorization
-to run it.
+registration using fresh roles.
 
 ## Reading order
 
-1. `evidence/real_stage_m_olivia_m0/AUDIT.md`
-2. `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`
-3. `docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`
-4. `docs/24_STAGE_M_OLIVIA_RUNBOOK.md`
-5. `evidence/real_stagea_v3_olivia/AUDIT.md`
+1. `evidence/real_spq0_olivia/AUDIT.md`
+2. `docs/28_SPQ0_RESULT_AND_DISPOSITION.md`
+3. `evidence/real_stage_m_olivia_m0/AUDIT.md`
+4. `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`
+5. `docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`
+6. `docs/24_STAGE_M_OLIVIA_RUNBOOK.md`
+7. `evidence/real_stagea_v3_olivia/AUDIT.md`

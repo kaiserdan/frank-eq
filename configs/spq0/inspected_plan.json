@@ -1,0 +1,179 @@
+{
+  "access": {
+    "future_test_revealed_before_capture": false,
+    "held_sender": false,
+    "receiver": false,
+    "reserved_checkpoint_files_opened": 0,
+    "reserved_checkpoint_model_loads": 0,
+    "reserved_checkpoint_snapshot_resolution_attempts": 0,
+    "test_role": false
+  },
+  "active_checkpoint_revision_registry_sha256": "85daa3682ee79595c8e0ad58e88d82568c71781b05c60bd4e226a5e0b2bd4909",
+  "capture": {
+    "categorical_candidates_per_query": 10,
+    "chat_turn_shape": "user_prefix_fixed_assistant_ack_user_query",
+    "exact_replay_fallback": false,
+    "future_tests_per_prefix": 32,
+    "literal_kv_reuse": true,
+    "normalized_depths": [
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "post_reveal_query_branches_per_model": 92160,
+    "prefixes_per_model": 2880,
+    "primary_packet_post_capture_source_queries": 0,
+    "runtime_queries_are_development_tomography": true,
+    "surfaces": [
+      "final_token_residual",
+      "event_boundary_residuals",
+      "all_token_summary",
+      "mean_input_embedding",
+      "parameter_matched_token_sequence"
+    ]
+  },
+  "composition": {
+    "behavioral_residual_promotional": false,
+    "ordered_cross_family_pairs": 2,
+    "pair_specific_mapper_count": 0,
+    "target_local_reader_count": 2,
+    "target_readers_frozen_before_source_evaluation": true
+  },
+  "config_path": "configs/spq0/real_olivia_spq0.yaml",
+  "config_sha256": "1ad2216396da3a31421366e951476f14472b216a10588dd23760f90863488558",
+  "development_only": true,
+  "models": {
+    "mistral-7b-v03": {
+      "family": "mistral",
+      "hf_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71"
+    },
+    "qwen3-4b": {
+      "family": "qwen3",
+      "hf_id": "Qwen/Qwen3-4B",
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+    }
+  },
+  "panel": {
+    "fit_renderers": [
+      "narrative",
+      "table"
+    ],
+    "roles": {
+      "calibration": 384,
+      "selection": 192,
+      "validation": 576
+    },
+    "test_histories": 0,
+    "validation_only_length": 32,
+    "validation_renderers": [
+      "narrative",
+      "table",
+      "symbolic"
+    ]
+  },
+  "plan_sha256": "9274c19646c0261a8aa7ce21ccffbb9d98f4e535533f1c76951cd9a13e816225",
+  "protocol_path": "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",
+  "protocol_sha256": "d887867b33c994e65b13e6110f75b39cd3cfcb681aff872616b49c2ae1ce2d4f",
+  "protocol_version": "spq0-development-census",
+  "public_basis": {
+    "basis_sha256": "7281e4158054cd81d29e97aff6286b3b1ac4f3c020aabf8c13897e0cb717b58b",
+    "core_condition_numbers": {
+      "system-00": 2.743122951,
+      "system-01": 4.3112203416,
+      "system-02": 4.9225045375
+    },
+    "exact_rank": 4,
+    "implicit_zero_bit_coordinate": "null_test_probability_1",
+    "maximum_exact_executor_error_bound": 1e-10,
+    "maximum_normalization_aware_target_l1": 13.7076954678,
+    "maximum_target_l1": 2.9867494549,
+    "normalization_aware_condition_numbers": {
+      "system-00": 8.6282264613,
+      "system-01": 23.6264844242,
+      "system-02": 13.948057289
+    },
+    "normalization_aware_dimension": 3,
+    "numeric_canonicalization": {
+      "basis_registry_decimal_places": 10,
+      "runtime_arrays_retain_float64": true,
+      "selection_score_decimal_places": 14,
+      "tie_break": "candidate_registry_order"
+    },
+    "public_tests": 8,
+    "rank_grid": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      8
+    ],
+    "target_tests": 24
+  },
+  "rate_compute": {
+    "amortized_future_query_counts": [
+      1,
+      4,
+      16,
+      32
+    ],
+    "direct_one_query_advantage_is_not_conjunctive": true,
+    "interpretation": "robust_linear_packet_versus_rate_minimal_affine_packet",
+    "normalization_aware_packet_rank": 3,
+    "normalization_aware_payload_bits": 12,
+    "primary_amortized_query_count": 16,
+    "primary_packet_rank": 4,
+    "primary_payload_bits": 16,
+    "primary_quantization_bits_per_coordinate": 4
+  },
+  "reserved_checkpoint_non_access_contract_sha256": "69752ed4bed16d6ff3f1c9c379be7fa3ec8d2fc32065ed9b99601e69c07b89e1",
+  "reserved_unopened_models": [
+    {
+      "access": "reserved_unopened",
+      "family": "olmo2",
+      "hf_id": "allenai/OLMo-2-1124-7B-Instruct",
+      "model_id": "olmo2-7b-held",
+      "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84"
+    },
+    {
+      "access": "reserved_unopened",
+      "family": "granite",
+      "hf_id": "ibm-granite/granite-3.1-8b-instruct",
+      "model_id": "granite31-8b-held",
+      "revision": "4009206d5fc95d2e65a7b7633e159d6e97e25d35"
+    }
+  ],
+  "runtime": {
+    "active_checkpoint_file_hash_preflight_required": true,
+    "active_tokenizer_preflight_before_model_load_required": true,
+    "clean_committed_source_required": true,
+    "cluster": "olivia",
+    "image": "/cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif",
+    "image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "profile": "full",
+    "stages": [
+      "audit"
+    ]
+  },
+  "schema": "frank_eq_spq0_plan_v1",
+  "systems": {
+    "family_sha256": "18b19856b73216971f82f7367fea7b5e930a3fc43d4c7e11d2d10d6d2c9c2793",
+    "fit": 2,
+    "validation_only": 1,
+    "validation_only_system_ids": [
+      "system-02"
+    ],
+    "validation_scope": "local_law_perturbation",
+    "validation_shifts": {
+      "system-02": {
+        "emission_mean_row_total_variation": 0.05916106270987659,
+        "independent_draw_weight": 0.1,
+        "parent_system_id": "system-00",
+        "parent_weight": 0.9,
+        "transition_mean_row_total_variation": 0.08399999999999998
+      }
+    }
+  }
+}

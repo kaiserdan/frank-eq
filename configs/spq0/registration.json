@@ -1,0 +1,35 @@
+{
+  "access": {
+    "claim_bearing_test_access_authorized": false,
+    "held_sender_access_authorized": false,
+    "paper_claim_authorized": false,
+    "receiver_execution_authorized": false,
+    "reserved_checkpoint_access_authorized": false,
+    "scientific_claim_authorized": false,
+    "spq1_execution_authorized": false
+  },
+  "active_checkpoint_revision_registry_sha256": "85daa3682ee79595c8e0ad58e88d82568c71781b05c60bd4e226a5e0b2bd4909",
+  "files": {
+    "configs/spq0/inspected_plan.json": "fdc187bfa3d662908eb734049365c1feb5651094633cf87279317979b22093be",
+    "configs/spq0/real_olivia_spq0.yaml": "1ad2216396da3a31421366e951476f14472b216a10588dd23760f90863488558",
+    "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md": "d887867b33c994e65b13e6110f75b39cd3cfcb681aff872616b49c2ae1ce2d4f",
+    "docs/26_SPQ0_OLIVIA_RUNBOOK.md": "64956f5b875949b34d683fc7e74aa5735f569f31ae569fdb6f96178ef46648b8",
+    "frank_eq_spq0_config_skeleton.yaml": "2016476fc0a233de994544494a7463afeb7050a1a1d50dba3324c8b0b3600e59",
+    "frank_eq_spq0_research_and_implementation_plan.md": "c8321698b731ed2a5ed894ac5934cb59d60b5e5ddbff779f223e83709261494d"
+  },
+  "implementation_pr_launch_authorized": false,
+  "inspected_plan_sha256": "9274c19646c0261a8aa7ce21ccffbb9d98f4e535533f1c76951cd9a13e816225",
+  "protocol_version": "spq0-development-census",
+  "reserved_checkpoint_non_access_contract_sha256": "69752ed4bed16d6ff3f1c9c379be7fa3ec8d2fc32065ed9b99601e69c07b89e1",
+  "runtime": {
+    "cluster": "olivia",
+    "image": "/cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif",
+    "image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "profile": "full",
+    "stages": [
+      "audit"
+    ]
+  },
+  "schema": "frank_eq_spq0_registration_manifest_v1",
+  "status": "prospective_development_only"
+}

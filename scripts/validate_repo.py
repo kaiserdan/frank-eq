@@ -16,7 +16,9 @@ sys.path.insert(0, str(SRC))
 
 from frank_eq.config import load_config  # noqa: E402
 from frank_eq.real_config import load_real_config  # noqa: E402
-from frank_eq.utils import sha256_file  # noqa: E402
+from frank_eq.shared_predictive_quotient.config import load_spq0_config  # noqa: E402
+from frank_eq.shared_predictive_quotient.workflow import build_spq0_plan  # noqa: E402
+from frank_eq.utils import canonical_json_bytes, sha256_file  # noqa: E402
 from frank_eq.workflow import validate_real_stage_role  # noqa: E402
 
 REQUIRED = (
@@ -47,6 +49,10 @@ REQUIRED = (
     "docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md",
     "docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md",
     "docs/24_STAGE_M_OLIVIA_RUNBOOK.md",
+    "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",
+    "docs/26_SPQ0_OLIVIA_RUNBOOK.md",
+    "docs/27_SPQ0_INDEPENDENT_REVIEW.md",
+    "docs/28_SPQ0_RESULT_AND_DISPOSITION.md",
     "docs/OLIVIA.md",
     "docs/LUMI.md",
     "configs/stage0/synthetic_smoke.yaml",
@@ -62,6 +68,11 @@ REQUIRED = (
     "configs/stagea_v3/real_olivia_v3.yaml",
     "configs/stagea_v3/registration.json",
     "configs/moment_compute/real_olivia_m0.yaml",
+    "configs/spq0/real_olivia_spq0.yaml",
+    "configs/spq0/inspected_plan.json",
+    "configs/spq0/registration.json",
+    "frank_eq_spq0_research_and_implementation_plan.md",
+    "frank_eq_spq0_config_skeleton.yaml",
     "scripts/qualify_real_cache.py",
     "scripts/compare_stageq_caches.py",
     "scripts/audit_rate_compute_result.py",
@@ -69,6 +80,8 @@ REQUIRED = (
     "scripts/smoke_stagea_v3_held_runtime.py",
     "scripts/validate_moment_compute.py",
     "scripts/verify_moment_compute_run.py",
+    "scripts/validate_spq0.py",
+    "scripts/verify_spq0_run.py",
     "olivia/cli.py",
     "olivia/run.slurm",
     "olivia/quickstart.sh",
@@ -81,6 +94,17 @@ REQUIRED = (
     ".agents/skills/olivia-cluster-runner/SKILL.md",
     ".agents/skills/lumi-cluster-runner/SKILL.md",
     ".agents/skills/moment-compute-runner/SKILL.md",
+    ".agents/skills/spq0-runner/SKILL.md",
+    "src/frank_eq/shared_predictive_quotient/automaton.py",
+    "src/frank_eq/shared_predictive_quotient/capture.py",
+    "src/frank_eq/shared_predictive_quotient/checkpoints.py",
+    "src/frank_eq/shared_predictive_quotient/cli.py",
+    "src/frank_eq/shared_predictive_quotient/config.py",
+    "src/frank_eq/shared_predictive_quotient/evaluation.py",
+    "src/frank_eq/shared_predictive_quotient/panel.py",
+    "src/frank_eq/shared_predictive_quotient/probes.py",
+    "src/frank_eq/shared_predictive_quotient/verify.py",
+    "src/frank_eq/shared_predictive_quotient/workflow.py",
     "evidence/reference_stage0/metrics.json",
     "evidence/reference_stage0/decision.json",
     "evidence/reference_stage0/manifest.json",
@@ -158,6 +182,34 @@ REQUIRED = (
     "evidence/real_stage_m_olivia_m0/run_summary.json",
     "evidence/real_stage_m_olivia_m0/verification_summary.json",
     "evidence/real_stage_m_olivia_m0/workflow_status.json",
+    "evidence/real_spq0_olivia/AUDIT.md",
+    "evidence/real_spq0_olivia/artifact_manifest.json",
+    "evidence/real_spq0_olivia/capture_manifest.json",
+    "evidence/real_spq0_olivia/captures/mistral-7b-v03.json",
+    "evidence/real_spq0_olivia/captures/qwen3-4b.json",
+    "evidence/real_spq0_olivia/checkpoint_preflight.json",
+    "evidence/real_spq0_olivia/checkpoints_manifest.json",
+    "evidence/real_spq0_olivia/config.yaml",
+    "evidence/real_spq0_olivia/decision.json",
+    "evidence/real_spq0_olivia/dry_run_plan.json",
+    "evidence/real_spq0_olivia/independent_verification.json",
+    "evidence/real_spq0_olivia/manifest.json",
+    "evidence/real_spq0_olivia/metrics.json",
+    "evidence/real_spq0_olivia/models.json",
+    "evidence/real_spq0_olivia/panel_manifest.json",
+    "evidence/real_spq0_olivia/predictions_manifest.json",
+    "evidence/real_spq0_olivia/public_basis.json",
+    "evidence/real_spq0_olivia/rate_compute.json",
+    "evidence/real_spq0_olivia/registration.json",
+    "evidence/real_spq0_olivia/run_manifest.json",
+    "evidence/real_spq0_olivia/run_summary.json",
+    "evidence/real_spq0_olivia/runtime_portability_diagnostic.json",
+    "evidence/real_spq0_olivia/systems.json",
+    "evidence/real_spq0_olivia/tokenizer_preflight.json",
+    "evidence/real_spq0_olivia/training_summary.json",
+    "evidence/real_spq0_olivia/verification_summary.json",
+    "evidence/real_spq0_olivia/workstation_verification.json",
+    "evidence/real_spq0_olivia/workflow_status.json",
 )
 
 
@@ -234,6 +286,36 @@ def main() -> int:
         pass
     else:
         raise SystemExit("Stage-Q config improperly permits train/eval")
+
+    spq0_path = ROOT / "configs/spq0/real_olivia_spq0.yaml"
+    spq0 = load_spq0_config(spq0_path)
+    spq0_plan = json.loads((ROOT / "configs/spq0/inspected_plan.json").read_text())
+    expected_spq0_plan = build_spq0_plan(spq0, config_path=spq0_path)
+    if canonical_json_bytes(spq0_plan) != canonical_json_bytes(expected_spq0_plan):
+        raise SystemExit("SPQ0 inspected plan differs from deterministic recomputation")
+    spq0_registration = json.loads(
+        (ROOT / "configs/spq0/registration.json").read_text()
+    )
+    if spq0_registration.get("schema") != "frank_eq_spq0_registration_manifest_v1":
+        raise SystemExit("SPQ0 registration manifest has the wrong schema")
+    if (
+        spq0_registration.get("status") != "prospective_development_only"
+        or spq0_registration.get("implementation_pr_launch_authorized") is not False
+        or any(spq0_registration.get("access", {}).values())
+    ):
+        raise SystemExit("SPQ0 registration improperly opens execution or access")
+    for relative, expected_hash in spq0_registration.get("files", {}).items():
+        if sha256_file(ROOT / relative) != expected_hash:
+            raise SystemExit(f"SPQ0 registration hash changed: {relative}")
+    if (
+        spq0_registration.get("inspected_plan_sha256")
+        != spq0_plan.get("plan_sha256")
+        or spq0_registration.get("active_checkpoint_revision_registry_sha256")
+        != spq0_plan.get("active_checkpoint_revision_registry_sha256")
+        or spq0_registration.get("reserved_checkpoint_non_access_contract_sha256")
+        != spq0_plan.get("reserved_checkpoint_non_access_contract_sha256")
+    ):
+        raise SystemExit("SPQ0 registration hashes differ from the inspected plan")
 
     synthetic_dir = ROOT / "evidence/reference_stage0"
     synthetic_decision = json.loads((synthetic_dir / "decision.json").read_text())
@@ -779,6 +861,363 @@ def main() -> int:
     ):
         raise SystemExit("Stage M0 compact evidence contains generated tensor payloads")
 
+    spq0_evidence_dir = ROOT / "evidence/real_spq0_olivia"
+    spq0_evidence_manifest = _validate_hash_manifest(spq0_evidence_dir)
+    spq0_artifact_manifest = json.loads(
+        (spq0_evidence_dir / "artifact_manifest.json").read_text()
+    )
+    spq0_decision = json.loads((spq0_evidence_dir / "decision.json").read_text())
+    spq0_metrics = json.loads((spq0_evidence_dir / "metrics.json").read_text())
+    spq0_models = json.loads((spq0_evidence_dir / "models.json").read_text())
+    spq0_panel = json.loads((spq0_evidence_dir / "panel_manifest.json").read_text())
+    spq0_run_manifest = json.loads(
+        (spq0_evidence_dir / "run_manifest.json").read_text()
+    )
+    spq0_run_summary = json.loads(
+        (spq0_evidence_dir / "run_summary.json").read_text()
+    )
+    spq0_workflow = json.loads(
+        (spq0_evidence_dir / "workflow_status.json").read_text()
+    )
+    spq0_checkpoint_preflight = json.loads(
+        (spq0_evidence_dir / "checkpoint_preflight.json").read_text()
+    )
+    spq0_tokenizer_preflight = json.loads(
+        (spq0_evidence_dir / "tokenizer_preflight.json").read_text()
+    )
+    spq0_independent = json.loads(
+        (spq0_evidence_dir / "independent_verification.json").read_text()
+    )
+    spq0_workstation = json.loads(
+        (spq0_evidence_dir / "workstation_verification.json").read_text()
+    )
+    spq0_verification = json.loads(
+        (spq0_evidence_dir / "verification_summary.json").read_text()
+    )
+    spq0_portability = json.loads(
+        (spq0_evidence_dir / "runtime_portability_diagnostic.json").read_text()
+    )
+    spq0_rate_compute = json.loads(
+        (spq0_evidence_dir / "rate_compute.json").read_text()
+    )
+    if spq0_evidence_manifest.get("schema") != "frank_eq_spq0_evidence_manifest_v1":
+        raise SystemExit("SPQ0 evidence manifest has the wrong schema")
+    expected_spq0_files = set(spq0_evidence_manifest.get("files", {})) | {
+        "manifest.json"
+    }
+    observed_spq0_files = {
+        str(path.relative_to(spq0_evidence_dir))
+        for path in spq0_evidence_dir.rglob("*")
+        if path.is_file()
+    }
+    if observed_spq0_files != expected_spq0_files:
+        raise SystemExit("SPQ0 compact evidence file set changed")
+    spq0_environment = spq0_run_manifest.get("environment", {})
+    if (
+        spq0_evidence_manifest.get("source_archive_sha256")
+        != spq0_environment.get("source_sha256")
+        or spq0_evidence_manifest.get("runtime_image_sha256")
+        != spq0_environment.get("runtime_image_sha256")
+        or spq0_evidence_manifest.get("slurm_job_id")
+        != spq0_environment.get("slurm_job_id")
+        or spq0_evidence_manifest.get("job_name")
+        != "frank-eq-spq0-olivia-20260813c"
+    ):
+        raise SystemExit("SPQ0 evidence source lineage changed")
+    for adopted_name, registered_path in (
+        ("config.yaml", spq0_path),
+        ("registration.json", ROOT / "configs/spq0/registration.json"),
+        ("dry_run_plan.json", ROOT / "configs/spq0/inspected_plan.json"),
+    ):
+        if sha256_file(spq0_evidence_dir / adopted_name) != sha256_file(
+            registered_path
+        ):
+            raise SystemExit(f"adopted SPQ0 {adopted_name} differs from registration")
+    if spq0_artifact_manifest.get("schema") != "frank_eq_spq0_artifact_manifest_v1":
+        raise SystemExit("SPQ0 run artifact manifest has the wrong schema")
+    adopted_spq0_hashes = spq0_evidence_manifest.get("files", {})
+    run_spq0_hashes = spq0_artifact_manifest.get("files", {})
+    for name in (
+        "capture_manifest.json",
+        "captures/mistral-7b-v03.json",
+        "captures/qwen3-4b.json",
+        "checkpoint_preflight.json",
+        "checkpoints_manifest.json",
+        "config.yaml",
+        "decision.json",
+        "dry_run_plan.json",
+        "metrics.json",
+        "models.json",
+        "panel_manifest.json",
+        "predictions_manifest.json",
+        "public_basis.json",
+        "rate_compute.json",
+        "registration.json",
+        "run_manifest.json",
+        "run_summary.json",
+        "systems.json",
+        "tokenizer_preflight.json",
+        "training_summary.json",
+        "workflow_status.json",
+    ):
+        if adopted_spq0_hashes.get(name) != run_spq0_hashes.get(name):
+            raise SystemExit(f"adopted SPQ0 artifact differs from verified run: {name}")
+    expected_spq0_checks = {
+        "activation_specificity": False,
+        "cross_family_public_state_transfer": False,
+        "four_bit_retention": True,
+        "history_specificity": False,
+        "predictive_dimension_consistent": False,
+        "predictive_system_and_executor": True,
+        "renderer_system_length_stability": False,
+        "semantic_predictive_quotient": False,
+        "sender_identity_closed": False,
+        "source_probability_protocol": False,
+    }
+    if (
+        spq0_decision.get("status") != "fail"
+        or spq0_decision.get("diagnosis")
+        != "SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED"
+        or spq0_decision.get("checks") != expected_spq0_checks
+    ):
+        raise SystemExit("adopted SPQ0 negative decision changed")
+    if not spq0_decision.get("authorization") or any(
+        spq0_decision["authorization"].values()
+    ):
+        raise SystemExit("SPQ0 negative improperly opens an authorization")
+    if (
+        spq0_workflow.get("state") != "completed"
+        or spq0_workflow.get("completed_stages")
+        != ["checkpoint_preflight", "audit"]
+        or spq0_workflow.get("failure") is not None
+        or spq0_workflow.get("scientific_decision") != spq0_decision
+    ):
+        raise SystemExit("SPQ0 workflow completion record changed")
+    if (
+        spq0_run_summary.get("status") != "completed"
+        or spq0_run_summary.get("workflow_integrity_passed") is not True
+        or spq0_run_summary.get("ordered_cross_family_pairs") != 2
+        or spq0_run_summary.get("pair_specific_mappers") != 0
+        or spq0_run_summary.get("reserved_models_loaded") != 0
+        or spq0_run_summary.get("test_histories") != 0
+    ):
+        raise SystemExit("SPQ0 completed run summary changed")
+    expected_active_spq0 = {
+        "qwen3-4b": "1cfa9a7208912126459214e8b04321603b3df60c",
+        "mistral-7b-v03": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+    }
+    if {
+        row.get("model_id"): row.get("revision")
+        for row in spq0_models.get("active_founders", [])
+    } != expected_active_spq0:
+        raise SystemExit("SPQ0 active founder identities changed")
+    reserved_rows = spq0_models.get("reserved_unopened", [])
+    if {row.get("model_id") for row in reserved_rows} != {
+        "olmo2-7b-held",
+        "granite31-8b-held",
+    } or any(
+        row.get("snapshot_resolution_attempted")
+        or row.get("files_opened") != 0
+        or row.get("model_adapter_instantiated")
+        or row.get("model_loaded")
+        or row.get("inference_executed")
+        for row in reserved_rows
+    ):
+        raise SystemExit("SPQ0 reserved-checkpoint non-access record changed")
+    for preflight in (spq0_checkpoint_preflight, spq0_tokenizer_preflight):
+        if preflight.get("status") != "passed" or any(
+            preflight.get(name, 0) != 0
+            for name in (
+                "reserved_snapshot_resolution_attempts",
+                "reserved_files_opened",
+                "reserved_model_adapter_instantiations",
+                "reserved_model_loads",
+                "reserved_tokenizer_loads",
+                "reserved_inference_calls",
+            )
+        ):
+            raise SystemExit("SPQ0 checkpoint/tokenizer preflight changed")
+    expected_surfaces = [
+        "final_token_residual",
+        "event_boundary_residuals",
+        "all_token_summary",
+        "mean_input_embedding",
+        "parameter_matched_token_sequence",
+    ]
+    for model_id in expected_active_spq0:
+        capture = json.loads(
+            (spq0_evidence_dir / "captures" / f"{model_id}.json").read_text()
+        )
+        branch = capture.get("branch_execution", {})
+        if (
+            capture.get("rows") != 2880
+            or capture.get("response_branches") != 92160
+            or capture.get("exact_prefix_continuity_checks") != 92160
+            or capture.get("exact_event_boundary_checks") != 46080
+            or capture.get("capture_surface_contract") != expected_surfaces
+            or branch.get("literal_kv_reuse") is not True
+            or branch.get("exclusive_cache_batching") is not True
+            or branch.get("exact_replay_response_branches") != 0
+        ):
+            raise SystemExit(f"SPQ0 causal capture record changed: {model_id}")
+    spq0_roles = spq0_panel.get("roles", {})
+    if (
+        spq0_panel.get("test_histories") != 0
+        or spq0_roles.get("calibration", {}).get("histories") != 384
+        or spq0_roles.get("selection", {}).get("histories") != 192
+        or spq0_roles.get("validation", {}).get("histories") != 576
+        or spq0_roles.get("validation", {}).get("lengths") != [8, 16, 32]
+        or "symbolic" not in spq0_roles.get("validation", {}).get("renderers", [])
+        or spq0_roles.get("validation", {}).get("systems")
+        != ["system-00", "system-01", "system-02"]
+    ):
+        raise SystemExit("SPQ0 development role or validation-only strata changed")
+    spq0_basis_metrics = spq0_metrics.get("public_basis", {})
+    if (
+        spq0_basis_metrics.get("exact_rank") != 4
+        or spq0_basis_metrics.get("normalization_aware_dimension") != 3
+        or spq0_basis_metrics.get("rank_grid") != [1, 2, 3, 4, 6, 8]
+        or spq0_basis_metrics.get("maximum_exact_executor_error", 1.0) > 1e-12
+        or spq0_basis_metrics.get(
+            "maximum_normalization_aware_executor_error", 1.0
+        )
+        > 1e-12
+    ):
+        raise SystemExit("SPQ0 exact public-basis result changed")
+    for model_id in expected_active_spq0:
+        model_metrics = spq0_metrics.get("models", {}).get(model_id, {})
+        source_seen = model_metrics.get("source_probability_protocol", {}).get(
+            "seen", {}
+        )
+        semantic = model_metrics.get("semantic_core", {})
+        if (
+            source_seen.get("candidate_brier", 0.0)
+            <= source_seen.get("baselines", {}).get("target_prior", {}).get(
+                "brier", 1.0
+            )
+            or source_seen.get("baselines", {})
+            .get("target_prior", {})
+            .get("candidate_gain_ci", {})
+            .get("lower", 0.0)
+            >= 0.0
+            or semantic.get("seen", {})
+            .get("baselines", {})
+            .get("history_prior", {})
+            .get("candidate_gain_ci", {})
+            .get("lower", 0.0)
+            <= 0.0
+            or semantic.get("unseen_renderer", {})
+            .get("baselines", {})
+            .get("history_prior", {})
+            .get("candidate_gain_ci", {})
+            .get("lower", 0.0)
+            >= 0.0
+            or semantic.get("joint_ood", {})
+            .get("baselines", {})
+            .get("history_prior", {})
+            .get("candidate_gain_ci", {})
+            .get("lower", 0.0)
+            >= 0.0
+        ):
+            raise SystemExit(f"SPQ0 source/semantic conclusion changed: {model_id}")
+    cross_family = spq0_metrics.get("cross_family_composition", {})
+    mistral_to_qwen = cross_family.get("mistral-7b-v03__to__qwen3-4b", {})
+    qwen_to_mistral = cross_family.get("qwen3-4b__to__mistral-7b-v03", {})
+    if (
+        mistral_to_qwen.get("pair_specific_mapper") is not False
+        or qwen_to_mistral.get("pair_specific_mapper") is not False
+        or mistral_to_qwen.get("gain_over_target_prior_ci", {}).get("lower", 0.0)
+        <= 0.0
+        or mistral_to_qwen.get("oracle_reader_gain_retention", 0.0) < 0.7
+        or qwen_to_mistral.get("oracle_reader_gain_retention", 1.0) >= 0.7
+        or spq0_decision.get("check_details", {})
+        .get("cross_family_public_state_transfer", {})
+        != {
+            "mistral-7b-v03__to__qwen3-4b": True,
+            "qwen3-4b__to__mistral-7b-v03": False,
+        }
+    ):
+        raise SystemExit("SPQ0 directional cross-family conclusion changed")
+    residual = spq0_metrics.get("behavioral_residual_census", {})
+    if (
+        residual.get("selected_rank") != 0
+        or residual.get("selected_incremental_gain") != 0.0
+        or residual.get("promotional") is not False
+        or spq0_metrics.get("sender_identity", {}).get("accuracy_over_chance", 0.0)
+        <= 0.15
+    ):
+        raise SystemExit("SPQ0 residual or sender-identity conclusion changed")
+    if (
+        spq0_rate_compute.get("primary_packet", {}).get("rank") != 4
+        or spq0_rate_compute.get("primary_packet", {}).get("payload_bits") != 16
+        or spq0_rate_compute.get("primary_packet", {}).get(
+            "source_post_capture_queries"
+        )
+        != 0
+        or spq0_rate_compute.get("one_direct_query_is_not_a_conjunctive_gate")
+        is not True
+    ):
+        raise SystemExit("SPQ0 rate/compute contract changed")
+    if (
+        spq0_independent.get("passed") is not True
+        or not all(spq0_independent.get("checks", {}).values())
+        or spq0_independent.get("decision") != spq0_decision
+        or spq0_independent.get("numeric_comparison", {}).get(
+            "maximum_abs_delta"
+        )
+        != 0.0
+    ):
+        raise SystemExit("SPQ0 in-job independent verification changed")
+    if (
+        spq0_workstation.get("passed") is not False
+        or spq0_workstation.get("checks", {}).get("artifact_hashes_valid") is not True
+        or spq0_workstation.get("checks", {}).get("decision_recomputed_exactly")
+        is not True
+        or spq0_workstation.get("decision") != spq0_decision
+        or spq0_workstation.get("numeric_comparison", {}).get(
+            "maximum_abs_delta"
+        )
+        != 2.0413661039331288e-09
+    ):
+        raise SystemExit("SPQ0 workstation portability refusal changed")
+    if (
+        spq0_verification.get("schema")
+        != "frank_eq_spq0_adopted_verification_summary_v1"
+        or spq0_verification.get("overall")
+        != "adopted_valid_development_negative"
+        or spq0_verification.get("specialized_verifier", {}).get(
+            "exact_runtime_overall"
+        )
+        != "passed"
+        or spq0_verification.get("specialized_verifier", {}).get(
+            "workstation_overall"
+        )
+        != "strict_portability_refusal"
+        or any(spq0_verification.get("authorization", {}).values())
+    ):
+        raise SystemExit("SPQ0 adopted verification summary changed")
+    if (
+        spq0_portability.get("schema")
+        != "frank_eq_spq0_runtime_portability_diagnostic_v1"
+        or spq0_portability.get("olivia_runtime", {}).get(
+            "independent_verifier_passed"
+        )
+        is not True
+        or spq0_portability.get("workstation_runtime", {}).get(
+            "strict_verifier_passed"
+        )
+        is not False
+        or spq0_portability.get("result", {}).get("gate_or_decision_difference")
+        is not False
+    ):
+        raise SystemExit("SPQ0 runtime portability diagnostic changed")
+    if any(
+        path.suffix in forbidden_evidence_suffixes
+        for path in spq0_evidence_dir.rglob("*")
+        if path.is_file()
+    ):
+        raise SystemExit("SPQ0 compact evidence contains generated tensor payloads")
+
     gitignore = (ROOT / ".gitignore").read_text()
     if ".agents/state/" not in gitignore:
         raise SystemExit(".agents/state/ must remain ignored")
@@ -801,6 +1240,11 @@ def main() -> int:
                 "stagea_v3_evidence": v3_evidence_verification["overall"],
                 "stage_m_diagnosis": stage_m_decision["diagnosis"],
                 "stage_m_evidence": stage_m_verification["overall"],
+                "spq0_registration_status": spq0_registration["status"],
+                "spq0_plan_sha256": spq0_plan["plan_sha256"],
+                "spq0_diagnosis": spq0_decision["diagnosis"],
+                "spq0_evidence": spq0_verification["overall"],
+                "spq0_reserved_checkpoint_access": False,
                 "stageq_pair_registered": True,
                 "stageq_cache_only_enforced": True,
             },

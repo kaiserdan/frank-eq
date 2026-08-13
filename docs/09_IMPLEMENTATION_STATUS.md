@@ -13,6 +13,8 @@ Snapshot: 2026-08-13
   `ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED`.
 - Stage M0: completed, verified development negative;
   `OPERATION_CLOSED_EVENTS_NOT_READABLE`.
+- SPQ0: completed, exact-runtime-verified development negative;
+  `SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED`.
 - Model-local public-head option: implemented but dormant.
 
 The v2 shared public code failed with held-out Brier `0.2065`, fact accuracy
@@ -201,6 +203,59 @@ Compact evidence is adopted under `evidence/real_stage_m_olivia_m0/`. The
 negative closes the current graph/source line and authorizes no successor draft
 or run, held/receiver/test role, or claim.
 
+## Completed implementation and outcome: SPQ0
+
+SPQ0 implements a fresh development-only Shared Predictive Quotient census over
+controlled stochastic systems. It does not reuse graph data. The implementation
+adds:
+
+```text
+src/frank_eq/shared_predictive_quotient/
+configs/spq0/real_olivia_spq0.yaml
+configs/spq0/inspected_plan.json
+configs/spq0/registration.json
+scripts/validate_spq0.py
+scripts/verify_spq0_run.py
+docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md
+docs/26_SPQ0_OLIVIA_RUNBOOK.md
+docs/27_SPQ0_INDEPENDENT_REVIEW.md
+docs/28_SPQ0_RESULT_AND_DISPOSITION.md
+.agents/skills/spq0-runner/SKILL.md
+evidence/real_spq0_olivia/
+```
+
+It freezes categorical probability-bin forecasting, an exact linear rank-four
+typed future-test core, and the normalization-aware affine dimension-three
+control implied by the known null-test constant. Five query-blind surface
+families, parameter-matched token controls, complete model-local encoders,
+frozen target-local readers, both ordered Qwen/Mistral compositions, parallel
+rank/quantization censuses, a non-promotional residual census, and a rate-aware
+amortized direct comparison are registered. The validation-only system is a
+local perturbation check, not broad system-family evidence.
+
+The local plan is model-free. Olivia support is content addressed and rejects
+dirty source, image/hash overrides, recovery, non-`full` profiles, and any stage
+other than `audit`.
+
+The separately authorized audit completed as Olivia Slurm job `2006680` with
+both founders, 2,880 capture rows and 92,160 future-test branches per model,
+literal KV reuse, exact prefix/event continuity, zero replay, no test role, and
+zero reserved-checkpoint access. The scheduler and workflow completed `0:0`.
+
+The machine diagnosis is `SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED`. The
+categorical source readout loses decisively to the target prior for both
+founders. Semantic rank-four decoding beats the history prior on seen renderers
+but fails the OOD and activation/history-specificity conjunction. Mapper-free
+Mistral-to-Qwen transfer passes, whereas Qwen-to-Mistral fails oracle-reader
+retention and predictive-dimension localization. Sender identity exceeds the
+registered ceiling and the residual census selects rank zero.
+
+The Olivia-runtime independent verifier recomputes all artifacts and the same
+decision with zero numeric delta. The workstation's newer Python/NumPy stack
+refuses strict portability at maximum delta `2.04e-9` in Qwen fitted outputs,
+but changes no decision or authorization. Compact evidence is adopted under
+`evidence/real_spq0_olivia/` and the consumed protocol remains unchanged.
+
 ## Not authorized
 
 - another scale-only Stage-Q screen under immediate A/B readout;
@@ -213,4 +268,10 @@ or run, held/receiver/test role, or claim.
 - rerunning Stage M0 under any stage, scale, registry, or calibration;
 - changing its event registry, development roles, baselines, thresholds, or
   gates after validation outcomes; or
-- treating interactive Stage M tomography as one-shot communication.
+- treating interactive Stage M tomography as one-shot communication;
+- rerunning, recovering, or retuning SPQ0 after its completed outcome;
+- accessing its reserved checkpoints or using exposed validation rows to tune a
+  successor;
+- drafting or executing SPQ1 from the negative SPQ0 decision; or
+- treating the directional transfer positive or rate diagnostic as a
+  scientific claim.

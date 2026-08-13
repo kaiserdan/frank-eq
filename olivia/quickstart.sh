@@ -45,6 +45,33 @@ stages_arg="${stages_arg//+/ ,}"
 stages_arg="${stages_arg// /}"
 
 case "$config_arg" in
+    configs/spq0/*)
+        if [[ "$stages_arg" != "audit" ]]; then
+            echo "SPQ0 configs require --stages audit; received: $stages_arg" >&2
+            exit 2
+        fi
+        plan_file="${FRANK_EQ_SPQ0_PLAN:-configs/spq0/inspected_plan.json}"
+        if [[ ! -f "$plan_file" ]]; then
+            echo "missing inspected SPQ0 plan: $plan_file" >&2
+            exit 2
+        fi
+        plan_sha256="$($python_bin -c 'import json,sys; print(json.load(open(sys.argv[1]))["plan_sha256"])' "$plan_file")"
+        [[ "$plan_sha256" =~ ^[0-9a-f]{64}$ ]] || {
+            echo "inspected SPQ0 plan has no valid internal SHA-256" >&2
+            exit 2
+        }
+        "$python_bin" -m frank_eq.shared_predictive_quotient.cli validate \
+          --config "$config_arg"
+        "$python_bin" -m frank_eq.shared_predictive_quotient.cli run \
+          --config "$config_arg" \
+          --out "${FRANK_EQ_RUN_ROOT:?missing FRANK_EQ_RUN_ROOT}" \
+          --stages "$stages_arg" \
+          --plan "$plan_file" \
+          --inspected-plan-sha256 "$plan_sha256"
+        "$python_bin" -m frank_eq.shared_predictive_quotient.cli verify \
+          --config "$config_arg" \
+          --run "$FRANK_EQ_RUN_ROOT"
+        ;;
     configs/moment_compute/*)
         if [[ "$stages_arg" != "audit" ]]; then
             echo "moment-compute configs require --stages audit; received: $stages_arg" >&2

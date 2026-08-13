@@ -1,0 +1,3202 @@
+{
+  "behavioral_residual_census": {
+    "candidates": [
+      {
+        "ordered_direction_gains": {
+          "mistral-7b-v03__to__qwen3-4b": 0.0,
+          "qwen3-4b__to__mistral-7b-v03": 0.0
+        },
+        "rank": 0,
+        "selection_incremental_gain": 0.0,
+        "singular_values": []
+      },
+      {
+        "ordered_direction_gains": {
+          "mistral-7b-v03__to__qwen3-4b": 8.543561617715132e-05,
+          "qwen3-4b__to__mistral-7b-v03": -0.00034408629351323933
+        },
+        "rank": 1,
+        "selection_incremental_gain": -0.000129325338668044,
+        "singular_values": [
+          9.130457011650543
+        ]
+      },
+      {
+        "ordered_direction_gains": {
+          "mistral-7b-v03__to__qwen3-4b": -0.00010123762121458228,
+          "qwen3-4b__to__mistral-7b-v03": -0.0003834892610826873
+        },
+        "rank": 2,
+        "selection_incremental_gain": -0.0002423634411486348,
+        "singular_values": [
+          9.130457011650543,
+          5.438464469129197
+        ]
+      },
+      {
+        "ordered_direction_gains": {
+          "mistral-7b-v03__to__qwen3-4b": -0.00011263487155066879,
+          "qwen3-4b__to__mistral-7b-v03": -0.0004121443390163201
+        },
+        "rank": 4,
+        "selection_incremental_gain": -0.00026238960528349447,
+        "singular_values": [
+          9.130457011650543,
+          5.438464469129197,
+          2.0664100545940127,
+          1.0570155201628726
+        ]
+      }
+    ],
+    "evaluation_role": "validation",
+    "fit_role": "calibration",
+    "interpretation": "diagnostic_only_after_conditioning_on_semantic_core",
+    "method": "pooled_residual_pca_public_coordinate_subspace",
+    "models": [
+      "mistral-7b-v03",
+      "qwen3-4b"
+    ],
+    "pair_specific_mapper_count": 0,
+    "promotional": false,
+    "schema": "frank_eq_spq0_behavioral_residual_census_v1",
+    "selected_incremental_gain": 0.0,
+    "selected_rank": 0,
+    "selection_role": "selection",
+    "source_local_residual_encoders": true,
+    "validation": {
+      "mistral-7b-v03__to__qwen3-4b": {
+        "joint_ood_incremental_gain_ci": {
+          "estimate": 4.743384504624082e-20,
+          "lower": -6.776263578034403e-20,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 1.6940658945086007e-19
+        },
+        "pair_specific_mapper": false,
+        "source_local_residual_encoder": true,
+        "validation_incremental_gain_ci": {
+          "estimate": 3.891645818773924e-20,
+          "lower": -1.3843106514362986e-20,
+          "replicates": 2000,
+          "units": 576,
+          "upper": 9.476337955360677e-20
+        }
+      },
+      "qwen3-4b__to__mistral-7b-v03": {
+        "joint_ood_incremental_gain_ci": {
+          "estimate": 3.3881317890172014e-21,
+          "lower": -1.3552527156068805e-20,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 2.0328790734103208e-20
+        },
+        "pair_specific_mapper": false,
+        "source_local_residual_encoder": true,
+        "validation_incremental_gain_ci": {
+          "estimate": 5.874330347161767e-21,
+          "lower": 2.3603200507053862e-21,
+          "replicates": 2000,
+          "units": 576,
+          "upper": 9.545394669254881e-21
+        }
+      }
+    }
+  },
+  "cross_family_composition": {
+    "mistral-7b-v03__to__qwen3-4b": {
+      "activation_over_token_packet_gain_ci": {
+        "estimate": 0.0006262845112635074,
+        "lower": 0.00046067859026407726,
+        "replicates": 2000,
+        "units": 64,
+        "upper": 0.0007910272571709839
+      },
+      "condition": "joint_ood",
+      "four_bit_cross_family_gain_retention": 1.0020099570487657,
+      "four_bit_transferred_brier": 0.00750165473353317,
+      "gain_over_target_prior_ci": {
+        "estimate": 0.0005537824151628168,
+        "lower": 0.00042061625767972376,
+        "replicates": 2000,
+        "units": 64,
+        "upper": 0.0006954473993038878
+      },
+      "histories": 64,
+      "normalization_aware_four_bit_gain_retention": 1.007900138407773,
+      "normalization_aware_four_bit_payload_bits": 12,
+      "normalization_aware_four_bit_transferred_brier": 0.0077082845469362464,
+      "normalization_aware_transfer": {
+        "1": {
+          "brier": 0.007652228397560112,
+          "formally_affine_complete": false,
+          "implicit_null_test_probability": 1.0,
+          "payload_coordinates": 1
+        },
+        "2": {
+          "brier": 0.007586733303191452,
+          "formally_affine_complete": false,
+          "implicit_null_test_probability": 1.0,
+          "payload_coordinates": 2
+        },
+        "3": {
+          "brier": 0.007711014328364781,
+          "formally_affine_complete": true,
+          "implicit_null_test_probability": 1.0,
+          "payload_coordinates": 3
+        }
+      },
+      "oracle_core_reader_brier": 0.007557009809809728,
+      "oracle_reader_gain_retention": 1.1085838011896594,
+      "pair_specific_mapper": false,
+      "rank4_normalization_aware_comparisons": {
+        "1": {
+          "estimate": 0.00014946058515810426,
+          "lower": 0.0001154294610778247,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.00018747363471913485
+        },
+        "2": {
+          "estimate": 8.396549078944397e-05,
+          "lower": 5.553119478178345e-05,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.00011491686606111269
+        },
+        "3": {
+          "estimate": 0.00020824651596277328,
+          "lower": 0.00014759276883261052,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.0002716143938571758
+        }
+      },
+      "rank4_transfer_comparisons": {
+        "1": {
+          "estimate": 0.0029958296197802933,
+          "lower": 0.002534173597487491,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.0034762418566486944
+        },
+        "2": {
+          "estimate": 0.0005324175233158372,
+          "lower": 0.0003885876006907079,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.0006823480554766629
+        },
+        "3": {
+          "estimate": 0.0005023703261293491,
+          "lower": 0.0003770904866774282,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.0006300056793105789
+        },
+        "6": {
+          "estimate": -1.7202970165406892e-05,
+          "lower": -2.369162011911792e-05,
+          "replicates": 2000,
+          "units": 64,
+          "upper": -1.1086127795896864e-05
+        },
+        "8": {
+          "estimate": 0.00044776991854338425,
+          "lower": 0.00033396870585172323,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.0005633941462649708
+        }
+      },
+      "rank4_transfer_noninferiority_margin": 0.002,
+      "rank_transfer": {
+        "1": {
+          "brier": 0.0104985974321823,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true
+        },
+        "2": {
+          "brier": 0.008035185335717846,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true
+        },
+        "3": {
+          "brier": 0.008005138138531357,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true
+        },
+        "4": {
+          "brier": 0.007502767812402009,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false
+        },
+        "6": {
+          "brier": 0.007485564842236601,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false
+        },
+        "8": {
+          "brier": 0.007950537730945392,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false
+        }
+      },
+      "rows": 64,
+      "source_family": "mistral",
+      "source_model": "mistral-7b-v03",
+      "target_family": "qwen3",
+      "target_model": "qwen3-4b",
+      "target_prior_brier": 0.008056550227564825,
+      "target_reader_frozen_before_source_evaluation": true,
+      "token_packet_brier": 0.008129052323665514,
+      "transferred_brier": 0.007502767812402009
+    },
+    "qwen3-4b__to__mistral-7b-v03": {
+      "activation_over_token_packet_gain_ci": {
+        "estimate": 6.162053668117026e-05,
+        "lower": 4.469794098253631e-05,
+        "replicates": 2000,
+        "units": 64,
+        "upper": 7.93374212762794e-05
+      },
+      "condition": "joint_ood",
+      "four_bit_cross_family_gain_retention": 1.0025912089579547,
+      "four_bit_transferred_brier": 0.0009019136799997779,
+      "gain_over_target_prior_ci": {
+        "estimate": 6.884889811204253e-05,
+        "lower": 6.0511191256261497e-05,
+        "replicates": 2000,
+        "units": 64,
+        "upper": 7.752676946910076e-05
+      },
+      "histories": 64,
+      "normalization_aware_four_bit_gain_retention": 0.9999997822798108,
+      "normalization_aware_four_bit_payload_bits": 12,
+      "normalization_aware_four_bit_transferred_brier": 0.0008690982706777365,
+      "normalization_aware_transfer": {
+        "1": {
+          "brier": 0.0008595635325450551,
+          "formally_affine_complete": false,
+          "implicit_null_test_probability": 1.0,
+          "payload_coordinates": 1
+        },
+        "2": {
+          "brier": 0.0008585608075450737,
+          "formally_affine_complete": false,
+          "implicit_null_test_probability": 1.0,
+          "payload_coordinates": 2
+        },
+        "3": {
+          "brier": 0.0008690982485045178,
+          "formally_affine_complete": true,
+          "implicit_null_test_probability": 1.0,
+          "payload_coordinates": 3
+        }
+      },
+      "oracle_core_reader_brier": 0.0008326181649717603,
+      "oracle_reader_gain_retention": 0.49774072412634657,
+      "pair_specific_mapper": false,
+      "rank4_normalization_aware_comparisons": {
+        "1": {
+          "estimate": -4.2528549336256087e-05,
+          "lower": -5.113622689960371e-05,
+          "replicates": 2000,
+          "units": 64,
+          "upper": -3.420332265077725e-05
+        },
+        "2": {
+          "estimate": -4.35312743362374e-05,
+          "lower": -5.161332031368575e-05,
+          "replicates": 2000,
+          "units": 64,
+          "upper": -3.5320948285094194e-05
+        },
+        "3": {
+          "estimate": -3.299383337679345e-05,
+          "lower": -3.932043409855883e-05,
+          "replicates": 2000,
+          "units": 64,
+          "upper": -2.6317371950576647e-05
+        }
+      },
+      "rank4_transfer_comparisons": {
+        "1": {
+          "estimate": 0.0003506152821308435,
+          "lower": 0.0002868745795078332,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.0004194039676800066
+        },
+        "2": {
+          "estimate": -9.977034514096983e-05,
+          "lower": -0.00012546703520133418,
+          "replicates": 2000,
+          "units": 64,
+          "upper": -7.385752148777802e-05
+        },
+        "3": {
+          "estimate": -6.351138948499635e-07,
+          "lower": -6.344908273247673e-06,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 5.176323116096294e-06
+        },
+        "6": {
+          "estimate": -2.6542368120604662e-05,
+          "lower": -2.963658437911029e-05,
+          "replicates": 2000,
+          "units": 64,
+          "upper": -2.3462483783864738e-05
+        },
+        "8": {
+          "estimate": -9.296983669193528e-05,
+          "lower": -0.00010682845213525323,
+          "replicates": 2000,
+          "units": 64,
+          "upper": -8.002391071113227e-05
+        }
+      },
+      "rank4_transfer_noninferiority_margin": 0.002,
+      "rank_transfer": {
+        "1": {
+          "brier": 0.0012527073640121547,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true
+        },
+        "2": {
+          "brier": 0.0008023217367403412,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true
+        },
+        "3": {
+          "brier": 0.0009014569679864612,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true
+        },
+        "4": {
+          "brier": 0.0009020920818813111,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false
+        },
+        "6": {
+          "brier": 0.0008755497137607066,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false
+        },
+        "8": {
+          "brier": 0.0008091222451893759,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false
+        }
+      },
+      "rows": 64,
+      "source_family": "qwen3",
+      "source_model": "qwen3-4b",
+      "target_family": "mistral",
+      "target_model": "mistral-7b-v03",
+      "target_prior_brier": 0.0009709409799933537,
+      "target_reader_frozen_before_source_evaluation": true,
+      "token_packet_brier": 0.0009637126185624813,
+      "transferred_brier": 0.0009020920818813111
+    }
+  },
+  "data_usage": {
+    "held_sender_rows": 0,
+    "receiver_rows": 0,
+    "roles": [
+      "calibration",
+      "selection",
+      "validation"
+    ],
+    "test_histories": 0
+  },
+  "models": {
+    "mistral-7b-v03": {
+      "amortized_utility": {
+        "1": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 1,
+          "packet_bits_per_query": 16.0,
+          "packet_cost_brier_equivalent_per_query": 0.008,
+          "packet_payload_bits": 16,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.09221501796744766,
+            "lower": 0.08076732992474005,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.10366302457001482
+          }
+        },
+        "16": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 16,
+          "packet_bits_per_query": 1.0,
+          "packet_cost_brier_equivalent_per_query": 0.0005,
+          "packet_payload_bits": 16,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.09971501796744767,
+            "lower": 0.08872698943792134,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.11062685562663162
+          }
+        },
+        "32": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 32,
+          "packet_bits_per_query": 0.5,
+          "packet_cost_brier_equivalent_per_query": 0.00025,
+          "packet_payload_bits": 16,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.09996501796744765,
+            "lower": 0.08782910201511031,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.11115644173465862
+          }
+        },
+        "4": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 4,
+          "packet_bits_per_query": 4.0,
+          "packet_cost_brier_equivalent_per_query": 0.002,
+          "packet_payload_bits": 16,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.09821501796744767,
+            "lower": 0.08613074397699172,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.10919990136661498
+          }
+        }
+      },
+      "compiled_semantic_targets": {
+        "joint_ood": {
+          "baselines": {
+            "direct_probability_forecast": {
+              "brier": 0.16398610288965398,
+              "candidate_gain_ci": {
+                "estimate": 0.08021501796744768,
+                "lower": 0.06838402718373973,
+                "replicates": 2000,
+                "units": 64,
+                "upper": 0.09122466437164921
+              }
+            },
+            "target_prior": {
+              "brier": 0.01729847615953307,
+              "candidate_gain_ci": {
+                "estimate": -0.06647260876267325,
+                "lower": -0.0778883357277157,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.05498217342063892
+              }
+            }
+          },
+          "candidate_brier": 0.08377108492220631,
+          "candidate_r2": -5.808069979103325,
+          "histories": 64,
+          "rows": 64
+        },
+        "length_transfer": {
+          "baselines": {
+            "direct_probability_forecast": {
+              "brier": 0.23932948123903872,
+              "candidate_gain_ci": {
+                "estimate": 0.20861427498807206,
+                "lower": 0.19936741281956682,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.21792259423781038
+              }
+            },
+            "target_prior": {
+              "brier": 0.025932331408044015,
+              "candidate_gain_ci": {
+                "estimate": -0.004782874842922629,
+                "lower": -0.0075644200828050845,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.0017534669776400238
+              }
+            }
+          },
+          "candidate_brier": 0.030715206250966645,
+          "candidate_r2": -0.19164033981565853,
+          "histories": 128,
+          "rows": 256
+        },
+        "seen": {
+          "baselines": {
+            "direct_probability_forecast": {
+              "brier": 0.2198521388924087,
+              "candidate_gain_ci": {
+                "estimate": 0.2021603558603715,
+                "lower": 0.19503141180070221,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.20929457874777715
+              }
+            },
+            "target_prior": {
+              "brier": 0.030605069222932935,
+              "candidate_gain_ci": {
+                "estimate": 0.01291328619089574,
+                "lower": 0.010986788048637354,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.014769442803776341
+              }
+            }
+          },
+          "candidate_brier": 0.01769178303203719,
+          "candidate_r2": 0.41394238969705743,
+          "histories": 256,
+          "rows": 512
+        },
+        "unseen_renderer": {
+          "baselines": {
+            "direct_probability_forecast": {
+              "brier": 0.22571453529714813,
+              "candidate_gain_ci": {
+                "estimate": 0.12072203483124767,
+                "lower": 0.11318152474234816,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.12795997633555428
+              }
+            },
+            "target_prior": {
+              "brier": 0.030605069222932935,
+              "candidate_gain_ci": {
+                "estimate": -0.07438743124296754,
+                "lower": -0.0841340968832932,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.06465762703308496
+              }
+            }
+          },
+          "candidate_brier": 0.10499250046590047,
+          "candidate_r2": -2.4779792297560705,
+          "histories": 256,
+          "rows": 256
+        },
+        "unseen_system": {
+          "baselines": {
+            "direct_probability_forecast": {
+              "brier": 0.16872295136283763,
+              "candidate_gain_ci": {
+                "estimate": 0.14762580005028275,
+                "lower": 0.1442941409190247,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.15105263235460664
+              }
+            },
+            "target_prior": {
+              "brier": 0.017704567161977453,
+              "candidate_gain_ci": {
+                "estimate": -0.003392584150577418,
+                "lower": -0.005441668861678568,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.0015327974928836061
+              }
+            }
+          },
+          "candidate_brier": 0.02109715131255487,
+          "candidate_r2": -0.667443414562815,
+          "histories": 128,
+          "rows": 256
+        }
+      },
+      "family": "mistral",
+      "model_id": "mistral-7b-v03",
+      "normalization_aware_amortized_utility": {
+        "1": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 1,
+          "implicit_null_test_bits": 0,
+          "packet_bits_per_query": 12.0,
+          "packet_cost_brier_equivalent_per_query": 0.006,
+          "packet_payload_bits": 12,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.1370880712664198,
+            "lower": 0.13068727106343467,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.14323376933018162
+          }
+        },
+        "16": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 16,
+          "implicit_null_test_bits": 0,
+          "packet_bits_per_query": 0.75,
+          "packet_cost_brier_equivalent_per_query": 0.000375,
+          "packet_payload_bits": 12,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.1427130712664198,
+            "lower": 0.136214155405714,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.14932620794794857
+          }
+        },
+        "32": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 32,
+          "implicit_null_test_bits": 0,
+          "packet_bits_per_query": 0.375,
+          "packet_cost_brier_equivalent_per_query": 0.0001875,
+          "packet_payload_bits": 12,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.1429005712664198,
+            "lower": 0.13655856725087423,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.1493073419012697
+          }
+        },
+        "4": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 4,
+          "implicit_null_test_bits": 0,
+          "packet_bits_per_query": 3.0,
+          "packet_cost_brier_equivalent_per_query": 0.0015,
+          "packet_payload_bits": 12,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.1415880712664198,
+            "lower": 0.13514482498344943,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.14803432023052546
+          }
+        }
+      },
+      "normalization_aware_quantization": {
+        "2": {
+          "gain_over_prior": -0.03302243863992119,
+          "gain_retention": 1.3992822318502405,
+          "implicit_null_test_bits": 0,
+          "joint_ood_target_brier": 0.050320914799454254,
+          "payload_bits": 6
+        },
+        "4": {
+          "gain_over_prior": -0.023579833876959912,
+          "gain_retention": 0.9991643238038317,
+          "implicit_null_test_bits": 0,
+          "joint_ood_target_brier": 0.04087831003649298,
+          "payload_bits": 12
+        },
+        "8": {
+          "gain_over_prior": -0.02365089511964019,
+          "gain_retention": 1.0021754501273583,
+          "implicit_null_test_bits": 0,
+          "joint_ood_target_brier": 0.04094937127917326,
+          "payload_bits": 24
+        }
+      },
+      "normalization_aware_sweep": {
+        "1": {
+          "formally_affine_complete": false,
+          "implicit_null_test_probability": 1.0,
+          "joint_ood_core_brier": 0.04324253243483846,
+          "joint_ood_target_brier": 0.020250635182567946,
+          "payload_coordinates": 1,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 1,
+              "feature_mean_norm": 12.773290398797485,
+              "input_dim": 4096,
+              "learned_parameter_count": 4097,
+              "method": "ridge",
+              "output_dim": 1,
+              "ridge": 0.1,
+              "target_mean_norm": 0.22915290488175655,
+              "weight_norm": 7.2976109835805225
+            },
+            "layer": 2,
+            "method": "ridge",
+            "rank": 1,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.03080512656804436,
+            "surface": "final_token_residual"
+          }
+        },
+        "2": {
+          "formally_affine_complete": false,
+          "implicit_null_test_probability": 1.0,
+          "joint_ood_core_brier": 0.042332166836044446,
+          "joint_ood_target_brier": 0.019507587281879537,
+          "payload_coordinates": 2,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 2,
+              "feature_mean_norm": 5.106271605646662,
+              "input_dim": 4096,
+              "learned_parameter_count": 8194,
+              "method": "ridge",
+              "output_dim": 2,
+              "ridge": 0.1,
+              "target_mean_norm": 0.309319174823742,
+              "weight_norm": 8.131254997143992
+            },
+            "layer": 1,
+            "method": "ridge",
+            "rank": 2,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.028609414963627053,
+            "surface": "final_token_residual"
+          }
+        },
+        "3": {
+          "formally_affine_complete": true,
+          "implicit_null_test_probability": 1.0,
+          "joint_ood_core_brier": 0.04854027128759671,
+          "joint_ood_target_brier": 0.04089803162323415,
+          "payload_coordinates": 3,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 3,
+              "feature_mean_norm": 5.106271605646662,
+              "input_dim": 4096,
+              "learned_parameter_count": 12291,
+              "method": "ridge",
+              "output_dim": 3,
+              "ridge": 0.1,
+              "target_mean_norm": 0.356039622727551,
+              "weight_norm": 9.04941565679625
+            },
+            "layer": 1,
+            "method": "ridge",
+            "rank": 3,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.024003274528353588,
+            "surface": "final_token_residual"
+          }
+        }
+      },
+      "quantization": {
+        "2": {
+          "gain_over_prior": -0.07312818412575975,
+          "gain_retention": 1.100125081397796,
+          "joint_ood_target_brier": 0.09042666028529282,
+          "payload_bits": 8
+        },
+        "4": {
+          "gain_over_prior": -0.06628166409798912,
+          "gain_retention": 0.9971274684680146,
+          "joint_ood_target_brier": 0.0835801402575222,
+          "payload_bits": 16
+        },
+        "8": {
+          "gain_over_prior": -0.06646723544418136,
+          "gain_retention": 0.9999191649223358,
+          "joint_ood_target_brier": 0.08376571160371443,
+          "payload_bits": 32
+        }
+      },
+      "rank_sweep": {
+        "1": {
+          "exact_public_rank": false,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true,
+          "joint_ood_core_brier": 0.09927124622631656,
+          "joint_ood_target_brier": 0.08772257968279286,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 1,
+              "feature_mean_norm": 12.773290398797485,
+              "input_dim": 4096,
+              "learned_parameter_count": 4097,
+              "method": "ridge",
+              "output_dim": 1,
+              "ridge": 0.1,
+              "target_mean_norm": 0.22915290488175655,
+              "weight_norm": 7.2976109835805225
+            },
+            "layer": 2,
+            "method": "ridge",
+            "rank": 1,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.03080512656804436,
+            "surface": "final_token_residual"
+          }
+        },
+        "2": {
+          "exact_public_rank": false,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true,
+          "joint_ood_core_brier": 0.04718866834071271,
+          "joint_ood_target_brier": 0.028739268302857574,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 2,
+              "feature_mean_norm": 5.106271605646662,
+              "input_dim": 4096,
+              "learned_parameter_count": 8194,
+              "method": "ridge",
+              "output_dim": 2,
+              "ridge": 0.1,
+              "target_mean_norm": 0.309319174823742,
+              "weight_norm": 8.131254997143992
+            },
+            "layer": 1,
+            "method": "ridge",
+            "rank": 2,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.028609414963627053,
+            "surface": "final_token_residual"
+          }
+        },
+        "3": {
+          "exact_public_rank": false,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true,
+          "joint_ood_core_brier": 0.045951616415762855,
+          "joint_ood_target_brier": 0.026990008098764773,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 3,
+              "feature_mean_norm": 5.106271605646662,
+              "input_dim": 4096,
+              "learned_parameter_count": 12291,
+              "method": "ridge",
+              "output_dim": 3,
+              "ridge": 0.1,
+              "target_mean_norm": 0.356039622727551,
+              "weight_norm": 9.04941565679625
+            },
+            "layer": 1,
+            "method": "ridge",
+            "rank": 3,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.024003274528353588,
+            "surface": "final_token_residual"
+          }
+        },
+        "4": {
+          "exact_public_rank": true,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false,
+          "joint_ood_core_brier": 0.06111457789927894,
+          "joint_ood_target_brier": 0.08377108492220631,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 4,
+              "feature_mean_norm": 5.106271605646662,
+              "input_dim": 4096,
+              "learned_parameter_count": 16388,
+              "method": "ridge",
+              "output_dim": 4,
+              "ridge": 0.1,
+              "target_mean_norm": 0.4285590459392144,
+              "weight_norm": 10.116391890691174
+            },
+            "layer": 1,
+            "method": "ridge",
+            "rank": 4,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.020682312067200025,
+            "surface": "final_token_residual"
+          }
+        },
+        "6": {
+          "exact_public_rank": false,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false,
+          "joint_ood_core_brier": 0.06027437852731427,
+          "joint_ood_target_brier": 0.08484600108141345,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 6,
+              "feature_mean_norm": 5.106271605646662,
+              "input_dim": 4096,
+              "learned_parameter_count": 24582,
+              "method": "ridge",
+              "output_dim": 6,
+              "ridge": 0.1,
+              "target_mean_norm": 0.5063578472787399,
+              "weight_norm": 11.956703869983835
+            },
+            "layer": 1,
+            "method": "ridge",
+            "rank": 6,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.020794039053600073,
+            "surface": "final_token_residual"
+          }
+        },
+        "8": {
+          "exact_public_rank": false,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false,
+          "joint_ood_core_brier": 0.04347083009569819,
+          "joint_ood_target_brier": 0.023899671732556294,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 7,
+              "feature_mean_norm": 5.106271605646662,
+              "input_dim": 4096,
+              "learned_parameter_count": 32776,
+              "method": "ridge",
+              "output_dim": 8,
+              "ridge": 0.1,
+              "target_mean_norm": 0.5814632337568745,
+              "weight_norm": 13.47657067359328
+            },
+            "layer": 1,
+            "method": "ridge",
+            "rank": 8,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.019429551440755297,
+            "surface": "final_token_residual"
+          }
+        }
+      },
+      "semantic_core": {
+        "joint_ood": {
+          "baselines": {
+            "deterministic_token_hash": {
+              "brier": 0.026930512226888324,
+              "candidate_gain_ci": {
+                "estimate": -0.034184065672390615,
+                "lower": -0.04024497030182558,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.028392358023834354
+              }
+            },
+            "empirical_observation_filter": {
+              "brier": 0.01955112422459946,
+              "candidate_gain_ci": {
+                "estimate": -0.041563453674679486,
+                "lower": -0.04838030117471143,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.034608158179662014
+              }
+            },
+            "exact_bayes_filter": {
+              "brier": 0.0,
+              "candidate_gain_ci": {
+                "estimate": -0.061114577899278946,
+                "lower": -0.06934548318219429,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.053294651244427185
+              }
+            },
+            "final_token_residual": {
+              "brier": 0.06111457789927893,
+              "candidate_gain_ci": {
+                "estimate": -1.3986208025063007e-17,
+                "lower": -1.7726705520137997e-17,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -1.0298565385896693e-17
+              }
+            },
+            "history_prior": {
+              "brier": 0.025672948890807675,
+              "candidate_gain_ci": {
+                "estimate": -0.03544162900847127,
+                "lower": -0.042256187208205995,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.02907752046048529
+              }
+            },
+            "last_observation_filter": {
+              "brier": 0.00879754172217314,
+              "candidate_gain_ci": {
+                "estimate": -0.052317036177105807,
+                "lower": -0.05981645971997917,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.04477498809486736
+              }
+            },
+            "mean_input_embedding": {
+              "brier": 0.025573134651987593,
+              "candidate_gain_ci": {
+                "estimate": -0.035541443247291346,
+                "lower": -0.04215213556195358,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.02903756400618785
+              }
+            },
+            "parameter_matched_token_sequence": {
+              "brier": 0.047032181407891296,
+              "candidate_gain_ci": {
+                "estimate": -0.01408239649138764,
+                "lower": -0.02319020212825477,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.005610534249475745
+              }
+            },
+            "renderer_shuffled": {
+              "brier": 0.022009777529718465,
+              "candidate_gain_ci": {
+                "estimate": -0.039104800369560475,
+                "lower": -0.04672169265108635,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.03261772103724329
+              }
+            },
+            "shuffled_history": {
+              "brier": 0.026802174229294012,
+              "candidate_gain_ci": {
+                "estimate": -0.034312403669984934,
+                "lower": -0.04312889897750131,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.025834627130505605
+              }
+            },
+            "wrong_history": {
+              "brier": 0.041955723990018935,
+              "candidate_gain_ci": {
+                "estimate": -0.019158853909260004,
+                "lower": -0.027753117398201143,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.010635525695314799
+              }
+            },
+            "zero_packet": {
+              "brier": 0.09927128041446401,
+              "candidate_gain_ci": {
+                "estimate": 0.03815670251518506,
+                "lower": 0.030992204434166993,
+                "replicates": 2000,
+                "units": 64,
+                "upper": 0.04574159098522619
+              }
+            }
+          },
+          "candidate_brier": 0.06111457789927894,
+          "candidate_r2": -2.109949789630353,
+          "histories": 64,
+          "rows": 64,
+          "wrong_history_margin_ci": {
+            "estimate": -0.000625209212050108,
+            "lower": -0.012915072285484332,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.01119215049591099
+          }
+        },
+        "length_transfer": {
+          "baselines": {
+            "deterministic_token_hash": {
+              "brier": 0.023819225438899888,
+              "candidate_gain_ci": {
+                "estimate": -0.0040990769810930125,
+                "lower": -0.005467081229410499,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.0028147089074013797
+              }
+            },
+            "empirical_observation_filter": {
+              "brier": 0.024170025026680496,
+              "candidate_gain_ci": {
+                "estimate": -0.0037482773933124065,
+                "lower": -0.0054688357567268765,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.0018125709080695654
+              }
+            },
+            "exact_bayes_filter": {
+              "brier": 0.0,
+              "candidate_gain_ci": {
+                "estimate": -0.0279183024199929,
+                "lower": -0.031845648133222916,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.024283622399506127
+              }
+            },
+            "final_token_residual": {
+              "brier": 0.027918302419992904,
+              "candidate_gain_ci": {
+                "estimate": 1.892271604166107e-18,
+                "lower": -2.806876604787619e-18,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 6.743356348033568e-18
+              }
+            },
+            "history_prior": {
+              "brier": 0.03216815483357088,
+              "candidate_gain_ci": {
+                "estimate": 0.004249852413577976,
+                "lower": 0.002335710562935062,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.006134358475305629
+              }
+            },
+            "last_observation_filter": {
+              "brier": 0.016313832587488412,
+              "candidate_gain_ci": {
+                "estimate": -0.011604469832504488,
+                "lower": -0.014151344387287771,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.009175679220155062
+              }
+            },
+            "mean_input_embedding": {
+              "brier": 0.03214833734733902,
+              "candidate_gain_ci": {
+                "estimate": 0.004230034927346115,
+                "lower": 0.0022956092994455674,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.006120268835779477
+              }
+            },
+            "parameter_matched_token_sequence": {
+              "brier": 0.07264270625602696,
+              "candidate_gain_ci": {
+                "estimate": 0.04472440383603407,
+                "lower": 0.038651049500248176,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.050628478646234834
+              }
+            },
+            "renderer_shuffled": {
+              "brier": 0.05118596209748836,
+              "candidate_gain_ci": {
+                "estimate": 0.02326765967749545,
+                "lower": 0.02086416463581968,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.02581601270483311
+              }
+            },
+            "shuffled_history": {
+              "brier": 0.03195255759030599,
+              "candidate_gain_ci": {
+                "estimate": 0.00403425517031309,
+                "lower": 0.0012833517851966038,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.006736242446319857
+              }
+            },
+            "wrong_history": {
+              "brier": 0.05031740611585907,
+              "candidate_gain_ci": {
+                "estimate": 0.02239910369586616,
+                "lower": 0.014350957187141036,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.03015225264169938
+              }
+            },
+            "zero_packet": {
+              "brier": 0.07675751207591514,
+              "candidate_gain_ci": {
+                "estimate": 0.04883920965592222,
+                "lower": 0.043042506797882664,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.05504880678630531
+              }
+            }
+          },
+          "candidate_brier": 0.027918302419992908,
+          "candidate_r2": 0.1257128692242645,
+          "histories": 128,
+          "rows": 256,
+          "wrong_history_margin_ci": {
+            "estimate": 0.00508815995748884,
+            "lower": 0.00034654218301029445,
+            "replicates": 2000,
+            "units": 128,
+            "upper": 0.009867070384321157
+          }
+        },
+        "seen": {
+          "baselines": {
+            "deterministic_token_hash": {
+              "brier": 0.02412642882686439,
+              "candidate_gain_ci": {
+                "estimate": 0.002434294656093167,
+                "lower": 0.001630588070854463,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.0032555492530664345
+              }
+            },
+            "empirical_observation_filter": {
+              "brier": 0.02652463765392881,
+              "candidate_gain_ci": {
+                "estimate": 0.004832503483157586,
+                "lower": 0.003181847521177285,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.0065115781067145405
+              }
+            },
+            "exact_bayes_filter": {
+              "brier": 0.0,
+              "candidate_gain_ci": {
+                "estimate": -0.021692134170771225,
+                "lower": -0.024395782900710403,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.01897825172613163
+              }
+            },
+            "final_token_residual": {
+              "brier": 0.02169213417077123,
+              "candidate_gain_ci": {
+                "estimate": 3.0902408893797046e-18,
+                "lower": -7.73900916681752e-19,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 7.080951917073613e-18
+              }
+            },
+            "history_prior": {
+              "brier": 0.03611270613690047,
+              "candidate_gain_ci": {
+                "estimate": 0.014420571966129244,
+                "lower": 0.012962414842497242,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.01586687584193626
+              }
+            },
+            "last_observation_filter": {
+              "brier": 0.01747255714794587,
+              "candidate_gain_ci": {
+                "estimate": -0.004219577022825357,
+                "lower": -0.005970057552273046,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.0024858134580182274
+              }
+            },
+            "mean_input_embedding": {
+              "brier": 0.03610395965255916,
+              "candidate_gain_ci": {
+                "estimate": 0.014411825481787934,
+                "lower": 0.012986547778578897,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.015849690732930508
+              }
+            },
+            "parameter_matched_token_sequence": {
+              "brier": 0.020642411208018466,
+              "candidate_gain_ci": {
+                "estimate": -0.0010497229627527607,
+                "lower": -0.003164515193640307,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.0012932257790282302
+              }
+            },
+            "renderer_shuffled": {
+              "brier": 0.049315280328042714,
+              "candidate_gain_ci": {
+                "estimate": 0.027623146157271485,
+                "lower": 0.024950929443102773,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.030416557563652444
+              }
+            },
+            "shuffled_history": {
+              "brier": 0.027324457309808613,
+              "candidate_gain_ci": {
+                "estimate": 0.005632323139037389,
+                "lower": 0.004320411450020178,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.007031088797516776
+              }
+            },
+            "wrong_history": {
+              "brier": 0.04416811140595474,
+              "candidate_gain_ci": {
+                "estimate": 0.02247597723518352,
+                "lower": 0.016722706548371703,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.028613614370588833
+              }
+            },
+            "zero_packet": {
+              "brier": 0.08323596957157861,
+              "candidate_gain_ci": {
+                "estimate": 0.061543835400807385,
+                "lower": 0.057304090205123816,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.06577311310578605
+              }
+            }
+          },
+          "candidate_brier": 0.021692134170771222,
+          "candidate_r2": 0.3944689462388802,
+          "histories": 256,
+          "rows": 512,
+          "wrong_history_margin_ci": {
+            "estimate": 0.005530118525635638,
+            "lower": 0.002771584100908179,
+            "replicates": 2000,
+            "units": 256,
+            "upper": 0.00853285453196372
+          }
+        },
+        "unseen_renderer": {
+          "baselines": {
+            "deterministic_token_hash": {
+              "brier": 0.03535171405871645,
+              "candidate_gain_ci": {
+                "estimate": -0.04056791507505125,
+                "lower": -0.04498643102333797,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.036215181210518615
+              }
+            },
+            "empirical_observation_filter": {
+              "brier": 0.02652463765392881,
+              "candidate_gain_ci": {
+                "estimate": -0.049394991479838876,
+                "lower": -0.05447055836375001,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.04451067738611594
+              }
+            },
+            "exact_bayes_filter": {
+              "brier": 0.0,
+              "candidate_gain_ci": {
+                "estimate": -0.0759196291337677,
+                "lower": -0.08280984822896366,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.06941949359550825
+              }
+            },
+            "final_token_residual": {
+              "brier": 0.07591962913376776,
+              "candidate_gain_ci": {
+                "estimate": 5.904836081899179e-17,
+                "lower": 5.495532821126956e-17,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 6.306736274712398e-17
+              }
+            },
+            "history_prior": {
+              "brier": 0.03611270613690047,
+              "candidate_gain_ci": {
+                "estimate": -0.03980692299686722,
+                "lower": -0.044795335108902636,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.03488722965244668
+              }
+            },
+            "last_observation_filter": {
+              "brier": 0.01747255714794587,
+              "candidate_gain_ci": {
+                "estimate": -0.058447071985821816,
+                "lower": -0.06374148505738957,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.053377881872560894
+              }
+            },
+            "mean_input_embedding": {
+              "brier": 0.03612387369374595,
+              "candidate_gain_ci": {
+                "estimate": -0.03979575544002174,
+                "lower": -0.044872096000238254,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.034597488912942016
+              }
+            },
+            "parameter_matched_token_sequence": {
+              "brier": 0.07078612090484952,
+              "candidate_gain_ci": {
+                "estimate": -0.005133508228918166,
+                "lower": -0.0104969962998991,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.0002926393466591155
+              }
+            },
+            "renderer_shuffled": {
+              "brier": 0.02067333681922472,
+              "candidate_gain_ci": {
+                "estimate": -0.05524629231454297,
+                "lower": -0.06079165554830442,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.050017709550854925
+              }
+            },
+            "shuffled_history": {
+              "brier": 0.027324457309808613,
+              "candidate_gain_ci": {
+                "estimate": -0.04859517182395908,
+                "lower": -0.054168672745894916,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.04334518196170429
+              }
+            },
+            "wrong_history": {
+              "brier": 0.044168111405954745,
+              "candidate_gain_ci": {
+                "estimate": -0.03175151772781295,
+                "lower": -0.038835879948280416,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.025103325426292403
+              }
+            },
+            "zero_packet": {
+              "brier": 0.08323596957157862,
+              "candidate_gain_ci": {
+                "estimate": 0.007316340437810922,
+                "lower": 0.0022358934832303135,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.01245066734757014
+              }
+            }
+          },
+          "candidate_brier": 0.0759196291337677,
+          "candidate_r2": -1.11927939725118,
+          "histories": 256,
+          "rows": 256,
+          "wrong_history_margin_ci": {
+            "estimate": 0.0008789406449131954,
+            "lower": -0.005917547948324639,
+            "replicates": 2000,
+            "units": 256,
+            "upper": 0.007738061723391959
+          }
+        },
+        "unseen_system": {
+          "baselines": {
+            "deterministic_token_hash": {
+              "brier": 0.027630904337731417,
+              "candidate_gain_ci": {
+                "estimate": 0.004463902698040364,
+                "lower": 0.0031358914504437748,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.005740949567309965
+              }
+            },
+            "empirical_observation_filter": {
+              "brier": 0.019922343319534505,
+              "candidate_gain_ci": {
+                "estimate": -0.0032446583201565455,
+                "lower": -0.004970946176580816,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.0013082161750128086
+              }
+            },
+            "exact_bayes_filter": {
+              "brier": 0.0,
+              "candidate_gain_ci": {
+                "estimate": -0.023167001639691053,
+                "lower": -0.02540352795063035,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.02095403214954363
+              }
+            },
+            "final_token_residual": {
+              "brier": 0.023167001639691046,
+              "candidate_gain_ci": {
+                "estimate": -4.4092300069322604e-18,
+                "lower": -5.5039989154347626e-18,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -3.373276948704729e-18
+              }
+            },
+            "history_prior": {
+              "brier": 0.026750885113914047,
+              "candidate_gain_ci": {
+                "estimate": 0.0035838834742229933,
+                "lower": 0.0023518875204420306,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.0048146265987022005
+              }
+            },
+            "last_observation_filter": {
+              "brier": 0.008024017307155759,
+              "candidate_gain_ci": {
+                "estimate": -0.015142984332535294,
+                "lower": -0.01693951203405932,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.013325196663427562
+              }
+            },
+            "mean_input_embedding": {
+              "brier": 0.026668538237722195,
+              "candidate_gain_ci": {
+                "estimate": 0.003501536598031139,
+                "lower": 0.0023103354781403578,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.004814668948278616
+              }
+            },
+            "parameter_matched_token_sequence": {
+              "brier": 0.04806406377271628,
+              "candidate_gain_ci": {
+                "estimate": 0.024897062133025227,
+                "lower": 0.020555564353804946,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.029170054324942088
+              }
+            },
+            "renderer_shuffled": {
+              "brier": 0.05682974938492136,
+              "candidate_gain_ci": {
+                "estimate": 0.0336627477452303,
+                "lower": 0.030242959815723173,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.03717042048549595
+              }
+            },
+            "shuffled_history": {
+              "brier": 0.03366236630942673,
+              "candidate_gain_ci": {
+                "estimate": 0.010495364669735675,
+                "lower": 0.007710326069288715,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.0133804646982421
+              }
+            },
+            "wrong_history": {
+              "brier": 0.04273290224811169,
+              "candidate_gain_ci": {
+                "estimate": 0.019565900608420624,
+                "lower": 0.014834279036914413,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.024635200476453296
+              }
+            },
+            "zero_packet": {
+              "brier": 0.10096731300913514,
+              "candidate_gain_ci": {
+                "estimate": 0.07780031136944408,
+                "lower": 0.07518006279675027,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.0804744479810549
+              }
+            }
+          },
+          "candidate_brier": 0.023167001639691057,
+          "candidate_r2": -0.14532337726959232,
+          "histories": 128,
+          "rows": 256,
+          "wrong_history_margin_ci": {
+            "estimate": 0.008106488801605919,
+            "lower": 0.004573836582940691,
+            "replicates": 2000,
+            "units": 128,
+            "upper": 0.01172495498724181
+          }
+        }
+      },
+      "source_probability_protocol": {
+        "joint_ood": {
+          "baselines": {
+            "target_prior": {
+              "brier": 0.01729847615953307,
+              "candidate_gain_ci": {
+                "estimate": -0.14668762673012092,
+                "lower": -0.1501925565046871,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.14298365071168082
+              }
+            }
+          },
+          "candidate_brier": 0.16398610288965398,
+          "candidate_r2": -12.327138655419942,
+          "histories": 64,
+          "rows": 64
+        },
+        "length_transfer": {
+          "baselines": {
+            "target_prior": {
+              "brier": 0.025932331408044015,
+              "candidate_gain_ci": {
+                "estimate": -0.21339714983099473,
+                "lower": -0.2247323612914789,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.2019815937693084
+              }
+            }
+          },
+          "candidate_brier": 0.23932948123903872,
+          "candidate_r2": -8.285129392306064,
+          "histories": 128,
+          "rows": 256
+        },
+        "seen": {
+          "baselines": {
+            "target_prior": {
+              "brier": 0.030605069222932935,
+              "candidate_gain_ci": {
+                "estimate": -0.18924706966947577,
+                "lower": -0.1972844607266244,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.18072867367828666
+              }
+            }
+          },
+          "candidate_brier": 0.2198521388924087,
+          "candidate_r2": -6.282817051619651,
+          "histories": 256,
+          "rows": 512
+        },
+        "unseen_renderer": {
+          "baselines": {
+            "target_prior": {
+              "brier": 0.030605069222932935,
+              "candidate_gain_ci": {
+                "estimate": -0.1951094660742152,
+                "lower": -0.20304165041850664,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.18740090642040694
+              }
+            }
+          },
+          "candidate_brier": 0.22571453529714813,
+          "candidate_r2": -6.477014664228207,
+          "histories": 256,
+          "rows": 256
+        },
+        "unseen_system": {
+          "baselines": {
+            "target_prior": {
+              "brier": 0.017704567161977453,
+              "candidate_gain_ci": {
+                "estimate": -0.15101838420086017,
+                "lower": -0.15411786723880483,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.14787351320927994
+              }
+            }
+          },
+          "candidate_brier": 0.16872295136283763,
+          "candidate_r2": -12.335258868250296,
+          "histories": 128,
+          "rows": 256
+        }
+      },
+      "target_reader_native_brier": 0.0004143555142015795,
+      "target_reader_oracle_brier": 0.00042025483433063166
+    },
+    "qwen3-4b": {
+      "amortized_utility": {
+        "1": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 1,
+          "packet_bits_per_query": 16.0,
+          "packet_cost_brier_equivalent_per_query": 0.008,
+          "packet_payload_bits": 16,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.1284091421120819,
+            "lower": 0.1167579465079994,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.14036224874935738
+          }
+        },
+        "16": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 16,
+          "packet_bits_per_query": 1.0,
+          "packet_cost_brier_equivalent_per_query": 0.0005,
+          "packet_payload_bits": 16,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.1359091421120819,
+            "lower": 0.12407913576521781,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.1472480697959371
+          }
+        },
+        "32": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 32,
+          "packet_bits_per_query": 0.5,
+          "packet_cost_brier_equivalent_per_query": 0.00025,
+          "packet_payload_bits": 16,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.1361591421120819,
+            "lower": 0.12463760805208118,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.1474034710004652
+          }
+        },
+        "4": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 4,
+          "packet_bits_per_query": 4.0,
+          "packet_cost_brier_equivalent_per_query": 0.002,
+          "packet_payload_bits": 16,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.13440914211208188,
+            "lower": 0.1226706807872181,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.14523761095842996
+          }
+        }
+      },
+      "compiled_semantic_targets": {
+        "joint_ood": {
+          "baselines": {
+            "direct_probability_forecast": {
+              "brier": 0.18192776004927347,
+              "candidate_gain_ci": {
+                "estimate": 0.11640914211208192,
+                "lower": 0.10429051178625061,
+                "replicates": 2000,
+                "units": 64,
+                "upper": 0.12777214380567029
+              }
+            },
+            "target_prior": {
+              "brier": 0.01729847615953307,
+              "candidate_gain_ci": {
+                "estimate": -0.048220141777658515,
+                "lower": -0.05333944520874659,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.04291060964905841
+              }
+            }
+          },
+          "candidate_brier": 0.06551861793719159,
+          "candidate_r2": -4.324693314701155,
+          "histories": 64,
+          "rows": 64
+        },
+        "length_transfer": {
+          "baselines": {
+            "direct_probability_forecast": {
+              "brier": 0.3701894043268203,
+              "candidate_gain_ci": {
+                "estimate": 0.28259593934653704,
+                "lower": 0.26522336493101967,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.29874241887886144
+              }
+            },
+            "target_prior": {
+              "brier": 0.025932331408044015,
+              "candidate_gain_ci": {
+                "estimate": -0.06166113357223922,
+                "lower": -0.07113707283913072,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.05185859279651668
+              }
+            }
+          },
+          "candidate_brier": 0.08759346498028324,
+          "candidate_r2": -2.3983137056568107,
+          "histories": 128,
+          "rows": 256
+        },
+        "seen": {
+          "baselines": {
+            "direct_probability_forecast": {
+              "brier": 0.35345802198361326,
+              "candidate_gain_ci": {
+                "estimate": 0.3406204270156532,
+                "lower": 0.3323393404121981,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.3490318184967743
+              }
+            },
+            "target_prior": {
+              "brier": 0.030605069222932935,
+              "candidate_gain_ci": {
+                "estimate": 0.017767474254972868,
+                "lower": 0.014929416812946532,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.02069054493069495
+              }
+            }
+          },
+          "candidate_brier": 0.012837594967960065,
+          "candidate_r2": 0.5747421152895845,
+          "histories": 256,
+          "rows": 512
+        },
+        "unseen_renderer": {
+          "baselines": {
+            "direct_probability_forecast": {
+              "brier": 0.12190610651181806,
+              "candidate_gain_ci": {
+                "estimate": -0.017510203363181952,
+                "lower": -0.03000255489383241,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.00523527024159469
+              }
+            },
+            "target_prior": {
+              "brier": 0.030605069222932935,
+              "candidate_gain_ci": {
+                "estimate": -0.1088112406520671,
+                "lower": -0.11680779077960789,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.10037294374189026
+              }
+            }
+          },
+          "candidate_brier": 0.13941630987500003,
+          "candidate_r2": -3.6183015728058425,
+          "histories": 256,
+          "rows": 256
+        },
+        "unseen_system": {
+          "baselines": {
+            "direct_probability_forecast": {
+              "brier": 0.29097087859659915,
+              "candidate_gain_ci": {
+                "estimate": 0.2454501460132416,
+                "lower": 0.23847772749067397,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.2519759561328437
+              }
+            },
+            "target_prior": {
+              "brier": 0.017704567161977453,
+              "candidate_gain_ci": {
+                "estimate": -0.027816165421380008,
+                "lower": -0.03273046632280432,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.023017858212383165
+              }
+            }
+          },
+          "candidate_brier": 0.04552073258335746,
+          "candidate_r2": -2.5977959605866072,
+          "histories": 128,
+          "rows": 256
+        }
+      },
+      "family": "qwen3",
+      "model_id": "qwen3-4b",
+      "normalization_aware_amortized_utility": {
+        "1": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 1,
+          "implicit_null_test_bits": 0,
+          "packet_bits_per_query": 12.0,
+          "packet_cost_brier_equivalent_per_query": 0.006,
+          "packet_payload_bits": 12,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.13321053955794526,
+            "lower": 0.12239396088079511,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.14416430278116862
+          }
+        },
+        "16": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 16,
+          "implicit_null_test_bits": 0,
+          "packet_bits_per_query": 0.75,
+          "packet_cost_brier_equivalent_per_query": 0.000375,
+          "packet_payload_bits": 12,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.13883553955794528,
+            "lower": 0.12795767504799488,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.1499770325253515
+          }
+        },
+        "32": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 32,
+          "implicit_null_test_bits": 0,
+          "packet_bits_per_query": 0.375,
+          "packet_cost_brier_equivalent_per_query": 0.0001875,
+          "packet_payload_bits": 12,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.13902303955794526,
+            "lower": 0.12780517024364832,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.15031473038098278
+          }
+        },
+        "4": {
+          "direct_query_cost_brier_equivalent_per_query": 0.02,
+          "future_queries": 4,
+          "implicit_null_test_bits": 0,
+          "packet_bits_per_query": 3.0,
+          "packet_cost_brier_equivalent_per_query": 0.0015,
+          "packet_payload_bits": 12,
+          "source_queries_per_query_direct": 1.0,
+          "source_queries_per_query_packet": 0.0,
+          "utility_gain_over_direct_ci": {
+            "estimate": 0.13771053955794527,
+            "lower": 0.1257976495854894,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.14896792924659494
+          }
+        }
+      },
+      "normalization_aware_quantization": {
+        "2": {
+          "gain_over_prior": -0.045418765928791835,
+          "gain_retention": 1.0000004755084495,
+          "implicit_null_test_bits": 0,
+          "joint_ood_target_brier": 0.06271724208832491,
+          "payload_bits": 6
+        },
+        "4": {
+          "gain_over_prior": -0.045418765928791835,
+          "gain_retention": 1.0000004755084495,
+          "implicit_null_test_bits": 0,
+          "joint_ood_target_brier": 0.06271724208832491,
+          "payload_bits": 12
+        },
+        "8": {
+          "gain_over_prior": -0.045418765928791835,
+          "gain_retention": 1.0000004755084495,
+          "implicit_null_test_bits": 0,
+          "joint_ood_target_brier": 0.06271724208832491,
+          "payload_bits": 24
+        }
+      },
+      "normalization_aware_sweep": {
+        "1": {
+          "formally_affine_complete": false,
+          "implicit_null_test_probability": 1.0,
+          "joint_ood_core_brier": 0.17494952887445245,
+          "joint_ood_target_brier": 0.062385095650447205,
+          "payload_coordinates": 1,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 1,
+              "feature_mean_norm": 30.181208812575466,
+              "input_dim": 2560,
+              "learned_parameter_count": 2561,
+              "method": "truncated_ridge",
+              "output_dim": 1,
+              "ridge": 0.1,
+              "target_mean_norm": 0.22915290488175655,
+              "weight_norm": 6.2058323573572
+            },
+            "layer": 0,
+            "method": "truncated_ridge",
+            "rank": 1,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.02390790581403277,
+            "surface": "final_token_residual"
+          }
+        },
+        "2": {
+          "formally_affine_complete": false,
+          "implicit_null_test_probability": 1.0,
+          "joint_ood_core_brier": 0.18171627105498164,
+          "joint_ood_target_brier": 0.06277698206615849,
+          "payload_coordinates": 2,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 2,
+              "feature_mean_norm": 30.181208812575466,
+              "input_dim": 2560,
+              "learned_parameter_count": 5122,
+              "method": "ridge",
+              "output_dim": 2,
+              "ridge": 0.1,
+              "target_mean_norm": 0.309319174823742,
+              "weight_norm": 8.432248463824969
+            },
+            "layer": 0,
+            "method": "ridge",
+            "rank": 2,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.02392335369508276,
+            "surface": "final_token_residual"
+          }
+        },
+        "3": {
+          "formally_affine_complete": true,
+          "implicit_null_test_probability": 1.0,
+          "joint_ood_core_brier": 0.19156465777778686,
+          "joint_ood_target_brier": 0.06271722049132822,
+          "payload_coordinates": 3,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 3,
+              "feature_mean_norm": 30.181208812575466,
+              "input_dim": 2560,
+              "learned_parameter_count": 7683,
+              "method": "ridge",
+              "output_dim": 3,
+              "ridge": 0.1,
+              "target_mean_norm": 0.356039622727551,
+              "weight_norm": 9.438795095863421
+            },
+            "layer": 0,
+            "method": "ridge",
+            "rank": 3,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.019875719862713484,
+            "surface": "final_token_residual"
+          }
+        }
+      },
+      "quantization": {
+        "2": {
+          "gain_over_prior": -0.05146704152738023,
+          "gain_retention": 1.0673349274809905,
+          "joint_ood_target_brier": 0.0687655176869133,
+          "payload_bits": 8
+        },
+        "4": {
+          "gain_over_prior": -0.04806436084166851,
+          "gain_retention": 0.9967693803824074,
+          "joint_ood_target_brier": 0.06536283700120159,
+          "payload_bits": 16
+        },
+        "8": {
+          "gain_over_prior": -0.048244857799601845,
+          "gain_retention": 1.000512566347426,
+          "joint_ood_target_brier": 0.06554333395913492,
+          "payload_bits": 32
+        }
+      },
+      "rank_sweep": {
+        "1": {
+          "exact_public_rank": false,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true,
+          "joint_ood_core_brier": 0.17770416717436321,
+          "joint_ood_target_brier": 0.10917690030402506,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 1,
+              "feature_mean_norm": 30.181208812575466,
+              "input_dim": 2560,
+              "learned_parameter_count": 2561,
+              "method": "truncated_ridge",
+              "output_dim": 1,
+              "ridge": 0.1,
+              "target_mean_norm": 0.22915290488175655,
+              "weight_norm": 6.2058323573572
+            },
+            "layer": 0,
+            "method": "truncated_ridge",
+            "rank": 1,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.02390790581403277,
+            "surface": "final_token_residual"
+          }
+        },
+        "2": {
+          "exact_public_rank": false,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true,
+          "joint_ood_core_brier": 0.17052561639377473,
+          "joint_ood_target_brier": 0.0660485823945709,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 2,
+              "feature_mean_norm": 30.181208812575466,
+              "input_dim": 2560,
+              "learned_parameter_count": 5122,
+              "method": "ridge",
+              "output_dim": 2,
+              "ridge": 0.1,
+              "target_mean_norm": 0.309319174823742,
+              "weight_norm": 8.432248463824969
+            },
+            "layer": 0,
+            "method": "ridge",
+            "rank": 2,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.02392335369508276,
+            "surface": "final_token_residual"
+          }
+        },
+        "3": {
+          "exact_public_rank": false,
+          "formally_rank_complete": false,
+          "formally_undercomplete": true,
+          "joint_ood_core_brier": 0.19246980310390766,
+          "joint_ood_target_brier": 0.06417153017642317,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 3,
+              "feature_mean_norm": 30.181208812575466,
+              "input_dim": 2560,
+              "learned_parameter_count": 7683,
+              "method": "ridge",
+              "output_dim": 3,
+              "ridge": 0.1,
+              "target_mean_norm": 0.356039622727551,
+              "weight_norm": 9.438795095863421
+            },
+            "layer": 0,
+            "method": "ridge",
+            "rank": 3,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.019875719862713484,
+            "surface": "final_token_residual"
+          }
+        },
+        "4": {
+          "exact_public_rank": true,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false,
+          "joint_ood_core_brier": 0.19285956073816446,
+          "joint_ood_target_brier": 0.06551861793719159,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 4,
+              "feature_mean_norm": 30.181208812575466,
+              "input_dim": 2560,
+              "learned_parameter_count": 10244,
+              "method": "truncated_ridge",
+              "output_dim": 4,
+              "ridge": 0.1,
+              "target_mean_norm": 0.4285590459392144,
+              "weight_norm": 10.04922090375146
+            },
+            "layer": 0,
+            "method": "truncated_ridge",
+            "rank": 4,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.01712468168585242,
+            "surface": "final_token_residual"
+          }
+        },
+        "6": {
+          "exact_public_rank": false,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false,
+          "joint_ood_core_brier": 0.18448699836790627,
+          "joint_ood_target_brier": 0.0628879983033662,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 6,
+              "feature_mean_norm": 30.181208812575466,
+              "input_dim": 2560,
+              "learned_parameter_count": 15366,
+              "method": "ridge",
+              "output_dim": 6,
+              "ridge": 0.1,
+              "target_mean_norm": 0.5063578472787399,
+              "weight_norm": 12.49965117986047
+            },
+            "layer": 0,
+            "method": "ridge",
+            "rank": 6,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.01769516178467466,
+            "surface": "final_token_residual"
+          }
+        },
+        "8": {
+          "exact_public_rank": false,
+          "formally_rank_complete": true,
+          "formally_undercomplete": false,
+          "joint_ood_core_brier": 0.2165389573164277,
+          "joint_ood_target_brier": 0.07219149204974344,
+          "selection": {
+            "encoder": {
+              "coefficient_rank": 7,
+              "feature_mean_norm": 30.181208812575466,
+              "input_dim": 2560,
+              "learned_parameter_count": 20488,
+              "method": "ridge",
+              "output_dim": 8,
+              "ridge": 0.1,
+              "target_mean_norm": 0.5814632337568745,
+              "weight_norm": 13.95366106939667
+            },
+            "layer": 0,
+            "method": "ridge",
+            "rank": 8,
+            "refit_roles": [
+              "calibration",
+              "selection"
+            ],
+            "ridge": 0.1,
+            "selection_brier": 0.016243249995588287,
+            "surface": "final_token_residual"
+          }
+        }
+      },
+      "semantic_core": {
+        "joint_ood": {
+          "baselines": {
+            "deterministic_token_hash": {
+              "brier": 0.03337881083339726,
+              "candidate_gain_ci": {
+                "estimate": -0.1594807499047672,
+                "lower": -0.17464404241812517,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.14407795812173732
+              }
+            },
+            "empirical_observation_filter": {
+              "brier": 0.01955112422459946,
+              "candidate_gain_ci": {
+                "estimate": -0.17330843651356503,
+                "lower": -0.1911801827323708,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.1530213692723287
+              }
+            },
+            "exact_bayes_filter": {
+              "brier": 0.0,
+              "candidate_gain_ci": {
+                "estimate": -0.19285956073816446,
+                "lower": -0.21120722847378362,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.17433600588099243
+              }
+            },
+            "final_token_residual": {
+              "brier": 0.19285956073816446,
+              "candidate_gain_ci": {
+                "estimate": -1.5720931501039814e-17,
+                "lower": -2.0166160408230382e-17,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -1.1492543028346347e-17
+              }
+            },
+            "history_prior": {
+              "brier": 0.025672948890807675,
+              "candidate_gain_ci": {
+                "estimate": -0.1671866118473568,
+                "lower": -0.18556741806812996,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.14885654401944337
+              }
+            },
+            "last_observation_filter": {
+              "brier": 0.00879754172217314,
+              "candidate_gain_ci": {
+                "estimate": -0.18406201901599134,
+                "lower": -0.20199796252468058,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.16307663680708562
+              }
+            },
+            "mean_input_embedding": {
+              "brier": 0.022806032583569457,
+              "candidate_gain_ci": {
+                "estimate": -0.170053528154595,
+                "lower": -0.18763862514095098,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.15181853211980698
+              }
+            },
+            "parameter_matched_token_sequence": {
+              "brier": 0.03704271556422494,
+              "candidate_gain_ci": {
+                "estimate": -0.15581684517393954,
+                "lower": -0.17542077433843098,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.1335008386413648
+              }
+            },
+            "renderer_shuffled": {
+              "brier": 0.12047319983565193,
+              "candidate_gain_ci": {
+                "estimate": -0.07238636090251255,
+                "lower": -0.0833855993856618,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.061601862848248444
+              }
+            },
+            "shuffled_history": {
+              "brier": 0.13258876686685367,
+              "candidate_gain_ci": {
+                "estimate": -0.06027079387131082,
+                "lower": -0.07151030311648288,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.04781993660785917
+              }
+            },
+            "wrong_history": {
+              "brier": 0.041955723990018935,
+              "candidate_gain_ci": {
+                "estimate": -0.15090383674814553,
+                "lower": -0.17214290426611112,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.12832327301015709
+              }
+            },
+            "zero_packet": {
+              "brier": 0.09927128041446401,
+              "candidate_gain_ci": {
+                "estimate": -0.09358828032370048,
+                "lower": -0.1137947392029888,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.07108900667970139
+              }
+            }
+          },
+          "candidate_brier": 0.19285956073816446,
+          "candidate_r2": -8.814083169065517,
+          "histories": 64,
+          "rows": 64,
+          "wrong_history_margin_ci": {
+            "estimate": -0.00017070021464316888,
+            "lower": -0.028509153214212057,
+            "replicates": 2000,
+            "units": 64,
+            "upper": 0.028800811149397837
+          }
+        },
+        "length_transfer": {
+          "baselines": {
+            "deterministic_token_hash": {
+              "brier": 0.026396758018087232,
+              "candidate_gain_ci": {
+                "estimate": -0.11427991272731056,
+                "lower": -0.12474161214481283,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.10352790694246158
+              }
+            },
+            "empirical_observation_filter": {
+              "brier": 0.024170025026680496,
+              "candidate_gain_ci": {
+                "estimate": -0.1165066457187173,
+                "lower": -0.12766160415134142,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.10573439074111966
+              }
+            },
+            "exact_bayes_filter": {
+              "brier": 0.0,
+              "candidate_gain_ci": {
+                "estimate": -0.1406766707453978,
+                "lower": -0.15294129765714526,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.12816057698497357
+              }
+            },
+            "final_token_residual": {
+              "brier": 0.14067667074539786,
+              "candidate_gain_ci": {
+                "estimate": 7.680217139344192e-17,
+                "lower": 3.1717318116526725e-17,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 1.2094309115393692e-16
+              }
+            },
+            "history_prior": {
+              "brier": 0.03216815483357088,
+              "candidate_gain_ci": {
+                "estimate": -0.1085085159118269,
+                "lower": -0.11959832416080471,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.0970103421230598
+              }
+            },
+            "last_observation_filter": {
+              "brier": 0.016313832587488412,
+              "candidate_gain_ci": {
+                "estimate": -0.12436283815790938,
+                "lower": -0.136224536478573,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.11234580323214557
+              }
+            },
+            "mean_input_embedding": {
+              "brier": 0.03163349432188783,
+              "candidate_gain_ci": {
+                "estimate": -0.10904317642350997,
+                "lower": -0.11975777429096791,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.09767256373510196
+              }
+            },
+            "parameter_matched_token_sequence": {
+              "brier": 0.051343980818710944,
+              "candidate_gain_ci": {
+                "estimate": -0.08933268992668683,
+                "lower": -0.09986510951697758,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.07916558071299354
+              }
+            },
+            "renderer_shuffled": {
+              "brier": 0.1644878741375887,
+              "candidate_gain_ci": {
+                "estimate": 0.0238112033921909,
+                "lower": 0.018891099043306665,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.028806655160080973
+              }
+            },
+            "shuffled_history": {
+              "brier": 0.12751783319784846,
+              "candidate_gain_ci": {
+                "estimate": -0.013158837547549327,
+                "lower": -0.0184073626023655,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.008191795022946419
+              }
+            },
+            "wrong_history": {
+              "brier": 0.05031740611585907,
+              "candidate_gain_ci": {
+                "estimate": -0.09035926462953872,
+                "lower": -0.10354298036034654,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.07756150287983536
+              }
+            },
+            "zero_packet": {
+              "brier": 0.07675751207591514,
+              "candidate_gain_ci": {
+                "estimate": -0.06391915866948267,
+                "lower": -0.07671185794655534,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.05079929201360894
+              }
+            }
+          },
+          "candidate_brier": 0.1406766707453978,
+          "candidate_r2": -3.4054183876523805,
+          "histories": 128,
+          "rows": 256,
+          "wrong_history_margin_ci": {
+            "estimate": 0.008276215558650574,
+            "lower": -0.009517457926637843,
+            "replicates": 2000,
+            "units": 128,
+            "upper": 0.024256439170242113
+          }
+        },
+        "seen": {
+          "baselines": {
+            "deterministic_token_hash": {
+              "brier": 0.021166238113920502,
+              "candidate_gain_ci": {
+                "estimate": 0.0025414979398352766,
+                "lower": 0.0015114006105212403,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.0036927886734806127
+              }
+            },
+            "empirical_observation_filter": {
+              "brier": 0.02652463765392881,
+              "candidate_gain_ci": {
+                "estimate": 0.00789989747984359,
+                "lower": 0.005867116418802663,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.01002883126581975
+              }
+            },
+            "exact_bayes_filter": {
+              "brier": 0.0,
+              "candidate_gain_ci": {
+                "estimate": -0.018624740174085223,
+                "lower": -0.021180479464164997,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.016120097207056004
+              }
+            },
+            "final_token_residual": {
+              "brier": 0.018624740174085226,
+              "candidate_gain_ci": {
+                "estimate": 5.913613460815101e-18,
+                "lower": -2.168377875191407e-19,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 1.3008419660532245e-17
+              }
+            },
+            "history_prior": {
+              "brier": 0.03611270613690047,
+              "candidate_gain_ci": {
+                "estimate": 0.017487965962815245,
+                "lower": 0.015719950151334237,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.01926809762150867
+              }
+            },
+            "last_observation_filter": {
+              "brier": 0.01747255714794587,
+              "candidate_gain_ci": {
+                "estimate": -0.001152183026139353,
+                "lower": -0.002899003970623267,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.0005456056428955243
+              }
+            },
+            "mean_input_embedding": {
+              "brier": 0.03574687224664781,
+              "candidate_gain_ci": {
+                "estimate": 0.017122132072562593,
+                "lower": 0.01537997720049596,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.018989111549518115
+              }
+            },
+            "parameter_matched_token_sequence": {
+              "brier": 0.013771519305027624,
+              "candidate_gain_ci": {
+                "estimate": -0.0048532208690576,
+                "lower": -0.006452981032947625,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.003182319596525575
+              }
+            },
+            "renderer_shuffled": {
+              "brier": 0.12261322576465392,
+              "candidate_gain_ci": {
+                "estimate": 0.1039884855905687,
+                "lower": 0.09853714447812238,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.10904572781330842
+              }
+            },
+            "shuffled_history": {
+              "brier": 0.030452962672897533,
+              "candidate_gain_ci": {
+                "estimate": 0.011828222498812312,
+                "lower": 0.009581407701459325,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.014146955112571132
+              }
+            },
+            "wrong_history": {
+              "brier": 0.04416811140595474,
+              "candidate_gain_ci": {
+                "estimate": 0.02554337123186952,
+                "lower": 0.019690918267076817,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.03202152835325439
+              }
+            },
+            "zero_packet": {
+              "brier": 0.08323596957157861,
+              "candidate_gain_ci": {
+                "estimate": 0.06461122939749339,
+                "lower": 0.060020083640767094,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 0.06927011674439879
+              }
+            }
+          },
+          "candidate_brier": 0.01862474017408522,
+          "candidate_r2": 0.4800945607815258,
+          "histories": 256,
+          "rows": 512,
+          "wrong_history_margin_ci": {
+            "estimate": 0.012938223159667061,
+            "lower": 0.009506813586975159,
+            "replicates": 2000,
+            "units": 256,
+            "upper": 0.016305300885738512
+          }
+        },
+        "unseen_renderer": {
+          "baselines": {
+            "deterministic_token_hash": {
+              "brier": 0.038574752185098087,
+              "candidate_gain_ci": {
+                "estimate": -0.18821758773194405,
+                "lower": -0.19842767549923696,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.1778970003393544
+              }
+            },
+            "empirical_observation_filter": {
+              "brier": 0.02652463765392881,
+              "candidate_gain_ci": {
+                "estimate": -0.2002677022631133,
+                "lower": -0.21174423005523502,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.1880236885819688
+              }
+            },
+            "exact_bayes_filter": {
+              "brier": 0.0,
+              "candidate_gain_ci": {
+                "estimate": -0.22679233991704215,
+                "lower": -0.23689665170161173,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.2153971751345703
+              }
+            },
+            "final_token_residual": {
+              "brier": 0.22679233991704215,
+              "candidate_gain_ci": {
+                "estimate": 2.3188373964033726e-17,
+                "lower": -1.8801420923614253e-17,
+                "replicates": 2000,
+                "units": 256,
+                "upper": 6.543769974672038e-17
+              }
+            },
+            "history_prior": {
+              "brier": 0.03611270613690047,
+              "candidate_gain_ci": {
+                "estimate": -0.1906796337801417,
+                "lower": -0.20178023251025362,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.17877054269890152
+              }
+            },
+            "last_observation_filter": {
+              "brier": 0.01747255714794587,
+              "candidate_gain_ci": {
+                "estimate": -0.20931978276909624,
+                "lower": -0.2210201622480616,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.19754277059755718
+              }
+            },
+            "mean_input_embedding": {
+              "brier": 0.036328962856022946,
+              "candidate_gain_ci": {
+                "estimate": -0.19046337706101918,
+                "lower": -0.201350966147769,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.17872615406383585
+              }
+            },
+            "parameter_matched_token_sequence": {
+              "brier": 0.054972571492574854,
+              "candidate_gain_ci": {
+                "estimate": -0.17181976842446728,
+                "lower": -0.18614160959197437,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.15705042032361208
+              }
+            },
+            "renderer_shuffled": {
+              "brier": 0.018815368735904732,
+              "candidate_gain_ci": {
+                "estimate": -0.2079769711811374,
+                "lower": -0.2187603991768806,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.19698673338525693
+              }
+            },
+            "shuffled_history": {
+              "brier": 0.030452962672897536,
+              "candidate_gain_ci": {
+                "estimate": -0.1963393772441446,
+                "lower": -0.20682536443568758,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.18455097779268667
+              }
+            },
+            "wrong_history": {
+              "brier": 0.044168111405954745,
+              "candidate_gain_ci": {
+                "estimate": -0.1826242285110874,
+                "lower": -0.19585009140901696,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.16905235590747258
+              }
+            },
+            "zero_packet": {
+              "brier": 0.08323596957157862,
+              "candidate_gain_ci": {
+                "estimate": -0.1435563703454635,
+                "lower": -0.1573849116472272,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.12995441083749393
+              }
+            }
+          },
+          "candidate_brier": 0.22679233991704215,
+          "candidate_r2": -5.330857235797473,
+          "histories": 256,
+          "rows": 256,
+          "wrong_history_margin_ci": {
+            "estimate": -5.375857058067136e-05,
+            "lower": -0.013205687622738544,
+            "replicates": 2000,
+            "units": 256,
+            "upper": 0.01382801909283405
+          }
+        },
+        "unseen_system": {
+          "baselines": {
+            "deterministic_token_hash": {
+              "brier": 0.043351491144778286,
+              "candidate_gain_ci": {
+                "estimate": -0.02269185496315073,
+                "lower": -0.028327216401136675,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.01733508262888386
+              }
+            },
+            "empirical_observation_filter": {
+              "brier": 0.019922343319534505,
+              "candidate_gain_ci": {
+                "estimate": -0.04612100278839451,
+                "lower": -0.05202857371834172,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.040222946554338945
+              }
+            },
+            "exact_bayes_filter": {
+              "brier": 0.0,
+              "candidate_gain_ci": {
+                "estimate": -0.06604334610792902,
+                "lower": -0.07193989150793305,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.06061677751167711
+              }
+            },
+            "final_token_residual": {
+              "brier": 0.06604334610792903,
+              "candidate_gain_ci": {
+                "estimate": 1.9918826787632127e-17,
+                "lower": 1.299009727909195e-17,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 2.7133429915870624e-17
+              }
+            },
+            "history_prior": {
+              "brier": 0.026750885113914047,
+              "candidate_gain_ci": {
+                "estimate": -0.03929246099401497,
+                "lower": -0.04464358460289306,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.03413754690974189
+              }
+            },
+            "last_observation_filter": {
+              "brier": 0.008024017307155759,
+              "candidate_gain_ci": {
+                "estimate": -0.058019328800773255,
+                "lower": -0.0637892609155834,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.05264325427127434
+              }
+            },
+            "mean_input_embedding": {
+              "brier": 0.024417246166695515,
+              "candidate_gain_ci": {
+                "estimate": -0.04162609994123351,
+                "lower": -0.04721235335535938,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.03655579721801315
+              }
+            },
+            "parameter_matched_token_sequence": {
+              "brier": 0.056145094405782595,
+              "candidate_gain_ci": {
+                "estimate": -0.009898251702146421,
+                "lower": -0.01698315067175777,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.002352552430354017
+              }
+            },
+            "renderer_shuffled": {
+              "brier": 0.13743368117273758,
+              "candidate_gain_ci": {
+                "estimate": 0.07139033506480857,
+                "lower": 0.06531426047961642,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.07764363756272438
+              }
+            },
+            "shuffled_history": {
+              "brier": 0.08636815586286456,
+              "candidate_gain_ci": {
+                "estimate": 0.020324809754935533,
+                "lower": 0.014923015392377958,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.02576170176384748
+              }
+            },
+            "wrong_history": {
+              "brier": 0.04273290224811169,
+              "candidate_gain_ci": {
+                "estimate": -0.023310443859817336,
+                "lower": -0.0309841771009901,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.015161239711277958
+              }
+            },
+            "zero_packet": {
+              "brier": 0.10096731300913514,
+              "candidate_gain_ci": {
+                "estimate": 0.03492396690120611,
+                "lower": 0.029135809066907162,
+                "replicates": 2000,
+                "units": 128,
+                "upper": 0.04059995491210431
+              }
+            }
+          },
+          "candidate_brier": 0.06604334610792903,
+          "candidate_r2": -2.265031417830321,
+          "histories": 128,
+          "rows": 256,
+          "wrong_history_margin_ci": {
+            "estimate": 0.011844524389895698,
+            "lower": 0.0034558445120884116,
+            "replicates": 2000,
+            "units": 128,
+            "upper": 0.02014113147650608
+          }
+        }
+      },
+      "source_probability_protocol": {
+        "joint_ood": {
+          "baselines": {
+            "target_prior": {
+              "brier": 0.01729847615953307,
+              "candidate_gain_ci": {
+                "estimate": -0.16462928388974044,
+                "lower": -0.17478739233359553,
+                "replicates": 2000,
+                "units": 64,
+                "upper": -0.15445833623685543
+              }
+            }
+          },
+          "candidate_brier": 0.18192776004927347,
+          "candidate_r2": -13.785255827916895,
+          "histories": 64,
+          "rows": 64
+        },
+        "length_transfer": {
+          "baselines": {
+            "target_prior": {
+              "brier": 0.025932331408044015,
+              "candidate_gain_ci": {
+                "estimate": -0.3442570729187762,
+                "lower": -0.3585009001803614,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.3302117123402121
+              }
+            }
+          },
+          "candidate_brier": 0.3701894043268203,
+          "candidate_r2": -13.362027197987164,
+          "histories": 128,
+          "rows": 256
+        },
+        "seen": {
+          "baselines": {
+            "target_prior": {
+              "brier": 0.030605069222932935,
+              "candidate_gain_ci": {
+                "estimate": -0.3228529527606803,
+                "lower": -0.3331178364196502,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.3120275738973384
+              }
+            }
+          },
+          "candidate_brier": 0.35345802198361326,
+          "candidate_r2": -10.708642556321731,
+          "histories": 256,
+          "rows": 512
+        },
+        "unseen_renderer": {
+          "baselines": {
+            "target_prior": {
+              "brier": 0.030605069222932935,
+              "candidate_gain_ci": {
+                "estimate": -0.09130103728888514,
+                "lower": -0.09968735249886064,
+                "replicates": 2000,
+                "units": 256,
+                "upper": -0.08338155855627052
+              }
+            }
+          },
+          "candidate_brier": 0.12190610651181806,
+          "candidate_r2": -3.038258966565305,
+          "histories": 256,
+          "rows": 256
+        },
+        "unseen_system": {
+          "baselines": {
+            "target_prior": {
+              "brier": 0.017704567161977453,
+              "candidate_gain_ci": {
+                "estimate": -0.2732663114346216,
+                "lower": -0.2772260798824483,
+                "replicates": 2000,
+                "units": 128,
+                "upper": -0.2693375402747674
+              }
+            }
+          },
+          "candidate_brier": 0.29097087859659915,
+          "candidate_r2": -21.99729798386228,
+          "histories": 128,
+          "rows": 256
+        }
+      },
+      "target_reader_native_brier": 0.005146518647363231,
+      "target_reader_oracle_brier": 0.00520750604193632
+    }
+  },
+  "prediction_digest_sha256": "ae2c08bff26a08fc8ac2ea9ec0411bab31f124ec8b8cdb7f203bfea58a72e5b2",
+  "public_basis": {
+    "core_condition_numbers": {
+      "system-00": 2.7431229510107356,
+      "system-01": 4.31122034163684,
+      "system-02": 4.922504537512989
+    },
+    "exact_rank": 4,
+    "maximum_exact_executor_error": 5.551115123125783e-16,
+    "maximum_normalization_aware_executor_error": 8.465450562766819e-16,
+    "maximum_normalization_aware_target_l1": 13.707695467838123,
+    "maximum_target_l1": 2.9867494548833564,
+    "normalization_aware_condition_numbers": {
+      "system-00": 8.628226461265603,
+      "system-01": 23.626484424220603,
+      "system-02": 13.948057289025412
+    },
+    "normalization_aware_dimension": 3,
+    "rank_grid": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      8
+    ]
+  },
+  "schema": "frank_eq_spq0_metrics_v1",
+  "scope": "development-only shared predictive quotient census",
+  "sender_identity": {
+    "accuracy": 0.7184606481481481,
+    "accuracy_over_chance": 0.21846064814814814,
+    "chance": 0.5,
+    "method": "train_centroid_validation_accuracy"
+  },
+  "system_generalization_scope": {
+    "interpretation": "local_law_perturbation_only",
+    "shifts": {
+      "system-02": {
+        "emission_mean_row_total_variation": 0.05916106270987659,
+        "independent_draw_weight": 0.1,
+        "parent_system_id": "system-00",
+        "parent_weight": 0.9,
+        "transition_mean_row_total_variation": 0.08399999999999998
+      }
+    }
+  }
+}

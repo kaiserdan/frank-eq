@@ -30,9 +30,26 @@ evidence:  evidence/real_stage_m_olivia_m0/
 
 Stage M0 has no held sender, test role, receiver access, or claim authority. Its
 negative closes the current graph/source line. No RC0 or M0 rerun, successor
-compiler, receiver protocol, receiver execution, receiver-world access,
-scientific claim, or paper claim is authorized. There is no current Olivia
-executable.
+graph compiler, receiver protocol, receiver execution, receiver-world access,
+scientific claim, or paper claim is authorized.
+
+SPQ0 has also completed:
+
+```text
+job:       frank-eq-spq0-olivia-20260813c  Slurm 2006680
+state:     COMPLETED 0:0
+decision:  SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED
+evidence:  evidence/real_spq0_olivia/
+```
+
+Its exact-runtime verifier, causal branching, role separation, and reserved
+OLMo2/Granite non-access contract pass. The negative authorizes no SPQ1 draft
+or execution, reserved access, held/test/receiver role, or claim. Do not submit
+or retune SPQ0 again. `docs/26_SPQ0_OLIVIA_RUNBOOK.md` is preserved as the
+consumed pre-execution runbook; `docs/28_SPQ0_RESULT_AND_DISPOSITION.md` records
+the outcome.
+
+There is no current Olivia executable.
 
 ## Runtime contract
 
@@ -48,12 +65,37 @@ work:   /cluster/work/projects/nn12027k/dakai5365/frank-eq
 
 It exposes `python3`, CUDA-enabled PyTorch, Transformers, NumPy, PyYAML, and
 W&B on `aarch64`. Do not use the historical AMD64 image or the existing CPython
-x86_64 wheelhouse, and do not enable runtime package installation for Stage M0.
+x86_64 wheelhouse, and do not enable runtime package installation for consumed
+Stage M0 or SPQ0 provenance.
 
 W&B remains fail-open telemetry. Its credential is sourced from
 `$HOME/.config/codex-hpc/wandb.env` only when that file has mode `0600`; the
 credential itself must never enter the repository, source archive, or Slurm
 submission record.
+
+## Historical SPQ0 execution record
+
+The final audit ran from clean commit `2a0b204`, source archive
+`607ef102...528579`, config `1ad22163...8558`, deterministic plan
+`9274c196...6225`, and runtime image `a3ca46f0...aa3b1`. It used one GH200,
+32 CPUs, 128 GiB, and completed in `00:51:22` on `gpu-1-7`.
+
+These commands inspect the consumed result only:
+
+```bash
+python olivia/cli.py status --job-name frank-eq-spq0-olivia-20260813c --json
+python olivia/cli.py fetch  --job-name frank-eq-spq0-olivia-20260813c --json
+python olivia/cli.py verify --job-name frank-eq-spq0-olivia-20260813c --json
+python scripts/verify_spq0_run.py \
+  --config configs/spq0/real_olivia_spq0.yaml \
+  --run .agents/state/olivia/frank-eq-spq0-olivia-20260813c/remote/runs
+```
+
+The first two complete normally. Both workstation verification entrypoints
+refuse strict cross-runtime numeric equality while reproducing the same machine
+decision; the in-job exact-runtime verifier passes. See the adopted audit before
+interpreting a nonzero local verify exit. These commands convey no submission or
+recovery authority.
 
 ## Historical Stage M0 execution record
 

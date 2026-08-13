@@ -20,13 +20,16 @@ jobs:
           python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
           python -m pip install -e . --no-deps
       - name: Compile
-        run: python -m compileall -q src scripts
+        run: python -m compileall -q src scripts olivia lumi
       - name: Lint
         run: ruff check --output-format=github src scripts tests
       - name: Test
         run: pytest -q
+      - name: Shell syntax
+        run: bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
       - name: Validate repository
         run: |
           python scripts/validate_repo.py
           python scripts/validate_rate_compute.py
           python scripts/validate_moment_compute.py
+          python scripts/validate_spq0.py

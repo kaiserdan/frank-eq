@@ -1,0 +1,131 @@
+{
+  "array": "captures/qwen3-4b.npz",
+  "array_sha256": "7d39b8998507f0a7f1667813ba4371f40b3cd5dcebedfb882e6f7c88a41419f3",
+  "branch_execution": {
+    "exact_replay_response_branches": 0,
+    "exclusive_cache_batching": true,
+    "literal_kv_reuse": true
+  },
+  "candidate_metadata": [
+    {
+      "label": " A",
+      "probability_bin": 0.05,
+      "token_count": 1,
+      "token_ids": [
+        362
+      ]
+    },
+    {
+      "label": " B",
+      "probability_bin": 0.15,
+      "token_count": 1,
+      "token_ids": [
+        425
+      ]
+    },
+    {
+      "label": " C",
+      "probability_bin": 0.25,
+      "token_count": 1,
+      "token_ids": [
+        356
+      ]
+    },
+    {
+      "label": " D",
+      "probability_bin": 0.35,
+      "token_count": 1,
+      "token_ids": [
+        422
+      ]
+    },
+    {
+      "label": " E",
+      "probability_bin": 0.45,
+      "token_count": 1,
+      "token_ids": [
+        468
+      ]
+    },
+    {
+      "label": " F",
+      "probability_bin": 0.55,
+      "token_count": 1,
+      "token_ids": [
+        434
+      ]
+    },
+    {
+      "label": " G",
+      "probability_bin": 0.65,
+      "token_count": 1,
+      "token_ids": [
+        479
+      ]
+    },
+    {
+      "label": " H",
+      "probability_bin": 0.75,
+      "token_count": 1,
+      "token_ids": [
+        472
+      ]
+    },
+    {
+      "label": " I",
+      "probability_bin": 0.85,
+      "token_count": 1,
+      "token_ids": [
+        358
+      ]
+    },
+    {
+      "label": " J",
+      "probability_bin": 0.95,
+      "token_count": 1,
+      "token_ids": [
+        619
+      ]
+    }
+  ],
+  "capture_surface_contract": [
+    "final_token_residual",
+    "event_boundary_residuals",
+    "all_token_summary",
+    "mean_input_embedding",
+    "parameter_matched_token_sequence"
+  ],
+  "categorical_bins": 10,
+  "chat_turn_shape": "user_prefix_fixed_assistant_ack_user_query",
+  "core_tests": 4,
+  "exact_event_boundary_checks": 46080,
+  "exact_prefix_continuity_checks": 92160,
+  "family": "qwen3",
+  "hf_id": "Qwen/Qwen3-4B",
+  "hidden_width": 2560,
+  "layer_indices": [
+    9,
+    18,
+    27,
+    36
+  ],
+  "max_tokens": 2196,
+  "maximum_events": 32,
+  "model_id": "qwen3-4b",
+  "prefix_hashes_sha256": "dc3cd9546755b33adda3c061cc981a5b216a92e868d4595e18099790d4342c3f",
+  "public_tests": 8,
+  "response_batches": 14400,
+  "response_branches": 92160,
+  "revision_observed": "1cfa9a7208912126459214e8b04321603b3df60c",
+  "revision_requested": "1cfa9a7208912126459214e8b04321603b3df60c",
+  "rows": 2880,
+  "schema": "frank_eq_spq0_capture_v1",
+  "selected_kv_surface_enabled": false,
+  "surface_dimensions": {
+    "all_token_summary": 5120,
+    "event_boundary_residuals": 5120,
+    "final_token_residual": 2560,
+    "mean_input_embedding": 2560
+  },
+  "target_tests": 24
+}

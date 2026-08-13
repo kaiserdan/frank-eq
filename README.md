@@ -200,9 +200,57 @@ prediction field, metric, gate, or decision changes. The compact adopted
 package is in `evidence/real_stage_m_olivia_m0/`.
 
 This is interactive event tomography, not a one-shot latent interface. The
-negative result authorizes no successor compiler draft or run, held sender,
-receiver access, or claim. The current graph/source line stops; there is no
-authorized next executable.
+negative result authorizes no successor graph compiler draft or run, held
+sender, receiver access, or claim. The current graph/source line stops.
+
+## SPQ0: completed development negative
+
+The fresh Shared Predictive Quotient census completed on Olivia as Slurm job
+`2006680`. It used exact Qwen3-4B and Mistral-7B-Instruct-v0.3 founders,
+categorical probability-bin likelihoods, an exact rank-four future-test core,
+and the normalization-aware affine rank-three control. OLMo2 and Granite stayed
+reserved and unopened with every access counter at zero.
+
+The machine decision is:
+
+```text
+status:     fail
+diagnosis:  SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED
+```
+
+Both founders fail every registered categorical source-protocol stratum. On
+seen histories, Brier is `0.21985` for Mistral and `0.35346` for Qwen, versus a
+`0.03061` target prior. Model-local semantic encoders recover useful seen-state
+information, but both fail unseen-renderer and joint-OOD gates and neither
+qualifies activation specificity over the parameter-matched token sequence.
+
+Cross-family composition is asymmetric. Mistral-to-Qwen passes its directional
+gate (`0.007503` Brier versus `0.008057` target prior; oracle-reader retention
+`1.109`), while Qwen-to-Mistral retains only `0.498` of oracle-reader gain and
+fails predictive-dimension localization. Sender identity remains recoverable at
+`0.71846` accuracy, and the non-promotional residual census selects rank zero.
+Four-bit retention passes in both directions but cannot rescue the failed
+source, OOD, specificity, identity, and two-direction gates.
+
+Slurm and workflow completion, exact causal branching, the reserved-checkpoint
+non-access contract, and the Olivia-runtime independent verifier all pass. A
+newer workstation NumPy stack changes Qwen fitted weights/compiled targets by
+at most `2.04e-9` and refuses strict portability, but recomputes the same
+decision and authorization vector. The compact adopted package is in
+`evidence/real_spq0_olivia/`.
+
+SPQ0 is consumed. It authorizes no SPQ1 draft or execution, reserved access,
+held sender, test role, receiver work, or claim. There is no current executable.
+
+Read:
+
+```text
+evidence/real_spq0_olivia/AUDIT.md
+docs/28_SPQ0_RESULT_AND_DISPOSITION.md
+docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md
+docs/26_SPQ0_OLIVIA_RUNBOOK.md
+docs/27_SPQ0_INDEPENDENT_REVIEW.md
+```
 
 ## Historical RC0 decision tree
 
@@ -252,9 +300,11 @@ The frozen compiler did not qualify this interface. It predicts the sources'
 behavioral channel and transfers across models on seen renderers, but semantic
 calibration and unseen-renderer transfer fail. Stage M0 subsequently showed
 that interactively querying a larger operation-closed graph basis does not beat
-the simpler marginal executor. Any future direction must change the task-level
-scientific question and use fresh roles; it cannot be selected on the exposed
-v3 or Stage M outcomes.
+the simpler marginal executor. SPQ0 then found seen predictive-state decoding
+and one directional transfer positive, but failed categorical source readout,
+OOD stability, specificity, identity closure, and bidirectional transfer. Any
+future direction must change the task-level scientific question and use fresh
+roles; it cannot be selected on the exposed v3, Stage M, or SPQ0 outcomes.
 
 ## Commands
 
@@ -297,6 +347,19 @@ python scripts/validate_moment_compute.py
 python scripts/verify_moment_compute_run.py --run <fetched-run-root>
 ```
 
+Historical SPQ0 validation and verification commands:
+
+```text
+python scripts/validate_spq0.py
+python olivia/cli.py status --job-name frank-eq-spq0-olivia-20260813c --json
+python olivia/cli.py fetch  --job-name frank-eq-spq0-olivia-20260813c --json
+python scripts/verify_spq0_run.py \
+  --config configs/spq0/real_olivia_spq0.yaml \
+  --run .agents/state/olivia/frank-eq-spq0-olivia-20260813c/remote/runs
+```
+
+These are provenance commands, not rerun or resubmission authority.
+
 ## Local validation
 
 ```bash
@@ -311,6 +374,7 @@ bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
 python scripts/validate_moment_compute.py
+python scripts/validate_spq0.py
 ```
 
 ## Evidence hierarchy
@@ -339,14 +403,20 @@ Frank-EQ currently establishes only:
 - a corrected source-qualification methodology;
 - development evidence that an interactively queried, typed edge basis is
   recoverable from the tested sources and composes better than their
-  training-selected direct protocols under the frozen RC0 contract; and
+  training-selected direct protocols under the frozen RC0 contract;
 - v3 evidence that the all-token compiler predicts the frozen sources'
   behavioral edge responses, while its semantic basis fails the registered
-  calibration and unseen-renderer gates; and
+  calibration and unseen-renderer gates;
 - Stage M development evidence that the registered high-order graph events are
   not uniformly readable and their projected executor is worse than the
-  first-order marginal control, despite beating direct responses.
+  first-order marginal control, despite beating direct responses; and
+- SPQ0 development evidence that typed semantic predictive state is decodable
+  on seen renderers and one mapper-free cross-family direction works, while the
+  frozen categorical readout, OOD stability, activation/history specificity,
+  sender-identity closure, and bidirectional quotient gates fail.
 
 It does not yet establish a cross-model public interface, a hidden-state
 advantage over text/tokens, a qualified one-shot compiler, receiver execution,
-or a positive ICLR claim. No further experiment is currently authorized.
+or a positive ICLR claim. SPQ0 is completed negative evidence, not authority to
+retune its exposed roles or draft SPQ1. No experiment or cluster executable is
+currently authorized.

@@ -1,0 +1,45 @@
+{
+  "classification": "cross_runtime_linear_algebra_and_json_canonicalization_sensitivity",
+  "fetched_run_unchanged": true,
+  "olivia_runtime": {
+    "independent_verifier_passed": true,
+    "maximum_absolute_difference": 0.0,
+    "numpy": "2.2.6",
+    "platform": "Linux-6.4.0-150700.53.31-64kb-aarch64-with-glibc2.35",
+    "python": "3.10.12"
+  },
+  "result": {
+    "gate_or_decision_difference": false,
+    "original_artifacts_mutated": false,
+    "spq1_protocol_draft_authorized": false
+  },
+  "schema": "frank_eq_spq0_runtime_portability_diagnostic_v1",
+  "workstation_runtime": {
+    "artifact_hashes_valid": true,
+    "basis_recomputed": true,
+    "decision_recomputed_exactly": true,
+    "difference_localization": {
+      "checkpoint_arrays": [
+        "qwen3-4b semantic rank 1, 2, 3, 4, 6, and 8 weights",
+        "qwen3-4b target-reader weights"
+      ],
+      "maximum_absolute_numeric_difference": 2.0413661039331288e-09,
+      "metric_fields": [
+        "qwen3-4b to mistral-7b-v03 four-bit gain retention",
+        "qwen3-4b length-transfer candidate R2",
+        "qwen3-4b rank-1 and rank-4 tied selection-method labels",
+        "prediction digest"
+      ],
+      "panel_actions_and_observations_equal": true,
+      "panel_maximum_posterior_difference": 4.440892098500626e-16,
+      "panel_tuple_list_json_shape_difference": true,
+      "prediction_arrays": [
+        "qwen3-4b compiled_targets"
+      ]
+    },
+    "numpy": "2.5.2",
+    "platform": "macOS-15.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.6",
+    "strict_verifier_passed": false
+  }
+}

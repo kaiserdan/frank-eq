@@ -1,6 +1,6 @@
 ---
 name: olivia-cluster-runner
-description: Package, submit, monitor, fetch, and verify Frank-EQ jobs on Olivia, including the development-only Stage-M0 operation-closed basis audit.
+description: Package, dry-run, submit only with authority, monitor, fetch, and verify Frank-EQ jobs on Olivia while preserving consumed Stage M0 and SPQ0 outcomes.
 ---
 
 # Olivia cluster runner
@@ -30,7 +30,22 @@ evidence:  evidence/real_stage_m_olivia_m0/
 
 It has no held sender, claim-bearing test role, receiver access, successor draft
 authority, or scientific claim authority. Do not resubmit it. There is no
-current Olivia execution authority.
+current graph execution authority.
+
+SPQ0 completed and is adopted:
+
+```text
+job:       frank-eq-spq0-olivia-20260813c / Slurm 2006680
+decision:  SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED
+evidence:  evidence/real_spq0_olivia/
+```
+
+It has no resubmission, recovery, retuning, test, held, receiver, SPQ1 draft, or
+claim path. OLMo2 and Granite remained unopened. Follow
+`.agents/skills/spq0-runner/SKILL.md`, `evidence/real_spq0_olivia/AUDIT.md`, and
+`docs/28_SPQ0_RESULT_AND_DISPOSITION.md`.
+
+There is no current Olivia execution authority.
 
 ## Validation
 
@@ -41,6 +56,7 @@ pytest -q
 python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
 python scripts/validate_moment_compute.py
+python scripts/validate_spq0.py
 bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 ```
 
@@ -56,15 +72,20 @@ The completed immutable binding is source SHA-256 `352215a6...27668`, config
 SHA-256 `f181fece...d51d`, and image SHA-256 `a3ca46f0...aa3b1`. These commands
 are inspection only, not resubmission authority.
 
-## Monitor, fetch, verify
+## Historical SPQ0 inspection
 
 ```bash
-python olivia/cli.py status --job-name frank-eq-moment-compute-m0 --json
-python olivia/cli.py fetch  --job-name frank-eq-moment-compute-m0 --json
-python olivia/cli.py verify --job-name frank-eq-moment-compute-m0 --json
-python scripts/verify_moment_compute_run.py \
-  --run .agents/state/olivia/frank-eq-moment-compute-m0/remote/runs
+python olivia/cli.py status --job-name frank-eq-spq0-olivia-20260813c --json
+python olivia/cli.py fetch  --job-name frank-eq-spq0-olivia-20260813c --json
+python olivia/cli.py verify --job-name frank-eq-spq0-olivia-20260813c --json
+python scripts/verify_spq0_run.py \
+  --config configs/spq0/real_olivia_spq0.yaml \
+  --run .agents/state/olivia/frank-eq-spq0-olivia-20260813c/remote/runs
 ```
+
+The workstation verification commands return nonzero on the documented
+cross-runtime numeric refusal while reproducing the same decision. The in-job
+exact-runtime verifier passes. These commands do not authorize submission.
 
 ## Invariants
 
@@ -78,6 +99,7 @@ python scripts/verify_moment_compute_run.py \
 - Generated runs, source archives, checkpoints, `.agents/state/`, and credentials
   remain outside Git.
 
-The observed Stage M diagnosis closes the current graph/source line. No fresh
-successor protocol, run, held sender, receiver work, or paper claim is
-authorized.
+The observed Stage M diagnosis closes the graph/source line. The later SPQ0
+negative closes its separate stochastic-system registration. Never resubmit
+either run, access SPQ0's reserved checkpoints, or use exposed outcomes to tune
+a successor.

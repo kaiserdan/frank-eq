@@ -1,0 +1,103 @@
+{
+  "authorization": {
+    "claim_bearing_test_access_authorized": false,
+    "held_sender_access_authorized": false,
+    "paper_claim_authorized": false,
+    "receiver_execution_authorized": false,
+    "scientific_claim_authorized": false,
+    "spq1_execution_authorized": false,
+    "spq1_protocol_draft_authorized": false
+  },
+  "decision": {
+    "authorization": {
+      "claim_bearing_test_access_authorized": false,
+      "held_sender_access_authorized": false,
+      "paper_claim_authorized": false,
+      "receiver_execution_authorized": false,
+      "scientific_claim_authorized": false,
+      "spq1_execution_authorized": false,
+      "spq1_protocol_draft_authorized": false
+    },
+    "check_details": {
+      "activation_specificity": {
+        "mistral-7b-v03": false,
+        "qwen3-4b": false
+      },
+      "cross_family_public_state_transfer": {
+        "mistral-7b-v03__to__qwen3-4b": true,
+        "qwen3-4b__to__mistral-7b-v03": false
+      },
+      "four_bit_retention": {
+        "mistral-7b-v03__to__qwen3-4b": true,
+        "qwen3-4b__to__mistral-7b-v03": true
+      },
+      "heuristic_rate_scalarization_non_promotional": {
+        "mistral-7b-v03": true,
+        "qwen3-4b": true
+      },
+      "history_specificity": {
+        "mistral-7b-v03": false,
+        "qwen3-4b": false
+      },
+      "predictive_dimension_consistent": {
+        "mistral-7b-v03__to__qwen3-4b": true,
+        "qwen3-4b__to__mistral-7b-v03": false
+      },
+      "renderer_system_length_stability": {
+        "mistral-7b-v03": false,
+        "qwen3-4b": false
+      },
+      "semantic_predictive_quotient": {
+        "mistral-7b-v03|joint_ood": false,
+        "mistral-7b-v03|length_transfer": true,
+        "mistral-7b-v03|seen": true,
+        "mistral-7b-v03|unseen_renderer": false,
+        "mistral-7b-v03|unseen_system": true,
+        "qwen3-4b|joint_ood": false,
+        "qwen3-4b|length_transfer": false,
+        "qwen3-4b|seen": true,
+        "qwen3-4b|unseen_renderer": false,
+        "qwen3-4b|unseen_system": false
+      },
+      "source_probability_protocol": {
+        "mistral-7b-v03": false,
+        "qwen3-4b": false
+      }
+    },
+    "checks": {
+      "activation_specificity": false,
+      "cross_family_public_state_transfer": false,
+      "four_bit_retention": true,
+      "history_specificity": false,
+      "predictive_dimension_consistent": false,
+      "predictive_system_and_executor": true,
+      "renderer_system_length_stability": false,
+      "semantic_predictive_quotient": false,
+      "sender_identity_closed": false,
+      "source_probability_protocol": false
+    },
+    "diagnosis": "SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED",
+    "schema": "frank_eq_spq0_decision_v1",
+    "status": "fail"
+  },
+  "development_only": true,
+  "models": [
+    "qwen3-4b",
+    "mistral-7b-v03"
+  ],
+  "ordered_cross_family_pairs": 2,
+  "pair_specific_mappers": 0,
+  "reserved_models_loaded": 0,
+  "root": "runs",
+  "schema": "frank_eq_spq0_run_v1",
+  "status": "completed",
+  "systems": 3,
+  "telemetry": {
+    "enabled": true,
+    "failures": 0,
+    "reason": null
+  },
+  "test_histories": 0,
+  "validation_only_systems": 1,
+  "workflow_integrity_passed": true
+}

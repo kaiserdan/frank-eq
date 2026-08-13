@@ -1,0 +1,45 @@
+{
+  "access_contract": {
+    "active_tokenizer_preflight_before_model_load": true,
+    "calibration_selection_validation_only": true,
+    "exact_replay_fallback": false,
+    "held_sender": false,
+    "literal_cloned_kv_reuse": true,
+    "receiver": false,
+    "reserved_checkpoints_unopened": true,
+    "state_precedes_future_test": true,
+    "test_role": false
+  },
+  "config_path": "configs/spq0/real_olivia_spq0.yaml",
+  "config_sha256": "1ad2216396da3a31421366e951476f14472b216a10588dd23760f90863488558",
+  "created_at": "2026-08-13T12:06:22.933760+00:00",
+  "development_only": true,
+  "environment": {
+    "accelerators": [
+      "NVIDIA GH200 120GB"
+    ],
+    "cluster": "olivia",
+    "cuda_available": true,
+    "cuda_device_count": 1,
+    "git_commit": "2a0b2044f1d3e3926fc7ca2b5158e8ad5abab156",
+    "git_dirty": "false",
+    "hostname": "gpu-1-7",
+    "numpy": "2.2.6",
+    "platform": "Linux-6.4.0-150700.53.31-64kb-aarch64-with-glibc2.35",
+    "python": "3.10.12",
+    "runtime_image": "/cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif",
+    "runtime_image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "slurm_job_id": "2006680",
+    "source_sha256": "607ef10289b1446bf2c23c92c9c3cdca386d2c93c2df3b0a4a4175f1ec528579",
+    "torch": "2.12.0.dev20260309+cu126"
+  },
+  "plan_sha256": "9274c19646c0261a8aa7ce21ccffbb9d98f4e535533f1c76951cd9a13e816225",
+  "protocol_sha256": "d887867b33c994e65b13e6110f75b39cd3cfcb681aff872616b49c2ae1ce2d4f",
+  "protocol_version": "spq0-development-census",
+  "registration_sha256": "2bb4f1695730a8ae372a82ec90bb850dfd922f4693cf0b570a5418d21746bf17",
+  "run_name": "frank-eq-spq0-olivia",
+  "schema": "frank_eq_spq0_run_manifest_v1",
+  "stages": [
+    "audit"
+  ]
+}

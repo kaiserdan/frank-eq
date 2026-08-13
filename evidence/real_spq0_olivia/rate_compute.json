@@ -1,0 +1,152 @@
+{
+  "amortized_frontier": {
+    "mistral-7b-v03": {
+      "1": {
+        "direct_query_cost_brier_equivalent_per_query": 0.02,
+        "future_queries": 1,
+        "packet_bits_per_query": 16.0,
+        "packet_cost_brier_equivalent_per_query": 0.008,
+        "packet_payload_bits": 16,
+        "source_queries_per_query_direct": 1.0,
+        "source_queries_per_query_packet": 0.0,
+        "utility_gain_over_direct_ci": {
+          "estimate": 0.09221501796744766,
+          "lower": 0.08076732992474005,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.10366302457001482
+        }
+      },
+      "16": {
+        "direct_query_cost_brier_equivalent_per_query": 0.02,
+        "future_queries": 16,
+        "packet_bits_per_query": 1.0,
+        "packet_cost_brier_equivalent_per_query": 0.0005,
+        "packet_payload_bits": 16,
+        "source_queries_per_query_direct": 1.0,
+        "source_queries_per_query_packet": 0.0,
+        "utility_gain_over_direct_ci": {
+          "estimate": 0.09971501796744767,
+          "lower": 0.08872698943792134,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.11062685562663162
+        }
+      },
+      "32": {
+        "direct_query_cost_brier_equivalent_per_query": 0.02,
+        "future_queries": 32,
+        "packet_bits_per_query": 0.5,
+        "packet_cost_brier_equivalent_per_query": 0.00025,
+        "packet_payload_bits": 16,
+        "source_queries_per_query_direct": 1.0,
+        "source_queries_per_query_packet": 0.0,
+        "utility_gain_over_direct_ci": {
+          "estimate": 0.09996501796744765,
+          "lower": 0.08782910201511031,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.11115644173465862
+        }
+      },
+      "4": {
+        "direct_query_cost_brier_equivalent_per_query": 0.02,
+        "future_queries": 4,
+        "packet_bits_per_query": 4.0,
+        "packet_cost_brier_equivalent_per_query": 0.002,
+        "packet_payload_bits": 16,
+        "source_queries_per_query_direct": 1.0,
+        "source_queries_per_query_packet": 0.0,
+        "utility_gain_over_direct_ci": {
+          "estimate": 0.09821501796744767,
+          "lower": 0.08613074397699172,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.10919990136661498
+        }
+      }
+    },
+    "qwen3-4b": {
+      "1": {
+        "direct_query_cost_brier_equivalent_per_query": 0.02,
+        "future_queries": 1,
+        "packet_bits_per_query": 16.0,
+        "packet_cost_brier_equivalent_per_query": 0.008,
+        "packet_payload_bits": 16,
+        "source_queries_per_query_direct": 1.0,
+        "source_queries_per_query_packet": 0.0,
+        "utility_gain_over_direct_ci": {
+          "estimate": 0.1284091421120819,
+          "lower": 0.1167579465079994,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.14036224874935738
+        }
+      },
+      "16": {
+        "direct_query_cost_brier_equivalent_per_query": 0.02,
+        "future_queries": 16,
+        "packet_bits_per_query": 1.0,
+        "packet_cost_brier_equivalent_per_query": 0.0005,
+        "packet_payload_bits": 16,
+        "source_queries_per_query_direct": 1.0,
+        "source_queries_per_query_packet": 0.0,
+        "utility_gain_over_direct_ci": {
+          "estimate": 0.1359091421120819,
+          "lower": 0.12407913576521781,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.1472480697959371
+        }
+      },
+      "32": {
+        "direct_query_cost_brier_equivalent_per_query": 0.02,
+        "future_queries": 32,
+        "packet_bits_per_query": 0.5,
+        "packet_cost_brier_equivalent_per_query": 0.00025,
+        "packet_payload_bits": 16,
+        "source_queries_per_query_direct": 1.0,
+        "source_queries_per_query_packet": 0.0,
+        "utility_gain_over_direct_ci": {
+          "estimate": 0.1361591421120819,
+          "lower": 0.12463760805208118,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.1474034710004652
+        }
+      },
+      "4": {
+        "direct_query_cost_brier_equivalent_per_query": 0.02,
+        "future_queries": 4,
+        "packet_bits_per_query": 4.0,
+        "packet_cost_brier_equivalent_per_query": 0.002,
+        "packet_payload_bits": 16,
+        "source_queries_per_query_direct": 1.0,
+        "source_queries_per_query_packet": 0.0,
+        "utility_gain_over_direct_ci": {
+          "estimate": 0.13440914211208188,
+          "lower": 0.1226706807872181,
+          "replicates": 2000,
+          "units": 64,
+          "upper": 0.14523761095842996
+        }
+      }
+    }
+  },
+  "development_tomography": {
+    "categorical_candidates_per_query": 10,
+    "counts_as_primary_packet": false,
+    "future_test_queries_per_prefix": 32
+  },
+  "one_direct_query_is_not_a_conjunctive_gate": true,
+  "primary_amortized_query_count": 16,
+  "primary_packet": {
+    "bits_per_coordinate": 4,
+    "consumer": "frozen target-local reader",
+    "framing_bits": null,
+    "payload_bits": 16,
+    "rank": 4,
+    "source_post_capture_queries": 0
+  },
+  "schema": "frank_eq_spq0_rate_compute_v1"
+}

@@ -1,0 +1,115 @@
+{
+  "artifact_manifest": {
+    "entries": 32,
+    "hashes_valid": true,
+    "sha256": "409bc4f8875d36542c60625971cbbef751c72efe9797a2bb29ea0402fef70fd7"
+  },
+  "authorization": {
+    "claim_bearing_test_access_authorized": false,
+    "held_sender_access_authorized": false,
+    "paper_claim_authorized": false,
+    "receiver_execution_authorized": false,
+    "scientific_claim_authorized": false,
+    "spq1_execution_authorized": false,
+    "spq1_protocol_draft_authorized": false
+  },
+  "cluster": "olivia",
+  "decision": {
+    "diagnosis": "SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED",
+    "file_sha256": "d74d2b025ec6a50c64f2243383321a96f499300fd8ac6a22d7aaaf5f6cf2bfee",
+    "status": "fail"
+  },
+  "execution": {
+    "capture_rows_per_model": 2880,
+    "event_boundary_checks_per_model": 46080,
+    "exact_replay_response_branches_per_model": 0,
+    "literal_kv_reuse": true,
+    "ordered_cross_family_pairs": 2,
+    "pair_specific_mappers": 0,
+    "prefix_continuity_checks_per_model": 92160,
+    "response_branches_per_model": 92160,
+    "test_histories": 0
+  },
+  "fetch": {
+    "artifact_manifest_hashes_valid": true,
+    "fetched": [
+      "runs",
+      "logs"
+    ],
+    "local_cache": ".agents/state/olivia/frank-eq-spq0-olivia-20260813c/remote"
+  },
+  "launch_chronology": [
+    {
+      "disposition": "pre-inference Python-3.10 startup failure; no outcome used",
+      "job_id": "2006621"
+    },
+    {
+      "disposition": "operator-cancelled before a complete outcome; no outcome used",
+      "job_id": "2006673"
+    },
+    {
+      "disposition": "sole completed scientific outcome",
+      "job_id": "2006680"
+    }
+  ],
+  "lineage": {
+    "config_sha256": "1ad2216396da3a31421366e951476f14472b216a10588dd23760f90863488558",
+    "git_commit": "2a0b2044f1d3e3926fc7ca2b5158e8ad5abab156",
+    "plan_file_sha256": "fdc187bfa3d662908eb734049365c1feb5651094633cf87279317979b22093be",
+    "plan_sha256": "9274c19646c0261a8aa7ce21ccffbb9d98f4e535533f1c76951cd9a13e816225",
+    "runtime_image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "source_archive_sha256": "607ef10289b1446bf2c23c92c9c3cdca386d2c93c2df3b0a4a4175f1ec528579"
+  },
+  "logs": {
+    "fatal_infrastructure_signatures": [],
+    "stderr_sha256": "d7d268d87a56cf637f49e58e03339673ae73b0ea89da464fd0bfa49f470f242a",
+    "stdout_sha256": "168335509eb42cdf5b82686c6715336d7077bb7c9a87e6dc50262f54d36cc71f"
+  },
+  "overall": "adopted_valid_development_negative",
+  "repository_verifier": {
+    "overall": "passed"
+  },
+  "reserved_checkpoint_non_access": {
+    "files_opened": 0,
+    "inference_calls": 0,
+    "model_adapter_instantiations": 0,
+    "model_loads": 0,
+    "snapshot_resolution_attempts": 0,
+    "tokenizer_loads": 0
+  },
+  "runtime_diagnostic": {
+    "gate_or_decision_difference": false,
+    "olivia_exact_runtime_verifier_passed": true,
+    "workstation_maximum_absolute_difference": 2.0413661039331288e-09,
+    "workstation_strict_verifier_passed": false
+  },
+  "schema": "frank_eq_spq0_adopted_verification_summary_v1",
+  "slurm": {
+    "elapsed": "00:51:22",
+    "exit_code": "0:0",
+    "gpu_hours_rounded": 0.9,
+    "job_id": "2006680",
+    "node": "gpu-1-7",
+    "state": "COMPLETED"
+  },
+  "specialized_verifier": {
+    "artifact_files_checked": 32,
+    "exact_runtime_maximum_absolute_difference": 0.0,
+    "exact_runtime_overall": "passed",
+    "workstation_overall": "strict_portability_refusal"
+  },
+  "wandb": {
+    "failures": 0,
+    "project": "frank-eq-spq0",
+    "run_id": "3xakbydk"
+  },
+  "workflow": {
+    "completed_stages": [
+      "checkpoint_preflight",
+      "audit"
+    ],
+    "elapsed_seconds": 2715.8960831165314,
+    "failure": null,
+    "state": "completed"
+  }
+}
