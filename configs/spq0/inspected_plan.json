@@ -11,6 +11,7 @@
   "active_checkpoint_revision_registry_sha256": "85daa3682ee79595c8e0ad58e88d82568c71781b05c60bd4e226a5e0b2bd4909",
   "capture": {
     "categorical_candidates_per_query": 10,
+    "chat_turn_shape": "user_prefix_fixed_assistant_ack_user_query",
     "exact_replay_fallback": false,
     "future_tests_per_prefix": 32,
     "literal_kv_reuse": true,
@@ -40,7 +41,7 @@
     "target_readers_frozen_before_source_evaluation": true
   },
   "config_path": "configs/spq0/real_olivia_spq0.yaml",
-  "config_sha256": "0e95a7c7431abed70e6c6115ec6bc3f0b1a2e47a9a273026308e093ffd838f9b",
+  "config_sha256": "69126e9a3807b8682c48d5da30762c3a0b09d94369b2aea97eb70eb4879951fe",
   "development_only": true,
   "models": {
     "mistral-7b-v03": {
@@ -72,9 +73,9 @@
       "symbolic"
     ]
   },
-  "plan_sha256": "660c0a41bcd9ce7b214a583cfef31fcf2ad136b8f16161f7984168f5fbd6a933",
+  "plan_sha256": "64a732842361859daed3bb5709c839bc935f7c1cad05d58e81d5e3afd0cea654",
   "protocol_path": "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",
-  "protocol_sha256": "e117f3330cec34c7f8592443bd1c07764c340645d60e8047bb386b480f5841a5",
+  "protocol_sha256": "bda056db8e7cc49b9b5b6ea228dcf03da75a1127087cd8df5393f5bfb802c50e",
   "protocol_version": "spq0-development-census",
   "public_basis": {
     "basis_sha256": "3427a5867a2fa4e486bbd7aab0c39570a7e521743ae61afe43b56bddb3b91530",
@@ -129,6 +130,7 @@
   ],
   "runtime": {
     "active_checkpoint_file_hash_preflight_required": true,
+    "active_tokenizer_preflight_before_model_load_required": true,
     "clean_committed_source_required": true,
     "cluster": "olivia",
     "image": "/cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif",

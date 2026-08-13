@@ -86,6 +86,7 @@ _SPQ0_REQUIRED_ARTIFACTS = (
     "run_manifest.json",
     "workflow_status.json",
     "checkpoint_preflight.json",
+    "tokenizer_preflight.json",
     "systems.json",
     "public_basis.json",
     "panel_manifest.json",

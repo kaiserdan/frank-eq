@@ -144,18 +144,29 @@ returns validation outcomes to selection.
 
 ## Causal capture and categorical forecasting
 
-The full history prefix and its system description are formatted as a
-`chat_turn`. The future test, target observation, probability bins, candidate
-labels, and answers do not occur in that prefix. The model is run once on the
-prefix. Every future-test query uses an exclusive clone of that literal KV
-cache. Replay fallback, mixed caches, and a second prefix forward are
-forbidden.
+The full history and system description form the first user turn. The captured
+prefix ends exactly at that turn, before an assistant generation header. Every
+post-capture branch appends the same fixed assistant acknowledgement and then a
+new user turn containing the future test. This registered
+`user_prefix_fixed_assistant_ack_user_query` shape satisfies Mistral's strict
+role alternation and Qwen's context-dependent thinking template. The future
+test, target observation, probability bins, candidate labels, and answers do
+not occur in the captured prefix. The model is run once on that prefix. Every
+future-test query uses an exclusive clone of that literal KV cache. Replay
+fallback, mixed caches, and a second prefix forward are forbidden.
 
 For every query branch the workflow verifies exact token-prefix continuity:
 the formatted prefix tokens must be the leading tokens of the formatted
 prefix-plus-new-user-query conversation. Fast-tokenizer offsets locate every
 history event boundary in the formatted prefix, and the capture records those
 checks. Failure is terminal.
+
+Before either active model is constructed, a tokenizer-only preflight repeats
+the turn-continuity and event-offset checks across every registered
+role/system/length/renderer stratum and all 32 future tests. It records exact
+candidate token IDs and the maximum prefix-plus-query length. This may inspect
+only the already hashed active snapshots; it performs no model load or
+inference and never resolves a reserved checkpoint.
 
 The historical stochastic true/false protocol is rejected. SPQ0 forecasts ten
 categorical probability bins:
@@ -213,15 +224,20 @@ bank, shuffled renderer, shuffled/wrong history, and zero packet.
 For each target model, one target-local future reader maps:
 
 ```text
-(oracle exact public core, typed future-test descriptor)
+(oracle exact public core,
+ frozen public-executor output,
+ typed future-test descriptor)
     -> target categorical probability-bin distribution.
 ```
 
 It is fit on calibration histories, regularization-selected on selection, and
 refit on calibration plus selection. It is frozen before any source packet is
-evaluated. It contains no source identity and no source-target pair parameter.
-The oracle-core reader is the ceiling against which source transfer retention
-is measured.
+evaluated. The executor output is a deterministic feature of the public core:
+it is exact while fitting from oracle cores and is recomputed from the learned
+source packet during transfer. No oracle target value is supplied at source
+evaluation. The reader contains no source identity and no source-target pair
+parameter. The oracle-core reader is the ceiling against which source transfer
+retention is measured.
 
 Every ordered cross-family composition is mandatory:
 

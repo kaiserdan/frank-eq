@@ -70,6 +70,7 @@ panel:
 
 capture:
   prompt_format: chat_turn
+  chat_turn_shape: user_prefix_fixed_assistant_ack_user_query
   chat_template_kwargs: {enable_thinking: false}
   normalized_depths: [0.25, 0.50, 0.75, 1.00]
   surfaces:

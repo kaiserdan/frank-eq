@@ -396,22 +396,29 @@ def project_simplex(values: np.ndarray) -> np.ndarray:
 
 def target_reader_features(
     cores: np.ndarray,
-    semantic_targets: np.ndarray,
+    executed_targets: np.ndarray,
     target_tests: tuple[PredictiveTest, ...],
 ) -> np.ndarray:
-    """Build public core/test features for a complete model-local future reader."""
+    """Build reader features from public state and deterministic public execution.
+
+    ``executed_targets`` must be the output of the frozen system-local public
+    executor. During fitting it is exact because the core is oracle; during
+    source evaluation it is recomputed from the learned source packet. It is
+    therefore a deterministic feature of the public state, not an oracle label
+    supplied to a transferred packet.
+    """
 
     core = np.asarray(cores, dtype=np.float64)
-    semantic = np.asarray(semantic_targets, dtype=np.float64)
-    if core.ndim != 2 or semantic.ndim != 2 or core.shape[0] != semantic.shape[0]:
+    executed = np.asarray(executed_targets, dtype=np.float64)
+    if core.ndim != 2 or executed.ndim != 2 or core.shape[0] != executed.shape[0]:
         raise ValueError("target reader requires paired core and target matrices")
-    if semantic.shape[1] != len(target_tests):
+    if executed.shape[1] != len(target_tests):
         raise ValueError("target reader semantic target registry changed")
     horizons = sorted({len(test.actions) for test in target_tests})
     observations = sorted({test.observation for test in target_tests})
     rows: list[np.ndarray] = []
     for test_index, test in enumerate(target_tests):
-        probability = semantic[:, test_index : test_index + 1]
+        probability = executed[:, test_index : test_index + 1]
         horizon = np.zeros((len(core), len(horizons)), dtype=np.float64)
         horizon[:, horizons.index(len(test.actions))] = 1.0
         observation = np.zeros((len(core), len(observations)), dtype=np.float64)
@@ -438,10 +445,10 @@ class TargetLocalReader:
     def predict(
         self,
         cores: np.ndarray,
-        semantic_targets: np.ndarray,
+        executed_targets: np.ndarray,
         target_tests: tuple[PredictiveTest, ...],
     ) -> np.ndarray:
-        design = target_reader_features(cores, semantic_targets, target_tests)
+        design = target_reader_features(cores, executed_targets, target_tests)
         flat = design.reshape(-1, design.shape[-1])
         prediction = self.linear_map.predict(flat, clip=False)
         return project_simplex(prediction.reshape(len(cores), self.n_tests, self.n_bins))
@@ -451,7 +458,12 @@ class TargetLocalReader:
             "n_tests": self.n_tests,
             "n_bins": self.n_bins,
             "linear_map": self.linear_map.metadata(),
-            "fit_input": "oracle_exact_public_core_and_public_test_descriptor",
+            "fit_input": (
+                "oracle_exact_public_core_frozen_public_executor_and_test_descriptor"
+            ),
+            "source_evaluation_input": (
+                "learned_public_core_frozen_public_executor_and_test_descriptor"
+            ),
             "pair_specific_parameters": False,
         }
 
@@ -465,14 +477,14 @@ class TargetLocalReader:
 
 def fit_target_local_reader(
     cores: np.ndarray,
-    semantic_targets: np.ndarray,
+    executed_targets: np.ndarray,
     signatures: np.ndarray,
     target_tests: tuple[PredictiveTest, ...],
     *,
     ridge: float,
 ) -> TargetLocalReader:
     behavior = np.asarray(signatures, dtype=np.float64)
-    design = target_reader_features(cores, semantic_targets, target_tests)
+    design = target_reader_features(cores, executed_targets, target_tests)
     if behavior.shape[:2] != design.shape[:2] or behavior.ndim != 3:
         raise ValueError("target-reader behavior signatures have the wrong shape")
     linear_map = fit_linear_map(
@@ -490,7 +502,7 @@ def fit_target_local_reader(
 
 def select_target_reader(
     cores: np.ndarray,
-    semantic_targets: np.ndarray,
+    executed_targets: np.ndarray,
     signatures: np.ndarray,
     calibration_mask: np.ndarray,
     selection_mask: np.ndarray,
@@ -501,14 +513,14 @@ def select_target_reader(
     for ridge in ridge_grid:
         reader = fit_target_local_reader(
             cores[calibration_mask],
-            semantic_targets[calibration_mask],
+            executed_targets[calibration_mask],
             signatures[calibration_mask],
             target_tests,
             ridge=float(ridge),
         )
         prediction = reader.predict(
             cores[selection_mask],
-            semantic_targets[selection_mask],
+            executed_targets[selection_mask],
             target_tests,
         )
         candidates.append(
@@ -521,7 +533,7 @@ def select_target_reader(
     fit_mask = np.asarray(calibration_mask, dtype=bool) | np.asarray(selection_mask, dtype=bool)
     reader = fit_target_local_reader(
         cores[fit_mask],
-        semantic_targets[fit_mask],
+        executed_targets[fit_mask],
         signatures[fit_mask],
         target_tests,
         ridge=selected["ridge"],

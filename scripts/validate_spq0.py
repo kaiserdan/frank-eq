@@ -156,6 +156,11 @@ def main() -> int:
         and "true or false" not in query.lower(),
         "SPQ0 categorical response protocol changed",
     )
+    _require(
+        config.capture.chat_turn_shape
+        == "user_prefix_fixed_assistant_ack_user_query",
+        "SPQ0 cross-family chat-turn shape changed",
+    )
 
     expected_plan = build_spq0_plan(config, config_path=config_path)
     inspected_plan = _load_json(PLAN)

@@ -11,6 +11,7 @@ from typing import Any, Iterable
 import numpy as np
 import torch
 
+from frank_eq.data.hf_backend import CHAT_ACKNOWLEDGEMENT, CHAT_SYSTEM_CONTRACT
 from frank_eq.rate_compute.backend import RateComputeModelAdapter
 from frank_eq.real_config import CaptureConfig, RealModelSpec
 from frank_eq.telemetry import WandbTelemetry
@@ -72,6 +73,71 @@ class SPQModelAdapter(RateComputeModelAdapter):
             self._candidate_ids(label)
             for label in config.probability_protocol.candidate_labels
         ]
+
+    @staticmethod
+    def _spq_prefix_messages(world_statement: str) -> list[dict[str, str]]:
+        """Use a Qwen/Mistral-compatible prefix that ends at a user turn.
+
+        Mistral requires strict user/assistant alternation after an optional
+        system message. Qwen renders a trailing assistant message differently
+        once a later user message exists. A single first user turn avoids both
+        context dependencies; the fixed acknowledgement is part of every
+        post-capture branch and still precedes the future-test reveal.
+        """
+
+        return [
+            {
+                "role": "user",
+                "content": (
+                    f"{CHAT_SYSTEM_CONTRACT}\n\n{world_statement}\n\n"
+                    "Store this complete controlled-system history. The future test remains "
+                    "unselected; wait for the next user turn before forecasting."
+                ),
+            }
+        ]
+
+    def _format_prefix(self, prefix: str) -> str:
+        if self.capture.prompt_format != "chat_turn":
+            return super()._format_prefix(prefix)
+        return self._apply_chat_template(
+            self._spq_prefix_messages(prefix),
+            add_generation_prompt=False,
+        )
+
+    def _query_ids(
+        self,
+        query: str,
+        *,
+        world_statement: str | None = None,
+        prefix_ids: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        if self.capture.prompt_format != "chat_turn":
+            return super()._query_ids(
+                query,
+                world_statement=world_statement,
+                prefix_ids=prefix_ids,
+            )
+        if world_statement is None or prefix_ids is None:
+            raise ValueError(
+                "SPQ0 chat_turn suffix construction requires a world statement and prefix IDs"
+            )
+        messages = self._spq_prefix_messages(world_statement)
+        messages.extend(
+            [
+                {"role": "assistant", "content": CHAT_ACKNOWLEDGEMENT},
+                {"role": "user", "content": query},
+            ]
+        )
+        full_text = self._apply_chat_template(messages, add_generation_prompt=True)
+        full_ids = self._tokenize(full_text, add_special_tokens=False)
+        prefix_length = int(prefix_ids.shape[1])
+        if full_ids.shape[1] <= prefix_length:
+            raise RuntimeError("SPQ0 chat_turn future-test suffix is empty")
+        if not torch.equal(full_ids[:, :prefix_length], prefix_ids):
+            raise RuntimeError(
+                "SPQ0 chat_turn template violates exact prefix continuity"
+            )
+        return full_ids[:, prefix_length:]
 
     def categorical_candidate_metadata(self) -> list[dict[str, Any]]:
         return [
@@ -453,6 +519,7 @@ def capture_model(
         "target_tests": len(basis.target_tests),
         "categorical_bins": len(config.probability_protocol.bins),
         "candidate_metadata": adapter.categorical_candidate_metadata(),
+        "chat_turn_shape": config.capture.chat_turn_shape,
         "exact_prefix_continuity_checks": exact_prefix_checks,
         "exact_event_boundary_checks": exact_boundary_checks,
         "response_branches": response_branches,

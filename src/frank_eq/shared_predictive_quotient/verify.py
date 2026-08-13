@@ -16,6 +16,7 @@ from frank_eq.utils import (
 )
 
 from .capture import load_capture
+from .checkpoints import preflight_active_tokenizer_contract
 from .config import load_spq0_config
 from .evaluation import deterministic_prediction_digest, evaluate_all_models, gate_decision
 from .panel import build_panels
@@ -29,6 +30,7 @@ _REQUIRED = (
     "run_manifest.json",
     "workflow_status.json",
     "checkpoint_preflight.json",
+    "tokenizer_preflight.json",
     "systems.json",
     "public_basis.json",
     "panel_manifest.json",
@@ -143,6 +145,8 @@ def _array_groups_valid(
 def _checkpoint_preflight_valid(
     receipt: Mapping[str, Any],
     config: Any,
+    *,
+    rehash_files: bool,
 ) -> bool:
     expected_active = {model.model_id: model for model in config.models}
     active = receipt.get("active", {})
@@ -161,14 +165,21 @@ def _checkpoint_preflight_valid(
             return False
         snapshot = Path(str(entry.get("snapshot", "")))
         files = entry.get("files", {})
-        if not snapshot.is_dir() or not files:
+        if not files:
             return False
         for relative, file_entry in files.items():
             path = snapshot / relative
             if (
                 Path(relative).is_absolute()
                 or ".." in Path(relative).parts
-                or not path.is_file()
+                or not isinstance(file_entry.get("bytes"), int)
+                or file_entry.get("bytes", -1) < 0
+                or not isinstance(file_entry.get("sha256"), str)
+                or len(file_entry.get("sha256", "")) != 64
+            ):
+                return False
+            if rehash_files and (
+                not path.is_file()
                 or path.stat().st_size != file_entry.get("bytes")
                 or sha256_file(path) != file_entry.get("sha256")
             ):
@@ -225,6 +236,58 @@ def _checkpoint_preflight_valid(
     )
 
 
+def _tokenizer_preflight_structure_valid(
+    receipt: Mapping[str, Any],
+    checkpoint_receipt: Mapping[str, Any],
+    config: Any,
+) -> bool:
+    active = receipt.get("active", {})
+    expected = {model.model_id: model for model in config.models}
+    if (
+        receipt.get("schema") != "frank_eq_spq0_tokenizer_preflight_v1"
+        or receipt.get("status") != "passed"
+        or set(active) != set(expected)
+        or receipt.get("active_tokenizer_contract_sha256")
+        != sha256_bytes(canonical_json_bytes(active))
+    ):
+        return False
+    for model_id, row in active.items():
+        model = expected[model_id]
+        candidates = row.get("candidate_token_ids", [])
+        if (
+            row.get("hf_id") != model.hf_id
+            or row.get("revision") != model.revision
+            or row.get("snapshot_content_sha256")
+            != checkpoint_receipt.get("active", {})
+            .get(model_id, {})
+            .get("snapshot_content_sha256")
+            or row.get("fast_tokenizer") is not True
+            or row.get("chat_turn_shape") != config.capture.chat_turn_shape
+            or row.get("prefix_strata_checked", 0) < 1
+            or row.get("future_test_branches_checked", 0) < 1
+            or row.get("event_boundaries_checked", 0) < 1
+            or row.get("maximum_prefix_plus_query_tokens", config.capture.max_length + 1)
+            > config.capture.max_length
+            or len(candidates) != len(config.probability_protocol.candidate_labels)
+            or any(not candidate for candidate in candidates)
+            or len({tuple(candidate) for candidate in candidates}) != len(candidates)
+            or row.get("candidate_ids_unique") is not True
+            or row.get("model_loaded") is not False
+            or row.get("inference_executed") is not False
+        ):
+            return False
+    return all(
+        receipt.get(key) == 0
+        for key in (
+            "reserved_snapshot_resolution_attempts",
+            "reserved_files_opened",
+            "reserved_tokenizer_loads",
+            "reserved_model_loads",
+            "reserved_inference_calls",
+        )
+    )
+
+
 def verify_spq0_run(
     run_root: str | Path,
     *,
@@ -270,12 +333,25 @@ def verify_spq0_run(
 
     run_manifest = _json(root / "run_manifest.json")
     workflow = _json(root / "workflow_status.json")
+    registration_match = canonical_json_bytes(_json(root / "registration.json")) == (
+        canonical_json_bytes(_json(Path(config_path).resolve().parents[2] / "configs/spq0/registration.json"))
+    )
+    snapshot_identity = (
+        sha256_file(root / "config.yaml") == stored_plan.get("config_sha256")
+        and sha256_file(root / "protocol.md") == stored_plan.get("protocol_sha256")
+        and run_manifest.get("config_sha256") == sha256_file(root / "config.yaml")
+        and run_manifest.get("protocol_sha256") == sha256_file(root / "protocol.md")
+        and run_manifest.get("registration_sha256")
+        == sha256_file(root / "registration.json")
+    )
     workflow_valid = (
         run_manifest.get("development_only") is True
         and run_manifest.get("stages") == ["audit"]
         and run_manifest.get("plan_sha256") == stored_plan.get("plan_sha256")
         and run_manifest.get("environment", {}).get("runtime_image_sha256")
         == stored_plan.get("runtime", {}).get("image_sha256")
+        and run_manifest.get("environment", {}).get("runtime_image")
+        == stored_plan.get("runtime", {}).get("image")
         and run_manifest.get("environment", {}).get("git_dirty") == "false"
         and run_manifest.get("access_contract", {}).get("state_precedes_future_test")
         is True
@@ -283,12 +359,49 @@ def verify_spq0_run(
         is True
         and run_manifest.get("access_contract", {}).get("exact_replay_fallback")
         is False
+        and run_manifest.get("access_contract", {}).get(
+            "active_tokenizer_preflight_before_model_load"
+        )
+        is True
         and workflow.get("state") == "completed"
         and workflow.get("completed_stages") == ["checkpoint_preflight", "audit"]
+        and workflow.get("tokenizer_preflight_completed") is True
     )
 
     checkpoint_preflight = _json(root / "checkpoint_preflight.json")
-    checkpoint_valid = _checkpoint_preflight_valid(checkpoint_preflight, config)
+    expected_checkpoint_ids = {model.model_id for model in config.models}
+    live_checkpoint_files = set(checkpoint_preflight.get("active", {})) == (
+        expected_checkpoint_ids
+    ) and all(
+        Path(str(row.get("snapshot", ""))).is_dir()
+        for row in checkpoint_preflight.get("active", {}).values()
+    )
+    stored_in_job_verification = (
+        _json(root / "independent_verification.json")
+        if (root / "independent_verification.json").is_file()
+        else {}
+    )
+    in_job_checkpoint_attestation = (
+        stored_in_job_verification.get("passed") is True
+        and stored_in_job_verification.get("checkpoint_verification_mode")
+        == "live_rehash"
+        and stored_in_job_verification.get("checks", {}).get(
+            "active_checkpoint_files_rehashed"
+        )
+        is True
+        and stored_in_job_verification.get("checks", {}).get(
+            "active_tokenizers_preflighted_before_model_load"
+        )
+        is True
+    )
+    checkpoint_receipt_valid = _checkpoint_preflight_valid(
+        checkpoint_preflight,
+        config,
+        rehash_files=live_checkpoint_files,
+    )
+    checkpoint_valid = checkpoint_receipt_valid and (
+        live_checkpoint_files or in_job_checkpoint_attestation
+    )
     systems, basis = config.build_systems_and_basis()
     systems_payload = {
         "schema": "frank_eq_spq0_system_family_v1",
@@ -301,6 +414,30 @@ def verify_spq0_run(
         basis.to_dict(), _json(root / "public_basis.json")
     )
     panels = build_panels(config, systems, basis)
+    stored_tokenizer_preflight = _json(root / "tokenizer_preflight.json")
+    tokenizer_structure_valid = _tokenizer_preflight_structure_valid(
+        stored_tokenizer_preflight,
+        checkpoint_preflight,
+        config,
+    )
+    if live_checkpoint_files:
+        try:
+            recomputed_tokenizer_preflight = preflight_active_tokenizer_contract(
+                config,
+                systems,
+                basis,
+                panels,
+                checkpoint_preflight,
+            )
+            tokenizer_preflight_match = canonical_json_bytes(
+                recomputed_tokenizer_preflight
+            ) == canonical_json_bytes(stored_tokenizer_preflight)
+        except (FileNotFoundError, KeyError, RuntimeError, ValueError):
+            tokenizer_preflight_match = False
+    else:
+        tokenizer_preflight_match = (
+            tokenizer_structure_valid and in_job_checkpoint_attestation
+        )
     panel_match = all(
         canonical_json_bytes(panel.to_dict())
         == canonical_json_bytes(_json(root / "panels" / f"{role}.json"))
@@ -349,6 +486,7 @@ def verify_spq0_run(
                 and metadata.get("revision_observed") == model.revision
                 and metadata.get("rows") == expected_rows
                 and metadata.get("response_branches") == expected_branches
+                and metadata.get("chat_turn_shape") == config.capture.chat_turn_shape
                 and metadata.get("exact_prefix_continuity_checks") == expected_branches
                 and metadata.get("exact_event_boundary_checks", 0) > expected_rows
                 and metadata.get("branch_execution", {}).get("literal_kv_reuse") is True
@@ -437,10 +575,13 @@ def verify_spq0_run(
     checks = {
         "required_files_present": not missing,
         "config_snapshot_matches": config_match,
+        "registration_snapshot_matches": registration_match,
+        "snapshot_hashes_match_plan_and_run_manifest": snapshot_identity,
         "inspected_plan_recomputed_exactly": plan_match,
         "artifact_hashes_valid": artifact_hashes,
         "workflow_and_runtime_identity_valid": workflow_valid,
         "active_checkpoint_files_rehashed": checkpoint_valid,
+        "active_tokenizers_preflighted_before_model_load": tokenizer_preflight_match,
         "reserved_checkpoints_never_accessed": checkpoint_valid and reserved_models_absent,
         "systems_recomputed_exactly": systems_match,
         "public_basis_recomputed": basis_match,
@@ -482,6 +623,9 @@ def verify_spq0_run(
         },
         "models": sorted(captures),
         "artifact_files_checked": len(manifest_files),
+        "checkpoint_verification_mode": (
+            "live_rehash" if live_checkpoint_files else "in_job_live_rehash_attestation"
+        ),
         "reserved_models": [model.model_id for model in config.reserved_unopened_models],
     }
     if write_verification:

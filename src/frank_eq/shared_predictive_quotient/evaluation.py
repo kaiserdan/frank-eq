@@ -106,6 +106,26 @@ def _replace_history_ids(
     return result
 
 
+def _rotate_renderer_rows(
+    values: np.ndarray,
+    history_ids: np.ndarray,
+    renderer_ids: np.ndarray,
+) -> np.ndarray:
+    """Swap learned packets across renderer views of the same underlying history."""
+
+    result = np.empty_like(values)
+    identities = np.asarray(history_ids, dtype=np.int64)
+    renderers = np.asarray(renderer_ids, dtype=np.int64)
+    for identity in np.unique(identities):
+        positions = np.flatnonzero(identities == identity)
+        ordered = positions[np.argsort(renderers[positions], kind="stable")]
+        if ordered.size < 2:
+            result[ordered] = values[ordered]
+        else:
+            result[ordered] = values[np.roll(ordered, 1)]
+    return result
+
+
 def _selection_features(
     config: SPQRunConfig,
     arrays: Mapping[str, np.ndarray],
@@ -615,10 +635,15 @@ def evaluate_model(
         arrays["history_ids"],
         arrays["system_ids"] * 100 + arrays["lengths"],
     )
-    renderer_shuffled = _replace_history_ids(
+    shuffled_history = _replace_history_ids(
         decoded_core,
         arrays["history_ids"],
         arrays["system_ids"] * 100 + arrays["lengths"],
+    )
+    renderer_shuffled = _rotate_renderer_rows(
+        decoded_core,
+        arrays["history_ids"],
+        arrays["renderer_ids"],
     )
     core_metrics: dict[str, Any] = {}
     compiled_metrics: dict[str, Any] = {}
@@ -646,6 +671,7 @@ def evaluate_model(
                     "empirical_observation_filter"
                 ][mask],
                 "wrong_history": wrong_history_core[mask],
+                "shuffled_history": shuffled_history[mask],
                 "renderer_shuffled": renderer_shuffled[mask],
                 "zero_packet": np.zeros_like(decoded_core[mask]),
                 "exact_bayes_filter": arrays["semantic_core"][mask],

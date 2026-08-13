@@ -18,7 +18,7 @@ from frank_eq.telemetry import WandbTelemetry
 from frank_eq.utils import atomic_write_json, canonical_json_bytes, sha256_bytes, sha256_file
 
 from .capture import _write_npz, capture_model, load_capture
-from .checkpoints import preflight_checkpoint_contract
+from .checkpoints import preflight_active_tokenizer_contract, preflight_checkpoint_contract
 from .config import SPQRunConfig
 from .evaluation import deterministic_prediction_digest, evaluate_all_models, gate_decision
 from .panel import build_panels
@@ -179,6 +179,7 @@ def build_spq0_plan(
         "capture": {
             "surfaces": config.capture.surfaces,
             "normalized_depths": config.capture.normalized_depths,
+            "chat_turn_shape": config.capture.chat_turn_shape,
             "literal_kv_reuse": True,
             "exact_replay_fallback": False,
             "prefixes_per_model": prefixes_per_model,
@@ -213,6 +214,7 @@ def build_spq0_plan(
             "image": SPQ0_RUNTIME_IMAGE,
             "image_sha256": SPQ0_RUNTIME_IMAGE_SHA256,
             "active_checkpoint_file_hash_preflight_required": True,
+            "active_tokenizer_preflight_before_model_load_required": True,
             "clean_committed_source_required": True,
         },
         "access": {
@@ -328,6 +330,7 @@ def run_spq0_audit(
             "held_sender": False,
             "receiver": False,
             "reserved_checkpoints_unopened": True,
+            "active_tokenizer_preflight_before_model_load": True,
         },
     }
     atomic_write_json(root / "run_manifest.json", run_manifest)
@@ -346,12 +349,20 @@ def run_spq0_audit(
             config,
             output_path=root / "checkpoint_preflight.json",
         )
-        status["current_stage"] = "audit"
-        status["checkpoint_preflight_completed"] = True
-        atomic_write_json(root / "workflow_status.json", status)
-
         systems, basis = config.build_systems_and_basis()
         panels = build_panels(config, systems, basis)
+        preflight_active_tokenizer_contract(
+            config,
+            systems,
+            basis,
+            panels,
+            checkpoint_preflight,
+            output_path=root / "tokenizer_preflight.json",
+        )
+        status["current_stage"] = "audit"
+        status["checkpoint_preflight_completed"] = True
+        status["tokenizer_preflight_completed"] = True
+        atomic_write_json(root / "workflow_status.json", status)
         atomic_write_json(
             root / "systems.json",
             {
@@ -512,6 +523,7 @@ def run_spq0_audit(
             "run_manifest.json",
             "workflow_status.json",
             "checkpoint_preflight.json",
+            "tokenizer_preflight.json",
             "systems.json",
             "public_basis.json",
             "panel_manifest.json",

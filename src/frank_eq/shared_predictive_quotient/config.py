@@ -142,6 +142,7 @@ class SPQPanelConfig:
 @dataclass(slots=True)
 class SPQCaptureConfig:
     prompt_format: str = "chat_turn"
+    chat_turn_shape: str = "user_prefix_fixed_assistant_ack_user_query"
     chat_template_kwargs: dict[str, Any] = field(
         default_factory=lambda: {"enable_thinking": False}
     )
@@ -382,6 +383,8 @@ class SPQRunConfig:
         capture = self.capture
         if capture.prompt_format != "chat_turn" or capture.branch_mode != "kv_reuse":
             raise ValueError("SPQ0 requires corrected chat_turn and literal KV reuse")
+        if capture.chat_turn_shape != "user_prefix_fixed_assistant_ack_user_query":
+            raise ValueError("SPQ0 cross-family chat-turn shape changed")
         if capture.allow_exact_replay_fallback or not capture.local_files_only:
             raise ValueError("SPQ0 forbids replay and online checkpoint resolution")
         if capture.selected_kv_surface_enabled:

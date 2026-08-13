@@ -130,7 +130,9 @@ preflight before constructing any model adapter:
 3. resolve Mistral-7B-v0.3 locally at its exact revision;
 4. hash every resolved file and registry;
 5. write zero access/load/inference counters for OLMo2 and Granite;
-6. only then construct active model adapters and begin capture.
+6. require the frozen user-prefix / assistant-ack / user-query turn shape and
+   exact prefix continuity under each active tokenizer;
+7. only then construct active model adapters and begin capture.
 
 Missing active snapshots, broken files, revision mismatch, absent weights, a
 network requirement, or any reserved access fails before task inference.

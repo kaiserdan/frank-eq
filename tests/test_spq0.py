@@ -4,8 +4,12 @@ from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
+import pytest
+import torch
 
+from frank_eq.data.hf_backend import CHAT_ACKNOWLEDGEMENT
 from frank_eq.shared_predictive_quotient.automaton import build_shared_predictive_basis
+from frank_eq.shared_predictive_quotient.capture import SPQModelAdapter
 from frank_eq.shared_predictive_quotient.config import load_spq0_config
 from frank_eq.shared_predictive_quotient.evaluation import (
     evaluate_all_models,
@@ -29,10 +33,112 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "configs/spq0/real_olivia_spq0.yaml"
 
 
+class _SPQStubCapture:
+    prompt_format = "chat_turn"
+    max_length = 4096
+    chat_template_kwargs = {"enable_thinking": False}
+
+
+class _SPQStubSpec:
+    model_id = "stub"
+
+
+class _SPQTemplateTokenizer:
+    chat_template = "stub"
+
+    def __init__(self, family: str):
+        self.family = family
+        self.last_roles: list[str] = []
+
+    @staticmethod
+    def _encode(text: str) -> torch.Tensor:
+        return torch.tensor([[ord(character) + 1 for character in text]], dtype=torch.long)
+
+    def __call__(
+        self,
+        text: str,
+        *,
+        add_special_tokens: bool,
+        return_tensors: str,
+        truncation: bool,
+    ) -> dict[str, torch.Tensor]:
+        assert return_tensors == "pt" and truncation is False
+        return {"input_ids": self._encode(text)}
+
+    def apply_chat_template(
+        self,
+        messages: list[dict[str, str]],
+        *,
+        tokenize: bool,
+        add_generation_prompt: bool,
+        **kwargs: object,
+    ) -> str:
+        assert tokenize is False
+        roles = [message["role"] for message in messages]
+        self.last_roles = roles
+        if self.family == "mistral" and any(
+            role != ("user" if index % 2 == 0 else "assistant")
+            for index, role in enumerate(roles)
+        ):
+            raise RuntimeError("Mistral roles must alternate")
+        last_user = max(
+            (index for index, role in enumerate(roles) if role == "user"),
+            default=-1,
+        )
+        rendered = ""
+        for index, message in enumerate(messages):
+            content = message["content"]
+            if self.family == "qwen" and message["role"] == "assistant":
+                wrapper = "<think></think>" if index > last_user else ""
+                rendered += f"<assistant>{wrapper}{content}</assistant>"
+            else:
+                rendered += f"<{message['role']}>{content}</{message['role']}>"
+        if add_generation_prompt:
+            rendered += "<assistant><think></think>" if self.family == "qwen" else "<assistant>"
+        return rendered
+
+
+def _spq_stub_adapter(family: str) -> SPQModelAdapter:
+    adapter = object.__new__(SPQModelAdapter)
+    adapter.spec = _SPQStubSpec()
+    adapter.capture = _SPQStubCapture()
+    adapter.tokenizer = _SPQTemplateTokenizer(family)
+    adapter.device = torch.device("cpu")
+    return adapter
+
+
 def _contract():
     config = load_spq0_config(CONFIG)
     systems, basis = config.build_systems_and_basis()
     return config, systems, basis
+
+
+@pytest.mark.parametrize("family", ["qwen", "mistral"])
+def test_spq_chat_turn_is_cross_family_role_valid_and_prefix_exact(family: str) -> None:
+    adapter = _spq_stub_adapter(family)
+    world = "controlled stochastic history"
+    query = "future-test probability bins"
+    prefix = adapter._format_prefix(world)
+    assert world in prefix
+    assert adapter.tokenizer.last_roles == ["user"]
+    prefix_ids = adapter._tokenize(prefix)
+    suffix_ids = adapter._query_ids(
+        query,
+        world_statement=world,
+        prefix_ids=prefix_ids,
+    )
+    assert adapter.tokenizer.last_roles == ["user", "assistant", "user"]
+    combined = torch.cat([prefix_ids, suffix_ids], dim=1)
+    messages = adapter._spq_prefix_messages(world)
+    messages.extend(
+        [
+            {"role": "assistant", "content": CHAT_ACKNOWLEDGEMENT},
+            {"role": "user", "content": query},
+        ]
+    )
+    full_text = adapter._apply_chat_template(messages, add_generation_prompt=True)
+    expected = adapter._tokenize(full_text, add_special_tokens=False)
+    assert torch.equal(combined, expected)
 
 
 def test_spq0_freezes_cross_family_active_and_unopened_reserved_models() -> None:
@@ -329,6 +435,11 @@ def test_complete_reducer_evaluates_both_ordered_pairs_without_pair_mapper() -> 
     assert training["pair_specific_mapper_count"] == 0
     assert "cross_family" in predictions
     assert set(checkpoints) == {"mistral-7b-v03", "qwen3-4b"}
+    for model in metrics["models"].values():
+        baselines = model["semantic_core"]["joint_ood"]["baselines"]
+        assert {"wrong_history", "shuffled_history", "renderer_shuffled"} <= set(
+            baselines
+        )
     decision = gate_decision(config, metrics)
     assert decision["authorization"]["spq1_execution_authorized"] is False
     assert decision["authorization"]["receiver_execution_authorized"] is False
