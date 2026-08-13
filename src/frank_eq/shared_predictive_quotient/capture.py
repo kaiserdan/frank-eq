@@ -70,8 +70,7 @@ class SPQModelAdapter(RateComputeModelAdapter):
         self.spq_model = model
         self.spq_config = config
         self._candidate_ids_cache = [
-            self._candidate_ids(label)
-            for label in config.probability_protocol.candidate_labels
+            self._candidate_ids(label) for label in config.probability_protocol.candidate_labels
         ]
 
     @staticmethod
@@ -134,9 +133,7 @@ class SPQModelAdapter(RateComputeModelAdapter):
         if full_ids.shape[1] <= prefix_length:
             raise RuntimeError("SPQ0 chat_turn future-test suffix is empty")
         if not torch.equal(full_ids[:, :prefix_length], prefix_ids):
-            raise RuntimeError(
-                "SPQ0 chat_turn template violates exact prefix continuity"
-            )
+            raise RuntimeError("SPQ0 chat_turn template violates exact prefix continuity")
         return full_ids[:, prefix_length:]
 
     def categorical_candidate_metadata(self) -> list[dict[str, Any]]:
@@ -183,9 +180,7 @@ class SPQModelAdapter(RateComputeModelAdapter):
         for row in range(len(query_ids)):
             result.append(
                 CategoricalScore(
-                    log_likelihoods=tuple(
-                        float(candidate[row]) for candidate in candidate_scores
-                    )
+                    log_likelihoods=tuple(float(candidate[row]) for candidate in candidate_scores)
                 )
             )
         return result
@@ -292,9 +287,7 @@ def _pad_token_rows(
     token_ids = np.zeros((len(token_rows), max_tokens), dtype=np.int64)
     attention_mask = np.zeros((len(token_rows), max_tokens), dtype=np.bool_)
     event_indices = np.full((len(token_rows), max_events), -1, dtype=np.int64)
-    for index, (tokens, boundaries) in enumerate(
-        zip(token_rows, boundary_rows, strict=True)
-    ):
+    for index, (tokens, boundaries) in enumerate(zip(token_rows, boundary_rows, strict=True)):
         token_ids[index, : len(tokens)] = tokens
         attention_mask[index, : len(tokens)] = True
         event_indices[index, : len(boundaries)] = boundaries
@@ -363,10 +356,11 @@ def capture_model(
                         return_dict=True,
                     )
                 if prefix_output.hidden_states is None or prefix_output.past_key_values is None:
-                    raise RuntimeError("SPQ0 checkpoint did not return hidden states and a KV cache")
+                    raise RuntimeError(
+                        "SPQ0 checkpoint did not return hidden states and a KV cache"
+                    )
                 selected_layers = [
-                    prefix_output.hidden_states[layer][0].float()
-                    for layer in adapter.layer_indices
+                    prefix_output.hidden_states[layer][0].float() for layer in adapter.layer_indices
                 ]
                 final = torch.stack([hidden[-1] for hidden in selected_layers], dim=0)
                 boundary = torch.stack(
@@ -423,9 +417,7 @@ def capture_model(
                 event_boundary_features.append(boundary_summary.cpu().numpy())
                 all_token_features.append(all_token_summary.cpu().numpy())
                 embedding_features.append(embedding.cpu().numpy())
-                token_rows.append(
-                    prefix_ids[0].detach().cpu().numpy().astype(np.int64, copy=False)
-                )
+                token_rows.append(prefix_ids[0].detach().cpu().numpy().astype(np.int64, copy=False))
                 boundary_rows.append(event_indices)
                 history_ids.append(history.history_id)
                 role_ids.append(ROLE_IDS[role])
@@ -441,15 +433,9 @@ def capture_model(
                     ).astype(np.float64)
                     / float(history.length)
                 )
-                semantic_public.append(
-                    np.asarray(history.public_probabilities, dtype=np.float64)
-                )
-                semantic_core.append(
-                    np.asarray(history.core_probabilities, dtype=np.float64)
-                )
-                semantic_targets.append(
-                    np.asarray(history.target_probabilities, dtype=np.float64)
-                )
+                semantic_public.append(np.asarray(history.public_probabilities, dtype=np.float64))
+                semantic_core.append(np.asarray(history.core_probabilities, dtype=np.float64))
+                semantic_targets.append(np.asarray(history.target_probabilities, dtype=np.float64))
                 categorical_log_likelihoods.append(
                     np.asarray(
                         [score.log_likelihoods for score in scores],
@@ -465,9 +451,7 @@ def capture_model(
     serialized_dtype = np.float32
     arrays = {
         "final_token_residual": np.stack(final_features).astype(serialized_dtype),
-        "event_boundary_summary": np.stack(event_boundary_features).astype(
-            serialized_dtype
-        ),
+        "event_boundary_summary": np.stack(event_boundary_features).astype(serialized_dtype),
         "all_token_summary": np.stack(all_token_features).astype(serialized_dtype),
         "mean_input_embedding": np.stack(embedding_features).astype(serialized_dtype),
         "token_ids": token_ids,
@@ -484,9 +468,7 @@ def capture_model(
         "semantic_public": np.stack(semantic_public).astype(np.float64),
         "semantic_core": np.stack(semantic_core).astype(np.float64),
         "semantic_targets": np.stack(semantic_targets).astype(np.float64),
-        "categorical_log_likelihoods": np.stack(categorical_log_likelihoods).astype(
-            np.float64
-        ),
+        "categorical_log_likelihoods": np.stack(categorical_log_likelihoods).astype(np.float64),
     }
     capture_path = root / "captures" / f"{model_spec.model_id}.npz"
     capture_sha = _write_npz(capture_path, arrays)

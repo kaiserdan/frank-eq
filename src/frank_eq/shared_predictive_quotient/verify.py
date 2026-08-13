@@ -130,7 +130,9 @@ def _array_groups_valid(
                     continue
                 if np.issubdtype(observed.dtype, np.number):
                     difference = (
-                        float(np.max(np.abs(observed.astype(np.float64) - wanted.astype(np.float64))))
+                        float(
+                            np.max(np.abs(observed.astype(np.float64) - wanted.astype(np.float64)))
+                        )
                         if observed.size
                         else 0.0
                     )
@@ -188,8 +190,7 @@ def _checkpoint_preflight_valid(
             entry.get("file_count") != len(files)
             or entry.get("total_bytes")
             != sum(int(file_entry["bytes"]) for file_entry in files.values())
-            or entry.get("snapshot_content_sha256")
-            != sha256_bytes(canonical_json_bytes(files))
+            or entry.get("snapshot_content_sha256") != sha256_bytes(canonical_json_bytes(files))
         ):
             return False
     if (
@@ -258,9 +259,7 @@ def _tokenizer_preflight_structure_valid(
             row.get("hf_id") != model.hf_id
             or row.get("revision") != model.revision
             or row.get("snapshot_content_sha256")
-            != checkpoint_receipt.get("active", {})
-            .get(model_id, {})
-            .get("snapshot_content_sha256")
+            != checkpoint_receipt.get("active", {}).get(model_id, {}).get("snapshot_content_sha256")
             or row.get("fast_tokenizer") is not True
             or row.get("chat_turn_shape") != config.capture.chat_turn_shape
             or row.get("prefix_strata_checked", 0) < 1
@@ -325,8 +324,7 @@ def verify_spq0_run(
         and safe_paths
         and set(_REQUIRED) - {"artifact_manifest.json"} <= set(manifest_files)
         and all(
-            (root / relative).is_file()
-            and sha256_file(root / relative) == expected
+            (root / relative).is_file() and sha256_file(root / relative) == expected
             for relative, expected in manifest_files.items()
         )
     )
@@ -334,15 +332,16 @@ def verify_spq0_run(
     run_manifest = _json(root / "run_manifest.json")
     workflow = _json(root / "workflow_status.json")
     registration_match = canonical_json_bytes(_json(root / "registration.json")) == (
-        canonical_json_bytes(_json(Path(config_path).resolve().parents[2] / "configs/spq0/registration.json"))
+        canonical_json_bytes(
+            _json(Path(config_path).resolve().parents[2] / "configs/spq0/registration.json")
+        )
     )
     snapshot_identity = (
         sha256_file(root / "config.yaml") == stored_plan.get("config_sha256")
         and sha256_file(root / "protocol.md") == stored_plan.get("protocol_sha256")
         and run_manifest.get("config_sha256") == sha256_file(root / "config.yaml")
         and run_manifest.get("protocol_sha256") == sha256_file(root / "protocol.md")
-        and run_manifest.get("registration_sha256")
-        == sha256_file(root / "registration.json")
+        and run_manifest.get("registration_sha256") == sha256_file(root / "registration.json")
     )
     workflow_valid = (
         run_manifest.get("development_only") is True
@@ -353,12 +352,9 @@ def verify_spq0_run(
         and run_manifest.get("environment", {}).get("runtime_image")
         == stored_plan.get("runtime", {}).get("image")
         and run_manifest.get("environment", {}).get("git_dirty") == "false"
-        and run_manifest.get("access_contract", {}).get("state_precedes_future_test")
-        is True
-        and run_manifest.get("access_contract", {}).get("literal_cloned_kv_reuse")
-        is True
-        and run_manifest.get("access_contract", {}).get("exact_replay_fallback")
-        is False
+        and run_manifest.get("access_contract", {}).get("state_precedes_future_test") is True
+        and run_manifest.get("access_contract", {}).get("literal_cloned_kv_reuse") is True
+        and run_manifest.get("access_contract", {}).get("exact_replay_fallback") is False
         and run_manifest.get("access_contract", {}).get(
             "active_tokenizer_preflight_before_model_load"
         )
@@ -383,11 +379,8 @@ def verify_spq0_run(
     )
     in_job_checkpoint_attestation = (
         stored_in_job_verification.get("passed") is True
-        and stored_in_job_verification.get("checkpoint_verification_mode")
-        == "live_rehash"
-        and stored_in_job_verification.get("checks", {}).get(
-            "active_checkpoint_files_rehashed"
-        )
+        and stored_in_job_verification.get("checkpoint_verification_mode") == "live_rehash"
+        and stored_in_job_verification.get("checks", {}).get("active_checkpoint_files_rehashed")
         is True
         and stored_in_job_verification.get("checks", {}).get(
             "active_tokenizers_preflighted_before_model_load"
@@ -435,9 +428,7 @@ def verify_spq0_run(
         except (FileNotFoundError, KeyError, RuntimeError, ValueError):
             tokenizer_preflight_match = False
     else:
-        tokenizer_preflight_match = (
-            tokenizer_structure_valid and in_job_checkpoint_attestation
-        )
+        tokenizer_preflight_match = tokenizer_structure_valid and in_job_checkpoint_attestation
     panel_match = all(
         canonical_json_bytes(panel.to_dict())
         == canonical_json_bytes(_json(root / "panels" / f"{role}.json"))
@@ -452,8 +443,7 @@ def verify_spq0_run(
         and not role_sets[0] & role_sets[2]
         and not role_sets[1] & role_sets[2]
         and any(
-            history.system_role == "validation_only"
-            for history in panels["validation"].histories
+            history.system_role == "validation_only" for history in panels["validation"].histories
         )
         and all(
             history.system_role == "fit"
@@ -476,9 +466,7 @@ def verify_spq0_run(
                 break
             model = expected_models[model_id]
             expected_rows = int(stored_plan["capture"]["prefixes_per_model"])
-            expected_branches = int(
-                stored_plan["capture"]["post_reveal_query_branches_per_model"]
-            )
+            expected_branches = int(stored_plan["capture"]["post_reveal_query_branches_per_model"])
             captures_valid = captures_valid and (
                 metadata.get("model_id") == model_id
                 and metadata.get("family") == model.family
@@ -490,12 +478,8 @@ def verify_spq0_run(
                 and metadata.get("exact_prefix_continuity_checks") == expected_branches
                 and metadata.get("exact_event_boundary_checks", 0) > expected_rows
                 and metadata.get("branch_execution", {}).get("literal_kv_reuse") is True
-                and metadata.get("branch_execution", {}).get("exclusive_cache_batching")
-                is True
-                and metadata.get("branch_execution", {}).get(
-                    "exact_replay_response_branches"
-                )
-                == 0
+                and metadata.get("branch_execution", {}).get("exclusive_cache_batching") is True
+                and metadata.get("branch_execution", {}).get("exact_replay_response_branches") == 0
                 and metadata.get("selected_kv_surface_enabled") is False
                 and set(np.unique(arrays["role_ids"]).tolist()) == {0, 1, 2}
                 and set(np.unique(arrays["system_role_ids"]).tolist()) == {0, 1}
@@ -556,13 +540,10 @@ def verify_spq0_run(
         )
     )
     models_payload = _json(root / "models.json")
-    reserved_models_absent = (
-        {row["model_id"] for row in models_payload.get("active_founders", [])}
-        == set(expected_models)
-        and not (
-            {row["model_id"] for row in models_payload.get("reserved_unopened", [])}
-            & set(entries)
-        )
+    reserved_models_absent = {
+        row["model_id"] for row in models_payload.get("active_founders", [])
+    } == set(expected_models) and not (
+        {row["model_id"] for row in models_payload.get("reserved_unopened", [])} & set(entries)
     )
     rate = _json(root / "rate_compute.json")
     rate_valid = (

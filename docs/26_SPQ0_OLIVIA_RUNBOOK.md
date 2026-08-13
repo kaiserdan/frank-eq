@@ -204,3 +204,22 @@ Only a compact, hash-verified evidence package may be proposed for adoption,
 and adopting it is a separate reviewed change. Preserve the complete fetched
 run outside Git. Follow the machine diagnosis exactly; never tune the frozen
 thresholds after validation is read.
+
+## Independent review corrections before launch
+
+The implementation review made four prospective corrections before any model
+execution. First, the transcript comparison is named precisely: it is a fixed
+causal token sketch with an independently selected, parameter-matched linear
+readout, not a learned sequence model. Second, every cross-family reader now
+evaluates both the activation-derived packet and the source-token-derived packet;
+a positive activation-over-token lower bound is conjunctive. Third, predictive
+rank is identified at the cross-family target-reader endpoint with paired
+rank-four comparisons, rather than from source-local semantic point estimates.
+Fourth, the Brier-equivalent rate scalarization is diagnostic only because its
+exchange rates are conventional rather than empirically identified. The
+non-promotional behavioral remainder is pooled residual PCA, not MAXVAR-GCCA.
+
+These corrections do not alter the systems, histories, model roster, public test
+registry, access boundary, or protected authorizations. They prevent a favorable
+SPQ0 outcome from being interpreted more strongly than the executed controls
+support.

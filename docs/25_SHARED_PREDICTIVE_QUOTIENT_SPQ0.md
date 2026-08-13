@@ -218,11 +218,13 @@ method, and regularization are selected on the selection role, then refit on
 calibration plus selection. No public coordinate has an unfitted or oracle
 substitution in the learned packet.
 
-The deterministic token-sequence encoder uses token identities, positions,
-and event boundaries. Its feature width is chosen so its learned linear readout
-has exactly the same number of trainable coefficients as the selected
-activation encoder. It is a primary activation-specificity control, not a
-weaker token-hash baseline.
+The fixed causal token sketch uses token identities, positions, and event
+boundaries with frozen exponential traces. Only its linear readout is learned,
+with exactly the same coefficient count as the selected activation readout.
+Its regularization is selected independently on the selection role. This is a
+development control for contextualization beyond a fixed transcript sketch; it
+is not represented as a learned recurrent or Transformer text encoder, and a
+future claim-bearing stage must include such a stronger text baseline.
 
 Additional frozen controls are history prior, last-observation and empirical
 filters, deterministic token-hash ridge, mean embedding, final token, direct
@@ -257,15 +259,17 @@ mistral-7b-v03 -> qwen3-4b
 ```
 
 The source model's complete local semantic encoder produces the typed packet;
-the target model's already frozen local reader consumes it. Pair-specific
-alignment, translation, calibration, or mapper parameters are zero by
-construction.
+the target model's already frozen local reader consumes it. The same reader also
+consumes a packet produced by the source model's fixed causal token sketch. Both
+ordered directions must show a positive paired activation-over-token packet
+margin on joint OOD. Pair-specific alignment, translation, calibration, or
+mapper parameters are zero by construction.
 
 ## Behavioral residual census
 
 After conditioning target behavior on the semantic public core, SPQ0 may fit a
 shared low-rank behavioral residual with ranks `0, 1, 2, 4` using the registered
-MAXVAR-GCCA procedure. Local residual encoders are fit on calibration data,
+pooled residual PCA procedure. Local residual encoders are fit on calibration data,
 rank is chosen on selection, and cross-family gains are reported on validation.
 
 This census is non-promotional. Its outcome cannot turn a failed semantic core,
@@ -282,12 +286,11 @@ zero post-capture source queries. Its consumer is the frozen target-local
 future reader.
 
 The direct baseline asks the source separately for each target future. The
-comparison reports a frontier at 1, 4, 16, and 32 future queries, charging both
-source-query compute and packet bits using the frozen config exchange rates.
-The conjunctive primary gate is the grouped lower-95 utility advantage at 16
-future queries. A one-query direct advantage is reported but is not a
-conjunctive requirement. Development tomography queries are disclosed
-separately and are never counted as the primary packet.
+comparison reports packet bits per query and source-query branches at 1, 4, 16,
+and 32 future queries. The historical Brier-equivalent exchange-rate
+scalarization is retained as an explicitly heuristic, non-promotional
+diagnostic and cannot change the machine decision. Development tomography
+queries are disclosed separately and are never counted as the primary packet.
 
 ## Gates and decision tree
 
@@ -298,15 +301,19 @@ The conjunctive checks are:
 1. exact predictive system and executor;
 2. calibrated categorical source forecasts beat the history prior;
 3. the learned semantic quotient beats the history prior;
-4. activation surfaces strictly beat the parameter-matched token sequence;
+4. activation surfaces strictly beat the independently selected fixed causal
+   token sketch within each source and after both frozen cross-family readers;
 5. correct history strictly beats wrong history;
 6. renderer, held-system, length-32, and joint-OOD stability;
-7. both ordered cross-family transfers beat the target prior and retain at
-   least 70% of oracle-reader gain;
-8. exact rank four is better than ranks 1--3 and noninferior to 6 and 8;
+7. both ordered cross-family transfers beat the target prior, beat their
+   source-token packet controls, and retain at least 70% of oracle-reader gain;
+8. in each ordered cross-family endpoint, rank four strictly beats ranks 1--3
+   and is noninferior to 6 and 8 within the registered 0.002 Brier margin;
 9. four-bit packets retain at least 95% of cross-family gain;
-10. sender identity is at most 0.15 above chance;
-11. the 16-query amortized rate utility has strictly positive lower 95% bound.
+10. sender identity is at most 0.15 above chance.
+
+The rate frontier and pooled residual PCA remain non-promotional diagnostics;
+neither can rescue a failed semantic, activation, rank, or transfer gate.
 
 The machine diagnoses are evaluated in causal order:
 

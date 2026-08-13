@@ -82,8 +82,7 @@ class _SPQTemplateTokenizer:
         roles = [message["role"] for message in messages]
         self.last_roles = roles
         if self.family == "mistral" and any(
-            role != ("user" if index % 2 == 0 else "assistant")
-            for index, role in enumerate(roles)
+            role != ("user" if index % 2 == 0 else "assistant") for index, role in enumerate(roles)
         ):
             raise RuntimeError("Mistral roles must alternate")
         last_user = max(
@@ -156,10 +155,7 @@ def test_spq0_freezes_cross_family_active_and_unopened_reserved_models() -> None
         "olmo2",
         "granite",
     }
-    assert all(
-        model.access == "reserved_unopened"
-        for model in config.reserved_unopened_models
-    )
+    assert all(model.access == "reserved_unopened" for model in config.reserved_unopened_models)
     assert config.authorization.claim_bearing_test_access_authorized is False
 
 
@@ -189,11 +185,7 @@ def test_shared_future_tests_are_exact_at_rank_four_and_undercomplete_below() ->
             for item in value:
                 yield from numeric_leaves(item)
 
-    assert all(
-        not np.signbit(value)
-        for value in numeric_leaves(canonical_basis)
-        if value == 0.0
-    )
+    assert all(not np.signbit(value) for value in numeric_leaves(canonical_basis) if value == 0.0)
     assert max(basis.core_condition_numbers.values()) <= 5.0
     assert basis.maximum_target_l1 <= 4.0
     rng = np.random.default_rng(7)
@@ -204,14 +196,10 @@ def test_shared_future_tests_are_exact_at_rank_four_and_undercomplete_below() ->
             target = belief @ basis.target_matrices[system.system_id]
             for rank in (4, 6, 8):
                 packet = basis.public_probabilities(system.system_id, belief, rank=rank)
-                observed = basis.execute_targets(
-                    system.system_id, packet, rank=rank, clip=False
-                )
+                observed = basis.execute_targets(system.system_id, packet, rank=rank, clip=False)
                 assert np.allclose(observed, target, atol=1e-10, rtol=0.0)
             rank_three = basis.public_probabilities(system.system_id, belief, rank=3)
-            approximate = basis.execute_targets(
-                system.system_id, rank_three, rank=3, clip=False
-            )
+            approximate = basis.execute_targets(system.system_id, rank_three, rank=3, clip=False)
             rank_three_errors.append(float(np.max(np.abs(approximate - target))))
         assert max(rank_three_errors) > 1e-4
 
@@ -261,8 +249,7 @@ def test_panels_have_three_disjoint_roles_and_validation_only_transfer() -> None
         for history in panels[role].histories
     )
     assert any(
-        history.system_role == "validation_only"
-        for history in panels["validation"].histories
+        history.system_role == "validation_only" for history in panels["validation"].histories
     )
     assert 32 not in panels["calibration"].lengths
     assert 32 not in panels["selection"].lengths
@@ -277,7 +264,9 @@ def test_renderers_are_paired_and_probability_query_is_categorical() -> None:
     rendered = [render_prefix(system, history, name) for name in ("narrative", "table", "symbolic")]
     assert len({item.text for item in rendered}) == 3
     assert all(len(item.event_end_markers) == history.length for item in rendered)
-    assert all("future" in item.text.lower() and "unselected" in item.text.lower() for item in rendered)
+    assert all(
+        "future" in item.text.lower() and "unselected" in item.text.lower() for item in rendered
+    )
     query = render_probability_query(
         system,
         basis.target_tests[0],
@@ -305,7 +294,7 @@ def test_categorical_temperature_selection_uses_probability_expectation() -> Non
     assert float(np.mean((expected - truth) ** 2)) < 1e-6
 
 
-def test_reduced_rank_map_and_parameter_matched_token_surface_are_deterministic() -> None:
+def test_truncated_ridge_map_and_fixed_token_surface_are_deterministic() -> None:
     rng = np.random.default_rng(11)
     features = rng.normal(size=(40, 32))
     targets = features[:, :3] @ rng.normal(size=(3, 6))
@@ -313,7 +302,7 @@ def test_reduced_rank_map_and_parameter_matched_token_surface_are_deterministic(
         features,
         targets,
         ridge=0.1,
-        method="reduced_rank_regression",
+        method="truncated_ridge",
         maximum_coefficient_rank=3,
     )
     assert fitted.coefficient_rank == 3
@@ -407,7 +396,7 @@ def _synthetic_capture(model_id: str, family: str, width: int):
     all_token = np.concatenate([final, np.tanh(final)], axis=2)
     bins = np.asarray(config.probability_protocol.bins)
     semantic_all = np.concatenate([public, targets], axis=1)
-    logits = -((semantic_all[:, :, None] - bins[None, None, :]) / 0.12) ** 2
+    logits = -(((semantic_all[:, :, None] - bins[None, None, :]) / 0.12) ** 2)
     logits += rng.normal(scale=0.03, size=logits.shape)
     token_ids = rng.integers(1, 500, size=(n_rows, 40), dtype=np.int64)
     attention = np.ones_like(token_ids, dtype=np.bool_)
@@ -416,18 +405,14 @@ def _synthetic_capture(model_id: str, family: str, width: int):
         "final_token_residual": final.astype(np.float32),
         "event_boundary_summary": event.astype(np.float32),
         "all_token_summary": all_token.astype(np.float32),
-        "mean_input_embedding": (
-            base + rng.normal(scale=0.2, size=base.shape)
-        ).astype(np.float32),
+        "mean_input_embedding": (base + rng.normal(scale=0.2, size=base.shape)).astype(np.float32),
         "token_ids": token_ids,
         "attention_mask": attention,
         "event_token_indices": boundaries,
         "history_ids": np.asarray([row[0] for row in rows], dtype=np.int64),
         "role_ids": np.asarray([row[1] for row in rows], dtype=np.int8),
         "system_ids": np.asarray([row[2] for row in rows], dtype=np.int8),
-        "system_role_ids": np.asarray(
-            [0 if row[2] < 2 else 1 for row in rows], dtype=np.int8
-        ),
+        "system_role_ids": np.asarray([0 if row[2] < 2 else 1 for row in rows], dtype=np.int8),
         "renderer_ids": np.asarray([row[3] for row in rows], dtype=np.int8),
         "lengths": np.asarray([row[4] for row in rows], dtype=np.int16),
         "last_observations": data_rng.integers(0, 3, size=n_rows, dtype=np.int8),
@@ -459,18 +444,26 @@ def test_complete_reducer_evaluates_both_ordered_pairs_without_pair_mapper() -> 
     assert all(
         row["pair_specific_mapper"] is False
         and row["target_reader_frozen_before_source_evaluation"] is True
+        and "activation_over_token_packet_gain_ci" in row
+        and set(row["rank_transfer"]) == {"1", "2", "3", "4", "6", "8"}
+        and set(row["rank4_transfer_comparisons"]) == {"1", "2", "3", "6", "8"}
         for row in metrics["cross_family_composition"].values()
     )
     assert metrics["behavioral_residual_census"]["promotional"] is False
+    assert metrics["behavioral_residual_census"]["method"].startswith("pooled_residual_pca")
     assert metrics["behavioral_residual_census"]["source_local_residual_encoders"] is True
     assert training["pair_specific_mapper_count"] == 0
+    assert all(
+        all("selected" in control for control in model["semantic_encoder"]["controls"].values())
+        for model in training["models"].values()
+    )
     assert "cross_family" in predictions
     assert set(checkpoints) == {"mistral-7b-v03", "qwen3-4b"}
     for model in metrics["models"].values():
         baselines = model["semantic_core"]["joint_ood"]["baselines"]
-        assert {"wrong_history", "shuffled_history", "renderer_shuffled"} <= set(
-            baselines
-        )
+        assert {"wrong_history", "shuffled_history", "renderer_shuffled"} <= set(baselines)
     decision = gate_decision(config, metrics)
     assert decision["authorization"]["spq1_execution_authorized"] is False
     assert decision["authorization"]["receiver_execution_authorized"] is False
+    assert "amortized_rate_utility" not in decision["checks"]
+    assert "heuristic_rate_scalarization_non_promotional" in decision["check_details"]

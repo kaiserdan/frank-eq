@@ -40,10 +40,7 @@ def _canonicalize_basis_registry_value(value: Any) -> Any:
     if isinstance(value, list):
         return [_canonicalize_basis_registry_value(item) for item in value]
     if isinstance(value, dict):
-        return {
-            key: _canonicalize_basis_registry_value(item)
-            for key, item in value.items()
-        }
+        return {key: _canonicalize_basis_registry_value(item) for key, item in value.items()}
     return value
 
 
@@ -289,9 +286,10 @@ class SharedPredictiveBasis:
         selected_rank = self.maximum_rank if rank is None else int(rank)
         if selected_rank not in self.executors:
             raise ValueError("packet rank is outside the frozen sweep")
-        return np.asarray(belief, dtype=np.float64) @ self.public_matrices[system_id][
-            :, :selected_rank
-        ]
+        return (
+            np.asarray(belief, dtype=np.float64)
+            @ self.public_matrices[system_id][:, :selected_rank]
+        )
 
     def decode_core(self, system_id: str, packet: np.ndarray, *, rank: int) -> np.ndarray:
         values = np.asarray(packet, dtype=np.float64)
@@ -331,8 +329,7 @@ class SharedPredictiveBasis:
             },
             "executors": {
                 str(rank): {
-                    key: self.executors[rank][key].tolist()
-                    for key in sorted(self.executors[rank])
+                    key: self.executors[rank][key].tolist() for key in sorted(self.executors[rank])
                 }
                 for rank in sorted(self.executors)
             },
@@ -462,9 +459,7 @@ def generate_system_family(
     systems: list[ControlledSystem] = []
     for index, (transitions, emissions) in enumerate(raw_systems):
         if index >= fit_systems:
-            parent_transitions, parent_emissions = raw_systems[
-                (index - fit_systems) % fit_systems
-            ]
+            parent_transitions, parent_emissions = raw_systems[(index - fit_systems) % fit_systems]
             transitions = (
                 validation_base_weight * parent_transitions
                 + (1.0 - validation_base_weight) * transitions
@@ -581,9 +576,7 @@ def build_shared_predictive_basis(
         horizons=horizons,
     )
     vectors = {
-        system.system_id: np.stack(
-            [system.test_vector(test) for test in candidates], axis=1
-        )
+        system.system_id: np.stack([system.test_vector(test) for test in candidates], axis=1)
         for system in systems
     }
     if any(int(np.linalg.matrix_rank(matrix)) < exact_rank for matrix in vectors.values()):
@@ -605,9 +598,7 @@ def build_shared_predictive_basis(
         for system in systems
     }
     if max(condition_numbers.values()) > max_core_condition_number:
-        raise ValueError(
-            "shared exact core exceeds the frozen worst-system condition-number bound"
-        )
+        raise ValueError("shared exact core exceeds the frozen worst-system condition-number bound")
 
     stable_candidates: list[int] = []
     for index in range(len(candidates)):

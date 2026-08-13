@@ -19,192 +19,401 @@ Requires-Dist: ruff>=0.9; extra == "dev"
 
 # Frank-EQ
 
-**Future-defined operational equivalence quotients for cross-model LLM state interfaces.**
+**Public operational interfaces for future-defined LLM state.**
 
-Frank-EQ tests a different object from conventional hidden-state alignment. Instead of asking whether two model states occupy similar coordinates, it asks whether they preserve the same family of future computations.
+Frank-EQ asks whether a state formed before an operation is revealed can be
+compiled into a public description of the future computations it supports. It
+does not treat hidden-coordinate similarity as interoperability.
 
-For a cached state `h` and a frozen operation family `K`, the operational signature is
+For frozen model `M`, query-blind state `h`, future operation `k`, and explicit
+post-reveal compute contract `c`:
 
 ```text
-Sigma_K(h) = { p(y | h, k) : k in K }.
+Sigma_M(h; k, c) = p_M(y | h, k, c).
 ```
 
-States are equivalent when their future signatures agree. The intended transferable object is the quotient of hidden states by this operational equivalence, not a reconstruction of another model's native hidden vector.
-
-## Current implementation
-
-The repository has two complete implementation layers.
+## Current evidence
 
 ### Synthetic Stage 0
 
-The synthetic reference includes heterogeneous model-local charts, renderer nuisance, a gauge-fixed facts-plus-residual public code, a parameter-free operation decoder, held-operation evaluation, frozen-decoder held-sender onboarding, packet quantization, grouped bootstrap intervals, and a fail-closed machine decision. The adopted reference under `evidence/reference_stage0/` returns `PROMOTE_REAL_MODEL_CANARY`; it is implementation evidence only.
+The synthetic reference passes as implementation evidence only. It establishes
+that the original contracts, packet, held-sender workflow, and reducer execute.
 
-### Real-checkpoint Stage A
-
-The real canary is now cluster-runnable and includes:
-
-- a frozen controlled relational-world panel with two renderer families;
-- hidden-state capture at normalized depths before any operation is revealed;
-- exact-prefix replay and physical KV-reuse branch modes, with fallback audited;
-- all registered future branches stored as `FutureSignatureRecord` objects;
-- source-model A/B branch probabilities recorded separately from formal oracle outcomes;
-- a parameter-free differentiable graph interrogator for held-out operations;
-- founder chart training and held-sender onboarding with the public executor frozen;
-- renderer invariance, cross-model retrieval, wrong-world specificity, facts-only residual, quantization, model leakage, and branch-behavior diagnostics;
-- content-addressed Olivia and LUMI submit/status/fetch/verify tooling;
-- workflow manifests and status files that preserve a scientifically negative gate as a valid completed job.
-
-No real-model result has been adopted yet. The implementation authorizes a cache/train/eval canary, not a scientific claim or receiver execution.
-
-## Architecture
+### Real Stage A v1/v2: two exact-pipeline negatives
 
 ```text
-frozen source prefix, before operation reveal
-        |
-        v
-selected source hidden layers
-        |
-        v
-private model-local chart
-        |
-        v
-gauge-fixed public causal state
-  directed facts | operational residual
-        |
-        +---- frozen graph operation interrogator
-        |
-        +---- query-conditioned typed packet
-        |
-        v
-receiver-native execution (locked next phase)
+v1  frank-eq-stagea-devg-v2   LUMI 20942127   STOP_OR_REVISE_STAGE0
+v2  frank-eq-stagea-lumi-v2   LUMI 20952565   STOP_OR_REVISE_STAGE0
 ```
 
-The source model's actual post-reveal behavior is retained as a diagnostic future signature. The primary public executor uses formal operation semantics rather than a learned target hidden-state decoder.
+The v2 shared-head oracle quotient failed:
 
-## Local setup
+```text
+native competence gain vs prior:  -0.0521
+held-out signature Brier:          0.2065 (upper95 0.2421)
+fact accuracy:                     0.5509 (lower95 0.5120)
+cross-model retrieval:             0.1528 (lower95 0.0972)
+wrong-world margin:               -0.0607
+held-sender retention:            -0.3445
+model-ID leakage over chance:      0.6389
+```
+
+This rules out the exact final-token, private-chart, shared-head pipeline. It
+does not rule out an operational interface over the full runtime state.
+
+### Stage Q: prompt correction and scale screens
+
+A paired development experiment compared the historical assistant-continuation
+construction with a proper new-user-turn reveal. Both failed source competence,
+and the prompt effect was not identified:
+
+```text
+legacy     -0.098  [-0.152, -0.040]
+chat_turn  -0.118  [-0.162, -0.068]
+paired improvement -0.020 [-0.107, 0.071]
+```
+
+Subsequent development screens through Qwen3-8B also failed the aggregate and
+per-founder gate. The operation pattern was highly structured:
+
+```text
+8B inverse lower95:             +0.136
+8B reciprocity lower95:         +0.147
+8B mutual lower95:              -0.758
+8B lookup lower95:              -0.482
+8B compose lower95:             -0.299
+8B compare-outdegree lower95:   -0.252
+```
+
+The screens used an immediate single-token A/B readout. They therefore do not
+separate answer-token calibration, post-query computation, and information
+stored in the query-blind state.
+
+## Stage R / RC0: completed development pass
+
+RC0 was a development-only rate--compute and public-basis audit. The original
+Olivia capture completed all 89,856 response rows, then failed before its first
+metric because a grouped-aggregation helper no longer matched its callers. A
+fresh, hash-bound artifact-only recovery restored the historical helper API and
+executed no model inference:
+
+```text
+capture   frank-eq-rc0-rate-compute-olivia-20260811c  Slurm 1874736
+recovery  frank-eq-rc0-rate-compute-olivia-20260811d-recovery  Slurm 1891471
+```
+
+Both repository verifiers and a separate recomputation audit pass. The machine
+diagnosis is `PUBLIC_BASIS_COMPOSITION_SUPPORTED`:
+
+```text
+compiled hard-family Brier:                0.0408
+training-selected direct Brier:            0.2035
+training-world prior Brier:                0.2181
+lower95 gain over direct / prior:          0.1542 / 0.1661
+basis balanced accuracy, weakest group:    0.9246
+hard-oracle executor mismatches:            0
+```
+
+Semantic sequence likelihood improved over the historical answer-token channel.
+Generated reasoning did not: the reasoning-minus-pause Brier-gain interval was
+`[-0.00540, -0.00029]`. The positive result is therefore public-basis recovery
+and deterministic composition, not a reasoning-token effect.
+
+RC0 compared:
+
+1. historical immediate A/B token probability;
+2. semantic false/true sequence likelihood;
+3. 32 generated reasoning tokens;
+4. 32 matched fixed pause tokens;
+5. a public separating basis containing every directed edge;
+6. a parameter-free executor that composes the basis into complex operations.
+
+The key distinction was:
+
+```text
+answer-channel calibration
+vs post-reveal computation
+vs state/basis sufficiency
+```
+
+The public basis is gauge fixed by semantics: slot `(i,j)` always means the
+same directed edge. For a closed directed graph, all `n(n-1)` edge slots form a
+separating basis, so every registered structural operation factors through it.
+
+The adopted, hash-verified evidence is in
+`evidence/real_stage_r_olivia_rc0/`. Runtime basis interrogation remains
+interactive tomography, not a one-shot hidden-state compiler or communication
+result.
+
+Read:
+
+```text
+docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md
+docs/19_STAGE_R_CLUSTER_RUNBOOK.md
+HANDOFF.md
+AGENTS.md
+```
+
+Frozen configs:
+
+```text
+configs/rate_compute/real_lumi_rc0.yaml
+configs/rate_compute/real_olivia_rc0.yaml
+```
+
+No RC0 rerun is authorized.
+
+## Stage-A v3-2: completed exact-pipeline negative
+
+The sole registered one-shot compiler workflow ran on Olivia as job `1899057`.
+It preserved founder/held/test causal order, consumed its test grant exactly
+once, completed all six test captures, and passed every integrity check. The
+machine decision is:
+
+```text
+status:     fail
+diagnosis:  ONE_SHOT_PUBLIC_BASIS_NOT_QUALIFIED
+```
+
+Behavioral-basis prediction, public alignment, held-sender retention,
+quantization, and oracle execution pass. The semantic basis misses its frozen
+Brier ceiling, all six unseen-renderer gains are negative, and the conjunctive
+composition and activation-specificity gates fail. Aggregate composition is
+positive, but cannot override the failed registered strata.
+
+The job exits 1 because the independent audit fails closed on 46
+reduction-order differences no larger than `5.55e-17`. Exact-runtime diagnostic
+job `1953471` reproduces stored metrics bit-for-bit in workflow/config order and
+reproduces the same decision in both orders. This is a verifier-order refusal,
+not an alternate scientific outcome; the failed audit remains immutable.
+
+The compact adopted package is in `evidence/real_stagea_v3_olivia/`. Stage-A
+v3-2 is consumed and terminal. No rerun, receiver protocol, receiver execution,
+new receiver-world access, or claim is authorized.
+
+## Stage M0: completed development negative
+
+Stage M0 tested whether the nonlinear executor's public state was
+undercomplete. Its full-grammar registry contains 318 typed edge, conjunction,
+path, counterfactual, and joint-degree events. Olivia job `1970800` completed
+all 105,984 response rows and 1,824 validation predictions with exact revisions,
+exclusive cloned-KV branching, zero replay, and no held or test role.
+
+The machine decision is:
+
+```text
+status:     fail
+diagnosis:  OPERATION_CLOSED_EVENTS_NOT_READABLE
+```
+
+Exact public algebra and atomic retention pass. The moment executor beats the
+cross-fitted direct response (`0.05310` versus `0.19445` Brier), but the simpler
+marginal/independence executor is better (`0.02744`). Joint out-degree and
+two-path-intersection events fail the frozen balanced-accuracy gate for both
+models. The same conclusion holds model by model.
+
+The scheduler, repository verifier, artifact hashes, and exact-runtime
+specialized verifier pass. A newer workstation NumPy version changes only two
+projection-adjustment diagnostic summaries by at most `4.44e-16`; no scientific
+prediction field, metric, gate, or decision changes. The compact adopted
+package is in `evidence/real_stage_m_olivia_m0/`.
+
+This is interactive event tomography, not a one-shot latent interface. The
+negative result authorizes no successor graph compiler draft or run, held
+sender, receiver access, or claim. The current graph/source line stops.
+
+## SPQ0: frozen prospective predictive-state census
+
+The next scientific question leaves the consumed graph task. SPQ0 asks whether
+two cross-family founders expose a shared, typed predictive quotient for fresh
+controlled stochastic systems. It replaces stochastic true/false responses
+with categorical probability-bin likelihoods and uses an exact rank-four
+future-test core.
+
+The active founders are exact revisions of Qwen3-4B and
+Mistral-7B-Instruct-v0.3. Exact OLMo2-7B and Granite-3.1-8B revisions are
+reserved unopened: SPQ0 may not resolve, inspect, load, tokenize with, or run
+them. Calibration, architecture selection, and validation are disjoint; there
+is no test role. One transition/emission system, one renderer, and length 32
+are validation-only.
+
+SPQ0 compares final-token, event-boundary, all-token, embedding, and
+parameter-matched token-sequence surfaces. Complete model-local semantic
+encoders emit public future-test coordinates. Frozen target-local readers are
+fit from oracle cores before evaluating both ordered cross-family
+compositions, with no pair-specific mapper. The rank sweep, behavioral
+residual census, and 1/4/16/32-query rate frontier are all prospective and
+frozen.
+
+The implementation and plan may be reviewed, but this repository change does
+not launch Olivia. A later separately authorized execution is restricted to
+`--profile full --stages audit`. A pass could authorize only drafting SPQ1;
+all execution, held/checkpoint, receiver, and claim fields remain closed.
+
+Read:
+
+```text
+docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md
+docs/26_SPQ0_OLIVIA_RUNBOOK.md
+```
+
+## Historical RC0 decision tree
+
+### Basis readout fails
+
+Stop the current graph/source contract. Do not train another cross-model latent.
+
+### Basis passes but public composition fails
+
+Revise only structured calibration or executor assumptions on development data.
+Do not enlarge a private latent code.
+
+### Public composition beats the prior but not direct computation
+
+The basis is a valid diagnostic but not yet a constructive paper result.
+
+### Public composition beats the training-selected direct baseline
+
+This is the observed branch. Draft exactly one Stage-A v3 registration with:
+
+- fresh claim-bearing worlds;
+- a new unopened held sender;
+- complete model-local token/slot compilers into typed public coordinates;
+- separate behavioral self-future and oracle-semantic channels;
+- token-only, text, direct-operation, continuous-latent, and oracle-basis
+  baselines;
+- receiver execution still locked until the representation gate passes.
+
+## Tested architecture and unresolved direction
+
+Stage-A v3-2 tested this alternative to a shared private vector:
+
+```text
+query-blind frozen source state
+        |
+        v
+model-local token/slot compiler
+        |
+        v
+public separating operational basis
+        |
+        v
+frozen deterministic or receiver-native executor
+```
+
+The frozen compiler did not qualify this interface. It predicts the sources'
+behavioral channel and transfers across models on seen renderers, but semantic
+calibration and unseen-renderer transfer fail. Stage M0 subsequently showed
+that interactively querying a larger operation-closed graph basis does not beat
+the simpler marginal executor. Any future direction must change the task-level
+scientific question and use fresh roles; it cannot be selected on the exposed
+v3 or Stage M outcomes.
+
+## Commands
+
+Synthetic and historical Stage-A commands:
+
+```text
+frank-eq validate-config
+frank-eq run-stage0
+frank-eq validate-real-config
+frank-eq make-real-cache
+frank-eq validate-real-cache
+frank-eq diagnose-real-cache
+frank-eq run-real-stagea
+```
+
+RC0 commands:
+
+```text
+frank-eq validate-rate-compute-config
+frank-eq run-rate-compute-audit
+frank-eq recover-rate-compute-audit
+python scripts/verify_rate_compute_run.py
+python scripts/audit_rate_compute_result.py
+```
+
+Stage-A v3 commands:
+
+```text
+frank-eq validate-stagea-v3-config
+frank-eq plan-stagea-v3
+frank-eq run-stagea-v3
+frank-eq verify-stagea-v3
+python scripts/verify_stagea_v3_run.py
+```
+
+Historical Stage M0 validation and verification commands:
+
+```text
+python scripts/validate_moment_compute.py
+python scripts/verify_moment_compute_run.py --run <fetched-run-root>
+```
+
+Prospective SPQ0 validation and dry-run commands:
+
+```text
+python scripts/validate_spq0.py
+python -m frank_eq.shared_predictive_quotient.cli validate \
+  --config configs/spq0/real_olivia_spq0.yaml
+python olivia/cli.py submit \
+  --job-name frank-eq-spq0-olivia-20260813a \
+  --config configs/spq0/real_olivia_spq0.yaml \
+  --profile full --stages audit --dry-run --json
+```
+
+## Local validation
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -e '.[dev]'
-
-frank-eq validate-config --config configs/stage0/synthetic_smoke.yaml
-frank-eq run-stage0 --config configs/stage0/synthetic_smoke.yaml --out runs/synthetic-smoke
-```
-
-Real extraction additionally requires:
-
-```bash
 pip install -e '.[real,dev]'
-frank-eq validate-real-config --config configs/stage0/real_smoke.yaml
-frank-eq run-real-stagea \
-  --config configs/stage0/real_smoke.yaml \
-  --out runs/real-stagea-smoke
-```
 
-A scientific gate failure from `run-real-stagea` does not make the scheduler job fail. Workflow integrity is recorded in `workflow_status.json`; scientific promotion remains exclusively in `eval/decision.json`.
-
-## Olivia
-
-```bash
-python olivia/cli.py submit \
-  --job-name frank-eq-stagea-v1 \
-  --config configs/stage0/real_olivia.yaml \
-  --profile full \
-  --stages cache,validate,train,eval \
-  --dry-run --json
-
-python olivia/cli.py submit \
-  --job-name frank-eq-stagea-v1 \
-  --config configs/stage0/real_olivia.yaml \
-  --profile full \
-  --stages cache,validate,train,eval --json
-python olivia/cli.py status --job-name frank-eq-stagea-v1 --json
-python olivia/cli.py fetch --job-name frank-eq-stagea-v1 --json
-python olivia/cli.py verify --job-name frank-eq-stagea-v1 --json
-```
-
-See `docs/OLIVIA.md`. The operator skill is `.agents/skills/olivia-cluster-runner/SKILL.md`.
-
-## LUMI
-
-```bash
-python lumi/cli.py submit \
-  --job-name frank-eq-stagea-lumi-v1 \
-  --config configs/stage0/real_lumi.yaml \
-  --profile full \
-  --stages cache,validate,train,eval \
-  --dry-run --json
-```
-
-See `docs/LUMI.md`. The operator skill is `.agents/skills/lumi-cluster-runner/SKILL.md`.
-
-## Authoritative artifacts
-
-```text
-runs/run_manifest.json
-runs/workflow_status.json
-runs/cache/dataset.npz
-runs/cache/panel.json
-runs/cache/future_signature_records.jsonl
-runs/cache/cache_validation.json
-runs/train/final.pt
-runs/train/training_summary.json
-runs/eval/metrics.json
-runs/eval/decision.json
-runs/eval/artifact_manifest.json
-runs/run_summary.json
-```
-
-Only `eval/decision.json` carries scientific promotion semantics.
-
-## Commands
-
-```text
-frank-eq validate-config       Validate a synthetic Stage-0 config.
-frank-eq make-synthetic        Materialize the controlled synthetic bundle.
-frank-eq train-stage0          Train founder charts and onboard a held sender.
-frank-eq eval-stage0           Evaluate and reduce synthetic Stage 0.
-frank-eq run-stage0            Run the complete synthetic workflow.
-frank-eq validate-real-config  Validate a real-checkpoint Stage-A contract.
-frank-eq make-real-cache       Capture states and all future branches.
-frank-eq validate-real-cache   Audit the causal boundary and cache hashes.
-frank-eq run-real-stagea       Run selected real cache/train/eval stages.
-```
-
-## Start here for agents
-
-Read in this order:
-
-1. `AGENTS.md`
-2. `docs/00_PROJECT_CHARTER.md`
-3. `docs/01_SCIENTIFIC_HYPOTHESIS.md`
-4. `docs/02_ARCHITECTURE.md`
-5. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
-6. `docs/04_STAGE0_PROTOCOL.md`
-7. `docs/05_GATES_AND_STOP_RULES.md`
-8. `docs/06_REAL_MODEL_PLAN.md`
-9. `docs/11_REAL_STAGEA_IMPLEMENTATION.md`
-10. `HANDOFF.md`
-11. `docs/10_DECISION_LOG.md`
-
-## Validation
-
-```bash
 python -m compileall -q src scripts olivia lumi
+ruff check src scripts tests
 pytest -q
 bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
+python scripts/validate_rate_compute.py
+python scripts/validate_moment_compute.py
+python scripts/validate_spq0.py
 ```
+
+## Evidence hierarchy
+
+```text
+frozen protocol and source identity
+causal cache/branch validation
+machine decision
+world-grouped metrics
+prediction/response artifacts
+training history or calibration state
+W&B telemetry
+prose
+```
+
+Generated runs, checkpoints, source archives, and `.agents/state/` remain outside
+Git. Adopted evidence belongs under `evidence/` with a content hash manifest.
 
 ## Claim boundary
 
-Frank-EQ currently establishes that the synthetic and real-checkpoint workflows are implemented, causally audited, and cluster-runnable. It does **not** establish:
+Frank-EQ currently establishes only:
 
-- that a future-defined quotient exists across real LLM families;
-- receiver-native execution or autonomous generation;
-- superiority to text communication;
-- real held-sender establishment;
-- safety, causal utility, or interoperability on locked data.
+- functioning synthetic and cluster infrastructure;
+- three valid exact-pipeline negatives across the historical shared-code and
+  one-shot typed-basis compiler architectures;
+- a corrected source-qualification methodology;
+- development evidence that an interactively queried, typed edge basis is
+  recoverable from the tested sources and composes better than their
+  training-selected direct protocols under the frozen RC0 contract; and
+- v3 evidence that the all-token compiler predicts the frozen sources'
+  behavioral edge responses, while its semantic basis fails the registered
+  calibration and unseen-renderer gates; and
+- Stage M development evidence that the registered high-order graph events are
+  not uniformly readable and their projected executor is worse than the
+  first-order marginal control, despite beating direct responses.
 
-Those claims remain closed until an immutable real Stage-A decision passes and a separately frozen receiver protocol is activated.
+It does not yet establish a cross-model public interface, a hidden-state
+advantage over text/tokens, a qualified one-shot compiler, receiver execution,
+or a positive ICLR claim. SPQ0 is prospective development infrastructure, not
+evidence. No SPQ0 model run occurs automatically with this implementation.

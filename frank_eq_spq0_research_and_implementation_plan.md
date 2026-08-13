@@ -207,7 +207,7 @@ After fitting \(R_m\), form residuals
 \Delta_m=Y_m-R_m(S).
 \]
 
-On calibration/selection data only, estimate a MAXVAR-GCCA or reduced-rank shared residual with rank \(k\in\{0,1,2,4\}\). Report whether a source-local residual encoder improves a different model's frozen reader. This is diagnostic in SPQ0; semantic transfer may pass even when the residual is private.
+On calibration/selection data only, estimate a pooled residual PCA or reduced-rank shared residual with rank \(k\in\{0,1,2,4\}\). Report whether a source-local residual encoder improves a different model's frozen reader. This is diagnostic in SPQ0; semantic transfer may pass even when the residual is private.
 
 ## Baselines
 
@@ -327,3 +327,22 @@ Figures:
 11. Add exact independent recomputation, source hashes, and Olivia dispatch.
 12. Run compile, Ruff, complete pytest, historical evidence validation, SPQ static validation, shell syntax checks, and a content-addressed dry run.
 13. Launch no model inference until the dry-run source/config/image hashes and reserved-model non-access contract are inspected.
+
+## Independent review corrections before launch
+
+The implementation review made four prospective corrections before any model
+execution. First, the transcript comparison is named precisely: it is a fixed
+causal token sketch with an independently selected, parameter-matched linear
+readout, not a learned sequence model. Second, every cross-family reader now
+evaluates both the activation-derived packet and the source-token-derived packet;
+a positive activation-over-token lower bound is conjunctive. Third, predictive
+rank is identified at the cross-family target-reader endpoint with paired
+rank-four comparisons, rather than from source-local semantic point estimates.
+Fourth, the Brier-equivalent rate scalarization is diagnostic only because its
+exchange rates are conventional rather than empirically identified. The
+non-promotional behavioral remainder is pooled residual PCA, not MAXVAR-GCCA.
+
+These corrections do not alter the systems, histories, model roster, public test
+registry, access boundary, or protected authorizations. They prevent a favorable
+SPQ0 outcome from being interpreted more strongly than the executed controls
+support.

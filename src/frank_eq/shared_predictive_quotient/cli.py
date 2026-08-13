@@ -41,17 +41,13 @@ def main(argv: list[str] | None = None) -> int:
                 "status": "passed",
                 "development_only": True,
                 "models": [model.model_id for model in config.models],
-                "reserved_unopened": [
-                    model.model_id for model in config.reserved_unopened_models
-                ],
+                "reserved_unopened": [model.model_id for model in config.reserved_unopened_models],
                 "systems": len(systems),
                 "validation_only_systems": sum(
                     system.role == "validation_only" for system in systems
                 ),
                 "exact_rank": basis.exact_rank,
-                "worst_core_condition_number": max(
-                    basis.core_condition_numbers.values()
-                ),
+                "worst_core_condition_number": max(basis.core_condition_numbers.values()),
                 "maximum_target_l1": basis.maximum_target_l1,
                 "maximum_exact_executor_error": basis.maximum_exact_executor_error,
             }

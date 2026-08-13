@@ -143,9 +143,7 @@ class SPQPanelConfig:
 class SPQCaptureConfig:
     prompt_format: str = "chat_turn"
     chat_turn_shape: str = "user_prefix_fixed_assistant_ack_user_query"
-    chat_template_kwargs: dict[str, Any] = field(
-        default_factory=lambda: {"enable_thinking": False}
-    )
+    chat_template_kwargs: dict[str, Any] = field(default_factory=lambda: {"enable_thinking": False})
     normalized_depths: list[float] = field(default_factory=lambda: [0.25, 0.5, 0.75, 1.0])
     surfaces: list[str] = field(default_factory=lambda: sorted(_REQUIRED_SURFACES))
     selected_kv_surface_enabled: bool = False
@@ -162,31 +160,25 @@ class SPQCaptureConfig:
 @dataclass(slots=True)
 class SPQProbabilityProtocolConfig:
     type: str = "categorical_bins"
-    bins: list[float] = field(
-        default_factory=lambda: [0.05 + 0.10 * index for index in range(10)]
-    )
+    bins: list[float] = field(default_factory=lambda: [0.05 + 0.10 * index for index in range(10)])
     candidate_labels: list[str] = field(
         default_factory=lambda: [f" {letter}" for letter in "ABCDEFGHIJ"]
     )
     normalize_candidate_log_likelihoods: bool = True
-    temperature_grid: list[float] = field(
-        default_factory=lambda: [0.5, 0.75, 1.0, 1.5, 2.0]
-    )
+    temperature_grid: list[float] = field(default_factory=lambda: [0.5, 0.75, 1.0, 1.5, 2.0])
     candidate_temperature_fit_role: str = "calibration"
     direct_protocol_selection_role: str = "selection"
 
 
 @dataclass(slots=True)
 class SPQSemanticEncoderConfig:
-    methods: list[str] = field(default_factory=lambda: ["ridge", "reduced_rank_regression"])
+    methods: list[str] = field(default_factory=lambda: ["ridge", "truncated_ridge"])
     rank_grid: list[int] = field(default_factory=lambda: [1, 2, 3, 4, 6, 8])
     ridge_grid: list[float] = field(default_factory=lambda: [0.1, 1.0, 10.0, 100.0])
     surface_selection_role: str = "selection"
     target: str = "rank_conditioned_public_tests"
     token_hash_position_period: int = 64
-    token_sequence_decay_grid: list[float] = field(
-        default_factory=lambda: [0.50, 0.75, 0.90, 0.97]
-    )
+    token_sequence_decay_grid: list[float] = field(default_factory=lambda: [0.50, 0.75, 0.90, 0.97])
 
 
 @dataclass(slots=True)
@@ -203,7 +195,7 @@ class SPQTargetReaderConfig:
 @dataclass(slots=True)
 class SPQBehavioralResidualConfig:
     enabled: bool = True
-    method: str = "maxvar_gcca"
+    method: str = "pooled_residual_pca"
     rank_grid: list[int] = field(default_factory=lambda: [0, 1, 2, 4])
     fit_role: str = "calibration"
     selection_role: str = "selection"
@@ -228,6 +220,7 @@ class SPQEvaluationConfig:
     )
     source_query_cost_brier_equivalent: float = 0.02
     packet_bit_cost_brier_equivalent: float = 0.0005
+    rate_scalarization_promotional: bool = False
 
 
 @dataclass(slots=True)
@@ -236,10 +229,12 @@ class SPQGateConfig:
     source_probability_gain_over_prior_lower95_min: float = 0.0
     semantic_core_gain_over_prior_lower95_min: float = 0.0
     activation_over_token_sequence_lower95_strict_gt: float = 0.0
+    cross_family_activation_over_token_lower95_strict_gt: float = 0.0
     wrong_history_margin_lower95_strict_gt: float = 0.0
     cross_family_target_prior_gain_lower95_strict_gt: float = 0.0
     min_cross_family_oracle_reader_gain_retention: float = 0.70
     rank4_noninferior_to_higher_ranks: bool = True
+    rank4_transfer_noninferiority_margin: float = 0.002
     min_four_bit_gain_retention: float = 0.95
     max_sender_identity_accuracy_over_chance: float = 0.15
     amortized_query_count_for_primary_utility: int = 16
@@ -273,13 +268,9 @@ class SPQRunConfig:
     probability_protocol: SPQProbabilityProtocolConfig = field(
         default_factory=SPQProbabilityProtocolConfig
     )
-    semantic_encoder: SPQSemanticEncoderConfig = field(
-        default_factory=SPQSemanticEncoderConfig
-    )
+    semantic_encoder: SPQSemanticEncoderConfig = field(default_factory=SPQSemanticEncoderConfig)
     strong_controls: list[str] = field(default_factory=lambda: sorted(_REQUIRED_CONTROLS))
-    target_local_reader: SPQTargetReaderConfig = field(
-        default_factory=SPQTargetReaderConfig
-    )
+    target_local_reader: SPQTargetReaderConfig = field(default_factory=SPQTargetReaderConfig)
     behavioral_residual: SPQBehavioralResidualConfig = field(
         default_factory=SPQBehavioralResidualConfig
     )
@@ -318,8 +309,7 @@ class SPQRunConfig:
         if self.protocol_version != "spq0-development-census" or not self.development_only:
             raise ValueError("SPQ0 must remain the frozen development-only census")
         observed_active = {
-            model.model_id: (model.hf_id, model.family, model.revision)
-            for model in self.models
+            model.model_id: (model.hf_id, model.family, model.revision) for model in self.models
         }
         if observed_active != _ACTIVE_MODELS:
             raise ValueError("SPQ0 active founder families or exact revisions changed")
@@ -422,7 +412,7 @@ class SPQRunConfig:
             raise ValueError("SPQ0 temperature grid must be positive")
 
         encoder = self.semantic_encoder
-        if set(encoder.methods) != {"ridge", "reduced_rank_regression"}:
+        if set(encoder.methods) != {"ridge", "truncated_ridge"}:
             raise ValueError("SPQ0 encoder-method census changed")
         if encoder.rank_grid != [1, 2, 3, 4, 6, 8]:
             raise ValueError("SPQ0 bottleneck-rank sweep changed")
@@ -448,7 +438,7 @@ class SPQRunConfig:
         residual = self.behavioral_residual
         if (
             not residual.enabled
-            or residual.method != "maxvar_gcca"
+            or residual.method != "pooled_residual_pca"
             or residual.rank_grid != [0, 1, 2, 4]
             or residual.promotional
         ):
@@ -476,7 +466,9 @@ class SPQRunConfig:
             evaluation.source_query_cost_brier_equivalent <= 0
             or evaluation.packet_bit_cost_brier_equivalent <= 0
         ):
-            raise ValueError("SPQ0 rate-aware utility exchange rates must be positive")
+            raise ValueError("SPQ0 rate diagnostic exchange rates must be positive")
+        if evaluation.rate_scalarization_promotional:
+            raise ValueError("SPQ0 heuristic rate scalarization must remain non-promotional")
 
         gates = self.gates
         if gates.amortized_query_count_for_primary_utility != 16:
@@ -485,6 +477,8 @@ class SPQRunConfig:
             raise ValueError("SPQ0 reader-retention gate is invalid")
         if not 0.0 <= gates.min_four_bit_gain_retention <= 1.0:
             raise ValueError("SPQ0 four-bit retention gate is invalid")
+        if gates.rank4_transfer_noninferiority_margin < 0.0:
+            raise ValueError("SPQ0 transfer-rank noninferiority margin is invalid")
         if gates.max_oracle_executor_abs_error <= 0:
             raise ValueError("SPQ0 exact-executor tolerance must be positive")
 
@@ -555,9 +549,7 @@ def load_spq0_config(path: str | Path) -> SPQRunConfig:
         run_name=raw.get("run_name", defaults.run_name),
         output_dir=raw.get("output_dir", defaults.output_dir),
         development_only=raw.get("development_only", defaults.development_only),
-        require_revision_pins=raw.get(
-            "require_revision_pins", defaults.require_revision_pins
-        ),
+        require_revision_pins=raw.get("require_revision_pins", defaults.require_revision_pins),
         models=[_construct(SPQModelSpec, item) for item in raw.get("models", [])],
         reserved_unopened_models=[
             _construct(ReservedCheckpointSpec, item)
@@ -569,21 +561,13 @@ def load_spq0_config(path: str | Path) -> SPQRunConfig:
         probability_protocol=_construct(
             SPQProbabilityProtocolConfig, raw.get("probability_protocol")
         ),
-        semantic_encoder=_construct(
-            SPQSemanticEncoderConfig, raw.get("semantic_encoder")
-        ),
+        semantic_encoder=_construct(SPQSemanticEncoderConfig, raw.get("semantic_encoder")),
         strong_controls=list(raw.get("strong_controls", defaults.strong_controls)),
-        target_local_reader=_construct(
-            SPQTargetReaderConfig, raw.get("target_local_reader")
-        ),
-        behavioral_residual=_construct(
-            SPQBehavioralResidualConfig, raw.get("behavioral_residual")
-        ),
+        target_local_reader=_construct(SPQTargetReaderConfig, raw.get("target_local_reader")),
+        behavioral_residual=_construct(SPQBehavioralResidualConfig, raw.get("behavioral_residual")),
         evaluation=_construct(SPQEvaluationConfig, raw.get("evaluation")),
         gates=_construct(SPQGateConfig, raw.get("gates")),
-        authorization=_construct(
-            SPQAuthorizationConfig, raw.get("authorization")
-        ),
+        authorization=_construct(SPQAuthorizationConfig, raw.get("authorization")),
         logging=_construct(LoggingConfig, logging_raw),
     )
     config.validate()

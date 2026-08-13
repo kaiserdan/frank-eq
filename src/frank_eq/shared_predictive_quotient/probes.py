@@ -12,7 +12,7 @@ from .automaton import PredictiveTest
 
 @dataclass(frozen=True, slots=True)
 class LinearMap:
-    """A centered ridge map with an optional reduced-rank coefficient matrix."""
+    """A centered ridge map with an optional truncated-ridge coefficient matrix."""
 
     weights: np.ndarray
     feature_mean: np.ndarray
@@ -51,9 +51,7 @@ class LinearMap:
             f"{prefix}__feature_mean": self.feature_mean,
             f"{prefix}__target_mean": self.target_mean,
             f"{prefix}__ridge": np.asarray([self.ridge], dtype=np.float64),
-            f"{prefix}__coefficient_rank": np.asarray(
-                [self.coefficient_rank], dtype=np.int64
-            ),
+            f"{prefix}__coefficient_rank": np.asarray([self.coefficient_rank], dtype=np.int64),
         }
 
 
@@ -69,7 +67,7 @@ def fit_linear_map(
     y = np.asarray(targets, dtype=np.float64)
     if x.ndim != 2 or y.ndim != 2 or x.shape[0] != y.shape[0] or x.shape[0] < 2:
         raise ValueError("linear fitting requires paired rank-two arrays")
-    if ridge <= 0 or method not in {"ridge", "reduced_rank_regression"}:
+    if ridge <= 0 or method not in {"ridge", "truncated_ridge"}:
         raise ValueError("linear fitting has an invalid ridge or method")
     if not np.all(np.isfinite(x)) or not np.all(np.isfinite(y)):
         raise ValueError("linear fitting inputs must be finite")
@@ -94,7 +92,7 @@ def fit_linear_map(
             dual = np.linalg.pinv(kernel, rcond=1e-12) @ yc
         weights = xc.T @ dual
     coefficient_rank = int(np.linalg.matrix_rank(weights, tol=1e-12))
-    if method == "reduced_rank_regression":
+    if method == "truncated_ridge":
         bound = maximum_coefficient_rank or min(x.shape[1], y.shape[1])
         bound = max(1, min(int(bound), min(weights.shape)))
         left, singular, right = np.linalg.svd(weights, full_matrices=False)
@@ -332,11 +330,7 @@ def parameter_matched_token_sequence_features(
                 distance = last - int(position)
                 boundary = int(position) in boundary_set
                 bucket = base + int(
-                    (
-                        token * 2_654_435_761
-                        + order * 1_315_423_911
-                        + int(boundary) * 805_459_861
-                    )
+                    (token * 2_654_435_761 + order * 1_315_423_911 + int(boundary) * 805_459_861)
                     % local_width
                 )
                 sign = -1.0 if ((token * 13 + order * 29 + channel) & 1) else 1.0
@@ -458,9 +452,7 @@ class TargetLocalReader:
             "n_tests": self.n_tests,
             "n_bins": self.n_bins,
             "linear_map": self.linear_map.metadata(),
-            "fit_input": (
-                "oracle_exact_public_core_frozen_public_executor_and_test_descriptor"
-            ),
+            "fit_input": ("oracle_exact_public_core_frozen_public_executor_and_test_descriptor"),
             "source_evaluation_input": (
                 "learned_public_core_frozen_public_executor_and_test_descriptor"
             ),
@@ -469,9 +461,7 @@ class TargetLocalReader:
 
     def arrays(self, prefix: str) -> dict[str, np.ndarray]:
         payload = self.linear_map.arrays(prefix)
-        payload[f"{prefix}__shape"] = np.asarray(
-            [self.n_tests, self.n_bins], dtype=np.int64
-        )
+        payload[f"{prefix}__shape"] = np.asarray([self.n_tests, self.n_bins], dtype=np.int64)
         return payload
 
 
@@ -538,7 +528,11 @@ def select_target_reader(
         target_tests,
         ridge=selected["ridge"],
     )
-    return reader, {"selected": selected, "candidates": candidates, "refit_roles": ["calibration", "selection"]}
+    return reader, {
+        "selected": selected,
+        "candidates": candidates,
+        "refit_roles": ["calibration", "selection"],
+    }
 
 
 def nearest_centroid_accuracy(

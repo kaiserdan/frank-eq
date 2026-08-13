@@ -88,9 +88,7 @@ def preflight_active_tokenizer_contract(
                                 system,
                                 test,
                                 bins=config.probability_protocol.bins,
-                                candidate_labels=(
-                                    config.probability_protocol.candidate_labels
-                                ),
+                                candidate_labels=(config.probability_protocol.candidate_labels),
                             )
                             suffix = adapter._query_ids(
                                 query,
@@ -183,8 +181,7 @@ def preflight_checkpoint_contract(
         ).resolve()
         if snapshot.name != model.revision:
             raise RuntimeError(
-                f"{model.model_id} resolved snapshot {snapshot.name!r}, expected "
-                f"{model.revision!r}"
+                f"{model.model_id} resolved snapshot {snapshot.name!r}, expected {model.revision!r}"
             )
         files: dict[str, dict[str, Any]] = {}
         for path in sorted(item for item in snapshot.rglob("*") if item.is_file()):

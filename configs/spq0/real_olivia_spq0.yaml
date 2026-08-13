@@ -99,7 +99,7 @@ probability_protocol:
   direct_protocol_selection_role: selection
 
 semantic_encoder:
-  methods: [ridge, reduced_rank_regression]
+  methods: [ridge, truncated_ridge]
   rank_grid: [1, 2, 3, 4, 6, 8]
   ridge_grid: [0.1, 1.0, 10.0, 100.0]
   surface_selection_role: selection
@@ -135,7 +135,7 @@ target_local_reader:
 
 behavioral_residual:
   enabled: true
-  method: maxvar_gcca
+  method: pooled_residual_pca
   rank_grid: [0, 1, 2, 4]
   fit_role: calibration
   selection_role: selection
@@ -150,16 +150,19 @@ evaluation:
   required_conditions: [seen, unseen_renderer, unseen_system, length_transfer, joint_ood]
   source_query_cost_brier_equivalent: 0.02
   packet_bit_cost_brier_equivalent: 0.0005
+  rate_scalarization_promotional: false
 
 gates:
   max_oracle_executor_abs_error: 1.0e-10
   source_probability_gain_over_prior_lower95_min: 0.0
   semantic_core_gain_over_prior_lower95_min: 0.0
   activation_over_token_sequence_lower95_strict_gt: 0.0
+  cross_family_activation_over_token_lower95_strict_gt: 0.0
   wrong_history_margin_lower95_strict_gt: 0.0
   cross_family_target_prior_gain_lower95_strict_gt: 0.0
   min_cross_family_oracle_reader_gain_retention: 0.70
   rank4_noninferior_to_higher_ranks: true
+  rank4_transfer_noninferiority_margin: 0.002
   min_four_bit_gain_retention: 0.95
   max_sender_identity_accuracy_over_chance: 0.15
   amortized_query_count_for_primary_utility: 16

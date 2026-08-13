@@ -171,9 +171,7 @@ def build_spq0_plan(
             "target_tests": len(basis.target_tests),
             "core_condition_numbers": basis_payload["core_condition_numbers"],
             "maximum_target_l1": basis_payload["maximum_target_l1"],
-            "maximum_exact_executor_error_bound": (
-                config.gates.max_oracle_executor_abs_error
-            ),
+            "maximum_exact_executor_error_bound": (config.gates.max_oracle_executor_abs_error),
             "numeric_canonicalization": {
                 "basis_registry_decimal_places": BASIS_REGISTRY_DECIMALS,
                 "selection_score_decimal_places": SELECTION_SCORE_DECIMALS,
@@ -197,11 +195,8 @@ def build_spq0_plan(
             "exact_replay_fallback": False,
             "prefixes_per_model": prefixes_per_model,
             "future_tests_per_prefix": tests_per_prefix,
-            "post_reveal_query_branches_per_model": prefixes_per_model
-            * tests_per_prefix,
-            "categorical_candidates_per_query": len(
-                config.probability_protocol.bins
-            ),
+            "post_reveal_query_branches_per_model": prefixes_per_model * tests_per_prefix,
+            "categorical_candidates_per_query": len(config.probability_protocol.bins),
             "primary_packet_post_capture_source_queries": 0,
             "runtime_queries_are_development_tomography": True,
         },
@@ -477,16 +472,12 @@ def run_spq0_audit(
                 "consumer": "frozen target-local reader",
             },
             "development_tomography": {
-                "future_test_queries_per_prefix": len(basis.public_tests)
-                + len(basis.target_tests),
-                "categorical_candidates_per_query": len(
-                    config.probability_protocol.bins
-                ),
+                "future_test_queries_per_prefix": len(basis.public_tests) + len(basis.target_tests),
+                "categorical_candidates_per_query": len(config.probability_protocol.bins),
                 "counts_as_primary_packet": False,
             },
             "amortized_frontier": {
-                model_id: row["amortized_utility"]
-                for model_id, row in metrics["models"].items()
+                model_id: row["amortized_utility"] for model_id, row in metrics["models"].items()
             },
             "primary_amortized_query_count": config.gates.amortized_query_count_for_primary_utility,
             "one_direct_query_is_not_a_conjunctive_gate": True,
@@ -512,9 +503,7 @@ def run_spq0_audit(
             "models": [model.model_id for model in config.models],
             "reserved_models_loaded": 0,
             "systems": len(systems),
-            "validation_only_systems": sum(
-                system.role == "validation_only" for system in systems
-            ),
+            "validation_only_systems": sum(system.role == "validation_only" for system in systems),
             "test_histories": 0,
             "ordered_cross_family_pairs": len(metrics["cross_family_composition"]),
             "pair_specific_mappers": 0,
@@ -524,9 +513,7 @@ def run_spq0_audit(
         }
         atomic_write_json(root / "run_summary.json", summary)
         capture_paths = [
-            entry[key]
-            for entry in capture_entries.values()
-            for key in ("metadata", "array")
+            entry[key] for entry in capture_entries.values() for key in ("metadata", "array")
         ]
         artifact_paths = [
             "config.yaml",

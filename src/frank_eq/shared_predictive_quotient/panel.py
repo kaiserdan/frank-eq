@@ -20,7 +20,11 @@ RENDERERS = ("narrative", "table", "symbolic")
 ROLE_IDS = {"calibration": 0, "selection": 1, "validation": 2}
 RENDERER_IDS = {name: index for index, name in enumerate(RENDERERS)}
 SYSTEM_ROLE_IDS = {"fit": 0, "validation_only": 1}
-_ROLE_OFFSETS = {"calibration": 1_000_000_000, "selection": 2_000_000_000, "validation": 3_000_000_000}
+_ROLE_OFFSETS = {
+    "calibration": 1_000_000_000,
+    "selection": 2_000_000_000,
+    "validation": 3_000_000_000,
+}
 
 
 @dataclass(frozen=True, slots=True)
@@ -119,9 +123,7 @@ def generate_panel(
 ) -> SPQPanel:
     if role not in ROLE_IDS:
         raise ValueError("SPQ0 panel role is invalid")
-    eligible = tuple(
-        system for system in systems if role == "validation" or system.role == "fit"
-    )
+    eligible = tuple(system for system in systems if role == "validation" or system.role == "fit")
     if not eligible:
         raise ValueError("SPQ0 panel has no eligible systems")
     length_values = tuple(sorted(set(int(value) for value in lengths)))
@@ -153,10 +155,7 @@ def generate_panel(
                 if float(np.var(core)) < min_core_variance:
                     continue
                 history_id = (
-                    _ROLE_OFFSETS[role]
-                    + system_index * 10_000_000
-                    + length * 10_000
-                    + accepted
+                    _ROLE_OFFSETS[role] + system_index * 10_000_000 + length * 10_000 + accepted
                 )
                 rows.append(
                     make_history_record(
@@ -207,17 +206,13 @@ def build_panels(
             lengths=role_config.lengths,
             histories_per_system_length=role_config.histories_per_system_length,
             seed=role_config.seed,
-            renderers=(
-                panel.validation_renderers if role == "validation" else panel.fit_renderers
-            ),
+            renderers=(panel.validation_renderers if role == "validation" else panel.fit_renderers),
             min_entropy=panel.min_belief_entropy,
             max_entropy=panel.max_belief_entropy,
             min_core_variance=panel.min_core_variance,
             max_attempt_multiplier=panel.max_generation_attempt_multiplier,
         )
-    role_sets = [
-        {history.history_id for history in result[role].histories} for role in ROLE_IDS
-    ]
+    role_sets = [{history.history_id for history in result[role].histories} for role in ROLE_IDS]
     if any(role_sets[left] & role_sets[right] for left in range(3) for right in range(left)):
         raise RuntimeError("SPQ0 role history IDs overlap")
     return result
@@ -290,7 +285,9 @@ def render_prefix(
                 for state_index, state_name in enumerate(states)
             )
         lines.append("Sensor model:")
-        lines.extend("  " + row for row in _probability_rows(system.emissions, states, observations))
+        lines.extend(
+            "  " + row for row in _probability_rows(system.emissions, states, observations)
+        )
         lines.append("Observed history:")
         for step, (action, observation) in enumerate(
             zip(history.actions, history.observations, strict=True), start=1
@@ -335,13 +332,10 @@ def render_prefix(
     transition_blocks = []
     for action_index, action_name in enumerate(actions):
         matrix = ";".join(
-            ",".join(_number(value) for value in row)
-            for row in system.transitions[action_index]
+            ",".join(_number(value) for value in row) for row in system.transitions[action_index]
         )
         transition_blocks.append(f"T[{action_name}]=[{matrix}]")
-    emission = ";".join(
-        ",".join(_number(value) for value in row) for row in system.emissions
-    )
+    emission = ";".join(",".join(_number(value) for value in row) for row in system.emissions)
     event_rows = []
     for step, (action, observation) in enumerate(
         zip(history.actions, history.observations, strict=True), start=1

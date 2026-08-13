@@ -41,7 +41,7 @@
     "target_readers_frozen_before_source_evaluation": true
   },
   "config_path": "configs/spq0/real_olivia_spq0.yaml",
-  "config_sha256": "69126e9a3807b8682c48d5da30762c3a0b09d94369b2aea97eb70eb4879951fe",
+  "config_sha256": "42925d4a2c223f68bfb078a4bb146588fceaa25c489d1825904a18b2b51595f2",
   "development_only": true,
   "models": {
     "mistral-7b-v03": {
@@ -73,9 +73,9 @@
       "symbolic"
     ]
   },
-  "plan_sha256": "6d966b2308a7a43f41a6bef8f63129cf651429c4e93aef4ac7ee44a2acf372cf",
+  "plan_sha256": "1b6bb9477c27ef623d15701e27b7b03ef3771f853185cec085888af782f92e1e",
   "protocol_path": "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",
-  "protocol_sha256": "1b52663fac3d09489a0478765ebc926e3713934b0f0ace51c8d72233989aae75",
+  "protocol_sha256": "96f190cd34515718c9d2b02103e480656c4de4163fee9b2dcdc67f1115b42e2f",
   "protocol_version": "spq0-development-census",
   "public_basis": {
     "basis_sha256": "1280ee8aed94277bfa7d19e2404808d191c334c605d95fa435a1ce69796b49c1",
