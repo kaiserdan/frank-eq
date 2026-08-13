@@ -75,9 +75,62 @@ def test_olivia_scripts_require_arm64_runtime_provenance() -> None:
     assert "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1" in smoke
     assert 'sha256sum "$CONTAINER_IMAGE"' in slurm
     assert 'sha256sum "$SIF_IMAGE"' in smoke
-    assert "rate--compute runs require an inspected image SHA-256" in slurm
+    assert "registered audits require an inspected image SHA-256" in slurm
     assert 'source "$wandb_env"' in slurm
     assert "command -v python3" in quickstart
+    assert "configs/spq0/*" in quickstart
+    assert "frank_eq.shared_predictive_quotient.cli" in quickstart
+
+
+def test_spq0_plan_is_audited_full_profile_only(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "repo"
+    config = root / "configs" / "spq0" / "real_olivia_spq0.yaml"
+    plan_path = root / "configs" / "spq0" / "inspected_plan.json"
+    config.parent.mkdir(parents=True)
+    config.write_text("schema: test\n")
+    expected = {
+        "plan_sha256": "a" * 64,
+        "active_checkpoint_revision_registry_sha256": "b" * 64,
+        "reserved_checkpoint_non_access_contract_sha256": "c" * 64,
+    }
+    plan_path.write_text(json.dumps(expected, sort_keys=True))
+    (root / "src" / "frank_eq").mkdir(parents=True)
+    (root / "olivia").mkdir()
+    (root / "olivia" / "run.slurm").write_text("#!/bin/bash\n")
+
+    monkeypatch.setattr(
+        "frank_eq.shared_predictive_quotient.config.load_spq0_config",
+        lambda _path: object(),
+    )
+    monkeypatch.setattr(
+        "frank_eq.shared_predictive_quotient.workflow.build_spq0_plan",
+        lambda _config, *, config_path: expected,
+    )
+    client = ClusterClient("olivia", root=root)
+    plan = client.submit(
+        job_name="frank-eq-spq0-test",
+        config_path=config,
+        profile="full",
+        stages="audit",
+        dry_run=True,
+    )
+    assert plan["spq0_plan"]["plan_sha256"] == "a" * 64
+    assert plan["runtime"]["partition"] == "accel"
+    assert plan["runtime"]["time"] == "7-00:00:00"
+    assert plan["runtime"]["image_sha256"] == (
+        "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1"
+    )
+    with pytest.raises(ValueError, match="profile full"):
+        client.submit(
+            job_name="frank-eq-spq0-bad",
+            config_path=config,
+            profile="smoke",
+            stages="audit",
+            dry_run=True,
+        )
 
 
 def test_submit_applies_partition_and_time_overrides(monkeypatch, tmp_path: Path) -> None:

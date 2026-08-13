@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
 
+from frank_eq.shared_predictive_quotient.automaton import build_shared_predictive_basis
 from frank_eq.shared_predictive_quotient.config import load_spq0_config
 from frank_eq.shared_predictive_quotient.evaluation import (
     evaluate_all_models,
@@ -51,7 +53,8 @@ def test_spq0_freezes_cross_family_active_and_unopened_reserved_models() -> None
 
 
 def test_shared_future_tests_are_exact_at_rank_four_and_undercomplete_below() -> None:
-    _, systems, basis = _contract()
+    config, systems, basis = _contract()
+    assert config.systems.system_seed == 2026084101
     assert basis.exact_rank == 4
     assert basis.maximum_rank == 8
     assert max(basis.core_condition_numbers.values()) <= 5.0
@@ -74,6 +77,30 @@ def test_shared_future_tests_are_exact_at_rank_four_and_undercomplete_below() ->
             )
             rank_three_errors.append(float(np.max(np.abs(approximate - target))))
         assert max(rank_three_errors) > 1e-4
+
+
+def test_validation_only_system_cannot_select_public_or_target_tests() -> None:
+    config, systems, basis = _contract()
+    held = systems[-1]
+    replacement = replace(
+        held,
+        transitions=systems[1].transitions.copy(),
+        emissions=systems[1].emissions.copy(),
+    )
+    altered = build_shared_predictive_basis(
+        (*systems[:-1], replacement),
+        horizons=config.systems.future_horizons,
+        exact_rank=config.systems.predictive_rank,
+        maximum_rank=max(config.semantic_encoder.rank_grid),
+        n_target_tests=config.systems.target_tests,
+        target_seed=config.systems.core_selection_seed,
+        max_core_condition_number=config.systems.core_condition_number_max,
+        max_target_l1=config.systems.target_executor_l1_max,
+    )
+    assert altered.public_tests == basis.public_tests
+    assert altered.target_tests == basis.target_tests
+    assert not np.array_equal(held.transitions, systems[0].transitions)
+    assert not np.array_equal(held.emissions, systems[0].emissions)
 
 
 def test_panels_have_three_disjoint_roles_and_validation_only_transfer() -> None:

@@ -101,7 +101,7 @@ class SPQSystemConfig:
     target_executor_l1_max: float = 4.0
     future_horizons: list[int] = field(default_factory=lambda: [1, 2, 3, 4])
     target_tests: int = 24
-    system_seed: int = 2026084158
+    system_seed: int = 2026084101
     core_selection_seed: int = 2026084102
 
 

@@ -365,7 +365,7 @@ def _full_support_rows(
     # Sparse Dirichlet draws produce observably distinct states while the
     # affine floor preserves full support. The draw is part of the frozen
     # system generator, not fitted from any model response.
-    raw = rng.dirichlet(np.full(columns, 0.12), size=shape[0])
+    raw = rng.dirichlet(np.full(columns, 0.07), size=shape[0])
     return minimum_probability + (1.0 - columns * minimum_probability) * raw
 
 
@@ -386,9 +386,9 @@ def generate_system_family(
     if fit_systems < 2 or validation_only_systems < 1:
         raise ValueError("SPQ0 needs two fit systems and a validation-only system")
     rng = np.random.default_rng(seed)
-    systems: list[ControlledSystem] = []
+    raw_systems: list[tuple[np.ndarray, np.ndarray]] = []
     total = fit_systems + validation_only_systems
-    for index in range(total):
+    for _index in range(total):
         transition_rows: list[np.ndarray] = []
         for _ in range(actions):
             permutation = rng.permutation(latent_states)
@@ -407,6 +407,28 @@ def generate_system_family(
             (latent_states, observations),
             minimum_probability,
         )
+        raw_systems.append((transitions, emissions))
+
+    # A validation system is a prospectively frozen 10% perturbation of a fit
+    # system by an independent full-support draw.  This gives a genuinely new
+    # transition/emission law while guaranteeing that the shared public test
+    # registry remains numerically meaningful without inspecting any model
+    # response or using validation rows for basis selection.
+    validation_base_weight = 0.90
+    systems: list[ControlledSystem] = []
+    for index, (transitions, emissions) in enumerate(raw_systems):
+        if index >= fit_systems:
+            parent_transitions, parent_emissions = raw_systems[
+                (index - fit_systems) % fit_systems
+            ]
+            transitions = (
+                validation_base_weight * parent_transitions
+                + (1.0 - validation_base_weight) * transitions
+            )
+            emissions = (
+                validation_base_weight * parent_emissions
+                + (1.0 - validation_base_weight) * emissions
+            )
         system = ControlledSystem(
             system_id=f"system-{index:02d}",
             role="fit" if index < fit_systems else "validation_only",
@@ -548,7 +570,7 @@ def build_shared_predictive_basis(
         if index in public_indices:
             continue
         stable = True
-        for system in systems:
+        for system in selection_systems:
             core = vectors[system.system_id][:, public_indices[:exact_rank]]
             coefficient = np.linalg.solve(core, vectors[system.system_id][:, index])
             if float(np.sum(np.abs(coefficient))) > max_target_l1:

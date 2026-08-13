@@ -43,7 +43,7 @@ systems:
   target_executor_l1_max: 4.0
   future_horizons: [1, 2, 3, 4]
   target_tests: 24
-  system_seed: 2026084158
+  system_seed: 2026084101
   core_selection_seed: 2026084102
 
 panel:
