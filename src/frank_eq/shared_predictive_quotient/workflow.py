@@ -17,6 +17,11 @@ import torch
 from frank_eq.telemetry import WandbTelemetry
 from frank_eq.utils import atomic_write_json, canonical_json_bytes, sha256_bytes, sha256_file
 
+from .automaton import (
+    BASIS_REGISTRY_DECIMALS,
+    SELECTION_SCORE_DECIMALS,
+    canonical_basis_registry_payload,
+)
 from .capture import _write_npz, capture_model, load_capture
 from .checkpoints import preflight_active_tokenizer_contract, preflight_checkpoint_contract
 from .config import SPQRunConfig
@@ -116,7 +121,7 @@ def build_spq0_plan(
     )
     tests_per_prefix = len(basis.public_tests) + len(basis.target_tests)
     system_payload = [system.to_dict() for system in systems]
-    basis_payload = basis.to_dict()
+    basis_payload = canonical_basis_registry_payload(basis)
     active_revisions = {
         model.model_id: {
             "hf_id": model.hf_id,
@@ -164,9 +169,17 @@ def build_spq0_plan(
             "rank_grid": config.semantic_encoder.rank_grid,
             "public_tests": len(basis.public_tests),
             "target_tests": len(basis.target_tests),
-            "core_condition_numbers": dict(basis.core_condition_numbers),
-            "maximum_target_l1": basis.maximum_target_l1,
-            "maximum_exact_executor_error": basis.maximum_exact_executor_error,
+            "core_condition_numbers": basis_payload["core_condition_numbers"],
+            "maximum_target_l1": basis_payload["maximum_target_l1"],
+            "maximum_exact_executor_error_bound": (
+                config.gates.max_oracle_executor_abs_error
+            ),
+            "numeric_canonicalization": {
+                "basis_registry_decimal_places": BASIS_REGISTRY_DECIMALS,
+                "selection_score_decimal_places": SELECTION_SCORE_DECIMALS,
+                "tie_break": "candidate_registry_order",
+                "runtime_arrays_retain_float64": True,
+            },
             "basis_sha256": sha256_bytes(canonical_json_bytes(basis_payload)),
         },
         "panel": {

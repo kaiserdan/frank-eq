@@ -73,20 +73,26 @@
       "symbolic"
     ]
   },
-  "plan_sha256": "64a732842361859daed3bb5709c839bc935f7c1cad05d58e81d5e3afd0cea654",
+  "plan_sha256": "35aaedcbbc18fc8dc9e4eeb8e303d527424d135d7f4c7948b12dee6f6690a0f1",
   "protocol_path": "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",
-  "protocol_sha256": "bda056db8e7cc49b9b5b6ea228dcf03da75a1127087cd8df5393f5bfb802c50e",
+  "protocol_sha256": "443e45281c7819d11be0db8559041f8ed756c38dbd88a6bd927051e30a42bc8d",
   "protocol_version": "spq0-development-census",
   "public_basis": {
-    "basis_sha256": "3427a5867a2fa4e486bbd7aab0c39570a7e521743ae61afe43b56bddb3b91530",
+    "basis_sha256": "987681efec7a5f4333e2d25f539d0051b1ac06a1437013487bbda8be565af55b",
     "core_condition_numbers": {
-      "system-00": 2.743122951010736,
-      "system-01": 4.311220341636839,
-      "system-02": 4.724402456169756
+      "system-00": 2.743122951,
+      "system-01": 4.3112203416,
+      "system-02": 4.9225045375
     },
     "exact_rank": 4,
-    "maximum_exact_executor_error": 6.661338147750939e-16,
-    "maximum_target_l1": 2.929518494027724,
+    "maximum_exact_executor_error_bound": 1e-10,
+    "maximum_target_l1": 2.9867494549,
+    "numeric_canonicalization": {
+      "basis_registry_decimal_places": 10,
+      "runtime_arrays_retain_float64": true,
+      "selection_score_decimal_places": 14,
+      "tie_break": "candidate_registry_order"
+    },
     "public_tests": 8,
     "rank_grid": [
       1,

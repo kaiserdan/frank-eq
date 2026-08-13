@@ -8,6 +8,49 @@ from typing import Any, Iterable, Mapping
 
 import numpy as np
 
+SELECTION_SCORE_DECIMALS = 14
+BASIS_REGISTRY_DECIMALS = 10
+
+
+def _selection_score(value: float) -> float:
+    """Remove backend-level LAPACK noise before registry comparisons.
+
+    Candidate registries contain exact or near-exact symmetry classes.  Raw
+    singular values can differ in their final bits across Accelerate, OpenBLAS,
+    and MKL, which must not silently change a frozen public coordinate.  The
+    scientific conditioning margin is many orders of magnitude wider than this
+    comparison precision; registry order provides the deterministic tie break.
+    """
+
+    return round(float(value), SELECTION_SCORE_DECIMALS)
+
+
+def _canonicalize_basis_registry_value(value: Any) -> Any:
+    """Canonicalize numerical basis evidence for cross-platform hashing.
+
+    Runtime arrays retain float64 precision.  The plan registry deliberately
+    hashes a 10-decimal representation because LAPACK backends can disagree in
+    the final bits of SVD/pseudoinverse outputs.  This representation is used
+    only for registry identity; executed arrays retain full float64 precision.
+    """
+
+    if isinstance(value, float):
+        return round(value, BASIS_REGISTRY_DECIMALS)
+    if isinstance(value, list):
+        return [_canonicalize_basis_registry_value(item) for item in value]
+    if isinstance(value, dict):
+        return {
+            key: _canonicalize_basis_registry_value(item)
+            for key, item in value.items()
+        }
+    return value
+
+
+def canonical_basis_registry_payload(basis: SharedPredictiveBasis) -> dict[str, Any]:
+    """Return the platform-stable numerical payload bound by the dry-run plan."""
+
+    return _canonicalize_basis_registry_value(basis.to_dict())
+
 
 @dataclass(frozen=True, slots=True, order=True)
 class PredictiveTest:
@@ -472,7 +515,7 @@ def _select_shared_public_tests(
                 continue
             registry = [candidates[item] for item in proposed_indices]
             score = (
-                min(singular_ratios),
+                _selection_score(min(singular_ratios)),
                 float(len({item.observation for item in registry})),
                 float(len({len(item.actions) for item in registry})),
                 -float(len(test.actions)),
@@ -495,7 +538,7 @@ def _select_shared_public_tests(
             )
             registry = [candidates[item] for item in proposed_indices]
             score = (
-                -worst_condition,
+                _selection_score(-worst_condition),
                 float(len({(len(item.actions), item.observation) for item in registry})),
                 -float(len(test.actions)),
             )
@@ -573,7 +616,7 @@ def build_shared_predictive_basis(
         for system in selection_systems:
             core = vectors[system.system_id][:, public_indices[:exact_rank]]
             coefficient = np.linalg.solve(core, vectors[system.system_id][:, index])
-            if float(np.sum(np.abs(coefficient))) > max_target_l1:
+            if _selection_score(float(np.sum(np.abs(coefficient)))) > max_target_l1:
                 stable = False
                 break
         if stable:

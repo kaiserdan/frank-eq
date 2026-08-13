@@ -89,7 +89,10 @@ python scripts/validate_spq0.py
 ```
 
 Independent plan generation must reproduce the committed file byte-for-byte.
-Any change requires review and a new clean commit before model access.
+The plan's public-basis digest uses the protocol's declared 10-decimal numeric
+canonicalization and 14-decimal selection-score tie resolution so different
+LAPACK backends cannot alter plan identity. Runtime arrays remain float64. Any
+change requires review and a new clean commit before model access.
 
 ## Dry-run inspection
 

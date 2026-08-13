@@ -183,6 +183,18 @@ def main() -> int:
         "SPQ0 runtime registration changed",
     )
     _require(
+        inspected_plan["public_basis"]["numeric_canonicalization"]
+        == {
+            "basis_registry_decimal_places": 10,
+            "runtime_arrays_retain_float64": True,
+            "selection_score_decimal_places": 14,
+            "tie_break": "candidate_registry_order",
+        }
+        and inspected_plan["public_basis"]["maximum_exact_executor_error_bound"]
+        == config.gates.max_oracle_executor_abs_error,
+        "SPQ0 cross-platform basis canonicalization changed",
+    )
+    _require(
         inspected_plan["access"]
         == {
             "future_test_revealed_before_capture": False,

@@ -8,7 +8,12 @@ import pytest
 import torch
 
 from frank_eq.data.hf_backend import CHAT_ACKNOWLEDGEMENT
-from frank_eq.shared_predictive_quotient.automaton import build_shared_predictive_basis
+from frank_eq.shared_predictive_quotient.automaton import (
+    BASIS_REGISTRY_DECIMALS,
+    SELECTION_SCORE_DECIMALS,
+    build_shared_predictive_basis,
+    canonical_basis_registry_payload,
+)
 from frank_eq.shared_predictive_quotient.capture import SPQModelAdapter
 from frank_eq.shared_predictive_quotient.config import load_spq0_config
 from frank_eq.shared_predictive_quotient.evaluation import (
@@ -163,6 +168,16 @@ def test_shared_future_tests_are_exact_at_rank_four_and_undercomplete_below() ->
     assert config.systems.system_seed == 2026084101
     assert basis.exact_rank == 4
     assert basis.maximum_rank == 8
+    assert [test.to_dict() for test in basis.core_tests] == [
+        {"actions": [0], "observation": 0},
+        {"actions": [2], "observation": 0},
+        {"actions": [0, 2], "observation": 0},
+        {"actions": [0, 0, 2, 0], "observation": 2},
+    ]
+    assert SELECTION_SCORE_DECIMALS == 14
+    assert BASIS_REGISTRY_DECIMALS == 10
+    canonical_basis = canonical_basis_registry_payload(basis)
+    assert canonical_basis["maximum_exact_executor_error"] == 0.0
     assert max(basis.core_condition_numbers.values()) <= 5.0
     assert basis.maximum_target_l1 <= 4.0
     rng = np.random.default_rng(7)
