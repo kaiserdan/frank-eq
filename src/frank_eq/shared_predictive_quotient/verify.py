@@ -8,7 +8,12 @@ from typing import Any, Mapping
 
 import numpy as np
 
-from frank_eq.utils import atomic_write_json, canonical_json_bytes, sha256_file
+from frank_eq.utils import (
+    atomic_write_json,
+    canonical_json_bytes,
+    sha256_bytes,
+    sha256_file,
+)
 
 from .capture import load_capture
 from .config import load_spq0_config
@@ -168,6 +173,21 @@ def _checkpoint_preflight_valid(
                 or sha256_file(path) != file_entry.get("sha256")
             ):
                 return False
+        if (
+            entry.get("file_count") != len(files)
+            or entry.get("total_bytes")
+            != sum(int(file_entry["bytes"]) for file_entry in files.values())
+            or entry.get("snapshot_content_sha256")
+            != sha256_bytes(canonical_json_bytes(files))
+        ):
+            return False
+    if (
+        receipt.get("status") != "passed"
+        or receipt.get("local_files_only") is not True
+        or receipt.get("active_snapshot_content_sha256")
+        != sha256_bytes(canonical_json_bytes(active))
+    ):
+        return False
     reserved = receipt.get("reserved_unopened", [])
     expected_reserved = {
         model.model_id: (model.hf_id, model.family, model.revision)

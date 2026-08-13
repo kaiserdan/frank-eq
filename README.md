@@ -200,9 +200,43 @@ prediction field, metric, gate, or decision changes. The compact adopted
 package is in `evidence/real_stage_m_olivia_m0/`.
 
 This is interactive event tomography, not a one-shot latent interface. The
-negative result authorizes no successor compiler draft or run, held sender,
-receiver access, or claim. The current graph/source line stops; there is no
-authorized next executable.
+negative result authorizes no successor graph compiler draft or run, held
+sender, receiver access, or claim. The current graph/source line stops.
+
+## SPQ0: frozen prospective predictive-state census
+
+The next scientific question leaves the consumed graph task. SPQ0 asks whether
+two cross-family founders expose a shared, typed predictive quotient for fresh
+controlled stochastic systems. It replaces stochastic true/false responses
+with categorical probability-bin likelihoods and uses an exact rank-four
+future-test core.
+
+The active founders are exact revisions of Qwen3-4B and
+Mistral-7B-Instruct-v0.3. Exact OLMo2-7B and Granite-3.1-8B revisions are
+reserved unopened: SPQ0 may not resolve, inspect, load, tokenize with, or run
+them. Calibration, architecture selection, and validation are disjoint; there
+is no test role. One transition/emission system, one renderer, and length 32
+are validation-only.
+
+SPQ0 compares final-token, event-boundary, all-token, embedding, and
+parameter-matched token-sequence surfaces. Complete model-local semantic
+encoders emit public future-test coordinates. Frozen target-local readers are
+fit from oracle cores before evaluating both ordered cross-family
+compositions, with no pair-specific mapper. The rank sweep, behavioral
+residual census, and 1/4/16/32-query rate frontier are all prospective and
+frozen.
+
+The implementation and plan may be reviewed, but this repository change does
+not launch Olivia. A later separately authorized execution is restricted to
+`--profile full --stages audit`. A pass could authorize only drafting SPQ1;
+all execution, held/checkpoint, receiver, and claim fields remain closed.
+
+Read:
+
+```text
+docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md
+docs/26_SPQ0_OLIVIA_RUNBOOK.md
+```
 
 ## Historical RC0 decision tree
 
@@ -297,6 +331,18 @@ python scripts/validate_moment_compute.py
 python scripts/verify_moment_compute_run.py --run <fetched-run-root>
 ```
 
+Prospective SPQ0 validation and dry-run commands:
+
+```text
+python scripts/validate_spq0.py
+python -m frank_eq.shared_predictive_quotient.cli validate \
+  --config configs/spq0/real_olivia_spq0.yaml
+python olivia/cli.py submit \
+  --job-name frank-eq-spq0-olivia-20260813a \
+  --config configs/spq0/real_olivia_spq0.yaml \
+  --profile full --stages audit --dry-run --json
+```
+
 ## Local validation
 
 ```bash
@@ -311,6 +357,7 @@ bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
 python scripts/validate_moment_compute.py
+python scripts/validate_spq0.py
 ```
 
 ## Evidence hierarchy
@@ -349,4 +396,5 @@ Frank-EQ currently establishes only:
 
 It does not yet establish a cross-model public interface, a hidden-state
 advantage over text/tokens, a qualified one-shot compiler, receiver execution,
-or a positive ICLR claim. No further experiment is currently authorized.
+or a positive ICLR claim. SPQ0 is prospective development infrastructure, not
+evidence. No SPQ0 model run occurs automatically with this implementation.

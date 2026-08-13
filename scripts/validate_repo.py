@@ -16,7 +16,9 @@ sys.path.insert(0, str(SRC))
 
 from frank_eq.config import load_config  # noqa: E402
 from frank_eq.real_config import load_real_config  # noqa: E402
-from frank_eq.utils import sha256_file  # noqa: E402
+from frank_eq.shared_predictive_quotient.config import load_spq0_config  # noqa: E402
+from frank_eq.shared_predictive_quotient.workflow import build_spq0_plan  # noqa: E402
+from frank_eq.utils import canonical_json_bytes, sha256_file  # noqa: E402
 from frank_eq.workflow import validate_real_stage_role  # noqa: E402
 
 REQUIRED = (
@@ -47,6 +49,8 @@ REQUIRED = (
     "docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md",
     "docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md",
     "docs/24_STAGE_M_OLIVIA_RUNBOOK.md",
+    "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",
+    "docs/26_SPQ0_OLIVIA_RUNBOOK.md",
     "docs/OLIVIA.md",
     "docs/LUMI.md",
     "configs/stage0/synthetic_smoke.yaml",
@@ -62,6 +66,11 @@ REQUIRED = (
     "configs/stagea_v3/real_olivia_v3.yaml",
     "configs/stagea_v3/registration.json",
     "configs/moment_compute/real_olivia_m0.yaml",
+    "configs/spq0/real_olivia_spq0.yaml",
+    "configs/spq0/inspected_plan.json",
+    "configs/spq0/registration.json",
+    "frank_eq_spq0_research_and_implementation_plan.md",
+    "frank_eq_spq0_config_skeleton.yaml",
     "scripts/qualify_real_cache.py",
     "scripts/compare_stageq_caches.py",
     "scripts/audit_rate_compute_result.py",
@@ -69,6 +78,8 @@ REQUIRED = (
     "scripts/smoke_stagea_v3_held_runtime.py",
     "scripts/validate_moment_compute.py",
     "scripts/verify_moment_compute_run.py",
+    "scripts/validate_spq0.py",
+    "scripts/verify_spq0_run.py",
     "olivia/cli.py",
     "olivia/run.slurm",
     "olivia/quickstart.sh",
@@ -81,6 +92,17 @@ REQUIRED = (
     ".agents/skills/olivia-cluster-runner/SKILL.md",
     ".agents/skills/lumi-cluster-runner/SKILL.md",
     ".agents/skills/moment-compute-runner/SKILL.md",
+    ".agents/skills/spq0-runner/SKILL.md",
+    "src/frank_eq/shared_predictive_quotient/automaton.py",
+    "src/frank_eq/shared_predictive_quotient/capture.py",
+    "src/frank_eq/shared_predictive_quotient/checkpoints.py",
+    "src/frank_eq/shared_predictive_quotient/cli.py",
+    "src/frank_eq/shared_predictive_quotient/config.py",
+    "src/frank_eq/shared_predictive_quotient/evaluation.py",
+    "src/frank_eq/shared_predictive_quotient/panel.py",
+    "src/frank_eq/shared_predictive_quotient/probes.py",
+    "src/frank_eq/shared_predictive_quotient/verify.py",
+    "src/frank_eq/shared_predictive_quotient/workflow.py",
     "evidence/reference_stage0/metrics.json",
     "evidence/reference_stage0/decision.json",
     "evidence/reference_stage0/manifest.json",
@@ -234,6 +256,36 @@ def main() -> int:
         pass
     else:
         raise SystemExit("Stage-Q config improperly permits train/eval")
+
+    spq0_path = ROOT / "configs/spq0/real_olivia_spq0.yaml"
+    spq0 = load_spq0_config(spq0_path)
+    spq0_plan = json.loads((ROOT / "configs/spq0/inspected_plan.json").read_text())
+    expected_spq0_plan = build_spq0_plan(spq0, config_path=spq0_path)
+    if canonical_json_bytes(spq0_plan) != canonical_json_bytes(expected_spq0_plan):
+        raise SystemExit("SPQ0 inspected plan differs from deterministic recomputation")
+    spq0_registration = json.loads(
+        (ROOT / "configs/spq0/registration.json").read_text()
+    )
+    if spq0_registration.get("schema") != "frank_eq_spq0_registration_manifest_v1":
+        raise SystemExit("SPQ0 registration manifest has the wrong schema")
+    if (
+        spq0_registration.get("status") != "prospective_development_only"
+        or spq0_registration.get("implementation_pr_launch_authorized") is not False
+        or any(spq0_registration.get("access", {}).values())
+    ):
+        raise SystemExit("SPQ0 registration improperly opens execution or access")
+    for relative, expected_hash in spq0_registration.get("files", {}).items():
+        if sha256_file(ROOT / relative) != expected_hash:
+            raise SystemExit(f"SPQ0 registration hash changed: {relative}")
+    if (
+        spq0_registration.get("inspected_plan_sha256")
+        != spq0_plan.get("plan_sha256")
+        or spq0_registration.get("active_checkpoint_revision_registry_sha256")
+        != spq0_plan.get("active_checkpoint_revision_registry_sha256")
+        or spq0_registration.get("reserved_checkpoint_non_access_contract_sha256")
+        != spq0_plan.get("reserved_checkpoint_non_access_contract_sha256")
+    ):
+        raise SystemExit("SPQ0 registration hashes differ from the inspected plan")
 
     synthetic_dir = ROOT / "evidence/reference_stage0"
     synthetic_decision = json.loads((synthetic_dir / "decision.json").read_text())
@@ -801,6 +853,9 @@ def main() -> int:
                 "stagea_v3_evidence": v3_evidence_verification["overall"],
                 "stage_m_diagnosis": stage_m_decision["diagnosis"],
                 "stage_m_evidence": stage_m_verification["overall"],
+                "spq0_status": spq0_registration["status"],
+                "spq0_plan_sha256": spq0_plan["plan_sha256"],
+                "spq0_reserved_checkpoint_access": False,
                 "stageq_pair_registered": True,
                 "stageq_cache_only_enforced": True,
             },

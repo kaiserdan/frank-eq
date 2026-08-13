@@ -1,0 +1,150 @@
+{
+  "access": {
+    "future_test_revealed_before_capture": false,
+    "held_sender": false,
+    "receiver": false,
+    "reserved_checkpoint_files_opened": 0,
+    "reserved_checkpoint_model_loads": 0,
+    "reserved_checkpoint_snapshot_resolution_attempts": 0,
+    "test_role": false
+  },
+  "active_checkpoint_revision_registry_sha256": "85daa3682ee79595c8e0ad58e88d82568c71781b05c60bd4e226a5e0b2bd4909",
+  "capture": {
+    "categorical_candidates_per_query": 10,
+    "exact_replay_fallback": false,
+    "future_tests_per_prefix": 32,
+    "literal_kv_reuse": true,
+    "normalized_depths": [
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "post_reveal_query_branches_per_model": 92160,
+    "prefixes_per_model": 2880,
+    "primary_packet_post_capture_source_queries": 0,
+    "runtime_queries_are_development_tomography": true,
+    "surfaces": [
+      "final_token_residual",
+      "event_boundary_residuals",
+      "all_token_summary",
+      "mean_input_embedding",
+      "parameter_matched_token_sequence"
+    ]
+  },
+  "composition": {
+    "behavioral_residual_promotional": false,
+    "ordered_cross_family_pairs": 2,
+    "pair_specific_mapper_count": 0,
+    "target_local_reader_count": 2,
+    "target_readers_frozen_before_source_evaluation": true
+  },
+  "config_path": "configs/spq0/real_olivia_spq0.yaml",
+  "config_sha256": "0e95a7c7431abed70e6c6115ec6bc3f0b1a2e47a9a273026308e093ffd838f9b",
+  "development_only": true,
+  "models": {
+    "mistral-7b-v03": {
+      "family": "mistral",
+      "hf_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71"
+    },
+    "qwen3-4b": {
+      "family": "qwen3",
+      "hf_id": "Qwen/Qwen3-4B",
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+    }
+  },
+  "panel": {
+    "fit_renderers": [
+      "narrative",
+      "table"
+    ],
+    "roles": {
+      "calibration": 384,
+      "selection": 192,
+      "validation": 576
+    },
+    "test_histories": 0,
+    "validation_only_length": 32,
+    "validation_renderers": [
+      "narrative",
+      "table",
+      "symbolic"
+    ]
+  },
+  "plan_sha256": "660c0a41bcd9ce7b214a583cfef31fcf2ad136b8f16161f7984168f5fbd6a933",
+  "protocol_path": "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",
+  "protocol_sha256": "e117f3330cec34c7f8592443bd1c07764c340645d60e8047bb386b480f5841a5",
+  "protocol_version": "spq0-development-census",
+  "public_basis": {
+    "basis_sha256": "3427a5867a2fa4e486bbd7aab0c39570a7e521743ae61afe43b56bddb3b91530",
+    "core_condition_numbers": {
+      "system-00": 2.743122951010736,
+      "system-01": 4.311220341636839,
+      "system-02": 4.724402456169756
+    },
+    "exact_rank": 4,
+    "maximum_exact_executor_error": 6.661338147750939e-16,
+    "maximum_target_l1": 2.929518494027724,
+    "public_tests": 8,
+    "rank_grid": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      8
+    ],
+    "target_tests": 24
+  },
+  "rate_compute": {
+    "amortized_future_query_counts": [
+      1,
+      4,
+      16,
+      32
+    ],
+    "direct_one_query_advantage_is_not_conjunctive": true,
+    "primary_amortized_query_count": 16,
+    "primary_packet_rank": 4,
+    "primary_payload_bits": 16,
+    "primary_quantization_bits_per_coordinate": 4
+  },
+  "reserved_checkpoint_non_access_contract_sha256": "69752ed4bed16d6ff3f1c9c379be7fa3ec8d2fc32065ed9b99601e69c07b89e1",
+  "reserved_unopened_models": [
+    {
+      "access": "reserved_unopened",
+      "family": "olmo2",
+      "hf_id": "allenai/OLMo-2-1124-7B-Instruct",
+      "model_id": "olmo2-7b-held",
+      "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84"
+    },
+    {
+      "access": "reserved_unopened",
+      "family": "granite",
+      "hf_id": "ibm-granite/granite-3.1-8b-instruct",
+      "model_id": "granite31-8b-held",
+      "revision": "4009206d5fc95d2e65a7b7633e159d6e97e25d35"
+    }
+  ],
+  "runtime": {
+    "active_checkpoint_file_hash_preflight_required": true,
+    "clean_committed_source_required": true,
+    "cluster": "olivia",
+    "image": "/cluster/projects/nn12027k/frank/scratch_pytorch_gcc_updated.sif",
+    "image_sha256": "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f4031183208aa3b1",
+    "profile": "full",
+    "stages": [
+      "audit"
+    ]
+  },
+  "schema": "frank_eq_spq0_plan_v1",
+  "systems": {
+    "family_sha256": "18b19856b73216971f82f7367fea7b5e930a3fc43d4c7e11d2d10d6d2c9c2793",
+    "fit": 2,
+    "validation_only": 1,
+    "validation_only_system_ids": [
+      "system-02"
+    ]
+  }
+}

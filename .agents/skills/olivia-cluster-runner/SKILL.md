@@ -1,6 +1,6 @@
 ---
 name: olivia-cluster-runner
-description: Package, submit, monitor, fetch, and verify Frank-EQ jobs on Olivia, including the development-only Stage-M0 operation-closed basis audit.
+description: Package, dry-run, submit only with authority, monitor, fetch, and verify Frank-EQ jobs on Olivia, including the prospective development-only SPQ0 census.
 ---
 
 # Olivia cluster runner
@@ -30,7 +30,20 @@ evidence:  evidence/real_stage_m_olivia_m0/
 
 It has no held sender, claim-bearing test role, receiver access, successor draft
 authority, or scientific claim authority. Do not resubmit it. There is no
-current Olivia execution authority.
+current graph execution authority.
+
+SPQ0 is the sole prospective Olivia workflow. Implementation and deterministic
+dry-run inspection are authorized, but this PR must not launch it. A later
+separately authorized submission requires exactly:
+
+```text
+configs/spq0/real_olivia_spq0.yaml
+--profile full --stages audit
+```
+
+It has no recovery, test, held, receiver, or claim path. OLMo2 and Granite are
+reserved unopened. Follow `.agents/skills/spq0-runner/SKILL.md` and
+`docs/26_SPQ0_OLIVIA_RUNBOOK.md`.
 
 ## Validation
 
@@ -41,6 +54,7 @@ pytest -q
 python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
 python scripts/validate_moment_compute.py
+python scripts/validate_spq0.py
 bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 ```
 
@@ -78,6 +92,7 @@ python scripts/verify_moment_compute_run.py \
 - Generated runs, source archives, checkpoints, `.agents/state/`, and credentials
   remain outside Git.
 
-The observed Stage M diagnosis closes the current graph/source line. No fresh
-successor protocol, run, held sender, receiver work, or paper claim is
-authorized.
+The observed Stage M diagnosis closes the graph/source line. SPQ0 does not
+change that conclusion because it asks a fresh stochastic-system question.
+Never launch it automatically, access its reserved checkpoints, or treat its
+prospective plan as evidence.

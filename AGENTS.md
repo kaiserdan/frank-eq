@@ -11,25 +11,28 @@ frozen question, preserve information boundaries, and fail closed.
 
 1. `README.md`
 2. `HANDOFF.md`
-3. `STAGE_M_HANDOFF.md`
-4. `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`
-5. `docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`
-6. `docs/24_STAGE_M_OLIVIA_RUNBOOK.md`
-7. `evidence/real_stage_m_olivia_m0/AUDIT.md`
-8. `.agents/skills/moment-compute-runner/SKILL.md`
-9. `evidence/real_stagea_v3_olivia/AUDIT.md`
-10. `docs/20_STAGEA_V3_PROTOCOL.md`
-11. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
-12. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
-13. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
-14. `evidence/real_stagea_lumi_v2/REVIEW.md`
-15. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
-16. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
-17. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
-18. `docs/05_GATES_AND_STOP_RULES.md`
-19. `docs/09_IMPLEMENTATION_STATUS.md`
-20. `docs/10_DECISION_LOG.md`
-21. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
+3. `docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md`
+4. `docs/26_SPQ0_OLIVIA_RUNBOOK.md`
+5. `.agents/skills/spq0-runner/SKILL.md`
+6. `STAGE_M_HANDOFF.md`
+7. `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`
+8. `docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`
+9. `docs/24_STAGE_M_OLIVIA_RUNBOOK.md`
+10. `evidence/real_stage_m_olivia_m0/AUDIT.md`
+11. `.agents/skills/moment-compute-runner/SKILL.md`
+12. `evidence/real_stagea_v3_olivia/AUDIT.md`
+13. `docs/20_STAGEA_V3_PROTOCOL.md`
+14. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
+15. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
+16. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
+17. `evidence/real_stagea_lumi_v2/REVIEW.md`
+18. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
+19. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
+20. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
+21. `docs/05_GATES_AND_STOP_RULES.md`
+22. `docs/09_IMPLEMENTATION_STATUS.md`
+23. `docs/10_DECISION_LOG.md`
+24. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
 
 For cluster work, also read the matching runner skill under `.agents/skills/`.
 
@@ -79,7 +82,47 @@ responses pass. Required joint-degree and path-intersection event groups fail
 balanced accuracy, and the moment executor is worse than the historical
 marginal executor for both models. No successor draft, run, held sender,
 receiver work, or claim is authorized. There is currently no authorized
-experiment or cluster executable.
+graph experiment or graph-cluster executable.
+
+SPQ0 is the only prospective development execution. It asks a fresh
+controlled-stochastic-system question and may run only after implementation
+review and separate operator launch authority:
+
+```text
+config:   configs/spq0/real_olivia_spq0.yaml
+profile:  full
+stages:   audit
+cluster:  Olivia
+```
+
+Do not launch it while implementing or opening its PR. OLMo2 and Granite are
+reserved unopened. SPQ0 has no test role, held sender, receiver access, or
+claim authority. A pass authorizes only an SPQ1 protocol draft.
+
+## Prospective SPQ0 boundary
+
+- Use exact Qwen3-4B and Mistral-7B-v0.3 founder revisions; no other active
+  checkpoint is permitted.
+- Never resolve, open, adapt, load, tokenize with, or infer with the reserved
+  OLMo2 and Granite revisions.
+- Use the untouched system seed `2026084101`. Select public and target future
+  tests from fit systems only; validation matrices cannot change the registry.
+- Keep calibration, architecture selection, and validation histories disjoint.
+  There is no test role. The held system, symbolic renderer, and length 32 are
+  validation-only.
+- Score complete categorical probability-bin candidate sequences. Do not use
+  stochastic true/false samples or one-token A/B probabilities.
+- Form state before revealing a future test. Require exact chat-prefix
+  continuity, exclusive cloned KV branches, and zero replay.
+- Fit complete model-local semantic encoders into typed future tests and freeze
+  target-local oracle-core readers before both ordered cross-family transfers.
+- Pair-specific mappers are forbidden. The behavioral residual census is
+  non-promotional.
+- Report exact-rank sweep, quantization, grouped transfer strata, message bits,
+  source queries, consumer compute, and the amortized direct frontier.
+- A clean committed source, exact image and active checkpoint file hashes,
+  deterministic inspected-plan equality, all validators, and shell syntax are
+  prerequisites to model inference.
 
 ## Completed Stage-A v3 execution boundary
 
@@ -303,6 +346,15 @@ Draft exactly one fresh Stage-A v3 protocol using:
   communication result.
 - Launching a successor compiler, held-sender, confirmation, or receiver run
   from the negative Stage M0 result.
+- Reusing or retuning a consumed graph world, operation, renderer, threshold,
+  response, model role, or evidence artifact for SPQ0.
+- Using the historical PSR0 stochastic true/false protocol.
+- Allowing SPQ0 validation rows to influence selection or exposing a test role.
+- Accessing the reserved OLMo2 or Granite checkpoints.
+- Adding a pair-specific mapper, promoting the behavioral residual census, or
+  using a one-query direct comparison as a conjunctive gate.
+- Launching SPQ0 automatically from implementation or using a profile/stage
+  other than `full` / `audit`.
 
 ## Development validation
 
@@ -314,6 +366,7 @@ bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
 python scripts/validate_moment_compute.py
+python scripts/validate_spq0.py
 ```
 
 For any behavioral change, add a focused test and update the frozen protocol

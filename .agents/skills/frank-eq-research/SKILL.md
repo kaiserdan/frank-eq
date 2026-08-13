@@ -15,7 +15,9 @@ description: Audit and extend Frank-EQ public operational-interface experiments 
 
 ## Current authority
 
-Read `AGENTS.md`, `HANDOFF.md`, `STAGE_M_HANDOFF.md`,
+Read `AGENTS.md`, `HANDOFF.md`,
+`docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md`,
+`docs/26_SPQ0_OLIVIA_RUNBOOK.md`, `STAGE_M_HANDOFF.md`,
 `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`,
 `docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`, and
 `docs/24_STAGE_M_OLIVIA_RUNBOOK.md` before acting.
@@ -53,7 +55,14 @@ It has no held sender, test role, receiver access, claim authority, successor
 draft authority, or rerun authority. Joint-degree and two-path-intersection
 events fail readout; the moment executor beats direct responses but is worse
 than the marginal control for both models. The current graph/source line stops,
-and there is no authorized experiment.
+and there is no authorized graph experiment.
+
+SPQ0 is a separate prospective development census on fresh controlled
+stochastic systems. Its implementation and deterministic dry run are
+authorized; do not launch it automatically. A later separately authorized run
+must use `configs/spq0/real_olivia_spq0.yaml`, profile `full`, and exactly stage
+`audit`. Reserved OLMo2 and Granite checkpoints must remain unopened. A pass
+authorizes only drafting SPQ1.
 
 ## Historical RC0 workflow
 
@@ -166,6 +175,13 @@ Receiver execution remains locked.
 - Treating Stage M interactive tomography as one-shot latent communication.
 - Launching a successor compiler, held sender, confirmation role, or receiver
   from a Stage M pass without a separate frozen protocol and authority.
+- Reusing or retuning any consumed graph experiment for SPQ0.
+- Restoring the PSR0 stochastic true/false response protocol.
+- Using validation-only SPQ0 rows for selection or creating a test role.
+- Accessing reserved OLMo2 or Granite checkpoints during SPQ0.
+- Adding pair-specific cross-family parameters or promoting the behavioral
+  residual census.
+- Launching SPQ0 from its implementation PR or with a non-`audit` stage.
 - Committing generated caches, checkpoints, `.agents/state/`, secrets, or W&B
   credentials.
 
@@ -179,6 +195,7 @@ bash -n olivia/*.sh olivia/*.slurm lumi/*.sh lumi/*.slurm
 python scripts/validate_repo.py
 python scripts/validate_rate_compute.py
 python scripts/validate_moment_compute.py
+python scripts/validate_spq0.py
 ```
 
 ## Evidence standard

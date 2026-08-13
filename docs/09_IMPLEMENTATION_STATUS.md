@@ -201,6 +201,35 @@ Compact evidence is adopted under `evidence/real_stage_m_olivia_m0/`. The
 negative closes the current graph/source line and authorizes no successor draft
 or run, held/receiver/test role, or claim.
 
+## Prospective implementation: SPQ0
+
+SPQ0 implements a fresh development-only Shared Predictive Quotient census over
+controlled stochastic systems. It does not reuse graph data. The implementation
+adds:
+
+```text
+src/frank_eq/shared_predictive_quotient/
+configs/spq0/real_olivia_spq0.yaml
+configs/spq0/inspected_plan.json
+configs/spq0/registration.json
+scripts/validate_spq0.py
+scripts/verify_spq0_run.py
+docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md
+docs/26_SPQ0_OLIVIA_RUNBOOK.md
+.agents/skills/spq0-runner/SKILL.md
+```
+
+It freezes categorical probability-bin forecasting, an exact rank-four typed
+future-test core, five query-blind surface families, parameter-matched token
+controls, complete model-local encoders, frozen target-local readers, both
+ordered Qwen/Mistral compositions, a rank and quantization census, a
+non-promotional residual census, and a rate-aware amortized direct comparison.
+
+The local plan is model-free. Olivia support is content addressed and rejects
+dirty source, image/hash overrides, recovery, non-`full` profiles, and any stage
+other than `audit`. The implementation PR performs deterministic dry runs only;
+it does not launch a model job.
+
 ## Not authorized
 
 - another scale-only Stage-Q screen under immediate A/B readout;
@@ -214,3 +243,7 @@ or run, held/receiver/test role, or claim.
 - changing its event registry, development roles, baselines, thresholds, or
   gates after validation outcomes; or
 - treating interactive Stage M tomography as one-shot communication.
+- launching SPQ0 automatically from the implementation PR;
+- using any SPQ0 stage other than `audit` or accessing its reserved checkpoints;
+- allowing validation-only SPQ0 rows to select any protocol component; or
+- treating an SPQ0 plan or future development outcome as a scientific claim.

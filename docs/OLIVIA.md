@@ -30,9 +30,14 @@ evidence:  evidence/real_stage_m_olivia_m0/
 
 Stage M0 has no held sender, test role, receiver access, or claim authority. Its
 negative closes the current graph/source line. No RC0 or M0 rerun, successor
-compiler, receiver protocol, receiver execution, receiver-world access,
-scientific claim, or paper claim is authorized. There is no current Olivia
-executable.
+graph compiler, receiver protocol, receiver execution, receiver-world access,
+scientific claim, or paper claim is authorized.
+
+SPQ0 is a fresh prospective development census. Its implementation may be
+validated and dry-run but not launched automatically. A separately authorized
+future launch is restricted to `configs/spq0/real_olivia_spq0.yaml`, profile
+`full`, and stage `audit`. See `docs/26_SPQ0_OLIVIA_RUNBOOK.md`; its rules
+supersede this historical runbook for SPQ0.
 
 ## Runtime contract
 

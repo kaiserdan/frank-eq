@@ -61,7 +61,28 @@ The exact event algebra, atomic retention, and advantage over cross-fitted
 direct responses pass. Joint-degree and two-path-intersection event groups fail
 the frozen readout gate, and the projected moment executor is worse than the
 historical marginal executor for both models. Every protected authorization is
-false. The current graph/source line stops, and no experiment is authorized.
+false. The current graph/source line stops.
+
+SPQ0 is now frozen as a separate development-only question over fresh
+controlled stochastic systems. The implementation branch may prepare and
+dry-run it, but must not submit Olivia automatically. Its active founders are
+the pinned Qwen3-4B and Mistral-7B-v0.3 revisions. Pinned OLMo2 and Granite
+checkpoints are reserved unopened and must have zero snapshot-resolution,
+file-open, adapter, load, and inference counters.
+
+The only prospective next executable, after review and separate launch
+authority, is:
+
+```text
+configs/spq0/real_olivia_spq0.yaml
+--profile full --stages audit
+```
+
+SPQ0 has calibration, selection, and validation roles only. Its predictive
+core and target-test registry are selected from fit systems without consulting
+the validation-only transition/emission law. Symbolic rendering and length 32
+are also validation-only. A pass authorizes only drafting SPQ1; it does not
+authorize an SPQ1 run, reserved access, held sender, receiver, or claim.
 
 ## What the accumulated results establish
 
@@ -97,8 +118,8 @@ Across SuperFrank, strict realization, SSCT, BaryFrank, Frank-Sol, and CTSI:
 - learned rule/rendering layers are less reliable than grounded facts plus a
   deterministic compiler.
 
-The next method must therefore fix the public gauge and expose downstream compute
-rather than add another continuous translator.
+The SPQ0 method therefore fixes the public gauge with typed future tests and
+exposes downstream compute rather than adding another continuous translator.
 
 ## Current scientific hypothesis
 
@@ -358,6 +379,8 @@ docs/20_STAGEA_V3_PROTOCOL.md
 docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md
 docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md
 docs/24_STAGE_M_OLIVIA_RUNBOOK.md
+docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md
+docs/26_SPQ0_OLIVIA_RUNBOOK.md
 ```
 
 ## Historical decision after RC0
@@ -406,6 +429,18 @@ replace it with a one-shot source-local compiler before any communication claim.
 - Treating Stage M event tomography as a one-shot or communication result.
 - Launching a successor compiler, held sender, confirmation role, or receiver
   from the negative Stage M0 result.
+- Reusing or retuning any consumed graph experiment for SPQ0.
+- Replacing categorical probability-bin likelihoods with stochastic true/false
+  scoring or immediate A/B logits.
+- Letting the validation-only system, symbolic renderer, or length-32 rows
+  select a basis, surface, encoder, reader, rank, regularizer, threshold, or
+  gate.
+- Resolving, opening, loading, or running the reserved OLMo2 or Granite
+  checkpoints in SPQ0.
+- Adding a pair-specific cross-family mapper or promoting the behavioral
+  residual census.
+- Submitting SPQ0 from its implementation PR or with any stage other than
+  `audit`.
 
 ## Evidence policy
 
