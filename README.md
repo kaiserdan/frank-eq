@@ -208,8 +208,12 @@ sender, receiver access, or claim. The current graph/source line stops.
 The next scientific question leaves the consumed graph task. SPQ0 asks whether
 two cross-family founders expose a shared, typed predictive quotient for fresh
 controlled stochastic systems. It replaces stochastic true/false responses
-with categorical probability-bin likelihoods and uses an exact rank-four
-future-test core.
+with categorical probability-bin likelihoods and uses an exact linear
+rank-four future-test core. Because normalized beliefs supply a known
+zero-bit constant, the same system also has an exactly sufficient affine
+three-coordinate packet. SPQ0 treats rank four as a better-conditioned robust
+packet and rank three as the rate-minimal control; it does not conflate linear
+PSR rank with minimum message dimension.
 
 The active founders are exact revisions of Qwen3-4B and
 Mistral-7B-Instruct-v0.3. Exact OLMo2-7B and Granite-3.1-8B revisions are
@@ -224,7 +228,9 @@ encoders emit public future-test coordinates. Frozen target-local readers are
 fit from oracle cores before evaluating both ordered cross-family
 compositions, with no pair-specific mapper. The rank sweep, behavioral
 residual census, and 1/4/16/32-query rate frontier are all prospective and
-frozen.
+frozen. The held transition/emission system is a local 10% law perturbation,
+so its result is a local stability check rather than broad system-family
+generalization.
 
 The implementation and plan may be reviewed, but this repository change does
 not launch Olivia. A later separately authorized execution is restricted to

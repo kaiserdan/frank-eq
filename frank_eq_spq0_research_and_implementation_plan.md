@@ -257,7 +257,7 @@ A candidate is supported only if all hold:
 5. wrong-history specificity lower95 > 0;
 6. every ordered cross-family source-target composition beats the target prior with lower95 > 0;
 7. every cross-family direction retains at least 0.70 of the oracle-core reader gain;
-8. rank-4 performance is non-inferior to every higher rank, and ranks below 4 show the predicted undercomplete loss in aggregate;
+8. robust linear rank-4 performance strictly exceeds normalization-aware ranks 1--2, is non-inferior to the exactly sufficient affine rank-3 control, and is non-inferior to higher linear ranks; homogeneous rank 3 is diagnostic only;
 9. four-bit quantization retains at least 0.95 of float cross-family gain;
 10. sender-ID leakage from the semantic packet is no more than 0.15 above chance;
 11. all authorizations remain false except permission to draft SPQ1.
@@ -272,7 +272,7 @@ Do not require the reusable packet to beat one direct query. Require a positive 
 - `NO_ACTIVATION_SPECIFIC_PREDICTIVE_ADVANTAGE`
 - `PREDICTIVE_QUOTIENT_NOT_RENDERER_OR_LENGTH_STABLE`
 - `NO_CROSS_FAMILY_PUBLIC_STATE_TRANSFER`
-- `TRANSFER_RANK_NOT_IDENTIFIED`
+- `PREDICTIVE_DIMENSION_NOT_LOCALIZED`
 - `PUBLIC_PREDICTIVE_QUOTIENT_CANDIDATE_SUPPORTED`
 
 Only the last diagnosis permits drafting SPQ1. It does not authorize running it.
@@ -282,9 +282,11 @@ Only the last diagnosis permits drafting SPQ1. It does not authorize running it.
 SPQ1 is the claim-bearing confirmation:
 
 - fresh stochastic systems and histories;
+- an independently drawn system-family challenge, not only SPQ0's local 10%
+  law perturbation;
 - one unseen model family reserved before implementation;
 - nonlinear model-local compilers selected only from SPQ0 development evidence;
-- public rank-4 packet and frozen exact executor;
+- a robust public linear rank-4 packet, an explicit rate-minimal affine rank-3 control with a zero-bit null-test constant, and frozen exact executors;
 - target-local readers frozen before held-sender onboarding;
 - one-way held-sender establishment;
 - no receiver retraining;
@@ -301,11 +303,11 @@ Working title:
 
 Primary claim, if prospectively confirmed:
 
-> Across heterogeneous language models, transferable latent information concentrates near the predictive rank of the task. Model-local compilers can export this compact future-sufficient quotient through fixed public tests, while extra latent dimensions primarily encode model-private execution state and reduce held-sender transfer.
+> Across heterogeneous language models, transferable latent information may concentrate near the normalized predictive dimension of the task. Model-local compilers can export this compact future-sufficient quotient through fixed public tests, while a redundant linear coordinate may buy conditioning and quantization robustness rather than additional information.
 
 Figures:
 
-1. transfer quality versus packet dimension, with the system predictive rank marked;
+1. transfer quality versus packet dimension, marking both homogeneous linear rank and normalization-aware affine dimension;
 2. semantic quotient, shared behavioral residual, and private residual variance;
 3. cross-family source-target transfer matrix plus held sender;
 4. renderer/length and wrong-history controls;

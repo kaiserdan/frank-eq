@@ -8,7 +8,7 @@ from typing import Any, Mapping
 
 import numpy as np
 
-from .automaton import ControlledSystem, SharedPredictiveBasis
+from .automaton import ControlledSystem, SharedPredictiveBasis, validation_shift_summary
 from .config import SPQRunConfig
 from .panel import RENDERER_IDS, ROLE_IDS, SYSTEM_ROLE_IDS
 from .probes import (
@@ -172,7 +172,11 @@ def select_semantic_encoder(
     config: SPQRunConfig,
     arrays: Mapping[str, np.ndarray],
     basis: SharedPredictiveBasis,
-) -> tuple[dict[str, Any], dict[int, LinearMap], dict[str, np.ndarray]]:
+) -> tuple[
+    dict[str, Any],
+    dict[int, LinearMap],
+    dict[str, np.ndarray],
+]:
     """Select surface/depth/method/ridge/rank using only the selection role."""
 
     calibration = arrays["role_ids"] == ROLE_IDS["calibration"]
@@ -238,6 +242,8 @@ def select_semantic_encoder(
             "refit_roles": ["calibration", "selection"],
             "encoder": encoder.metadata(),
         }
+    for rank in range(1, basis.normalization_aware_dimension + 1):
+        predictions[f"normalization_aware_rank_{rank}"] = predictions[f"rank_{rank}"]
     exact_selection = selected_by_rank[basis.exact_rank]
     activation_surface = surfaces[exact_selection["surface"]]
     activation_width = int(activation_surface.shape[-1])
@@ -335,6 +341,15 @@ def select_semantic_encoder(
             "selected_by_rank": {str(rank): row for rank, row in selected_by_rank.items()},
             "candidates": candidates,
             "candidate_count": len(candidates),
+            "normalization_aware": {
+                "known_zero_bit_coordinate": "null_test_probability_1",
+                "dimension": basis.normalization_aware_dimension,
+                "compiler_reuse": "same_frozen_rank_conditioned_packet",
+                "selected_by_rank": {
+                    str(rank): selected_by_rank[rank]
+                    for rank in range(1, basis.normalization_aware_dimension + 1)
+                },
+            },
             "parameter_match": {
                 "activation_input_width": activation_width,
                 "token_sequence_input_width": int(token_sequence.shape[1]),
@@ -393,6 +408,64 @@ def execute_target_rows(
             packet,
             system_ids,
             basis.executors[rank],
+            columns=len(basis.target_tests),
+        ),
+        0.0,
+        1.0,
+    )
+
+
+def decode_core_rows_normalization_aware(
+    basis: SharedPredictiveBasis,
+    packet: np.ndarray,
+    system_ids: np.ndarray,
+    *,
+    rank: int,
+) -> np.ndarray:
+    """Decode a packet after appending the known null-test probability one."""
+
+    if rank not in basis.normalization_aware_executors:
+        raise ValueError("normalization-aware rank is outside the frozen sweep")
+    values = np.concatenate(
+        (np.asarray(packet, dtype=np.float64), np.ones((len(packet), 1), dtype=np.float64)),
+        axis=1,
+    )
+    matrices = {
+        system_id: np.linalg.pinv(
+            np.column_stack(
+                (
+                    public[:, :rank],
+                    np.ones(basis.exact_rank, dtype=np.float64),
+                )
+            ),
+            rcond=1e-12,
+        )
+        @ public[:, : basis.exact_rank]
+        for system_id, public in basis.public_matrices.items()
+    }
+    return _system_rows(values, system_ids, matrices, columns=basis.exact_rank)
+
+
+def execute_target_rows_normalization_aware(
+    basis: SharedPredictiveBasis,
+    packet: np.ndarray,
+    system_ids: np.ndarray,
+    *,
+    rank: int,
+) -> np.ndarray:
+    """Execute targets with an implicit, zero-bit null-test coordinate."""
+
+    if rank not in basis.normalization_aware_executors:
+        raise ValueError("normalization-aware rank is outside the frozen sweep")
+    values = np.concatenate(
+        (np.asarray(packet, dtype=np.float64), np.ones((len(packet), 1), dtype=np.float64)),
+        axis=1,
+    )
+    return np.clip(
+        _system_rows(
+            values,
+            system_ids,
+            basis.normalization_aware_executors[rank],
             columns=len(basis.target_tests),
         ),
         0.0,
@@ -726,6 +799,34 @@ def evaluate_model(
             "formally_rank_complete": rank >= exact_rank,
         }
 
+    normalization_aware_sweep: dict[str, Any] = {}
+    for rank in range(1, basis.normalization_aware_dimension + 1):
+        affine_packet = predictions[f"normalization_aware_rank_{rank}"]
+        affine_core = decode_core_rows_normalization_aware(
+            basis,
+            affine_packet,
+            arrays["system_ids"],
+            rank=rank,
+        )
+        affine_targets = execute_target_rows_normalization_aware(
+            basis,
+            affine_packet,
+            arrays["system_ids"],
+            rank=rank,
+        )
+        normalization_aware_sweep[str(rank)] = {
+            "selection": encoder_training["normalization_aware"]["selected_by_rank"][str(rank)],
+            "joint_ood_core_brier": brier_score(
+                arrays["semantic_core"][joint], affine_core[joint]
+            ),
+            "joint_ood_target_brier": brier_score(
+                arrays["semantic_targets"][joint], affine_targets[joint]
+            ),
+            "implicit_null_test_probability": 1.0,
+            "payload_coordinates": rank,
+            "formally_affine_complete": rank == basis.normalization_aware_dimension,
+        }
+
     quantization: dict[str, Any] = {}
     float_targets = compiled_targets[joint]
     float_prior_gain = brier_score(
@@ -749,8 +850,49 @@ def evaluate_model(
             "gain_retention": float(retention),
         }
 
+    affine_rank = basis.normalization_aware_dimension
+    affine_packet = predictions[f"normalization_aware_rank_{affine_rank}"]
+    affine_targets = execute_target_rows_normalization_aware(
+        basis,
+        affine_packet,
+        arrays["system_ids"],
+        rank=affine_rank,
+    )
+    affine_float_gain = brier_score(
+        arrays["semantic_targets"][joint], target_prior[joint]
+    ) - brier_score(arrays["semantic_targets"][joint], affine_targets[joint])
+    normalization_aware_quantization: dict[str, Any] = {}
+    for bits in config.evaluation.quantization_bits:
+        quantized_affine = quantize_probabilities(affine_packet, bits)
+        quantized_affine_targets = execute_target_rows_normalization_aware(
+            basis,
+            quantized_affine,
+            arrays["system_ids"],
+            rank=affine_rank,
+        )
+        affine_gain = brier_score(
+            arrays["semantic_targets"][joint], target_prior[joint]
+        ) - brier_score(
+            arrays["semantic_targets"][joint], quantized_affine_targets[joint]
+        )
+        normalization_aware_quantization[str(bits)] = {
+            "payload_bits": bits * affine_rank,
+            "implicit_null_test_bits": 0,
+            "joint_ood_target_brier": brier_score(
+                arrays["semantic_targets"][joint], quantized_affine_targets[joint]
+            ),
+            "gain_over_prior": affine_gain,
+            "gain_retention": (
+                1.0 if abs(affine_float_gain) <= 1e-15 else affine_gain / affine_float_gain
+            ),
+        }
+
     amortized: dict[str, Any] = {}
+    normalization_aware_amortized: dict[str, Any] = {}
     reusable_losses = row_brier(arrays["semantic_targets"][joint], compiled_targets[joint])
+    affine_reusable_losses = row_brier(
+        arrays["semantic_targets"][joint], affine_targets[joint]
+    )
     direct_losses = row_brier(arrays["semantic_targets"][joint], native_probability[joint])
     bits = 4 * exact_rank
     for count in config.evaluation.amortized_future_query_counts:
@@ -772,6 +914,28 @@ def evaluate_model(
                 grouped,
                 replicates=config.evaluation.bootstrap_replicates,
                 seed=config.evaluation.bootstrap_seed + seed_offset + 12000 + count,
+            ),
+        }
+        affine_bits = 4 * affine_rank
+        affine_packet_cost = (
+            config.evaluation.packet_bit_cost_brier_equivalent * affine_bits / count
+        )
+        affine_value = -(affine_reusable_losses + affine_packet_cost)
+        affine_gain = affine_value - direct_value
+        _, affine_grouped = aggregate_by_group(affine_gain, arrays["history_ids"][joint])
+        normalization_aware_amortized[str(count)] = {
+            "future_queries": count,
+            "packet_payload_bits": affine_bits,
+            "implicit_null_test_bits": 0,
+            "packet_bits_per_query": affine_bits / count,
+            "source_queries_per_query_packet": 0.0,
+            "source_queries_per_query_direct": 1.0,
+            "packet_cost_brier_equivalent_per_query": affine_packet_cost,
+            "direct_query_cost_brier_equivalent_per_query": direct_cost,
+            "utility_gain_over_direct_ci": bootstrap_interval(
+                affine_grouped,
+                replicates=config.evaluation.bootstrap_replicates,
+                seed=config.evaluation.bootstrap_seed + seed_offset + 13000 + count,
             ),
         }
 
@@ -870,8 +1034,11 @@ def evaluate_model(
         "semantic_core": core_metrics,
         "compiled_semantic_targets": compiled_metrics,
         "rank_sweep": rank_sweep,
+        "normalization_aware_sweep": normalization_aware_sweep,
         "quantization": quantization,
+        "normalization_aware_quantization": normalization_aware_quantization,
         "amortized_utility": amortized,
+        "normalization_aware_amortized_utility": normalization_aware_amortized,
         "target_reader_native_brier": brier_score(target_behavior, predicted_reader),
         "target_reader_oracle_brier": brier_score(
             target_behavior,
@@ -1008,6 +1175,28 @@ def _cross_family_compositions(
                     rank_targets,
                     basis.target_tests,
                 )
+            normalization_aware_predictions: dict[int, np.ndarray] = {}
+            for rank in range(1, basis.normalization_aware_dimension + 1):
+                public_packet = evaluations[source_id].predictions[
+                    f"normalization_aware_rank_{rank}"
+                ][source_rows]
+                rank_core = decode_core_rows_normalization_aware(
+                    basis,
+                    public_packet,
+                    source_arrays["system_ids"][source_rows],
+                    rank=rank,
+                )
+                rank_targets = execute_target_rows_normalization_aware(
+                    basis,
+                    public_packet,
+                    source_arrays["system_ids"][source_rows],
+                    rank=rank,
+                )
+                normalization_aware_predictions[rank] = reader.predict(
+                    rank_core,
+                    rank_targets,
+                    basis.target_tests,
+                )
 
             quantized_core = quantize_probabilities(source_core, 4)
             quantized_targets = execute_target_rows(
@@ -1019,6 +1208,28 @@ def _cross_family_compositions(
             quantized_transfer = reader.predict(
                 quantized_core,
                 quantized_targets,
+                basis.target_tests,
+            )
+            affine_rank = basis.normalization_aware_dimension
+            affine_packet = evaluations[source_id].predictions[
+                f"normalization_aware_rank_{affine_rank}"
+            ][source_rows]
+            quantized_affine_packet = quantize_probabilities(affine_packet, 4)
+            quantized_affine_core = decode_core_rows_normalization_aware(
+                basis,
+                quantized_affine_packet,
+                source_arrays["system_ids"][source_rows],
+                rank=affine_rank,
+            )
+            quantized_affine_targets = execute_target_rows_normalization_aware(
+                basis,
+                quantized_affine_packet,
+                source_arrays["system_ids"][source_rows],
+                rank=affine_rank,
+            )
+            quantized_affine_transfer = reader.predict(
+                quantized_affine_core,
+                quantized_affine_targets,
                 basis.target_tests,
             )
 
@@ -1068,6 +1279,18 @@ def _cross_family_compositions(
             quantized_brier = brier_score(truth[joint], quantized_transfer[joint])
             quantized_gain = prior_brier - quantized_brier
             four_bit_retention = 1.0 if abs(float_gain) <= 1e-15 else quantized_gain / float_gain
+            affine_float_prediction = normalization_aware_predictions[affine_rank]
+            affine_float_brier = brier_score(truth[joint], affine_float_prediction[joint])
+            affine_quantized_brier = brier_score(
+                truth[joint], quantized_affine_transfer[joint]
+            )
+            affine_float_gain = prior_brier - affine_float_brier
+            affine_quantized_gain = prior_brier - affine_quantized_brier
+            affine_four_bit_retention = (
+                1.0
+                if abs(affine_float_gain) <= 1e-15
+                else affine_quantized_gain / affine_float_gain
+            )
 
             rank_transfer: dict[str, Any] = {}
             rank4_comparisons: dict[str, Any] = {}
@@ -1089,6 +1312,31 @@ def _cross_family_compositions(
                         seed=(config.evaluation.bootstrap_seed + 22000 + len(pairs) * 100 + rank),
                     )
 
+            normalization_aware_transfer: dict[str, Any] = {}
+            normalization_aware_rank4_comparisons: dict[str, Any] = {}
+            for rank, current in normalization_aware_predictions.items():
+                normalization_aware_transfer[str(rank)] = {
+                    "brier": brier_score(truth[joint], current[joint]),
+                    "implicit_null_test_probability": 1.0,
+                    "payload_coordinates": rank,
+                    "formally_affine_complete": rank == basis.normalization_aware_dimension,
+                }
+                normalization_aware_rank4_comparisons[str(rank)] = (
+                    paired_brier_gain_interval(
+                        truth[joint],
+                        rank4_prediction[joint],
+                        current[joint],
+                        group_ids,
+                        replicates=config.evaluation.bootstrap_replicates,
+                        seed=(
+                            config.evaluation.bootstrap_seed
+                            + 23000
+                            + len(pairs) * 100
+                            + rank
+                        ),
+                    )
+                )
+
             pairs[pair_name] = {
                 "source_model": source_id,
                 "source_family": evaluations[source_id].metrics["family"],
@@ -1108,18 +1356,32 @@ def _cross_family_compositions(
                 "oracle_reader_gain_retention": float(retention),
                 "rank_transfer": rank_transfer,
                 "rank4_transfer_comparisons": rank4_comparisons,
+                "normalization_aware_transfer": normalization_aware_transfer,
+                "rank4_normalization_aware_comparisons": (
+                    normalization_aware_rank4_comparisons
+                ),
                 "rank4_transfer_noninferiority_margin": (
                     config.gates.rank4_transfer_noninferiority_margin
                 ),
                 "four_bit_transferred_brier": quantized_brier,
                 "four_bit_cross_family_gain_retention": float(four_bit_retention),
+                "normalization_aware_four_bit_payload_bits": 4 * affine_rank,
+                "normalization_aware_four_bit_transferred_brier": affine_quantized_brier,
+                "normalization_aware_four_bit_gain_retention": float(
+                    affine_four_bit_retention
+                ),
             }
             prediction_arrays[f"{pair_name}__transferred"] = transferred
             prediction_arrays[f"{pair_name}__token_control"] = token_transferred
             prediction_arrays[f"{pair_name}__oracle"] = oracle
             prediction_arrays[f"{pair_name}__four_bit"] = quantized_transfer
+            prediction_arrays[f"{pair_name}__normalization_aware_four_bit"] = (
+                quantized_affine_transfer
+            )
             for rank, prediction in rank_predictions.items():
                 prediction_arrays[f"{pair_name}__rank_{rank}"] = prediction
+            for rank, prediction in normalization_aware_predictions.items():
+                prediction_arrays[f"{pair_name}__normalization_aware_rank_{rank}"] = prediction
     return pairs, prediction_arrays
 
 
@@ -1190,12 +1452,29 @@ def evaluate_all_models(
     metrics = {
         "schema": "frank_eq_spq0_metrics_v1",
         "scope": "development-only shared predictive quotient census",
+        "system_generalization_scope": {
+            "interpretation": "local_law_perturbation_only",
+            "shifts": validation_shift_summary(
+                systems,
+                parent_weight=config.systems.validation_parent_weight,
+            ),
+        },
         "public_basis": {
             "exact_rank": basis.exact_rank,
+            "normalization_aware_dimension": basis.normalization_aware_dimension,
             "rank_grid": config.semantic_encoder.rank_grid,
             "core_condition_numbers": dict(basis.core_condition_numbers),
+            "normalization_aware_condition_numbers": dict(
+                basis.normalization_aware_condition_numbers
+            ),
             "maximum_target_l1": basis.maximum_target_l1,
+            "maximum_normalization_aware_target_l1": (
+                basis.maximum_normalization_aware_target_l1
+            ),
             "maximum_exact_executor_error": basis.maximum_exact_executor_error,
+            "maximum_normalization_aware_executor_error": (
+                basis.maximum_normalization_aware_executor_error
+            ),
         },
         "models": {model_id: evaluation.metrics for model_id, evaluation in evaluations.items()},
         "cross_family_composition": cross_family,
@@ -1229,9 +1508,15 @@ def gate_decision(config: SPQRunConfig, metrics: Mapping[str, Any]) -> dict[str,
     exact = metrics["public_basis"]
     system_valid = (
         exact["exact_rank"] == config.systems.predictive_rank
+        and exact["normalization_aware_dimension"]
+        == config.systems.normalization_aware_dimension
         and exact["maximum_exact_executor_error"] <= gate.max_oracle_executor_abs_error
+        and exact["maximum_normalization_aware_executor_error"]
+        <= gate.max_oracle_executor_abs_error
         and max(exact["core_condition_numbers"].values())
         <= config.systems.core_condition_number_max
+        and max(exact["normalization_aware_condition_numbers"].values())
+        <= config.systems.normalization_aware_condition_number_max
     )
     source_protocol = {
         model_id: all(
@@ -1290,19 +1575,29 @@ def gate_decision(config: SPQRunConfig, metrics: Mapping[str, Any]) -> dict[str,
         )
         for pair, row in metrics["cross_family_composition"].items()
     }
-    rank_identified: dict[str, bool] = {}
+    dimension_consistent: dict[str, bool] = {}
     for pair, row in metrics["cross_family_composition"].items():
-        comparisons = row["rank4_transfer_comparisons"]
-        lower_rank_separation = all(
-            float(comparisons[str(rank)]["lower"]) > 0.0 for rank in (1, 2, 3)
+        affine_comparisons = row["rank4_normalization_aware_comparisons"]
+        undercomplete_separation = all(
+            float(affine_comparisons[str(rank)]["lower"]) > 0.0 for rank in (1, 2)
         )
+        affine_complete_noninferiority = (
+            float(
+                affine_comparisons[str(config.systems.normalization_aware_dimension)]["lower"]
+            )
+            >= -gate.rank4_transfer_noninferiority_margin
+        )
+        linear_comparisons = row["rank4_transfer_comparisons"]
         higher_rank_noninferiority = all(
-            float(comparisons[str(rank)]["lower"]) >= -gate.rank4_transfer_noninferiority_margin
+            float(linear_comparisons[str(rank)]["lower"])
+            >= -gate.rank4_transfer_noninferiority_margin
             for rank in (6, 8)
         )
-        rank_identified[pair] = (
-            lower_rank_separation and higher_rank_noninferiority
-            if gate.rank4_noninferior_to_higher_ranks
+        dimension_consistent[pair] = (
+            undercomplete_separation
+            and affine_complete_noninferiority
+            and higher_rank_noninferiority
+            if gate.robust_rank4_saturation_required
             else True
         )
     quantization = {
@@ -1333,7 +1628,8 @@ def gate_decision(config: SPQRunConfig, metrics: Mapping[str, Any]) -> dict[str,
         "renderer_system_length_stability": bool(transfer_stability)
         and all(transfer_stability.values()),
         "cross_family_public_state_transfer": bool(cross_family) and all(cross_family.values()),
-        "transfer_rank_identified": bool(rank_identified) and all(rank_identified.values()),
+        "predictive_dimension_consistent": bool(dimension_consistent)
+        and all(dimension_consistent.values()),
         "four_bit_retention": bool(quantization) and all(quantization.values()),
         "sender_identity_closed": identity,
     }
@@ -1350,8 +1646,8 @@ def gate_decision(config: SPQRunConfig, metrics: Mapping[str, Any]) -> dict[str,
         diagnosis = "PREDICTIVE_QUOTIENT_NOT_RENDERER_OR_LENGTH_STABLE"
     elif not checks["cross_family_public_state_transfer"]:
         diagnosis = "NO_CROSS_FAMILY_PUBLIC_STATE_TRANSFER"
-    elif not checks["transfer_rank_identified"]:
-        diagnosis = "TRANSFER_RANK_NOT_IDENTIFIED"
+    elif not checks["predictive_dimension_consistent"]:
+        diagnosis = "PREDICTIVE_DIMENSION_NOT_LOCALIZED"
     elif not (checks["four_bit_retention"] and checks["sender_identity_closed"]):
         diagnosis = "NO_CROSS_FAMILY_PUBLIC_STATE_TRANSFER"
     else:
@@ -1368,7 +1664,7 @@ def gate_decision(config: SPQRunConfig, metrics: Mapping[str, Any]) -> dict[str,
             "history_specificity": history_specificity,
             "renderer_system_length_stability": transfer_stability,
             "cross_family_public_state_transfer": cross_family,
-            "transfer_rank_identified": rank_identified,
+            "predictive_dimension_consistent": dimension_consistent,
             "four_bit_retention": quantization,
             "heuristic_rate_scalarization_non_promotional": amortized,
         },

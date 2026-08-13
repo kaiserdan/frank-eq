@@ -41,7 +41,7 @@
     "target_readers_frozen_before_source_evaluation": true
   },
   "config_path": "configs/spq0/real_olivia_spq0.yaml",
-  "config_sha256": "42925d4a2c223f68bfb078a4bb146588fceaa25c489d1825904a18b2b51595f2",
+  "config_sha256": "1ad2216396da3a31421366e951476f14472b216a10588dd23760f90863488558",
   "development_only": true,
   "models": {
     "mistral-7b-v03": {
@@ -73,20 +73,28 @@
       "symbolic"
     ]
   },
-  "plan_sha256": "1b6bb9477c27ef623d15701e27b7b03ef3771f853185cec085888af782f92e1e",
+  "plan_sha256": "3dcd715a3338de5caf308d4dae7165521a49f908aa6954b6ce6ded58d57ea345",
   "protocol_path": "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",
-  "protocol_sha256": "96f190cd34515718c9d2b02103e480656c4de4163fee9b2dcdc67f1115b42e2f",
+  "protocol_sha256": "567ff69fbe925e99913dbb5ea9288d44ea80b87acc7c443ac03bede890f346c5",
   "protocol_version": "spq0-development-census",
   "public_basis": {
-    "basis_sha256": "1280ee8aed94277bfa7d19e2404808d191c334c605d95fa435a1ce69796b49c1",
+    "basis_sha256": "7281e4158054cd81d29e97aff6286b3b1ac4f3c020aabf8c13897e0cb717b58b",
     "core_condition_numbers": {
       "system-00": 2.743122951,
       "system-01": 4.3112203416,
       "system-02": 4.9225045375
     },
     "exact_rank": 4,
+    "implicit_zero_bit_coordinate": "null_test_probability_1",
     "maximum_exact_executor_error_bound": 1e-10,
+    "maximum_normalization_aware_target_l1": 13.7076954678,
     "maximum_target_l1": 2.9867494549,
+    "normalization_aware_condition_numbers": {
+      "system-00": 8.6282264613,
+      "system-01": 23.6264844242,
+      "system-02": 13.948057289
+    },
+    "normalization_aware_dimension": 3,
     "numeric_canonicalization": {
       "basis_registry_decimal_places": 10,
       "runtime_arrays_retain_float64": true,
@@ -112,6 +120,9 @@
       32
     ],
     "direct_one_query_advantage_is_not_conjunctive": true,
+    "interpretation": "robust_linear_packet_versus_rate_minimal_affine_packet",
+    "normalization_aware_packet_rank": 3,
+    "normalization_aware_payload_bits": 12,
     "primary_amortized_query_count": 16,
     "primary_packet_rank": 4,
     "primary_payload_bits": 16,
@@ -153,6 +164,16 @@
     "validation_only": 1,
     "validation_only_system_ids": [
       "system-02"
-    ]
+    ],
+    "validation_scope": "local_law_perturbation",
+    "validation_shifts": {
+      "system-02": {
+        "emission_mean_row_total_variation": 0.05916106270987659,
+        "independent_draw_weight": 0.1,
+        "parent_system_id": "system-00",
+        "parent_weight": 0.9,
+        "transition_mean_row_total_variation": 0.08399999999999998
+      }
+    }
   }
 }

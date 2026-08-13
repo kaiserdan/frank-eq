@@ -214,7 +214,11 @@ readout, not a learned sequence model. Second, every cross-family reader now
 evaluates both the activation-derived packet and the source-token-derived packet;
 a positive activation-over-token lower bound is conjunctive. Third, predictive
 rank is identified at the cross-family target-reader endpoint with paired
-rank-four comparisons, rather than from source-local semantic point estimates.
+linear rank-four versus normalization-aware rank-one/two/three and overcomplete
+rank-six/eight comparisons, rather than from source-local semantic point
+estimates. Rank three plus the implicit null-test constant is exactly
+sufficient; rank four is tested for noninferior, better-conditioned robustness,
+not falsely required to beat it.
 Fourth, the Brier-equivalent rate scalarization is diagnostic only because its
 exchange rates are conventional rather than empirically identified. The
 non-promotional behavioral remainder is pooled residual PCA, not MAXVAR-GCCA.

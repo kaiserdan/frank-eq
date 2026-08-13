@@ -219,11 +219,14 @@ docs/26_SPQ0_OLIVIA_RUNBOOK.md
 .agents/skills/spq0-runner/SKILL.md
 ```
 
-It freezes categorical probability-bin forecasting, an exact rank-four typed
-future-test core, five query-blind surface families, parameter-matched token
-controls, complete model-local encoders, frozen target-local readers, both
-ordered Qwen/Mistral compositions, a rank and quantization census, a
-non-promotional residual census, and a rate-aware amortized direct comparison.
+It freezes categorical probability-bin forecasting, an exact linear rank-four
+typed future-test core, and the normalization-aware affine dimension-three
+control implied by the known null-test constant. Five query-blind surface
+families, parameter-matched token controls, complete model-local encoders,
+frozen target-local readers, both ordered Qwen/Mistral compositions, parallel
+rank/quantization censuses, a non-promotional residual census, and a rate-aware
+amortized direct comparison are registered. The validation-only system is a
+local perturbation check, not broad system-family evidence.
 
 The local plan is model-free. Olivia support is content addressed and rejects
 dirty source, image/hash overrides, recovery, non-`full` profiles, and any stage

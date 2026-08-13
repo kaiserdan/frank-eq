@@ -84,6 +84,14 @@ the validation-only transition/emission law. Symbolic rendering and length 32
 are also validation-only. A pass authorizes only drafting SPQ1; it does not
 authorize an SPQ1 run, reserved access, held sender, receiver, or claim.
 
+The frozen system has homogeneous linear predictive rank four but normalized
+beliefs have an exactly sufficient affine three-coordinate description once
+the known null-test probability `1` is appended by the executor. The census
+therefore compares a 16-bit, better-conditioned rank-four packet with a 12-bit
+normalization-aware rank-three control. Rank four need not beat rank three; it
+must be noninferior while showing the registered robustness tradeoff. The held
+law is only a local 10% perturbation, not an independent system-family test.
+
 ## What the accumulated results establish
 
 ### The shared private-code path is not working

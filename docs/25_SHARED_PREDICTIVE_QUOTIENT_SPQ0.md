@@ -83,9 +83,14 @@ system seed:               2026084101
 
 The two fit systems are generated independently. The validation-only system is
 a prospectively frozen 10% independent full-support perturbation of one fit
-law. Its transition and emission matrices are distinct. No model response is
-used in system construction. Calibration and selection contain only fit-system
-histories; the held transition/emission law appears only in validation.
+law. Its transition and emission matrices are distinct. This is deliberately a
+**local law perturbation**, not an independently drawn system-family challenge;
+the census therefore cannot support broad system-family generalization. No
+model response is used in system construction. Calibration and selection
+contain only fit-system histories; the held transition/emission law appears
+only in validation. Relative to its frozen parent, its mean row total variation
+is `0.0840` for transitions and `0.05916` for emissions; these shift magnitudes
+are emitted in both the plan and metrics.
 
 The public future-test candidate registry contains horizons 1 through 4. Core
 and target tests are selected using fit systems only. Replacing the
@@ -93,13 +98,23 @@ validation-only matrices cannot change either registry, and a focused test
 enforces this fact. The held system is used only to verify that the already
 selected registry and executor are valid and to score frozen transfer.
 
-## Exact predictive core and rank census
+## Linear rank and normalization-aware dimension census
 
 Each system has exact linear predictive rank four. The implementation selects
 one common typed core of four future tests, then four additional typed tests for
 an overcomplete public bank. For every system, the four core test vectors must
 have full rank, condition number at most 5, and an exact target executor with
 maximum absolute error at most `1e-10`.
+
+Linear PSR rank is not the same estimand as minimum transmitted coordinates.
+Every posterior belief is normalized, so the consumer knows the null-test
+probability `1` without receiving it. For these four-state systems, the first
+three public test probabilities plus that implicit constant have rank four and
+exactly reconstruct both the four-coordinate core and all target tests. This
+normalization-aware affine packet has dimension three. Its registered
+condition-number bound is 25 and its target-executor column-L1 bound is 14;
+the looser bounds make its rate/robustness tradeoff visible instead of hiding
+it behind the better-conditioned redundant coordinate.
 
 Twenty-four target future tests are selected prospectively from fit systems,
 balanced over horizon and observation strata. Their rank-four executor must
@@ -111,10 +126,15 @@ the frozen order:
 ```
 
 For rank `r`, the source-local semantic encoder predicts the first `r` typed
-public tests and the system-local, parameter-free executor maps that packet to
-the target-test probabilities. Ranks below four are intentionally
-undercomplete. Ranks four, six, and eight must reproduce target probabilities
-exactly when given oracle public coordinates. The primary packet is rank four.
+public tests. The same frozen packet is evaluated two ways: a homogeneous
+linear executor for ranks `1,2,3,4,6,8`, and a normalization-aware executor
+that appends the known constant for ranks `1,2,3`. Normalization-aware ranks one
+and two remain undercomplete; rank three is exactly sufficient. Homogeneous
+rank three remains a useful executor-convention diagnostic but is not evidence
+that a fourth transmitted coordinate is intrinsically necessary. Ranks four,
+six, and eight are linearly complete. The primary robust packet remains rank
+four, while the affine rank-three packet is the rate-minimal sufficient
+control.
 
 Candidate condition scores are rounded to 14 decimal places before comparison,
 with candidate-registry order as the declared tie break. This prevents
@@ -212,7 +232,7 @@ No selected-KV cross-architecture summary is registered. KV is used for causal
 branching, not treated as a comparable vector across model families.
 
 Complete model-local semantic encoders map each candidate activation surface
-to every requested public coordinate. Ridge and reduced-rank regression are
+to every requested public coordinate. Ridge and truncated-ridge regression are
 evaluated over the frozen rank and regularization grids. Surface, depth,
 method, and regularization are selected on the selection role, then refit on
 calibration plus selection. No public coordinate has an unfitted or oracle
@@ -280,10 +300,13 @@ remainder after semantic conditioning.
 
 ## Rate and compute comparison
 
-The primary learned message is the four-coordinate core quantized to four bits
-per coordinate: 16 payload bits, with framing explicitly uncounted. It requires
-zero post-capture source queries. Its consumer is the frozen target-local
-future reader.
+The primary robust learned message is the four-coordinate core quantized to
+four bits per coordinate: 16 payload bits, with framing explicitly uncounted.
+The parallel normalization-aware message sends three coordinates at four bits
+each, or 12 payload bits; the known null-test constant costs zero bits. Both
+require zero post-capture source queries and use the frozen target-local future
+reader. Float and 2/4/8-bit results are reported for both, so the experiment can
+distinguish rate minimality from conditioning and quantization robustness.
 
 The direct baseline asks the source separately for each target future. The
 comparison reports packet bits per query and source-query branches at 1, 4, 16,
@@ -307,8 +330,10 @@ The conjunctive checks are:
 6. renderer, held-system, length-32, and joint-OOD stability;
 7. both ordered cross-family transfers beat the target prior, beat their
    source-token packet controls, and retain at least 70% of oracle-reader gain;
-8. in each ordered cross-family endpoint, rank four strictly beats ranks 1--3
-   and is noninferior to 6 and 8 within the registered 0.002 Brier margin;
+8. in each ordered cross-family endpoint, robust linear rank four strictly
+   beats normalization-aware ranks one and two, is noninferior to the exactly
+   sufficient affine rank-three control, and is noninferior to linear ranks six
+   and eight within the registered 0.002 Brier margin;
 9. four-bit packets retain at least 95% of cross-family gain;
 10. sender identity is at most 0.15 above chance.
 
@@ -324,7 +349,7 @@ SEMANTIC_PREDICTIVE_QUOTIENT_NOT_READABLE
 NO_ACTIVATION_SPECIFIC_PREDICTIVE_ADVANTAGE
 PREDICTIVE_QUOTIENT_NOT_RENDERER_OR_LENGTH_STABLE
 NO_CROSS_FAMILY_PUBLIC_STATE_TRANSFER
-TRANSFER_RANK_NOT_IDENTIFIED
+PREDICTIVE_DIMENSION_NOT_LOCALIZED
 PUBLIC_PREDICTIVE_QUOTIENT_CANDIDATE_SUPPORTED
 ```
 

@@ -118,8 +118,12 @@ claim authority. A pass authorizes only an SPQ1 protocol draft.
   target-local oracle-core readers before both ordered cross-family transfers.
 - Pair-specific mappers are forbidden. The behavioral residual census is
   non-promotional.
-- Report exact-rank sweep, quantization, grouped transfer strata, message bits,
-  source queries, consumer compute, and the amortized direct frontier.
+- Distinguish homogeneous linear rank four from the normalization-aware affine
+  dimension three supplied by the zero-bit null-test constant. Treat the former
+  as a robust packet and the latter as the rate-minimal sufficient control.
+- Report both rank conventions, both quantization frontiers, grouped transfer
+  strata, message bits, source queries, consumer compute, and the amortized
+  direct frontier. Interpret the held system only as a local law perturbation.
 - A clean committed source, exact image and active checkpoint file hashes,
   deterministic inspected-plan equality, all validators, and shell syntax are
   prerequisites to model inference.

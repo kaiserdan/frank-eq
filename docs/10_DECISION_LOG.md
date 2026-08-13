@@ -335,3 +335,11 @@
 - **Transfer:** fit complete source-local semantic encoders and freeze target-local oracle-core readers before evaluating both ordered cross-family compositions. Permit no pair-specific mapper. Keep the shared behavioral residual census non-promotional.
 - **Rate and integrity:** evaluate ranks `1,2,3,4,6,8`, four-bit primary packets, and a 1/4/16/32-query amortized direct frontier. Require literal cloned KV, exact prefix continuity, grouped recomputation, content-addressed Olivia support, clean committed source, exact runtime/checkpoint hashes, deterministic inspected-plan equality, and closed claim fields.
 - **Authority:** implementation, validation, deterministic dry run, and a draft PR are authorized. Do not launch Olivia automatically. A later SPQ0 audit requires separate operator launch authority; even a pass authorizes only drafting SPQ1.
+
+## 2026-08-13 — correct SPQ0's predictive-dimension estimand before execution
+
+- **Model-free finding:** the four-state systems have homogeneous linear PSR rank four, but normalized beliefs lie on a three-dimensional simplex. The first three public probabilities plus the known null-test probability `1` exactly recover the public core and every target future.
+- **Correction:** keep the better-conditioned four-coordinate packet as the robust primary representation, add the exactly sufficient affine three-coordinate packet as the 12-bit rate-minimal control, and evaluate the same frozen compiler outputs under both executor conventions.
+- **Gate:** rank four must beat normalization-aware ranks one and two, be noninferior to normalization-aware rank three, and remain noninferior to linear ranks six and eight. Homogeneous rank three is diagnostic only. Failure is `PREDICTIVE_DIMENSION_NOT_LOCALIZED`.
+- **Scope:** the validation-only system is a 10% local law perturbation. It tests local stability and cannot establish broad transfer across independently drawn system families.
+- **Authority:** this is a prospective model-free repair. It does not authorize Olivia submission, protected checkpoint access, or a claim.

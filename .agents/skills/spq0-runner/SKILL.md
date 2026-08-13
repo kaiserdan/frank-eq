@@ -23,6 +23,17 @@ configs/spq0/real_olivia_spq0.yaml
 There is no recovery path, test role, held sender, receiver, or claim-bearing
 role. A pass authorizes only an SPQ1 protocol draft, never its execution.
 
+## Scientific dimension contract
+
+The system has homogeneous linear PSR rank four and normalization-aware affine
+dimension three. The executor appends the known null-test probability `1` at
+zero message cost. Verify the same frozen learned packets under both
+conventions: normalization-aware ranks one and two are undercomplete, affine
+rank three is exactly sufficient, and robust linear rank four must be
+noninferior to affine rank three and linear ranks six/eight. Report 12-bit and
+16-bit quantization/rate frontiers. Interpret the validation-only system as a
+local 10% law perturbation only.
+
 ## Non-access contract
 
 Only exact Qwen3-4B and Mistral-7B-v0.3 founders are active. OLMo2 and Granite

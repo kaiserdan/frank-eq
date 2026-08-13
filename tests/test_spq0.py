@@ -13,6 +13,7 @@ from frank_eq.shared_predictive_quotient.automaton import (
     SELECTION_SCORE_DECIMALS,
     build_shared_predictive_basis,
     canonical_basis_registry_payload,
+    validation_shift_summary,
 )
 from frank_eq.shared_predictive_quotient.capture import SPQModelAdapter
 from frank_eq.shared_predictive_quotient.config import load_spq0_config
@@ -159,10 +160,11 @@ def test_spq0_freezes_cross_family_active_and_unopened_reserved_models() -> None
     assert config.authorization.claim_bearing_test_access_authorized is False
 
 
-def test_shared_future_tests_are_exact_at_rank_four_and_undercomplete_below() -> None:
+def test_shared_future_tests_separate_linear_rank_from_normalized_affine_dimension() -> None:
     config, systems, basis = _contract()
     assert config.systems.system_seed == 2026084101
     assert basis.exact_rank == 4
+    assert basis.normalization_aware_dimension == 3
     assert basis.maximum_rank == 8
     assert [test.to_dict() for test in basis.core_tests] == [
         {"actions": [0], "observation": 0},
@@ -188,9 +190,19 @@ def test_shared_future_tests_are_exact_at_rank_four_and_undercomplete_below() ->
     assert all(not np.signbit(value) for value in numeric_leaves(canonical_basis) if value == 0.0)
     assert max(basis.core_condition_numbers.values()) <= 5.0
     assert basis.maximum_target_l1 <= 4.0
+    assert max(basis.normalization_aware_condition_numbers.values()) <= 25.0
+    assert basis.maximum_normalization_aware_target_l1 <= 14.0
+    shift = validation_shift_summary(
+        systems,
+        parent_weight=config.systems.validation_parent_weight,
+    )["system-02"]
+    assert shift["parent_system_id"] == "system-00"
+    assert shift["transition_mean_row_total_variation"] == pytest.approx(0.084)
+    assert shift["emission_mean_row_total_variation"] == pytest.approx(0.0591610627)
     rng = np.random.default_rng(7)
     for system in systems:
         rank_three_errors = []
+        affine_two_errors = []
         for _ in range(40):
             belief = rng.dirichlet(np.ones(4))
             target = belief @ basis.target_matrices[system.system_id]
@@ -201,7 +213,32 @@ def test_shared_future_tests_are_exact_at_rank_four_and_undercomplete_below() ->
             rank_three = basis.public_probabilities(system.system_id, belief, rank=3)
             approximate = basis.execute_targets(system.system_id, rank_three, rank=3, clip=False)
             rank_three_errors.append(float(np.max(np.abs(approximate - target))))
+            affine_three = basis.public_probabilities(system.system_id, belief, rank=3)
+            affine_exact = basis.execute_targets_normalization_aware(
+                system.system_id,
+                affine_three,
+                rank=3,
+                clip=False,
+            )
+            assert np.allclose(affine_exact, target, atol=1e-10, rtol=0.0)
+            decoded = basis.decode_core_normalization_aware(
+                system.system_id,
+                affine_three,
+                rank=3,
+            )
+            assert np.allclose(decoded, belief @ basis.public_matrices[system.system_id][:, :4])
+            affine_two = basis.public_probabilities(system.system_id, belief, rank=2)
+            affine_two_approximate = basis.execute_targets_normalization_aware(
+                system.system_id,
+                affine_two,
+                rank=2,
+                clip=False,
+            )
+            affine_two_errors.append(
+                float(np.max(np.abs(affine_two_approximate - target)))
+            )
         assert max(rank_three_errors) > 1e-4
+        assert max(affine_two_errors) > 1e-4
 
 
 def test_validation_only_system_cannot_select_public_or_target_tests() -> None:
@@ -221,6 +258,13 @@ def test_validation_only_system_cannot_select_public_or_target_tests() -> None:
         target_seed=config.systems.core_selection_seed,
         max_core_condition_number=config.systems.core_condition_number_max,
         max_target_l1=config.systems.target_executor_l1_max,
+        normalization_aware_dimension=config.systems.normalization_aware_dimension,
+        max_normalization_aware_condition_number=(
+            config.systems.normalization_aware_condition_number_max
+        ),
+        max_normalization_aware_target_l1=(
+            config.systems.normalization_aware_target_executor_l1_max
+        ),
     )
     assert altered.public_tests == basis.public_tests
     assert altered.target_tests == basis.target_tests
@@ -447,9 +491,15 @@ def test_complete_reducer_evaluates_both_ordered_pairs_without_pair_mapper() -> 
         and "activation_over_token_packet_gain_ci" in row
         and set(row["rank_transfer"]) == {"1", "2", "3", "4", "6", "8"}
         and set(row["rank4_transfer_comparisons"]) == {"1", "2", "3", "6", "8"}
+        and set(row["normalization_aware_transfer"]) == {"1", "2", "3"}
+        and set(row["rank4_normalization_aware_comparisons"]) == {"1", "2", "3"}
+        and row["normalization_aware_four_bit_payload_bits"] == 12
         for row in metrics["cross_family_composition"].values()
     )
     assert metrics["behavioral_residual_census"]["promotional"] is False
+    assert metrics["system_generalization_scope"]["interpretation"] == (
+        "local_law_perturbation_only"
+    )
     assert metrics["behavioral_residual_census"]["method"].startswith("pooled_residual_pca")
     assert metrics["behavioral_residual_census"]["source_local_residual_encoders"] is True
     assert training["pair_specific_mapper_count"] == 0
@@ -462,8 +512,42 @@ def test_complete_reducer_evaluates_both_ordered_pairs_without_pair_mapper() -> 
     for model in metrics["models"].values():
         baselines = model["semantic_core"]["joint_ood"]["baselines"]
         assert {"wrong_history", "shuffled_history", "renderer_shuffled"} <= set(baselines)
+        assert set(model["normalization_aware_sweep"]) == {"1", "2", "3"}
+        assert model["normalization_aware_quantization"]["4"]["payload_bits"] == 12
+        assert model["quantization"]["4"]["payload_bits"] == 16
     decision = gate_decision(config, metrics)
     assert decision["authorization"]["spq1_execution_authorized"] is False
     assert decision["authorization"]["receiver_execution_authorized"] is False
     assert "amortized_rate_utility" not in decision["checks"]
+    assert "predictive_dimension_consistent" in decision["checks"]
+    assert "transfer_rank_identified" not in decision["checks"]
     assert "heuristic_rate_scalarization_non_promotional" in decision["check_details"]
+
+    # Isolate the corrected dimension gate. Homogeneous rank three is only an
+    # executor-convention diagnostic; the exactly sufficient affine rank-three
+    # control may be up to the frozen noninferiority margin better than rank four.
+    config.gates.source_probability_gain_over_prior_lower95_min = -1e6
+    config.gates.semantic_core_gain_over_prior_lower95_min = -1e6
+    config.gates.activation_over_token_sequence_lower95_strict_gt = -1e6
+    config.gates.cross_family_activation_over_token_lower95_strict_gt = -1e6
+    config.gates.wrong_history_margin_lower95_strict_gt = -1e6
+    config.gates.cross_family_target_prior_gain_lower95_strict_gt = -1e6
+    config.gates.min_cross_family_oracle_reader_gain_retention = -1e6
+    config.gates.min_four_bit_gain_retention = -1e6
+    config.gates.max_sender_identity_accuracy_over_chance = 1.0
+    for row in metrics["cross_family_composition"].values():
+        row["rank4_transfer_comparisons"]["3"]["lower"] = -100.0
+        for rank in (1, 2):
+            row["rank4_normalization_aware_comparisons"][str(rank)]["lower"] = 0.01
+        row["rank4_normalization_aware_comparisons"]["3"]["lower"] = -0.001
+        for rank in (6, 8):
+            row["rank4_transfer_comparisons"][str(rank)]["lower"] = -0.001
+    corrected = gate_decision(config, metrics)
+    assert corrected["checks"]["predictive_dimension_consistent"] is True
+    assert corrected["status"] == "pass"
+
+    for row in metrics["cross_family_composition"].values():
+        row["rank4_normalization_aware_comparisons"]["3"]["lower"] = -0.0021
+    failed_dimension = gate_decision(config, metrics)
+    assert failed_dimension["checks"]["predictive_dimension_consistent"] is False
+    assert failed_dimension["diagnosis"] == "PREDICTIVE_DIMENSION_NOT_LOCALIZED"

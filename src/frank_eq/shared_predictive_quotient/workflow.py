@@ -21,6 +21,7 @@ from .automaton import (
     BASIS_REGISTRY_DECIMALS,
     SELECTION_SCORE_DECIMALS,
     canonical_basis_registry_payload,
+    validation_shift_summary,
 )
 from .capture import _write_npz, capture_model, load_capture
 from .checkpoints import preflight_active_tokenizer_contract, preflight_checkpoint_contract
@@ -121,6 +122,10 @@ def build_spq0_plan(
     )
     tests_per_prefix = len(basis.public_tests) + len(basis.target_tests)
     system_payload = [system.to_dict() for system in systems]
+    validation_shifts = validation_shift_summary(
+        systems,
+        parent_weight=config.systems.validation_parent_weight,
+    )
     basis_payload = canonical_basis_registry_payload(basis)
     active_revisions = {
         model.model_id: {
@@ -159,6 +164,8 @@ def build_spq0_plan(
         "systems": {
             "fit": config.systems.fit_systems,
             "validation_only": config.systems.validation_only_systems,
+            "validation_scope": "local_law_perturbation",
+            "validation_shifts": validation_shifts,
             "family_sha256": sha256_bytes(canonical_json_bytes(system_payload)),
             "validation_only_system_ids": [
                 system.system_id for system in systems if system.role == "validation_only"
@@ -166,11 +173,19 @@ def build_spq0_plan(
         },
         "public_basis": {
             "exact_rank": basis.exact_rank,
+            "normalization_aware_dimension": basis.normalization_aware_dimension,
+            "implicit_zero_bit_coordinate": "null_test_probability_1",
             "rank_grid": config.semantic_encoder.rank_grid,
             "public_tests": len(basis.public_tests),
             "target_tests": len(basis.target_tests),
             "core_condition_numbers": basis_payload["core_condition_numbers"],
+            "normalization_aware_condition_numbers": basis_payload[
+                "normalization_aware_condition_numbers"
+            ],
             "maximum_target_l1": basis_payload["maximum_target_l1"],
+            "maximum_normalization_aware_target_l1": basis_payload[
+                "maximum_normalization_aware_target_l1"
+            ],
             "maximum_exact_executor_error_bound": (config.gates.max_oracle_executor_abs_error),
             "numeric_canonicalization": {
                 "basis_registry_decimal_places": BASIS_REGISTRY_DECIMALS,
@@ -211,6 +226,9 @@ def build_spq0_plan(
             "primary_packet_rank": basis.exact_rank,
             "primary_quantization_bits_per_coordinate": 4,
             "primary_payload_bits": 4 * basis.exact_rank,
+            "normalization_aware_packet_rank": basis.normalization_aware_dimension,
+            "normalization_aware_payload_bits": 4 * basis.normalization_aware_dimension,
+            "interpretation": "robust_linear_packet_versus_rate_minimal_affine_packet",
             "amortized_future_query_counts": config.evaluation.amortized_future_query_counts,
             "primary_amortized_query_count": config.gates.amortized_query_count_for_primary_utility,
             "direct_one_query_advantage_is_not_conjunctive": True,

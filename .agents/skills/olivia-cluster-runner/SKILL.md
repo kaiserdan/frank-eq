@@ -43,7 +43,9 @@ configs/spq0/real_olivia_spq0.yaml
 
 It has no recovery, test, held, receiver, or claim path. OLMo2 and Granite are
 reserved unopened. Follow `.agents/skills/spq0-runner/SKILL.md` and
-`docs/26_SPQ0_OLIVIA_RUNBOOK.md`.
+`docs/26_SPQ0_OLIVIA_RUNBOOK.md`. Its rank census distinguishes linear rank
+four from the exactly sufficient normalization-aware affine dimension three;
+the held system is only a local law-perturbation check.
 
 ## Validation
 

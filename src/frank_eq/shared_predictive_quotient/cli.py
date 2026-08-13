@@ -47,9 +47,19 @@ def main(argv: list[str] | None = None) -> int:
                     system.role == "validation_only" for system in systems
                 ),
                 "exact_rank": basis.exact_rank,
+                "normalization_aware_dimension": basis.normalization_aware_dimension,
                 "worst_core_condition_number": max(basis.core_condition_numbers.values()),
+                "worst_normalization_aware_condition_number": max(
+                    basis.normalization_aware_condition_numbers.values()
+                ),
                 "maximum_target_l1": basis.maximum_target_l1,
+                "maximum_normalization_aware_target_l1": (
+                    basis.maximum_normalization_aware_target_l1
+                ),
                 "maximum_exact_executor_error": basis.maximum_exact_executor_error,
+                "maximum_normalization_aware_executor_error": (
+                    basis.maximum_normalization_aware_executor_error
+                ),
             }
         )
         return 0

@@ -32,10 +32,14 @@ systems:
   observations: 3
   fit_systems: 2
   validation_only_systems: 1
+  validation_parent_weight: 0.90
   full_support_min_probability: 0.04
   predictive_rank: 4
+  normalization_aware_dimension: 3
   core_condition_number_max: 5.0
   target_executor_l1_max: 4.0
+  normalization_aware_condition_number_max: 25.0
+  normalization_aware_target_executor_l1_max: 14.0
   future_horizons: [1, 2, 3, 4]
   target_tests: 24
   system_seed: 2026084101
@@ -151,7 +155,7 @@ gates:
   wrong_history_margin_lower95_strict_gt: 0.0
   cross_family_target_prior_gain_lower95_strict_gt: 0.0
   min_cross_family_oracle_reader_gain_retention: 0.70
-  rank4_noninferior_to_higher_ranks: true
+  robust_rank4_saturation_required: true
   rank4_transfer_noninferiority_margin: 0.002
   min_four_bit_gain_retention: 0.95
   max_sender_identity_accuracy_over_chance: 0.15

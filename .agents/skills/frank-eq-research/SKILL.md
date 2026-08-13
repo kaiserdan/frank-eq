@@ -64,6 +64,14 @@ must use `configs/spq0/real_olivia_spq0.yaml`, profile `full`, and exactly stage
 `audit`. Reserved OLMo2 and Granite checkpoints must remain unopened. A pass
 authorizes only drafting SPQ1.
 
+SPQ0's homogeneous linear PSR rank is four, while normalization makes three
+transmitted future-test coordinates plus the known null-test probability `1`
+exactly sufficient. Audit both conventions. Treat the 16-bit rank-four packet
+as the robust, better-conditioned representation and the 12-bit affine
+rank-three packet as the rate-minimal sufficient control. Never require rank
+four to beat affine rank three. The held system is a local law perturbation,
+not broad system-family evidence.
+
 ## Historical RC0 workflow
 
 1. Confirm exact Qwen3-4B and Qwen3-8B revisions.

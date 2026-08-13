@@ -59,7 +59,12 @@ def main() -> int:
         [system.role for system in systems] == ["fit", "fit", "validation_only"],
         "SPQ0 system-role order changed",
     )
-    _require(basis.exact_rank == 4 and basis.maximum_rank == 8, "SPQ0 rank changed")
+    _require(
+        basis.exact_rank == 4
+        and basis.normalization_aware_dimension == 3
+        and basis.maximum_rank == 8,
+        "SPQ0 linear or normalization-aware dimension changed",
+    )
     _require(len(basis.target_tests) == 24, "SPQ0 target-test registry changed")
     _require(
         max(basis.core_condition_numbers.values()) <= 5.0,
@@ -67,8 +72,20 @@ def main() -> int:
     )
     _require(basis.maximum_target_l1 <= 4.0, "SPQ0 executor exceeds its L1 bound")
     _require(
+        max(basis.normalization_aware_condition_numbers.values()) <= 25.0,
+        "SPQ0 normalization-aware core exceeds its condition-number bound",
+    )
+    _require(
+        basis.maximum_normalization_aware_target_l1 <= 14.0,
+        "SPQ0 normalization-aware executor exceeds its L1 bound",
+    )
+    _require(
         basis.maximum_exact_executor_error <= 1e-10,
         "SPQ0 exact executor exceeds tolerance",
+    )
+    _require(
+        basis.maximum_normalization_aware_executor_error <= 1e-10,
+        "SPQ0 normalization-aware executor exceeds tolerance",
     )
     for system in systems:
         public = basis.public_matrices[system.system_id]
@@ -89,6 +106,27 @@ def main() -> int:
                     )
                 )
                 _require(error <= 1e-10, "SPQ0 target executor is not exact")
+        for rank in range(1, basis.normalization_aware_dimension + 1):
+            augmented = np.column_stack((public[:, :rank], np.ones(basis.exact_rank)))
+            expected_rank = rank + 1
+            _require(
+                int(np.linalg.matrix_rank(augmented, tol=1e-11)) == expected_rank,
+                "SPQ0 normalization-aware dimension census changed",
+            )
+        affine_rank = basis.normalization_aware_dimension
+        affine_public = np.column_stack(
+            (public[:, :affine_rank], np.ones(basis.exact_rank))
+        )
+        affine_error = float(
+            np.max(
+                np.abs(
+                    affine_public
+                    @ basis.normalization_aware_executors[affine_rank][system.system_id]
+                    - target
+                )
+            )
+        )
+        _require(affine_error <= 1e-10, "SPQ0 affine-complete executor is not exact")
 
     held = systems[-1]
     altered_held = replace(
@@ -105,6 +143,13 @@ def main() -> int:
         target_seed=config.systems.core_selection_seed,
         max_core_condition_number=config.systems.core_condition_number_max,
         max_target_l1=config.systems.target_executor_l1_max,
+        normalization_aware_dimension=config.systems.normalization_aware_dimension,
+        max_normalization_aware_condition_number=(
+            config.systems.normalization_aware_condition_number_max
+        ),
+        max_normalization_aware_target_l1=(
+            config.systems.normalization_aware_target_executor_l1_max
+        ),
     )
     _require(
         altered_basis.public_tests == basis.public_tests
@@ -195,6 +240,29 @@ def main() -> int:
         "SPQ0 cross-platform basis canonicalization changed",
     )
     _require(
+        inspected_plan["public_basis"]["exact_rank"] == 4
+        and inspected_plan["public_basis"]["normalization_aware_dimension"] == 3
+        and inspected_plan["public_basis"]["implicit_zero_bit_coordinate"]
+        == "null_test_probability_1"
+        and inspected_plan["rate_compute"]["primary_payload_bits"] == 16
+        and inspected_plan["rate_compute"]["normalization_aware_payload_bits"] == 12
+        and inspected_plan["rate_compute"]["interpretation"]
+        == "robust_linear_packet_versus_rate_minimal_affine_packet"
+        and inspected_plan["systems"]["validation_scope"] == "local_law_perturbation",
+        "SPQ0 predictive-dimension or held-system interpretation changed",
+    )
+    held_shift = inspected_plan["systems"]["validation_shifts"]["system-02"]
+    _require(
+        held_shift["parent_system_id"] == "system-00"
+        and np.isclose(held_shift["parent_weight"], 0.90)
+        and np.isclose(held_shift["transition_mean_row_total_variation"], 0.084)
+        and np.isclose(
+            held_shift["emission_mean_row_total_variation"],
+            0.05916106270987659,
+        ),
+        "SPQ0 local validation-law shift changed",
+    )
+    _require(
         inspected_plan["access"]
         == {
             "future_test_revealed_before_capture": False,
@@ -281,6 +349,11 @@ def main() -> int:
         ["post_reveal_query_branches_per_model"],
         "ordered_cross_family_pairs": inspected_plan["composition"]
         ["ordered_cross_family_pairs"],
+        "linear_predictive_rank": basis.exact_rank,
+        "normalization_aware_dimension": basis.normalization_aware_dimension,
+        "robust_packet_bits": inspected_plan["rate_compute"]["primary_payload_bits"],
+        "rate_minimal_packet_bits": inspected_plan["rate_compute"]
+        ["normalization_aware_payload_bits"],
         "pair_specific_mappers": 0,
         "config_sha256": sha256_file(config_path),
         "plan_file_sha256": sha256_file(PLAN),

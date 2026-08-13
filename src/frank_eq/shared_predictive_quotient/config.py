@@ -95,10 +95,14 @@ class SPQSystemConfig:
     observations: int = 3
     fit_systems: int = 2
     validation_only_systems: int = 1
+    validation_parent_weight: float = 0.90
     full_support_min_probability: float = 0.04
     predictive_rank: int = 4
+    normalization_aware_dimension: int = 3
     core_condition_number_max: float = 5.0
     target_executor_l1_max: float = 4.0
+    normalization_aware_condition_number_max: float = 25.0
+    normalization_aware_target_executor_l1_max: float = 14.0
     future_horizons: list[int] = field(default_factory=lambda: [1, 2, 3, 4])
     target_tests: int = 24
     system_seed: int = 2026084101
@@ -233,7 +237,7 @@ class SPQGateConfig:
     wrong_history_margin_lower95_strict_gt: float = 0.0
     cross_family_target_prior_gain_lower95_strict_gt: float = 0.0
     min_cross_family_oracle_reader_gain_retention: float = 0.70
-    rank4_noninferior_to_higher_ranks: bool = True
+    robust_rank4_saturation_required: bool = True
     rank4_transfer_noninferiority_margin: float = 0.002
     min_four_bit_gain_retention: float = 0.95
     max_sender_identity_accuracy_over_chance: float = 0.15
@@ -288,6 +292,7 @@ class SPQRunConfig:
             observations=self.systems.observations,
             fit_systems=self.systems.fit_systems,
             validation_only_systems=self.systems.validation_only_systems,
+            validation_parent_weight=self.systems.validation_parent_weight,
             minimum_probability=self.systems.full_support_min_probability,
             seed=self.systems.system_seed,
         )
@@ -300,6 +305,13 @@ class SPQRunConfig:
             target_seed=self.systems.core_selection_seed,
             max_core_condition_number=self.systems.core_condition_number_max,
             max_target_l1=self.systems.target_executor_l1_max,
+            normalization_aware_dimension=self.systems.normalization_aware_dimension,
+            max_normalization_aware_condition_number=(
+                self.systems.normalization_aware_condition_number_max
+            ),
+            max_normalization_aware_target_l1=(
+                self.systems.normalization_aware_target_executor_l1_max
+            ),
         )
         return systems, basis
 
@@ -337,12 +349,28 @@ class SPQRunConfig:
             raise ValueError("generated system-family size changed")
         if sum(system.role == "validation_only" for system in systems) < 1:
             raise ValueError("SPQ0 requires a validation-only transition/emission system")
-        if basis.exact_rank != 4 or basis.maximum_rank < 8:
+        if self.systems.validation_parent_weight != 0.90:
+            raise ValueError("SPQ0 validation law must remain a 10% local perturbation")
+        if (
+            basis.exact_rank != 4
+            or basis.normalization_aware_dimension != 3
+            or basis.maximum_rank < 8
+        ):
             raise ValueError("SPQ0 requires an exact rank-4 core and overcomplete sweep")
         if max(basis.core_condition_numbers.values()) > self.systems.core_condition_number_max:
             raise ValueError("shared public core exceeds the registered condition bound")
         if basis.maximum_target_l1 > self.systems.target_executor_l1_max:
             raise ValueError("shared target executor exceeds the registered L1 bound")
+        if (
+            max(basis.normalization_aware_condition_numbers.values())
+            > self.systems.normalization_aware_condition_number_max
+        ):
+            raise ValueError("normalization-aware core exceeds the registered condition bound")
+        if (
+            basis.maximum_normalization_aware_target_l1
+            > self.systems.normalization_aware_target_executor_l1_max
+        ):
+            raise ValueError("normalization-aware executor exceeds the registered L1 bound")
 
         roles = self.panel.roles
         if set(roles.calibration.lengths) != {8, 16}:
@@ -479,6 +507,8 @@ class SPQRunConfig:
             raise ValueError("SPQ0 four-bit retention gate is invalid")
         if gates.rank4_transfer_noninferiority_margin < 0.0:
             raise ValueError("SPQ0 transfer-rank noninferiority margin is invalid")
+        if not gates.robust_rank4_saturation_required:
+            raise ValueError("SPQ0 robust rank-four saturation check must remain enabled")
         if gates.max_oracle_executor_abs_error <= 0:
             raise ValueError("SPQ0 exact-executor tolerance must be positive")
 

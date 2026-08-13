@@ -202,17 +202,30 @@ class ControlledSystem:
 
 @dataclass(frozen=True, slots=True)
 class SharedPredictiveBasis:
-    """One typed test registry with an exact rank-conditioned core per system."""
+    """One typed test registry with linear and normalization-aware executors.
+
+    ``exact_rank`` is the homogeneous linear PSR rank.  Because every belief is
+    normalized, an executor also knows the null-test probability ``1`` without
+    receiving it.  The first ``normalization_aware_dimension`` public tests,
+    augmented by that constant, therefore form the rate-minimal affine core.
+    Keeping both conventions prevents a redundant linear coordinate from being
+    mistaken for an intrinsically necessary message dimension.
+    """
 
     exact_rank: int
+    normalization_aware_dimension: int
     public_tests: tuple[PredictiveTest, ...]
     target_tests: tuple[PredictiveTest, ...]
     public_matrices: Mapping[str, np.ndarray]
     target_matrices: Mapping[str, np.ndarray]
     executors: Mapping[int, Mapping[str, np.ndarray]]
+    normalization_aware_executors: Mapping[int, Mapping[str, np.ndarray]]
     core_condition_numbers: Mapping[str, float]
+    normalization_aware_condition_numbers: Mapping[str, float]
     maximum_target_l1: float
+    maximum_normalization_aware_target_l1: float
     maximum_exact_executor_error: float
+    maximum_normalization_aware_executor_error: float
 
     @property
     def core_tests(self) -> tuple[PredictiveTest, ...]:
@@ -225,13 +238,21 @@ class SharedPredictiveBasis:
     def validate(self, *, tolerance: float = 1e-10) -> None:
         if self.exact_rank < 1 or self.maximum_rank < self.exact_rank:
             raise ValueError("shared predictive basis rank registry is invalid")
+        if self.normalization_aware_dimension != self.exact_rank - 1:
+            raise ValueError("normalization-aware dimension must remove exactly one constant")
         system_ids = set(self.public_matrices)
         if not system_ids or set(self.target_matrices) != system_ids:
             raise ValueError("basis matrices do not cover one common system registry")
         if set(self.executors) != set(range(1, self.maximum_rank + 1)):
             raise ValueError("basis lacks a rank-conditioned executor")
+        if set(self.normalization_aware_executors) != set(
+            range(1, self.normalization_aware_dimension + 1)
+        ):
+            raise ValueError("basis lacks a normalization-aware rank-conditioned executor")
         observed_max_l1 = 0.0
         observed_max_error = 0.0
+        observed_affine_max_l1 = 0.0
+        observed_affine_max_error = 0.0
         for system_id in sorted(system_ids):
             public = np.asarray(self.public_matrices[system_id], dtype=np.float64)
             target = np.asarray(self.target_matrices[system_id], dtype=np.float64)
@@ -269,12 +290,61 @@ class SharedPredictiveBasis:
                 observed_max_l1,
                 float(np.max(np.sum(np.abs(exact_executor), axis=0))),
             )
+            for rank, by_system in self.normalization_aware_executors.items():
+                if set(by_system) != system_ids:
+                    raise ValueError("normalization-aware executor system registry changed")
+                executor = np.asarray(by_system[system_id], dtype=np.float64)
+                if executor.shape != (rank + 1, len(self.target_tests)):
+                    raise ValueError("normalization-aware target executor has the wrong shape")
+            affine_public = np.column_stack(
+                (
+                    public[:, : self.normalization_aware_dimension],
+                    np.ones(self.exact_rank, dtype=np.float64),
+                )
+            )
+            if int(np.linalg.matrix_rank(affine_public, tol=tolerance)) != self.exact_rank:
+                raise ValueError(f"normalization-aware core is not sufficient for {system_id}")
+            affine_condition = float(np.linalg.cond(affine_public))
+            if not np.isclose(
+                affine_condition,
+                float(self.normalization_aware_condition_numbers[system_id]),
+                atol=1e-12,
+                rtol=1e-12,
+            ):
+                raise ValueError("stored normalization-aware condition number is inconsistent")
+            affine_executor = np.asarray(
+                self.normalization_aware_executors[self.normalization_aware_dimension][system_id],
+                dtype=np.float64,
+            )
+            affine_difference = affine_public @ affine_executor - target
+            observed_affine_max_error = max(
+                observed_affine_max_error,
+                float(np.max(np.abs(affine_difference))),
+            )
+            observed_affine_max_l1 = max(
+                observed_affine_max_l1,
+                float(np.max(np.sum(np.abs(affine_executor), axis=0))),
+            )
         if observed_max_error > tolerance:
             raise ValueError("rank-complete public packets do not exactly execute targets")
         if not np.isclose(observed_max_error, self.maximum_exact_executor_error, atol=1e-14):
             raise ValueError("stored exact-executor error is inconsistent")
         if not np.isclose(observed_max_l1, self.maximum_target_l1, atol=1e-12):
             raise ValueError("stored target-executor sensitivity is inconsistent")
+        if observed_affine_max_error > tolerance:
+            raise ValueError("normalization-aware public packets do not exactly execute targets")
+        if not np.isclose(
+            observed_affine_max_error,
+            self.maximum_normalization_aware_executor_error,
+            atol=1e-14,
+        ):
+            raise ValueError("stored normalization-aware executor error is inconsistent")
+        if not np.isclose(
+            observed_affine_max_l1,
+            self.maximum_normalization_aware_target_l1,
+            atol=1e-12,
+        ):
+            raise ValueError("stored normalization-aware executor sensitivity is inconsistent")
 
     def public_probabilities(
         self,
@@ -299,6 +369,31 @@ class SharedPredictiveBasis:
         core = self.public_matrices[system_id][:, : self.exact_rank]
         return values @ np.linalg.pinv(public, rcond=1e-12) @ core
 
+    def decode_core_normalization_aware(
+        self,
+        system_id: str,
+        packet: np.ndarray,
+        *,
+        rank: int,
+    ) -> np.ndarray:
+        """Decode with the known null-test probability as a zero-bit intercept."""
+
+        values = np.asarray(packet, dtype=np.float64)
+        if rank not in self.normalization_aware_executors or values.shape[-1] != rank:
+            raise ValueError("normalization-aware packet has the wrong rank")
+        augmented_values = np.concatenate(
+            (values, np.ones((*values.shape[:-1], 1), dtype=np.float64)),
+            axis=-1,
+        )
+        public = np.column_stack(
+            (
+                self.public_matrices[system_id][:, :rank],
+                np.ones(self.exact_rank, dtype=np.float64),
+            )
+        )
+        core = self.public_matrices[system_id][:, : self.exact_rank]
+        return augmented_values @ np.linalg.pinv(public, rcond=1e-12) @ core
+
     def execute_targets(
         self,
         system_id: str,
@@ -313,11 +408,30 @@ class SharedPredictiveBasis:
         result = values @ self.executors[rank][system_id]
         return np.clip(result, 0.0, 1.0) if clip else result
 
+    def execute_targets_normalization_aware(
+        self,
+        system_id: str,
+        packet: np.ndarray,
+        *,
+        rank: int,
+        clip: bool = True,
+    ) -> np.ndarray:
+        values = np.asarray(packet, dtype=np.float64)
+        if rank not in self.normalization_aware_executors or values.shape[-1] != rank:
+            raise ValueError("normalization-aware packet has the wrong rank")
+        augmented_values = np.concatenate(
+            (values, np.ones((*values.shape[:-1], 1), dtype=np.float64)),
+            axis=-1,
+        )
+        result = augmented_values @ self.normalization_aware_executors[rank][system_id]
+        return np.clip(result, 0.0, 1.0) if clip else result
+
     def to_dict(self) -> dict[str, Any]:
         self.validate()
         return {
-            "schema": "frank_eq_shared_predictive_basis_v1",
+            "schema": "frank_eq_shared_predictive_basis_v2",
             "exact_rank": self.exact_rank,
+            "normalization_aware_dimension": self.normalization_aware_dimension,
             "public_tests": [test.to_dict() for test in self.public_tests],
             "core_tests": [test.to_dict() for test in self.core_tests],
             "target_tests": [test.to_dict() for test in self.target_tests],
@@ -333,9 +447,25 @@ class SharedPredictiveBasis:
                 }
                 for rank in sorted(self.executors)
             },
+            "normalization_aware_executors": {
+                str(rank): {
+                    key: self.normalization_aware_executors[rank][key].tolist()
+                    for key in sorted(self.normalization_aware_executors[rank])
+                }
+                for rank in sorted(self.normalization_aware_executors)
+            },
             "core_condition_numbers": dict(sorted(self.core_condition_numbers.items())),
+            "normalization_aware_condition_numbers": dict(
+                sorted(self.normalization_aware_condition_numbers.items())
+            ),
             "maximum_target_l1": self.maximum_target_l1,
+            "maximum_normalization_aware_target_l1": (
+                self.maximum_normalization_aware_target_l1
+            ),
             "maximum_exact_executor_error": self.maximum_exact_executor_error,
+            "maximum_normalization_aware_executor_error": (
+                self.maximum_normalization_aware_executor_error
+            ),
         }
 
 
@@ -417,6 +547,7 @@ def generate_system_family(
     observations: int,
     fit_systems: int,
     validation_only_systems: int,
+    validation_parent_weight: float,
     minimum_probability: float,
     seed: int,
 ) -> tuple[ControlledSystem, ...]:
@@ -426,6 +557,8 @@ def generate_system_family(
         raise ValueError("SPQ0 is frozen to four states, three actions, and three observations")
     if fit_systems < 2 or validation_only_systems < 1:
         raise ValueError("SPQ0 needs two fit systems and a validation-only system")
+    if not 0.0 < validation_parent_weight < 1.0:
+        raise ValueError("validation parent weight must be strictly between zero and one")
     rng = np.random.default_rng(seed)
     raw_systems: list[tuple[np.ndarray, np.ndarray]] = []
     total = fit_systems + validation_only_systems
@@ -455,18 +588,17 @@ def generate_system_family(
     # transition/emission law while guaranteeing that the shared public test
     # registry remains numerically meaningful without inspecting any model
     # response or using validation rows for basis selection.
-    validation_base_weight = 0.90
     systems: list[ControlledSystem] = []
     for index, (transitions, emissions) in enumerate(raw_systems):
         if index >= fit_systems:
             parent_transitions, parent_emissions = raw_systems[(index - fit_systems) % fit_systems]
             transitions = (
-                validation_base_weight * parent_transitions
-                + (1.0 - validation_base_weight) * transitions
+                validation_parent_weight * parent_transitions
+                + (1.0 - validation_parent_weight) * transitions
             )
             emissions = (
-                validation_base_weight * parent_emissions
-                + (1.0 - validation_base_weight) * emissions
+                validation_parent_weight * parent_emissions
+                + (1.0 - validation_parent_weight) * emissions
             )
         system = ControlledSystem(
             system_id=f"system-{index:02d}",
@@ -481,6 +613,36 @@ def generate_system_family(
         system.validate(minimum_probability=minimum_probability)
         systems.append(system)
     return tuple(systems)
+
+
+def validation_shift_summary(
+    systems: tuple[ControlledSystem, ...],
+    *,
+    parent_weight: float,
+) -> dict[str, Any]:
+    """Quantify the frozen held-law perturbation without model responses."""
+
+    fit_systems = tuple(system for system in systems if system.role == "fit")
+    validation_systems = tuple(
+        system for system in systems if system.role == "validation_only"
+    )
+    if not fit_systems or not validation_systems:
+        raise ValueError("validation-shift summary requires fit and validation systems")
+    result: dict[str, Any] = {}
+    for offset, system in enumerate(validation_systems):
+        parent = fit_systems[offset % len(fit_systems)]
+        result[system.system_id] = {
+            "parent_system_id": parent.system_id,
+            "parent_weight": float(parent_weight),
+            "independent_draw_weight": float(round(1.0 - parent_weight, 15)),
+            "transition_mean_row_total_variation": float(
+                np.mean(np.sum(np.abs(system.transitions - parent.transitions), axis=2) / 2.0)
+            ),
+            "emission_mean_row_total_variation": float(
+                np.mean(np.sum(np.abs(system.emissions - parent.emissions), axis=1) / 2.0)
+            ),
+        }
+    return result
 
 
 def _select_shared_public_tests(
@@ -556,6 +718,9 @@ def build_shared_predictive_basis(
     target_seed: int,
     max_core_condition_number: float,
     max_target_l1: float,
+    normalization_aware_dimension: int | None = None,
+    max_normalization_aware_condition_number: float | None = None,
+    max_normalization_aware_target_l1: float | None = None,
 ) -> SharedPredictiveBasis:
     """Select one rank-conditioned typed basis that is exact for every system."""
 
@@ -570,6 +735,13 @@ def build_shared_predictive_basis(
         raise ValueError("all SPQ0 systems must share the public symbol registry")
     if exact_rank != reference.n_states or maximum_rank < exact_rank:
         raise ValueError("exact and maximum packet ranks are inconsistent with the systems")
+    affine_dimension = (
+        exact_rank - 1
+        if normalization_aware_dimension is None
+        else int(normalization_aware_dimension)
+    )
+    if affine_dimension != exact_rank - 1:
+        raise ValueError("normalization-aware packet must use rank minus one coordinates")
     candidates = candidate_tests(
         n_actions=reference.n_actions,
         n_observations=reference.n_observations,
@@ -660,16 +832,88 @@ def build_shared_predictive_basis(
         float(np.max(np.sum(np.abs(executors[exact_rank][system.system_id]), axis=0)))
         for system in systems
     )
+    normalization_aware_executors: dict[int, dict[str, np.ndarray]] = {}
+    for rank in range(1, affine_dimension + 1):
+        normalization_aware_executors[rank] = {}
+        for system in systems:
+            public = np.column_stack(
+                (
+                    public_matrices[system.system_id][:, :rank],
+                    np.ones(exact_rank, dtype=np.float64),
+                )
+            )
+            normalization_aware_executors[rank][system.system_id] = (
+                np.linalg.pinv(public, rcond=1e-12) @ target_matrices[system.system_id]
+            )
+    normalization_aware_conditions = {
+        system.system_id: float(
+            np.linalg.cond(
+                np.column_stack(
+                    (
+                        public_matrices[system.system_id][:, :affine_dimension],
+                        np.ones(exact_rank, dtype=np.float64),
+                    )
+                )
+            )
+        )
+        for system in systems
+    }
+    if (
+        max_normalization_aware_condition_number is not None
+        and max(normalization_aware_conditions.values())
+        > max_normalization_aware_condition_number
+    ):
+        raise ValueError("normalization-aware core exceeds its condition-number bound")
+    normalization_aware_maximum_l1 = max(
+        float(
+            np.max(
+                np.sum(
+                    np.abs(
+                        normalization_aware_executors[affine_dimension][system.system_id]
+                    ),
+                    axis=0,
+                )
+            )
+        )
+        for system in systems
+    )
+    if (
+        max_normalization_aware_target_l1 is not None
+        and normalization_aware_maximum_l1 > max_normalization_aware_target_l1
+    ):
+        raise ValueError("normalization-aware executor exceeds its L1 bound")
+    normalization_aware_maximum_error = max(
+        float(
+            np.max(
+                np.abs(
+                    np.column_stack(
+                        (
+                            public_matrices[system.system_id][:, :affine_dimension],
+                            np.ones(exact_rank, dtype=np.float64),
+                        )
+                    )
+                    @ normalization_aware_executors[affine_dimension][system.system_id]
+                    - target_matrices[system.system_id]
+                )
+            )
+        )
+        for system in systems
+    )
     basis = SharedPredictiveBasis(
         exact_rank=exact_rank,
+        normalization_aware_dimension=affine_dimension,
         public_tests=tuple(candidates[index] for index in public_indices),
         target_tests=tuple(candidates[index] for index in target_indices),
         public_matrices=public_matrices,
         target_matrices=target_matrices,
         executors=executors,
+        normalization_aware_executors=normalization_aware_executors,
         core_condition_numbers=condition_numbers,
+        normalization_aware_condition_numbers=normalization_aware_conditions,
         maximum_target_l1=maximum_l1,
+        maximum_normalization_aware_target_l1=normalization_aware_maximum_l1,
         maximum_exact_executor_error=maximum_error,
+        maximum_normalization_aware_executor_error=normalization_aware_maximum_error,
     )
     basis.validate()
     return basis
