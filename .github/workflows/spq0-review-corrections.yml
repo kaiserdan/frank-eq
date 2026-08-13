@@ -33,10 +33,17 @@ jobs:
 
           path = Path('scripts/apply_spq0_review_corrections.py')
           text = path.read_text()
-          optional = '        "frank_eq_spq0_research_and_implementation_plan.md",\n'
-          if optional not in text:
-              raise SystemExit('optional planning-document entry was not found')
-          path.write_text(text.replace(optional, '', 1))
+          start = text.index('    rename_paths = [')
+          end = text.index('    ]\n    for path in rename_paths:', start) + len('    ]\n')
+          block = text[start:end]
+          for optional in (
+              '        "frank_eq_spq0_research_and_implementation_plan.md",\n',
+              '        "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",\n',
+          ):
+              if optional not in block:
+                  raise SystemExit(f'optional rename entry was not found: {optional!r}')
+              block = block.replace(optional, '', 1)
+          path.write_text(text[:start] + block + text[end:])
           PY
           python scripts/apply_spq0_review_corrections.py patch
           ruff format src/frank_eq/shared_predictive_quotient tests/test_spq0.py
