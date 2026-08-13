@@ -178,6 +178,22 @@ def test_shared_future_tests_are_exact_at_rank_four_and_undercomplete_below() ->
     assert BASIS_REGISTRY_DECIMALS == 10
     canonical_basis = canonical_basis_registry_payload(basis)
     assert canonical_basis["maximum_exact_executor_error"] == 0.0
+
+    def numeric_leaves(value: object):
+        if isinstance(value, float):
+            yield value
+        elif isinstance(value, dict):
+            for item in value.values():
+                yield from numeric_leaves(item)
+        elif isinstance(value, list):
+            for item in value:
+                yield from numeric_leaves(item)
+
+    assert all(
+        not np.signbit(value)
+        for value in numeric_leaves(canonical_basis)
+        if value == 0.0
+    )
     assert max(basis.core_condition_numbers.values()) <= 5.0
     assert basis.maximum_target_l1 <= 4.0
     rng = np.random.default_rng(7)

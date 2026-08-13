@@ -121,8 +121,9 @@ with candidate-registry order as the declared tie break. This prevents
 Accelerate/OpenBLAS/MKL last-bit differences from selecting different members
 of a mathematically tied symmetry class. Runtime arrays retain float64
 precision. Only the plan's basis-registry digest and reported condition/L1
-summaries use a 10-decimal canonical representation; the registered executor
-error bound remains `1e-10`. A validator must reproduce the same typed
+summaries use a 10-decimal canonical representation with signed zero normalized
+to positive zero; the registered executor error bound remains `1e-10`. A
+validator must reproduce the same typed
 registries and canonical digest on every supported platform.
 
 ## Role and rendering freeze

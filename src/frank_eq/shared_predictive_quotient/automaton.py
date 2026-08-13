@@ -35,7 +35,8 @@ def _canonicalize_basis_registry_value(value: Any) -> Any:
     """
 
     if isinstance(value, float):
-        return round(value, BASIS_REGISTRY_DECIMALS)
+        rounded = round(value, BASIS_REGISTRY_DECIMALS)
+        return 0.0 if rounded == 0.0 else rounded
     if isinstance(value, list):
         return [_canonicalize_basis_registry_value(item) for item in value]
     if isinstance(value, dict):

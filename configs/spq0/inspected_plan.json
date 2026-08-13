@@ -73,12 +73,12 @@
       "symbolic"
     ]
   },
-  "plan_sha256": "35aaedcbbc18fc8dc9e4eeb8e303d527424d135d7f4c7948b12dee6f6690a0f1",
+  "plan_sha256": "6d966b2308a7a43f41a6bef8f63129cf651429c4e93aef4ac7ee44a2acf372cf",
   "protocol_path": "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",
-  "protocol_sha256": "443e45281c7819d11be0db8559041f8ed756c38dbd88a6bd927051e30a42bc8d",
+  "protocol_sha256": "1b52663fac3d09489a0478765ebc926e3713934b0f0ace51c8d72233989aae75",
   "protocol_version": "spq0-development-census",
   "public_basis": {
-    "basis_sha256": "987681efec7a5f4333e2d25f539d0051b1ac06a1437013487bbda8be565af55b",
+    "basis_sha256": "1280ee8aed94277bfa7d19e2404808d191c334c605d95fa435a1ce69796b49c1",
     "core_condition_numbers": {
       "system-00": 2.743122951,
       "system-01": 4.3112203416,
