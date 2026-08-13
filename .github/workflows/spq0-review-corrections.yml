@@ -52,6 +52,16 @@ jobs:
           python scripts/apply_spq0_review_corrections.py patch
           ruff format src/frank_eq/shared_predictive_quotient tests/test_spq0.py
           ruff check --fix --unsafe-fixes src/frank_eq/shared_predictive_quotient tests/test_spq0.py
+          python - <<'PY'
+          from pathlib import Path
+
+          for name in (
+              'docs/26_SPQ0_OLIVIA_RUNBOOK.md',
+              'frank_eq_spq0_research_and_implementation_plan.md',
+          ):
+              path = Path(name)
+              path.write_text(path.read_text().rstrip() + '\n')
+          PY
           python -m frank_eq.shared_predictive_quotient.cli plan \
             --config configs/spq0/real_olivia_spq0.yaml \
             --out configs/spq0/inspected_plan.json > /tmp/spq0-plan.json
