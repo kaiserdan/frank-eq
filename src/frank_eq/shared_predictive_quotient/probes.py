@@ -455,6 +455,13 @@ class TargetLocalReader:
             "pair_specific_parameters": False,
         }
 
+    def arrays(self, prefix: str) -> dict[str, np.ndarray]:
+        payload = self.linear_map.arrays(prefix)
+        payload[f"{prefix}__shape"] = np.asarray(
+            [self.n_tests, self.n_bins], dtype=np.int64
+        )
+        return payload
+
 
 def fit_target_local_reader(
     cores: np.ndarray,

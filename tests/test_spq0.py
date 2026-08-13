@@ -5,6 +5,10 @@ from pathlib import Path
 import numpy as np
 
 from frank_eq.shared_predictive_quotient.config import load_spq0_config
+from frank_eq.shared_predictive_quotient.evaluation import (
+    evaluate_all_models,
+    gate_decision,
+)
 from frank_eq.shared_predictive_quotient.panel import (
     build_panels,
     render_prefix,
@@ -198,3 +202,106 @@ def test_target_reader_is_fitted_from_oracle_cores_without_pair_parameters() -> 
     assert np.allclose(prediction.sum(axis=2), 1.0)
     assert reader.metadata()["pair_specific_parameters"] is False
     assert artifact["refit_roles"] == ["calibration", "selection"]
+
+
+def _synthetic_capture(model_id: str, family: str, width: int):
+    config, systems, basis = _contract()
+    rng = np.random.default_rng(100 + width)
+    data_rng = np.random.default_rng(77)
+    rows: list[tuple[int, int, int, int, int]] = []
+    history_id = 1
+    for role_id, count in ((0, 16), (1, 12)):
+        for index in range(count):
+            rows.append((history_id, role_id, index % 2, index % 2, 8 + 8 * (index % 2)))
+            history_id += 1
+    validation_conditions = [
+        (0, 0, 8),
+        (0, 2, 8),
+        (2, 0, 8),
+        (0, 0, 32),
+        (2, 2, 32),
+    ]
+    for system_id, renderer_id, length in validation_conditions:
+        for _ in range(5):
+            rows.append((history_id, 2, system_id, renderer_id, length))
+            history_id += 1
+    n_rows = len(rows)
+    beliefs = data_rng.dirichlet(np.ones(4), size=n_rows)
+    public = np.empty((n_rows, 8))
+    targets = np.empty((n_rows, len(basis.target_tests)))
+    for row, (_, _, system_id, _, _) in enumerate(rows):
+        system_name = f"system-{system_id:02d}"
+        public[row] = beliefs[row] @ basis.public_matrices[system_name]
+        targets[row] = beliefs[row] @ basis.target_matrices[system_name]
+    projection = rng.normal(size=(4, width))
+    base = public[:, :4] @ projection
+    final = np.stack(
+        [base + rng.normal(scale=0.03 + 0.01 * layer, size=base.shape) for layer in range(4)],
+        axis=1,
+    )
+    event = np.concatenate([final, final**2], axis=2)
+    all_token = np.concatenate([final, np.tanh(final)], axis=2)
+    bins = np.asarray(config.probability_protocol.bins)
+    semantic_all = np.concatenate([public, targets], axis=1)
+    logits = -((semantic_all[:, :, None] - bins[None, None, :]) / 0.12) ** 2
+    logits += rng.normal(scale=0.03, size=logits.shape)
+    token_ids = rng.integers(1, 500, size=(n_rows, 40), dtype=np.int64)
+    attention = np.ones_like(token_ids, dtype=np.bool_)
+    boundaries = np.tile(np.asarray([7, 15, 23, 31]), (n_rows, 1))
+    arrays = {
+        "final_token_residual": final.astype(np.float32),
+        "event_boundary_summary": event.astype(np.float32),
+        "all_token_summary": all_token.astype(np.float32),
+        "mean_input_embedding": (
+            base + rng.normal(scale=0.2, size=base.shape)
+        ).astype(np.float32),
+        "token_ids": token_ids,
+        "attention_mask": attention,
+        "event_token_indices": boundaries,
+        "history_ids": np.asarray([row[0] for row in rows], dtype=np.int64),
+        "role_ids": np.asarray([row[1] for row in rows], dtype=np.int8),
+        "system_ids": np.asarray([row[2] for row in rows], dtype=np.int8),
+        "system_role_ids": np.asarray(
+            [0 if row[2] < 2 else 1 for row in rows], dtype=np.int8
+        ),
+        "renderer_ids": np.asarray([row[3] for row in rows], dtype=np.int8),
+        "lengths": np.asarray([row[4] for row in rows], dtype=np.int16),
+        "last_observations": data_rng.integers(0, 3, size=n_rows, dtype=np.int8),
+        "observation_frequencies": data_rng.dirichlet(np.ones(3), size=n_rows),
+        "semantic_public": public,
+        "semantic_core": public[:, :4],
+        "semantic_targets": targets,
+        "categorical_log_likelihoods": logits,
+    }
+    metadata = {"model_id": model_id, "family": family}
+    return arrays, metadata
+
+
+def test_complete_reducer_evaluates_both_ordered_pairs_without_pair_mapper() -> None:
+    config, systems, basis = _contract()
+    # Keep this reducer test quick while preserving grouped computation.
+    config.evaluation.bootstrap_replicates = 50
+    captures = {
+        "mistral-7b-v03": _synthetic_capture("mistral-7b-v03", "mistral", 14),
+        "qwen3-4b": _synthetic_capture("qwen3-4b", "qwen3", 12),
+    }
+    metrics, training, predictions, checkpoints = evaluate_all_models(
+        config, systems, basis, captures
+    )
+    assert set(metrics["cross_family_composition"]) == {
+        "mistral-7b-v03__to__qwen3-4b",
+        "qwen3-4b__to__mistral-7b-v03",
+    }
+    assert all(
+        row["pair_specific_mapper"] is False
+        and row["target_reader_frozen_before_source_evaluation"] is True
+        for row in metrics["cross_family_composition"].values()
+    )
+    assert metrics["behavioral_residual_census"]["promotional"] is False
+    assert metrics["behavioral_residual_census"]["source_local_residual_encoders"] is True
+    assert training["pair_specific_mapper_count"] == 0
+    assert "cross_family" in predictions
+    assert set(checkpoints) == {"mistral-7b-v03", "qwen3-4b"}
+    decision = gate_decision(config, metrics)
+    assert decision["authorization"]["spq1_execution_authorized"] is False
+    assert decision["authorization"]["receiver_execution_authorized"] is False
