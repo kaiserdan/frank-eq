@@ -10,15 +10,15 @@
   },
   "active_checkpoint_revision_registry_sha256": "85daa3682ee79595c8e0ad58e88d82568c71781b05c60bd4e226a5e0b2bd4909",
   "files": {
-    "configs/spq0/inspected_plan.json": "c80a0d7813f05c9e18d936fe8729288c25bba10c929f58d934e8fbdd245fe835",
+    "configs/spq0/inspected_plan.json": "fdc187bfa3d662908eb734049365c1feb5651094633cf87279317979b22093be",
     "configs/spq0/real_olivia_spq0.yaml": "1ad2216396da3a31421366e951476f14472b216a10588dd23760f90863488558",
-    "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md": "567ff69fbe925e99913dbb5ea9288d44ea80b87acc7c443ac03bede890f346c5",
-    "docs/26_SPQ0_OLIVIA_RUNBOOK.md": "2867bcd0ac08db5a99ef72b1b60c7ed735b84854085d4cd8715233079af05086",
+    "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md": "d887867b33c994e65b13e6110f75b39cd3cfcb681aff872616b49c2ae1ce2d4f",
+    "docs/26_SPQ0_OLIVIA_RUNBOOK.md": "64956f5b875949b34d683fc7e74aa5735f569f31ae569fdb6f96178ef46648b8",
     "frank_eq_spq0_config_skeleton.yaml": "2016476fc0a233de994544494a7463afeb7050a1a1d50dba3324c8b0b3600e59",
     "frank_eq_spq0_research_and_implementation_plan.md": "c8321698b731ed2a5ed894ac5934cb59d60b5e5ddbff779f223e83709261494d"
   },
   "implementation_pr_launch_authorized": false,
-  "inspected_plan_sha256": "3dcd715a3338de5caf308d4dae7165521a49f908aa6954b6ce6ded58d57ea345",
+  "inspected_plan_sha256": "9274c19646c0261a8aa7ce21ccffbb9d98f4e535533f1c76951cd9a13e816225",
   "protocol_version": "spq0-development-census",
   "reserved_checkpoint_non_access_contract_sha256": "69752ed4bed16d6ff3f1c9c379be7fa3ec8d2fc32065ed9b99601e69c07b89e1",
   "runtime": {

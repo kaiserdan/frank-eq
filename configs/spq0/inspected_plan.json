@@ -73,9 +73,9 @@
       "symbolic"
     ]
   },
-  "plan_sha256": "3dcd715a3338de5caf308d4dae7165521a49f908aa6954b6ce6ded58d57ea345",
+  "plan_sha256": "9274c19646c0261a8aa7ce21ccffbb9d98f4e535533f1c76951cd9a13e816225",
   "protocol_path": "docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md",
-  "protocol_sha256": "567ff69fbe925e99913dbb5ea9288d44ea80b87acc7c443ac03bede890f346c5",
+  "protocol_sha256": "d887867b33c994e65b13e6110f75b39cd3cfcb681aff872616b49c2ae1ce2d4f",
   "protocol_version": "spq0-development-census",
   "public_basis": {
     "basis_sha256": "7281e4158054cd81d29e97aff6286b3b1ac4f3c020aabf8c13897e0cb717b58b",

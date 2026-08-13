@@ -372,6 +372,11 @@ and committed. The source archive, config, plan, runtime image, active revision
 registry, active checkpoint file registries, and reserved non-access registry
 are SHA-256 bound.
 
+Cluster-facing workflow code must remain compatible with the sealed Olivia
+image's Python 3.10 runtime. UTC timestamps therefore use
+`datetime.timezone.utc`; this operational constraint changes no panel, model,
+access boundary, metric, gate, or scientific threshold.
+
 The workflow writes immutable manifests for systems, basis, panels, captures,
 training, fitted checkpoints, predictions, metrics, rate/compute, decision,
 and all artifacts. The independent verifier regenerates systems and panels,

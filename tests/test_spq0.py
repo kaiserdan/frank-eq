@@ -39,6 +39,13 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "configs/spq0/real_olivia_spq0.yaml"
 
 
+def test_spq0_datetime_usage_is_python310_compatible() -> None:
+    source = (ROOT / "src/frank_eq/shared_predictive_quotient/workflow.py").read_text()
+    assert "from datetime import UTC" not in source
+    assert "datetime.UTC" not in source
+    assert "dt.UTC" not in source
+
+
 class _SPQStubCapture:
     prompt_format = "chat_turn"
     max_length = 4096

@@ -123,6 +123,17 @@ Run the identical dry-run twice and require exact equality. Inspect and record:
 
 Do not use `--recover-from-job`: SPQ0 has no same-registration recovery path.
 
+### Startup-only attempt record
+
+Olivia job `2006621` on 2026-08-13 stopped before checkpoint preflight because
+the SPQ0 workflow used the Python-3.11-only `datetime.UTC` API in the sealed
+Python 3.10 image. It performed only the model-free algebraic basis self-check:
+checkpoint resolution, tokenizer access, model loading, adapters, capture, and
+inference did not begin. Its remote job directory remains immutable. The repair
+uses `datetime.timezone.utc`, adds a static Python 3.10 regression guard, and
+changes no scientific registration field. Never recover or resume this job;
+any authorized retry must use a fresh clean commit and fresh job name.
+
 ## Checkpoint preflight order
 
 On an eventual run, `olivia/quickstart.sh` validates the config and inspected

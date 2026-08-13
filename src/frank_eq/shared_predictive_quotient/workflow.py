@@ -39,7 +39,8 @@ SPQ0_RUNTIME_IMAGE_SHA256 = "a3ca46f0db9971b4108e5c8694e72f3039166383efc06b01f40
 
 
 def _timestamp() -> str:
-    return dt.datetime.now(dt.UTC).isoformat()
+    # Use the timezone object available in the Python 3.10 Olivia runtime.
+    return dt.datetime.now(dt.timezone.utc).isoformat()  # noqa: UP017
 
 
 def _environment() -> dict[str, Any]:
