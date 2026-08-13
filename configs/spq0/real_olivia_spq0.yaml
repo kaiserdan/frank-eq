@@ -1,0 +1,181 @@
+# Development-only Shared Predictive Quotient census. This registration uses
+# fresh stochastic systems and must never consume a claim-bearing test role.
+schema: frank_eq_shared_predictive_quotient_spq0_v1
+protocol_version: spq0-development-census
+run_name: frank-eq-spq0-olivia
+output_dir: runs/spq0-olivia
+development_only: true
+require_revision_pins: true
+
+models:
+  - model_id: qwen3-4b
+    hf_id: Qwen/Qwen3-4B
+    revision: 1cfa9a7208912126459214e8b04321603b3df60c
+    role: founder
+    family: qwen3
+  - model_id: mistral-7b-v03
+    hf_id: mistralai/Mistral-7B-Instruct-v0.3
+    revision: c170c708c41dac9275d15a8fff4eca08d52bab71
+    role: founder
+    family: mistral
+
+reserved_unopened_models:
+  - model_id: olmo2-7b-held
+    hf_id: allenai/OLMo-2-1124-7B-Instruct
+    revision: 470b1fba1ae01581f270116362ee4aa1b97f4c84
+    family: olmo2
+    access: reserved_unopened
+  - model_id: granite31-8b-held
+    hf_id: ibm-granite/granite-3.1-8b-instruct
+    revision: 4009206d5fc95d2e65a7b7633e159d6e97e25d35
+    family: granite
+    access: reserved_unopened
+
+systems:
+  latent_states: 4
+  actions: 3
+  observations: 3
+  fit_systems: 2
+  validation_only_systems: 1
+  full_support_min_probability: 0.04
+  predictive_rank: 4
+  core_condition_number_max: 5.0
+  target_executor_l1_max: 4.0
+  future_horizons: [1, 2, 3, 4]
+  target_tests: 24
+  system_seed: 2026084158
+  core_selection_seed: 2026084102
+
+panel:
+  roles:
+    calibration:
+      lengths: [8, 16]
+      histories_per_system_length: 96
+      seed: 2026084201
+    selection:
+      lengths: [8, 16]
+      histories_per_system_length: 48
+      seed: 2026084202
+    validation:
+      lengths: [8, 16, 32]
+      histories_per_system_length: 64
+      seed: 2026084203
+  fit_renderers: [narrative, table]
+  validation_renderers: [narrative, table, symbolic]
+  validation_only_length: 32
+  min_belief_entropy: 0.15
+  max_belief_entropy: 1.35
+  min_core_variance: 0.0025
+  max_generation_attempt_multiplier: 200
+
+capture:
+  prompt_format: chat_turn
+  chat_template_kwargs: {enable_thinking: false}
+  normalized_depths: [0.25, 0.50, 0.75, 1.00]
+  surfaces:
+    - final_token_residual
+    - event_boundary_residuals
+    - all_token_summary
+    - mean_input_embedding
+    - parameter_matched_token_sequence
+  selected_kv_surface_enabled: false
+  dtype: bfloat16
+  serialized_dtype: float32
+  device: cuda
+  branch_mode: kv_reuse
+  allow_exact_replay_fallback: false
+  branch_batch_size: 8
+  local_files_only: true
+  max_length: 4096
+
+probability_protocol:
+  type: categorical_bins
+  bins: [0.05, 0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95]
+  candidate_labels: [" A", " B", " C", " D", " E", " F", " G", " H", " I", " J"]
+  normalize_candidate_log_likelihoods: true
+  temperature_grid: [0.50, 0.75, 1.00, 1.50, 2.00]
+  candidate_temperature_fit_role: calibration
+  direct_protocol_selection_role: selection
+
+semantic_encoder:
+  methods: [ridge, reduced_rank_regression]
+  rank_grid: [1, 2, 3, 4, 6, 8]
+  ridge_grid: [0.1, 1.0, 10.0, 100.0]
+  surface_selection_role: selection
+  target: rank_conditioned_public_tests
+  token_hash_position_period: 64
+  token_sequence_decay_grid: [0.50, 0.75, 0.90, 0.97]
+
+strong_controls:
+  - history_prior
+  - last_observation_filter
+  - empirical_observation_filter
+  - deterministic_token_hash_ridge
+  - parameter_matched_token_sequence_encoder
+  - mean_input_embedding
+  - final_token_residual
+  - direct_probability_forecast
+  - exact_bayes_filter
+  - exact_public_core
+  - overcomplete_test_bank
+  - shuffled_history
+  - wrong_history
+  - renderer_shuffled
+  - zero_packet
+
+target_local_reader:
+  input: exact_public_core
+  output: model_probability_bin_signature
+  fit_role: calibration
+  selection_role: selection
+  ridge_grid: [0.01, 0.1, 1.0, 10.0]
+  pair_specific_parameters: false
+  freeze_before_source_evaluation: true
+
+behavioral_residual:
+  enabled: true
+  method: maxvar_gcca
+  rank_grid: [0, 1, 2, 4]
+  fit_role: calibration
+  selection_role: selection
+  promotional: false
+
+evaluation:
+  bootstrap_replicates: 2000
+  bootstrap_seed: 2026084291
+  independent_unit: system_history
+  quantization_bits: [2, 4, 8]
+  amortized_future_query_counts: [1, 4, 16, 32]
+  required_conditions: [seen, unseen_renderer, unseen_system, length_transfer, joint_ood]
+  source_query_cost_brier_equivalent: 0.02
+  packet_bit_cost_brier_equivalent: 0.0005
+
+gates:
+  max_oracle_executor_abs_error: 1.0e-10
+  source_probability_gain_over_prior_lower95_min: 0.0
+  semantic_core_gain_over_prior_lower95_min: 0.0
+  activation_over_token_sequence_lower95_strict_gt: 0.0
+  wrong_history_margin_lower95_strict_gt: 0.0
+  cross_family_target_prior_gain_lower95_strict_gt: 0.0
+  min_cross_family_oracle_reader_gain_retention: 0.70
+  rank4_noninferior_to_higher_ranks: true
+  min_four_bit_gain_retention: 0.95
+  max_sender_identity_accuracy_over_chance: 0.15
+  amortized_query_count_for_primary_utility: 16
+  amortized_utility_lower95_strict_gt: 0.0
+
+authorization:
+  development_audit_authorized: true
+  held_sender_access_authorized: false
+  claim_bearing_test_access_authorized: false
+  receiver_execution_authorized: false
+  scientific_claim_authorized: false
+  paper_claim_authorized: false
+  pass_authorizes_only_spq1_draft: true
+
+logging:
+  wandb:
+    enabled: true
+    project: frank-eq-spq0
+    tags: [frank-eq, spq0, predictive-state, development, olivia]
+    offline: false
