@@ -138,6 +138,8 @@ evaluation:
   quantization_bits: [2, 4, 8]
   amortized_future_query_counts: [1, 4, 16, 32]
   required_conditions: [seen, unseen_renderer, length_transfer, joint_ood]
+  source_query_cost_brier_equivalent: 0.02
+  packet_bit_cost_brier_equivalent: 0.0005
 
 gates:
   max_oracle_executor_abs_error: 1.0e-10
