@@ -1,6 +1,8 @@
 # Independent implementation review of SPQ0
 
-Status: reviewed prospective development protocol; no model experiment launched.
+Status: historical pre-execution implementation review. SPQ0 later completed as
+a consumed development negative; see `evidence/real_spq0_olivia/AUDIT.md` and
+`docs/28_SPQ0_RESULT_AND_DISPOSITION.md`.
 
 This review was performed after PR #6 implemented the Shared Predictive Quotient
 census. The original implementation had a sound stochastic task, an exact
@@ -35,9 +37,10 @@ The implementation names were also corrected: coefficient-SVD truncation is
 The corrections do not alter the active or reserved model roster, stochastic
 systems, history panels, public test registry, probability-bin protocol, causal
 capture boundary, reserved-checkpoint non-access contract, or protected
-authorizations. SPQ0 remains development-only. A machine pass may authorize only
-drafting a separately frozen SPQ1 protocol; it never authorizes SPQ1 execution,
-held-model access, receiver execution, a scientific claim, or a paper claim.
+authorizations. At review time SPQ0 remained prospective and development-only;
+only a machine pass could have authorized drafting a separately frozen SPQ1
+protocol. The later machine result is
+`SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED`, so even that draft field is false.
 
 ## Validation receipt
 
@@ -47,7 +50,7 @@ moment-compute validator, SPQ0 plan regeneration and static validation, reserved
 checkpoint zero-access checks, and `git diff --check`. The temporary correction
 workflow and helper removed themselves after committing the reviewed tree.
 
-No Olivia job has been submitted. Before any launch, regenerate a
-content-addressed dry run from the final reviewed commit and inspect the new
-source archive hash, config hash, plan identity, runtime image, active checkpoint
-registries, and zero-access reserved-model ledger.
+At the time of this review no Olivia job had been submitted. The later launch
+used a content-addressed plan from the final repaired commit and preserved the
+active-checkpoint and reserved-zero-access contracts. This receipt remains
+pre-execution provenance, not current launch authority.

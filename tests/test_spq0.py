@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import replace
 from pathlib import Path
 
@@ -34,9 +35,47 @@ from frank_eq.shared_predictive_quotient.probes import (
     select_categorical_temperature,
     select_target_reader,
 )
+from frank_eq.utils import sha256_file
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "configs/spq0/real_olivia_spq0.yaml"
+EVIDENCE = ROOT / "evidence/real_spq0_olivia"
+
+
+def test_adopted_spq0_negative_is_hash_bound_and_fail_closed() -> None:
+    manifest = json.loads((EVIDENCE / "manifest.json").read_text())
+    assert manifest["schema"] == "frank_eq_spq0_evidence_manifest_v1"
+    assert {
+        str(path.relative_to(EVIDENCE))
+        for path in EVIDENCE.rglob("*")
+        if path.is_file()
+    } == set(manifest["files"]) | {"manifest.json"}
+    assert {
+        name: sha256_file(EVIDENCE / name) for name in manifest["files"]
+    } == manifest["files"]
+
+    decision = json.loads((EVIDENCE / "decision.json").read_text())
+    assert decision["status"] == "fail"
+    assert decision["diagnosis"] == "SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED"
+    assert decision["authorization"]
+    assert not any(decision["authorization"].values())
+
+    exact_runtime = json.loads(
+        (EVIDENCE / "independent_verification.json").read_text()
+    )
+    workstation = json.loads(
+        (EVIDENCE / "workstation_verification.json").read_text()
+    )
+    assert exact_runtime["passed"] is True
+    assert exact_runtime["numeric_comparison"]["maximum_abs_delta"] == 0.0
+    assert workstation["passed"] is False
+    assert workstation["checks"]["decision_recomputed_exactly"] is True
+    assert workstation["decision"] == decision
+    assert not any(
+        path.suffix in {".npz", ".pt", ".safetensors"}
+        for path in EVIDENCE.rglob("*")
+        if path.is_file()
+    )
 
 
 def test_spq0_datetime_usage_is_python310_compatible() -> None:

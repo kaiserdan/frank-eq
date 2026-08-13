@@ -1,0 +1,124 @@
+{
+  "artifact_files_checked": 32,
+  "checkpoint_verification_mode": "live_rehash",
+  "checks": {
+    "active_checkpoint_files_rehashed": true,
+    "active_tokenizers_preflighted_before_model_load": true,
+    "artifact_hashes_valid": true,
+    "captures_complete_pinned_and_causal": true,
+    "checkpoint_arrays_recomputed": true,
+    "config_snapshot_matches": true,
+    "decision_recomputed_exactly": true,
+    "inspected_plan_recomputed_exactly": true,
+    "metrics_recomputed": true,
+    "panels_recomputed_exactly": true,
+    "predictions_recomputed": true,
+    "probe_and_reader_training_recomputed": true,
+    "protected_authorizations_closed": true,
+    "public_basis_recomputed": true,
+    "rate_compute_contract_valid": true,
+    "registration_snapshot_matches": true,
+    "required_files_present": true,
+    "reserved_checkpoints_never_accessed": true,
+    "roles_and_validation_only_system_separated": true,
+    "snapshot_hashes_match_plan_and_run_manifest": true,
+    "systems_recomputed_exactly": true,
+    "workflow_and_runtime_identity_valid": true
+  },
+  "decision": {
+    "authorization": {
+      "claim_bearing_test_access_authorized": false,
+      "held_sender_access_authorized": false,
+      "paper_claim_authorized": false,
+      "receiver_execution_authorized": false,
+      "scientific_claim_authorized": false,
+      "spq1_execution_authorized": false,
+      "spq1_protocol_draft_authorized": false
+    },
+    "check_details": {
+      "activation_specificity": {
+        "mistral-7b-v03": false,
+        "qwen3-4b": false
+      },
+      "cross_family_public_state_transfer": {
+        "mistral-7b-v03__to__qwen3-4b": true,
+        "qwen3-4b__to__mistral-7b-v03": false
+      },
+      "four_bit_retention": {
+        "mistral-7b-v03__to__qwen3-4b": true,
+        "qwen3-4b__to__mistral-7b-v03": true
+      },
+      "heuristic_rate_scalarization_non_promotional": {
+        "mistral-7b-v03": true,
+        "qwen3-4b": true
+      },
+      "history_specificity": {
+        "mistral-7b-v03": false,
+        "qwen3-4b": false
+      },
+      "predictive_dimension_consistent": {
+        "mistral-7b-v03__to__qwen3-4b": true,
+        "qwen3-4b__to__mistral-7b-v03": false
+      },
+      "renderer_system_length_stability": {
+        "mistral-7b-v03": false,
+        "qwen3-4b": false
+      },
+      "semantic_predictive_quotient": {
+        "mistral-7b-v03|joint_ood": false,
+        "mistral-7b-v03|length_transfer": true,
+        "mistral-7b-v03|seen": true,
+        "mistral-7b-v03|unseen_renderer": false,
+        "mistral-7b-v03|unseen_system": true,
+        "qwen3-4b|joint_ood": false,
+        "qwen3-4b|length_transfer": false,
+        "qwen3-4b|seen": true,
+        "qwen3-4b|unseen_renderer": false,
+        "qwen3-4b|unseen_system": false
+      },
+      "source_probability_protocol": {
+        "mistral-7b-v03": false,
+        "qwen3-4b": false
+      }
+    },
+    "checks": {
+      "activation_specificity": false,
+      "cross_family_public_state_transfer": false,
+      "four_bit_retention": true,
+      "history_specificity": false,
+      "predictive_dimension_consistent": false,
+      "predictive_system_and_executor": true,
+      "renderer_system_length_stability": false,
+      "semantic_predictive_quotient": false,
+      "sender_identity_closed": false,
+      "source_probability_protocol": false
+    },
+    "diagnosis": "SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED",
+    "schema": "frank_eq_spq0_decision_v1",
+    "status": "fail"
+  },
+  "diagnosis": "SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED",
+  "models": [
+    "mistral-7b-v03",
+    "qwen3-4b"
+  ],
+  "numeric_comparison": {
+    "atol": 1e-12,
+    "maximum_abs_delta": 0.0,
+    "mismatches": {
+      "basis": [],
+      "checkpoints": [],
+      "metrics": [],
+      "predictions": [],
+      "training": []
+    },
+    "rtol": 1e-12
+  },
+  "passed": true,
+  "recomputation_error": null,
+  "reserved_models": [
+    "olmo2-7b-held",
+    "granite31-8b-held"
+  ],
+  "schema": "frank_eq_spq0_verification_v1"
+}

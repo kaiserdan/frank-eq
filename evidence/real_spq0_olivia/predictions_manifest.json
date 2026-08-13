@@ -1,0 +1,93 @@
+{
+  "entries": {
+    "cross_family": {
+      "arrays": [
+        "mistral-7b-v03__to__qwen3-4b__four_bit",
+        "mistral-7b-v03__to__qwen3-4b__normalization_aware_four_bit",
+        "mistral-7b-v03__to__qwen3-4b__normalization_aware_rank_1",
+        "mistral-7b-v03__to__qwen3-4b__normalization_aware_rank_2",
+        "mistral-7b-v03__to__qwen3-4b__normalization_aware_rank_3",
+        "mistral-7b-v03__to__qwen3-4b__oracle",
+        "mistral-7b-v03__to__qwen3-4b__rank_1",
+        "mistral-7b-v03__to__qwen3-4b__rank_2",
+        "mistral-7b-v03__to__qwen3-4b__rank_3",
+        "mistral-7b-v03__to__qwen3-4b__rank_4",
+        "mistral-7b-v03__to__qwen3-4b__rank_6",
+        "mistral-7b-v03__to__qwen3-4b__rank_8",
+        "mistral-7b-v03__to__qwen3-4b__token_control",
+        "mistral-7b-v03__to__qwen3-4b__transferred",
+        "qwen3-4b__to__mistral-7b-v03__four_bit",
+        "qwen3-4b__to__mistral-7b-v03__normalization_aware_four_bit",
+        "qwen3-4b__to__mistral-7b-v03__normalization_aware_rank_1",
+        "qwen3-4b__to__mistral-7b-v03__normalization_aware_rank_2",
+        "qwen3-4b__to__mistral-7b-v03__normalization_aware_rank_3",
+        "qwen3-4b__to__mistral-7b-v03__oracle",
+        "qwen3-4b__to__mistral-7b-v03__rank_1",
+        "qwen3-4b__to__mistral-7b-v03__rank_2",
+        "qwen3-4b__to__mistral-7b-v03__rank_3",
+        "qwen3-4b__to__mistral-7b-v03__rank_4",
+        "qwen3-4b__to__mistral-7b-v03__rank_6",
+        "qwen3-4b__to__mistral-7b-v03__rank_8",
+        "qwen3-4b__to__mistral-7b-v03__token_control",
+        "qwen3-4b__to__mistral-7b-v03__transferred"
+      ],
+      "path": "predictions/cross_family.npz",
+      "sha256": "021b0393b26b2e87047f39230572bf9aa233fa6d6a5134dc84d1eeb3d1627e00"
+    },
+    "mistral-7b-v03": {
+      "arrays": [
+        "categorical_behavior",
+        "categorical_expectation",
+        "compiled_targets",
+        "control__deterministic_token_hash",
+        "control__final_token_residual",
+        "control__mean_input_embedding",
+        "control__parameter_matched_token_sequence",
+        "decoded_core",
+        "normalization_aware_rank_1",
+        "normalization_aware_rank_2",
+        "normalization_aware_rank_3",
+        "predicted_behavioral_residual",
+        "rank_1",
+        "rank_2",
+        "rank_3",
+        "rank_4",
+        "rank_6",
+        "rank_8",
+        "target_reader_from_source",
+        "target_reader_oracle_prediction",
+        "target_reader_residual"
+      ],
+      "path": "predictions/mistral-7b-v03.npz",
+      "sha256": "54fc2f1b0b16fe9c6bb547915a888e6095318ab8d5dccab8d1a78f8852e95761"
+    },
+    "qwen3-4b": {
+      "arrays": [
+        "categorical_behavior",
+        "categorical_expectation",
+        "compiled_targets",
+        "control__deterministic_token_hash",
+        "control__final_token_residual",
+        "control__mean_input_embedding",
+        "control__parameter_matched_token_sequence",
+        "decoded_core",
+        "normalization_aware_rank_1",
+        "normalization_aware_rank_2",
+        "normalization_aware_rank_3",
+        "predicted_behavioral_residual",
+        "rank_1",
+        "rank_2",
+        "rank_3",
+        "rank_4",
+        "rank_6",
+        "rank_8",
+        "target_reader_from_source",
+        "target_reader_oracle_prediction",
+        "target_reader_residual"
+      ],
+      "path": "predictions/qwen3-4b.npz",
+      "sha256": "20d6296684094e16d7aa9f78038d2332b0b00e9dd11184eba639921ac5756184"
+    }
+  },
+  "schema": "frank_eq_spq0_predictions_manifest_v1"
+}

@@ -16,6 +16,8 @@ description: Audit and extend Frank-EQ public operational-interface experiments 
 ## Current authority
 
 Read `AGENTS.md`, `HANDOFF.md`,
+`evidence/real_spq0_olivia/AUDIT.md`,
+`docs/28_SPQ0_RESULT_AND_DISPOSITION.md`,
 `docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md`,
 `docs/26_SPQ0_OLIVIA_RUNBOOK.md`, `STAGE_M_HANDOFF.md`,
 `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`,
@@ -57,12 +59,18 @@ events fail readout; the moment executor beats direct responses but is worse
 than the marginal control for both models. The current graph/source line stops,
 and there is no authorized graph experiment.
 
-SPQ0 is a separate prospective development census on fresh controlled
-stochastic systems. Its implementation and deterministic dry run are
-authorized; do not launch it automatically. A later separately authorized run
-must use `configs/spq0/real_olivia_spq0.yaml`, profile `full`, and exactly stage
-`audit`. Reserved OLMo2 and Granite checkpoints must remain unopened. A pass
-authorizes only drafting SPQ1.
+SPQ0 completed on Olivia as job `2006680` and is adopted under
+`evidence/real_spq0_olivia/`. Its frozen diagnosis is
+`SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED`. Both founders fail the categorical
+source protocol; seen semantic decoding does not survive the OOD/specificity
+conjunction; only Mistral-to-Qwen transfer qualifies. Reserved OLMo2 and Granite
+checkpoints remained unopened. Every protected authorization is false,
+including the SPQ1 draft field.
+
+The Olivia-runtime verifier recomputes the complete run exactly. Preserve the
+workstation's strict `2.04e-9` cross-runtime refusal as a portability diagnostic
+that changes no decision. Do not rerun, recover, retune, or use the exposed
+roles to select a successor. There is no authorized experiment.
 
 SPQ0's homogeneous linear PSR rank is four, while normalization makes three
 transmitted future-test coordinates plus the known null-test probability `1`
@@ -165,6 +173,20 @@ Receiver execution remains locked.
    Stage M diagnosis. The observed negative closes the graph/source line and
    does not authorize a successor.
 
+## Completed SPQ0 sequencing
+
+1. The frozen config, registration, plan, source, image, and active checkpoint
+   snapshots were bound before model inference.
+2. Olivia job `2006680` completed both founders, all registered development
+   strata, and both mapper-free cross-family directions.
+3. Literal KV reuse, exact prefix/event continuity, zero replay, separated
+   roles, and zero reserved-checkpoint access verify.
+4. The machine decision is `SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED`; all
+   authorization fields remain false.
+5. Exact-runtime recomputation passes. The workstation numeric refusal is
+   retained without altering the consumed artifacts.
+6. The compact evidence package is adopted; SPQ0 and its roles are consumed.
+
 ## Prohibited actions
 
 - Another model-scale screen under immediate A/B scoring.
@@ -189,7 +211,10 @@ Receiver execution remains locked.
 - Accessing reserved OLMo2 or Granite checkpoints during SPQ0.
 - Adding pair-specific cross-family parameters or promoting the behavioral
   residual census.
-- Launching SPQ0 from its implementation PR or with a non-`audit` stage.
+- Rerunning, recovering, or retuning SPQ0 after its completed negative.
+- Using SPQ0 outcomes to change its elicitation, surfaces, system/renderer,
+  ranks, thresholds, model pair, or gate.
+- Drafting or executing SPQ1 from the negative SPQ0 decision.
 - Committing generated caches, checkpoints, `.agents/state/`, secrets, or W&B
   credentials.
 

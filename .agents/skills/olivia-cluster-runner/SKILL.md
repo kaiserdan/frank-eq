@@ -1,6 +1,6 @@
 ---
 name: olivia-cluster-runner
-description: Package, dry-run, submit only with authority, monitor, fetch, and verify Frank-EQ jobs on Olivia, including the prospective development-only SPQ0 census.
+description: Package, dry-run, submit only with authority, monitor, fetch, and verify Frank-EQ jobs on Olivia while preserving consumed Stage M0 and SPQ0 outcomes.
 ---
 
 # Olivia cluster runner
@@ -32,20 +32,20 @@ It has no held sender, claim-bearing test role, receiver access, successor draft
 authority, or scientific claim authority. Do not resubmit it. There is no
 current graph execution authority.
 
-SPQ0 is the sole prospective Olivia workflow. Implementation and deterministic
-dry-run inspection are authorized, but this PR must not launch it. A later
-separately authorized submission requires exactly:
+SPQ0 completed and is adopted:
 
 ```text
-configs/spq0/real_olivia_spq0.yaml
---profile full --stages audit
+job:       frank-eq-spq0-olivia-20260813c / Slurm 2006680
+decision:  SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED
+evidence:  evidence/real_spq0_olivia/
 ```
 
-It has no recovery, test, held, receiver, or claim path. OLMo2 and Granite are
-reserved unopened. Follow `.agents/skills/spq0-runner/SKILL.md` and
-`docs/26_SPQ0_OLIVIA_RUNBOOK.md`. Its rank census distinguishes linear rank
-four from the exactly sufficient normalization-aware affine dimension three;
-the held system is only a local law-perturbation check.
+It has no resubmission, recovery, retuning, test, held, receiver, SPQ1 draft, or
+claim path. OLMo2 and Granite remained unopened. Follow
+`.agents/skills/spq0-runner/SKILL.md`, `evidence/real_spq0_olivia/AUDIT.md`, and
+`docs/28_SPQ0_RESULT_AND_DISPOSITION.md`.
+
+There is no current Olivia execution authority.
 
 ## Validation
 
@@ -72,15 +72,20 @@ The completed immutable binding is source SHA-256 `352215a6...27668`, config
 SHA-256 `f181fece...d51d`, and image SHA-256 `a3ca46f0...aa3b1`. These commands
 are inspection only, not resubmission authority.
 
-## Monitor, fetch, verify
+## Historical SPQ0 inspection
 
 ```bash
-python olivia/cli.py status --job-name frank-eq-moment-compute-m0 --json
-python olivia/cli.py fetch  --job-name frank-eq-moment-compute-m0 --json
-python olivia/cli.py verify --job-name frank-eq-moment-compute-m0 --json
-python scripts/verify_moment_compute_run.py \
-  --run .agents/state/olivia/frank-eq-moment-compute-m0/remote/runs
+python olivia/cli.py status --job-name frank-eq-spq0-olivia-20260813c --json
+python olivia/cli.py fetch  --job-name frank-eq-spq0-olivia-20260813c --json
+python olivia/cli.py verify --job-name frank-eq-spq0-olivia-20260813c --json
+python scripts/verify_spq0_run.py \
+  --config configs/spq0/real_olivia_spq0.yaml \
+  --run .agents/state/olivia/frank-eq-spq0-olivia-20260813c/remote/runs
 ```
+
+The workstation verification commands return nonzero on the documented
+cross-runtime numeric refusal while reproducing the same decision. The in-job
+exact-runtime verifier passes. These commands do not authorize submission.
 
 ## Invariants
 
@@ -94,7 +99,7 @@ python scripts/verify_moment_compute_run.py \
 - Generated runs, source archives, checkpoints, `.agents/state/`, and credentials
   remain outside Git.
 
-The observed Stage M diagnosis closes the graph/source line. SPQ0 does not
-change that conclusion because it asks a fresh stochastic-system question.
-Never launch it automatically, access its reserved checkpoints, or treat its
-prospective plan as evidence.
+The observed Stage M diagnosis closes the graph/source line. The later SPQ0
+negative closes its separate stochastic-system registration. Never resubmit
+either run, access SPQ0's reserved checkpoints, or use exposed outcomes to tune
+a successor.

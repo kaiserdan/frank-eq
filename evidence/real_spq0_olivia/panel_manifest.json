@@ -1,0 +1,60 @@
+{
+  "roles": {
+    "calibration": {
+      "histories": 384,
+      "lengths": [
+        8,
+        16
+      ],
+      "path": "panels/calibration.json",
+      "renderers": [
+        "narrative",
+        "table"
+      ],
+      "sha256": "341576ef46ac6fbe6890e5818964764d12c8eb49a4c9488d0788506ef0c88798",
+      "systems": [
+        "system-00",
+        "system-01"
+      ]
+    },
+    "selection": {
+      "histories": 192,
+      "lengths": [
+        8,
+        16
+      ],
+      "path": "panels/selection.json",
+      "renderers": [
+        "narrative",
+        "table"
+      ],
+      "sha256": "671f54d82dd27b188e098e623527ab8b6ab29e70f28acf3ad2e7c42f3dce93da",
+      "systems": [
+        "system-00",
+        "system-01"
+      ]
+    },
+    "validation": {
+      "histories": 576,
+      "lengths": [
+        8,
+        16,
+        32
+      ],
+      "path": "panels/validation.json",
+      "renderers": [
+        "narrative",
+        "table",
+        "symbolic"
+      ],
+      "sha256": "ee79a84824375dd0c374c2d99ed213ce8749cfdce3f4feb4be121838dd32d891",
+      "systems": [
+        "system-00",
+        "system-01",
+        "system-02"
+      ]
+    }
+  },
+  "schema": "frank_eq_spq0_panel_manifest_v1",
+  "test_histories": 0
+}

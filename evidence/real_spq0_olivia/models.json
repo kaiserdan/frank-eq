@@ -1,0 +1,43 @@
+{
+  "active_founders": [
+    {
+      "family": "qwen3",
+      "hf_id": "Qwen/Qwen3-4B",
+      "model_id": "qwen3-4b",
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c"
+    },
+    {
+      "family": "mistral",
+      "hf_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "model_id": "mistral-7b-v03",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71"
+    }
+  ],
+  "reserved_unopened": [
+    {
+      "access": "reserved_unopened",
+      "family": "olmo2",
+      "files_opened": 0,
+      "hf_id": "allenai/OLMo-2-1124-7B-Instruct",
+      "inference_executed": false,
+      "model_adapter_instantiated": false,
+      "model_id": "olmo2-7b-held",
+      "model_loaded": false,
+      "revision": "470b1fba1ae01581f270116362ee4aa1b97f4c84",
+      "snapshot_resolution_attempted": false
+    },
+    {
+      "access": "reserved_unopened",
+      "family": "granite",
+      "files_opened": 0,
+      "hf_id": "ibm-granite/granite-3.1-8b-instruct",
+      "inference_executed": false,
+      "model_adapter_instantiated": false,
+      "model_id": "granite31-8b-held",
+      "model_loaded": false,
+      "revision": "4009206d5fc95d2e65a7b7633e159d6e97e25d35",
+      "snapshot_resolution_attempted": false
+    }
+  ],
+  "schema": "frank_eq_spq0_models_v1"
+}

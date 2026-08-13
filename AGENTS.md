@@ -11,28 +11,30 @@ frozen question, preserve information boundaries, and fail closed.
 
 1. `README.md`
 2. `HANDOFF.md`
-3. `docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md`
-4. `docs/26_SPQ0_OLIVIA_RUNBOOK.md`
-5. `.agents/skills/spq0-runner/SKILL.md`
-6. `STAGE_M_HANDOFF.md`
-7. `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`
-8. `docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`
-9. `docs/24_STAGE_M_OLIVIA_RUNBOOK.md`
-10. `evidence/real_stage_m_olivia_m0/AUDIT.md`
-11. `.agents/skills/moment-compute-runner/SKILL.md`
-12. `evidence/real_stagea_v3_olivia/AUDIT.md`
-13. `docs/20_STAGEA_V3_PROTOCOL.md`
-14. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
-15. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
-16. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
-17. `evidence/real_stagea_lumi_v2/REVIEW.md`
-18. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
-19. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
-20. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
-21. `docs/05_GATES_AND_STOP_RULES.md`
-22. `docs/09_IMPLEMENTATION_STATUS.md`
-23. `docs/10_DECISION_LOG.md`
-24. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
+3. `evidence/real_spq0_olivia/AUDIT.md`
+4. `docs/28_SPQ0_RESULT_AND_DISPOSITION.md`
+5. `docs/25_SHARED_PREDICTIVE_QUOTIENT_SPQ0.md`
+6. `docs/26_SPQ0_OLIVIA_RUNBOOK.md`
+7. `.agents/skills/spq0-runner/SKILL.md`
+8. `STAGE_M_HANDOFF.md`
+9. `docs/22_MAIN_RESULTS_AUDIT_AND_STAGE_M.md`
+10. `docs/23_STAGE_M_OPERATION_CLOSED_BASIS.md`
+11. `docs/24_STAGE_M_OLIVIA_RUNBOOK.md`
+12. `evidence/real_stage_m_olivia_m0/AUDIT.md`
+13. `.agents/skills/moment-compute-runner/SKILL.md`
+14. `evidence/real_stagea_v3_olivia/AUDIT.md`
+15. `docs/20_STAGEA_V3_PROTOCOL.md`
+16. `docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md`
+17. `docs/19_STAGE_R_CLUSTER_RUNBOOK.md`
+18. `evidence/real_stage_r_olivia_rc0/AUDIT.md`
+19. `evidence/real_stagea_lumi_v2/REVIEW.md`
+20. `docs/16_STAGEA_V2_INTERPRETATION_CORRECTION.md`
+21. `docs/17_STAGEQ_EXECUTION_AND_GATE_CONTRACT.md`
+22. `docs/03_INFORMATION_ACCESS_CONTRACT.md`
+23. `docs/05_GATES_AND_STOP_RULES.md`
+24. `docs/09_IMPLEMENTATION_STATUS.md`
+25. `docs/10_DECISION_LOG.md`
+26. `docs/13_STAGEA_V1_CORRECTION_LOG.md`
 
 For cluster work, also read the matching runner skill under `.agents/skills/`.
 
@@ -84,22 +86,25 @@ marginal executor for both models. No successor draft, run, held sender,
 receiver work, or claim is authorized. There is currently no authorized
 graph experiment or graph-cluster executable.
 
-SPQ0 is the only prospective development execution. It asks a fresh
-controlled-stochastic-system question and may run only after implementation
-review and separate operator launch authority:
+SPQ0 completed on Olivia and is an adopted development negative:
 
 ```text
-config:   configs/spq0/real_olivia_spq0.yaml
-profile:  full
-stages:   audit
-cluster:  Olivia
+job:       frank-eq-spq0-olivia-20260813c / Slurm 2006680
+decision:  SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED
+evidence:  evidence/real_spq0_olivia/
 ```
 
-Do not launch it while implementing or opening its PR. OLMo2 and Granite are
-reserved unopened. SPQ0 has no test role, held sender, receiver access, or
-claim authority. A pass authorizes only an SPQ1 protocol draft.
+Both active founders fail the categorical source protocol. Semantic decoding is
+positive on seen renderers but fails the OOD and specificity conjunction.
+Mistral-to-Qwen transfer passes; Qwen-to-Mistral, bidirectional transfer,
+predictive-dimension localization, sender-identity closure, and the overall
+gate fail. OLMo2 and Granite remained unopened. SPQ0 has no test role, held
+sender, receiver access, SPQ1 draft authority, or claim authority.
 
-## Prospective SPQ0 boundary
+There is no authorized experiment or cluster executable. Any continuation must
+begin with a fresh scientific question and a separately frozen registration.
+
+## Completed SPQ0 boundary
 
 - Use exact Qwen3-4B and Mistral-7B-v0.3 founder revisions; no other active
   checkpoint is permitted.
@@ -124,9 +129,14 @@ claim authority. A pass authorizes only an SPQ1 protocol draft.
 - Report both rank conventions, both quantization frontiers, grouped transfer
   strata, message bits, source queries, consumer compute, and the amortized
   direct frontier. Interpret the held system only as a local law perturbation.
-- A clean committed source, exact image and active checkpoint file hashes,
-  deterministic inspected-plan equality, all validators, and shell syntax are
-  prerequisites to model inference.
+- The sole completed outcome is Olivia job `2006680`; preserve the config,
+  registration, plan, fitted artifacts, metrics, and decision as consumed.
+- The frozen diagnosis is `SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED` and all
+  protected authorizations are false.
+- Olivia-runtime exact recomputation passes with zero numeric delta. Preserve
+  the workstation's strict `2.04e-9` cross-runtime refusal as a portability
+  diagnostic; it changes no gate or decision.
+- Do not rerun, retune, recover, or use exposed SPQ0 roles to select a successor.
 
 ## Completed Stage-A v3 execution boundary
 
@@ -298,6 +308,22 @@ Use evidence in this order:
 8. Stop this compiler/task contract. Do not launch receiver work or another
    v3-2 run.
 
+## Completed SPQ0 execution record
+
+1. The frozen config, registration, deterministic plan, source, image, and
+   active checkpoint snapshots were exact at launch.
+2. Olivia job `2006680` completed both founders, all five surfaces, every
+   registered development stratum, and both mapper-free transfer directions.
+3. Literal cloned-KV reuse, exact prefix/event continuity, zero replay, role
+   separation, and zero reserved-checkpoint access all verify.
+4. The machine diagnosis is `SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED` and
+   every authorization remains false.
+5. The in-job independent verifier recomputes the complete pipeline exactly.
+   The workstation verifier records a cross-runtime numeric refusal but the
+   same decision.
+6. The compact package is adopted under `evidence/real_spq0_olivia/`.
+7. Stop SPQ0. Do not draft SPQ1 or launch another run from this outcome.
+
 ## RC0 decision tree
 
 ### `BASIS_READOUT_NOT_QUALIFIED`
@@ -357,8 +383,10 @@ Draft exactly one fresh Stage-A v3 protocol using:
 - Accessing the reserved OLMo2 or Granite checkpoints.
 - Adding a pair-specific mapper, promoting the behavioral residual census, or
   using a one-query direct comparison as a conjunctive gate.
-- Launching SPQ0 automatically from implementation or using a profile/stage
-  other than `full` / `audit`.
+- Rerunning, retuning, or recovering SPQ0 after its completed outcome.
+- Using SPQ0 validation outcomes to change the elicitation, surfaces, systems,
+  renderers, ranks, thresholds, model pair, or gates.
+- Drafting or executing SPQ1 from the negative SPQ0 decision.
 
 ## Development validation
 

@@ -1,0 +1,134 @@
+{
+  "active": {
+    "mistral-7b-v03": {
+      "candidate_ids_unique": true,
+      "candidate_token_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "candidate_token_ids": [
+        [
+          1098
+        ],
+        [
+          1133
+        ],
+        [
+          1102
+        ],
+        [
+          1152
+        ],
+        [
+          1181
+        ],
+        [
+          1169
+        ],
+        [
+          1188
+        ],
+        [
+          1150
+        ],
+        [
+          1083
+        ],
+        [
+          1243
+        ]
+      ],
+      "chat_turn_shape": "user_prefix_fixed_assistant_ack_user_query",
+      "event_boundaries_checked": 696,
+      "fast_tokenizer": true,
+      "future_test_branches_checked": 1376,
+      "hf_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "inference_executed": false,
+      "maximum_prefix_plus_query_tokens": 2449,
+      "maximum_prefix_tokens": 2300,
+      "model_loaded": false,
+      "prefix_strata_checked": 43,
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "snapshot_content_sha256": "ef93829cb60af6da5dc50df28da60650e7aa9c46eefaf82c9cbf95ba444a56df",
+      "strata_sha256": "ff7bb65b3bbcb04f0fb83fccccc821837db3e697fbd6c50c2e6a39f307cc6690",
+      "tokenizer_class": "TokenizersBackend"
+    },
+    "qwen3-4b": {
+      "candidate_ids_unique": true,
+      "candidate_token_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "candidate_token_ids": [
+        [
+          362
+        ],
+        [
+          425
+        ],
+        [
+          356
+        ],
+        [
+          422
+        ],
+        [
+          468
+        ],
+        [
+          434
+        ],
+        [
+          479
+        ],
+        [
+          472
+        ],
+        [
+          358
+        ],
+        [
+          619
+        ]
+      ],
+      "chat_turn_shape": "user_prefix_fixed_assistant_ack_user_query",
+      "event_boundaries_checked": 696,
+      "fast_tokenizer": true,
+      "future_test_branches_checked": 1376,
+      "hf_id": "Qwen/Qwen3-4B",
+      "inference_executed": false,
+      "maximum_prefix_plus_query_tokens": 2355,
+      "maximum_prefix_tokens": 2196,
+      "model_loaded": false,
+      "prefix_strata_checked": 43,
+      "revision": "1cfa9a7208912126459214e8b04321603b3df60c",
+      "snapshot_content_sha256": "59ff0fe752b83b289c7f2b7c9869e9196a4036c4f99dd8a313962096b746b7b4",
+      "strata_sha256": "ff7bb65b3bbcb04f0fb83fccccc821837db3e697fbd6c50c2e6a39f307cc6690",
+      "tokenizer_class": "Qwen2Tokenizer"
+    }
+  },
+  "active_tokenizer_contract_sha256": "a6be9e697a5d9cf9d115ded4aeb110b8ba63f99f2549e4fbdee3ef0495563bac",
+  "reserved_files_opened": 0,
+  "reserved_inference_calls": 0,
+  "reserved_model_loads": 0,
+  "reserved_snapshot_resolution_attempts": 0,
+  "reserved_tokenizer_loads": 0,
+  "schema": "frank_eq_spq0_tokenizer_preflight_v1",
+  "status": "passed"
+}

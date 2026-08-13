@@ -1,0 +1,17 @@
+{
+  "entries": {
+    "mistral-7b-v03": {
+      "array": "captures/mistral-7b-v03.npz",
+      "array_sha256": "e7daa52b16924b254a3b58e93f41a9f58752dbda5829403ec8c73bb2f92fb57e",
+      "metadata": "captures/mistral-7b-v03.json",
+      "metadata_sha256": "f2206258bfc7896026afba6ce0810ad615d1572a4031d5746e4c4ed81bc0ccda"
+    },
+    "qwen3-4b": {
+      "array": "captures/qwen3-4b.npz",
+      "array_sha256": "7d39b8998507f0a7f1667813ba4371f40b3cd5dcebedfb882e6f7c88a41419f3",
+      "metadata": "captures/qwen3-4b.json",
+      "metadata_sha256": "6348f0aab6ff9027f7a93dd55d4e93834164473b9b340e6a950776f70097af3c"
+    }
+  },
+  "schema": "frank_eq_spq0_capture_manifest_v1"
+}

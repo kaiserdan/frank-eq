@@ -63,34 +63,31 @@ the frozen readout gate, and the projected moment executor is worse than the
 historical marginal executor for both models. Every protected authorization is
 false. The current graph/source line stops.
 
-SPQ0 is now frozen as a separate development-only question over fresh
-controlled stochastic systems. The implementation branch may prepare and
-dry-run it, but must not submit Olivia automatically. Its active founders are
-the pinned Qwen3-4B and Mistral-7B-v0.3 revisions. Pinned OLMo2 and Granite
-checkpoints are reserved unopened and must have zero snapshot-resolution,
-file-open, adapter, load, and inference counters.
-
-The only prospective next executable, after review and separate launch
-authority, is:
+SPQ0 has completed and is adopted as a development negative:
 
 ```text
-configs/spq0/real_olivia_spq0.yaml
---profile full --stages audit
+job:       frank-eq-spq0-olivia-20260813c  Slurm 2006680
+state:     COMPLETED 0:0
+decision:  SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED
+evidence:  evidence/real_spq0_olivia/
 ```
 
-SPQ0 has calibration, selection, and validation roles only. Its predictive
-core and target-test registry are selected from fit systems without consulting
-the validation-only transition/emission law. Symbolic rendering and length 32
-are also validation-only. A pass authorizes only drafting SPQ1; it does not
-authorize an SPQ1 run, reserved access, held sender, receiver, or claim.
+Both pinned founders fail every categorical source-protocol stratum. Semantic
+rank-four decoding is positive on seen renderers but fails the registered OOD,
+activation-specificity, and history-specificity conjunction. Mapper-free
+Mistral-to-Qwen transfer passes, while Qwen-to-Mistral fails oracle-reader
+retention and predictive-dimension localization. Sender identity remains above
+the frozen ceiling and the behavioral residual census selects rank zero.
 
-The frozen system has homogeneous linear predictive rank four but normalized
-beliefs have an exactly sufficient affine three-coordinate description once
-the known null-test probability `1` is appended by the executor. The census
-therefore compares a 16-bit, better-conditioned rank-four packet with a 12-bit
-normalization-aware rank-three control. Rank four need not beat rank three; it
-must be noninferior while showing the registered robustness tradeoff. The held
-law is only a local 10% perturbation, not an independent system-family test.
+Literal cloned KV, exact prefix continuity, zero replay, role separation, the
+exact public executor, and the reserved OLMo2/Granite non-access contract all
+verify. The Olivia-runtime independent verifier recomputes the pipeline with
+zero delta. A newer workstation runtime has a strict `2.04e-9` portability
+refusal in Qwen fitted outputs but reproduces the same decision.
+
+Every protected authorization is false, including
+`spq1_protocol_draft_authorized`. SPQ0 is consumed and may not be rerun or
+retuned. There is no current experiment or cluster executable.
 
 ## What the accumulated results establish
 
@@ -126,13 +123,18 @@ Across SuperFrank, strict realization, SSCT, BaryFrank, Frank-Sol, and CTSI:
 - learned rule/rendering layers are less reliable than grounded facts plus a
   deterministic compiler.
 
-The SPQ0 method therefore fixes the public gauge with typed future tests and
-exposes downstream compute rather than adding another continuous translator.
+SPQ0 fixed the public gauge with typed future tests and exposed downstream
+compute rather than adding another continuous translator. Its negative now
+shows that gauge fixing alone is insufficient: categorical elicitation failed,
+semantic decoding was renderer brittle, model identity persisted, and transfer
+was directional.
 
-## Current scientific hypothesis
+## Working scientific hypothesis after SPQ0
 
 A useful cross-model interface is a **public separating operational basis** plus
-an explicit consumer-compute contract.
+an explicit consumer-compute contract. SPQ0 does not qualify this hypothesis;
+it preserves it only as a future research idea because the exact frozen
+realization failed its source and robustness gates.
 
 For an operation bank `K`, basis `B` is separating when equal basis responses
 imply equality under every operation in `K`. A separating basis is a complete
@@ -197,9 +199,37 @@ over direct. The frozen diagnosis is therefore
 `OPERATION_CLOSED_EVENTS_NOT_READABLE`, not the only diagnosis that could have
 opened a successor draft.
 
-There is no next executable. Any continuation requires a new task-level
-scientific question, fresh roles, and separately frozen authority; do not use
-the exposed Stage M outcome to tune another graph basis.
+Stage M itself authorized no successor. The later, separately registered SPQ0
+census has now also ended negative. Any continuation requires a new task-level
+scientific question, fresh roles, and separately frozen authority.
+
+## SPQ0 result
+
+SPQ0 leaves the graph task and tests fresh controlled stochastic systems with
+exact Qwen3-4B and Mistral-7B-v0.3 founders. It uses ten categorical
+probability bins, five query-blind surfaces, an exact linear rank-four core, an
+affine rank-three rate control, frozen target-local readers, and both ordered
+cross-family compositions without a pair mapper.
+
+The source forecast fails decisively: seen Brier is `0.21985` for Mistral and
+`0.35346` for Qwen against a `0.03061` prior. Semantic cores are readable on
+seen renderers (`0.02169` and `0.01862` versus prior `0.03611`) but collapse on
+unseen rendering and joint OOD. Both selected encoders use final-token residual
+surfaces, and neither beats the parameter-matched token sequence robustly.
+
+Mistral-to-Qwen is the one qualified direction: Brier `0.007503` versus target
+prior `0.008057`, with oracle-reader retention `1.109`. Qwen-to-Mistral has
+retention `0.498` and fails; rank four also does not beat its undercomplete
+affine controls in that direction. Identity accuracy is `0.71846`; residual
+rank is zero. The 12/16-bit and amortized-utility tables remain diagnostic only
+because the direct source protocol itself failed.
+
+The frozen diagnosis is `SOURCE_PROBABILITY_PROTOCOL_NOT_QUALIFIED`. Preserve
+the narrower interpretation: this rules out the exact elicitation, surfaces,
+systems/renderers, encoders, and bidirectional gate. It does not rule out all
+predictive state or erase the directional transfer positive. Full detail is in
+`evidence/real_spq0_olivia/AUDIT.md` and
+`docs/28_SPQ0_RESULT_AND_DISPOSITION.md`.
 
 ## RC0 experiment
 
@@ -381,6 +411,8 @@ edge; a pass cannot support a hidden-over-text claim.
 Full operator instructions:
 
 ```text
+evidence/real_spq0_olivia/AUDIT.md
+docs/28_SPQ0_RESULT_AND_DISPOSITION.md
 docs/18_RATE_COMPUTE_OPERATIONAL_BASIS.md
 docs/19_STAGE_R_CLUSTER_RUNBOOK.md
 docs/20_STAGEA_V3_PROTOCOL.md
@@ -447,8 +479,10 @@ replace it with a one-shot source-local compiler before any communication claim.
   checkpoints in SPQ0.
 - Adding a pair-specific cross-family mapper or promoting the behavioral
   residual census.
-- Submitting SPQ0 from its implementation PR or with any stage other than
-  `audit`.
+- Rerunning, retuning, or recovering SPQ0 after its completed development
+  outcome, including changing its elicitation, renderer handling, ranks,
+  thresholds, systems, or active model pair.
+- Drafting or executing SPQ1 from the negative SPQ0 decision.
 
 ## Evidence policy
 
@@ -459,4 +493,5 @@ and operational state remain outside Git. The adopted compact packages are:
 evidence/real_stage_r_olivia_rc0/
 evidence/real_stagea_v3_olivia/
 evidence/real_stage_m_olivia_m0/
+evidence/real_spq0_olivia/
 ```
